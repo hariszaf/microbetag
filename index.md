@@ -12,7 +12,12 @@ permalink: /
 A place with the background and the *how to* of the *microbetag* tool - currently in production
 {: .fs-6 .fw-300 }
 
-[Get started now](#getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [View it on GitHub](https://github.com/pmarsceill/just-the-docs){: .btn .fs-5 .mb-4 .mb-md-0 }
+# The ': .btn' flag denotes the button 
+# The ': .fs-5' flag denotes the font size
+# The ': .mb-4' flag denotes the margin-bottom: https://pmarsceill.github.io/just-the-docs/docs/utilities/layout/#spacing
+# the 'mb'is the margin-bottom as said,  while the 'md' stands for a [responsive modifier](https://pmarsceill.github.io/just-the-docs/docs/utilities/responsive-modifiers/#responsive-modifiers) 
+[View it on GitHub](https://github.com/hariszaf/microbetag){: .btn .fs-5 .mb-4 .mb-md-0 }
+
 
 ---
 
