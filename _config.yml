@@ -46,3 +46,8 @@ search:
 # Enable or disable heading anchors
 heading_anchors: true
 
+# Add just the docs of  microbetag on github 
+aux_links:
+  "Just the Docs on GitHub":
+    - "github.com/hariszaf/microbetag/tree/gh-pages"
+
