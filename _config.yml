@@ -1,5 +1,19 @@
 
-title: "Remote theme example"
+title: "microbetag: annotating Microbial co-occurrence networks"
+description: A place with the background and the *how to* of the *microbetag* tool - currently in production
+
 remote_theme: pmarsceill/just-the-docs
-color_scheme: "dark"
+
+# Permalinks are the output path for your pages, posts, or collections. 
+# They allow you to structure the directories of your source code different from the directories in your output.
+permalink: pretty
+
+# What it says! ;)
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  
+"script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
+
+
+# Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
+color_scheme: nil
+
 search_enabled: false
