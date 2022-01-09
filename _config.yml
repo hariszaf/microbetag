@@ -1,11 +1,12 @@
 
-title: "microbetag: annotating Microbial co-occurrence networks"
+title: "microbetag"
 description: A place with the background and the *how to* of the *microbetag* tool - currently in production
 
 remote_theme: pmarsceill/just-the-docs
 
 # Permalinks are the output path for your pages, posts, or collections. 
 # They allow you to structure the directories of your source code different from the directories in your output.
+# For more check: https://jekyllrb.com/docs/permalinks/
 permalink: pretty
 
 # What it says! ;)
