@@ -12,18 +12,25 @@ def parse_definitions_file():
 
    for line in definitions_file:
 
-      md         = line.split("\t")[0]
-      definition = line.split("\t")[1][:-1]
-      list_of_lists_of_single_steps = []
+      md           = line.split("\t")[0]
+      definition   = line.split("\t")[1][:-1]
+      parsed_steps = []
 
-      if "(" in definition or "," in definition:
+      if "(" not in definition and "," not in definition:
 
-         print(md, definition)
+         """
+         no alternatives per step 
+         REMEMBER! A step can be a complex, so more than 1 KOs may be required for a single sptep, 
+         meaning that a single step (a list) may include multiple lists 
+         """
+         steps = definition.split(";")
+         parsed_steps = parse_valid_steps_of_a_module(steps)
+
+
+
+      else:
 
          quasi_steps = definition.split(";")
-         print("quasi steps:")
-         print(quasi_steps)
-
 
          for quasi_step in quasi_steps:
 
@@ -38,111 +45,39 @@ def parse_definitions_file():
                """
 
                if num_of_open == 0:
-                  list_of_lists_of_single_steps.append(quasi_step)
+                  parsed_steps.append([quasi_step])
 
                else:
 
-                  print("EDO KOITA MPINE")
-                  print(quasi_step)
                   quasi_step = quasi_step.replace("(","")
                   quasi_step = quasi_step.replace(")","")
                   quasi_step = quasi_step.split(",")
                   
-                  print(quasi_step)
+                  parsed_steps.append(parse_valid_steps_of_a_module(quasi_step))
+
+            else:
+
+               """
+               We need to merge quasi steps together, in a way 
+               that they build an actual step, 
+               """
+
+               print(md, definition)
+               print(quasi_steps)
 
 
 
 
 
-         print("\n~~~~\n")
 
 
 
-
-
-
-
-      else:
-         """
-         no alternatives per step 
-         REMEMBER! A step can be a complex, so more than 1 KOs may be required for a single sptep, 
-         meaning that a single step (a list) may include multiple lists 
-         """
-         steps = definition.split(";")
-         for step in steps:
-         
-            # This denotes that there are reactions for whom there are no corresponding KO terms 
-            # Check this if after discussion with KF
-            if "--" in step:
-               continue
-
-            if "+" not in step and "-" not in step:
-               list_of_lists_of_single_steps.append([step])
-
-            elif "+" in step and "-" not in step:
-               step = step.split("+")
-               list_of_semis = [[semi] for semi in step]
-               list_of_lists_of_single_steps.append(list_of_semis)
-
-            elif "-" in step and "+" not in step: 
-
-               step  = step.split("-")
-
-               # A term you can ignore
-               if len(step) == 2 and step[0] == "":
-                  continue
-
-               else:
-                  list_of_lists_of_single_steps.append(step[0])
-
-            # Check this if after discussion with KF
-            elif "-" in step and "+" in step:
-               
-               semis = []
-               step  = step.split("-")
-               semi_counter = 0
-               
-               if len(step) == 2 and step[0] == "":
-                  print("Ignore this optional KO term, even if there's a + ??")
-                  continue
-
-               elif len(step) == 2 and step[0] != "":
-                  list_of_lists_of_single_steps.append(step[0])
-
-               else: 
-                  # step has more than 2 parts
-                  for semi in step:
-                     semi_counter += 1
-
-                     if "+" in semi:
-
-                        semi = semi.split("+")
-
-                        if semi_counter == 1:
-                           list_of_semis = [part for part in semi]
-                           semis.append(list_of_semis)
-
-                        else:
-                           list_of_semis = [part for part in semi[1:]]
-                           semis.append(list_of_semis)
-
-
-                  filtered_step = []
-                  for c in range(len(semis)):                     
-                     for v in range(len(semis[c])):
-                        filtered_step.append(semis[c][v])
-
-                  list_of_lists_of_single_steps.append(filtered_step)
-
-
-         y                                          = 0
-         num_of_steps                               = len([y+1 for x in list_of_lists_of_single_steps if "--" not in x ])
-         list_of_lists_of_single_steps              = tuple(list_of_lists_of_single_steps)
-         module_definitions_steps[md]               = {}
-         module_definitions_steps[md]['steps']      = list_of_lists_of_single_steps
-         module_definitions_steps[md]['# of steps'] = num_of_steps
-
-
+      y                                          = 0
+      num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
+      parsed_steps              = tuple(parsed_steps)
+      module_definitions_steps[md]               = {}
+      module_definitions_steps[md]['steps']      = parsed_steps
+      module_definitions_steps[md]['# of steps'] = num_of_steps
 
 
    # print(module_definitions_steps)
@@ -161,7 +96,83 @@ def map_genome_to_modules(ncbi_taxonomy_id):
 
 
 
+
+
+
+
+
+def parse_valid_steps_of_a_module(steps):
+
+   list_of_lists_of_single_steps = []
+
+   for step in steps:
+
+      # This denotes that there are reactions for whom there are no corresponding KO terms 
+      # Check this if after discussion with KF
+      if "--" in step:
+         continue
+
+      if "+" not in step and "-" not in step:
+         list_of_lists_of_single_steps.append([step])
+
+      elif "+" in step and "-" not in step:
+         step = step.split("+")
+         list_of_semis = [semi for semi in step]
+         list_of_lists_of_single_steps.append(list_of_semis)
+
+      elif "-" in step and "+" not in step: 
+
+         step  = step.split("-")
+
+         # A term you can ignore
+         if len(step) == 2 and step[0] == "":
+            continue
+
+         else:
+            list_of_lists_of_single_steps.append(step[0])
+
+
+      # Check this if after discussion with KF
+      elif "-" in step and "+" in step:
+         
+         # print(step)
+         semis = []
+         step  = step.split("-")
+         semi_counter = 0
+         
+         if len(step) == 2 and step[0] != "":
+            if "+" in step[0]:
+               components = step[0].split("+")
+               list_of_lists_of_single_steps.append(components)
+
+
+         else: 
+            # step has more than 2 parts
+            for semi in step:
+               semi_counter += 1
+
+               if "+" in semi:
+                  semi = semi.split("+")
+
+                  if semi_counter == 1:
+                     list_of_semis = [part for part in semi]
+                     semis.append(list_of_semis)
+
+                  else:
+                     list_of_semis = [part for part in semi[1:]]
+                     semis.append(list_of_semis)
+
+
+            filtered_step = []
+            for c in range(len(semis)):                     
+               for v in range(len(semis[c])):
+                  filtered_step.append(semis[c][v])
+            print(filtered_step)
+            list_of_lists_of_single_steps.append(filtered_step)
+
+   return list_of_lists_of_single_steps
+
+
+
 parse_definitions_file()
 # map_genome_to_modules(36033)
-
-
