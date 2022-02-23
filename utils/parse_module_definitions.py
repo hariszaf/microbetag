@@ -31,39 +31,49 @@ def parse_definitions_file():
       else:
 
          quasi_steps = definition.split(";")
+         print(md,definition)
+         print("------------------")
 
+         count_front_parenth   = 0
+         count_reverse_parenth = 0
+         
+         pseudo_step = []
+         
          for quasi_step in quasi_steps:
 
-            num_of_open   = quasi_step.count('(')
-            num_of_closed = quasi_step.count(')')
+            in_parenthesis = False
 
-            if num_of_open == num_of_closed:
-               """
-               every quasi step is an actual step
-               this is so, cause if we have an inner step in a choice
-               we will have an inequality in all cases
-               """
 
-               if num_of_open == 0:
-                  parsed_steps.append([quasi_step])
-
-               else:
-
-                  quasi_step = quasi_step.replace("(","")
-                  quasi_step = quasi_step.replace(")","")
-                  quasi_step = quasi_step.split(",")
-                  
-                  parsed_steps.append(parse_valid_steps_of_a_module(quasi_step))
+            if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
+               
+                  parsed_steps.append(parse_valid_steps_of_a_module([quasi_step]))
 
             else:
 
-               """
-               We need to merge quasi steps together, in a way 
-               that they build an actual step, 
-               """
+               if "(" in quasi_step or ")" in quasi_step:
+                  num_of_open            = quasi_step.count('(')
+                  count_front_parenth   += num_of_open
+                  num_of_closed          = quasi_step.count(')')
+                  count_reverse_parenth += num_of_closed
 
-               print(md, definition)
-               print(quasi_steps)
+                  in_parenthesis = True
+
+               if count_front_parenth > count_reverse_parenth:
+                  pseudo_step.append(quasi_step)
+               
+               else:
+                  pseudo_step.append(quasi_step)
+                  parsed_steps.append(parse_valid_steps_of_a_module(pseudo_step))
+
+                  pseudo_step = []
+                  count_front_parenth = 0
+                  count_reverse_parenth = 0
+                  in_parenthesis = False
+                  
+
+         print(parsed_steps)
+         print("\n@@@@@@@@@@@@\n\n")     
+
 
 
 
@@ -167,7 +177,7 @@ def parse_valid_steps_of_a_module(steps):
             for c in range(len(semis)):                     
                for v in range(len(semis[c])):
                   filtered_step.append(semis[c][v])
-            print(filtered_step)
+            # print(filtered_step)
             list_of_lists_of_single_steps.append(filtered_step)
 
    return list_of_lists_of_single_steps
