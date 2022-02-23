@@ -3,6 +3,8 @@
 import glob
 import json
 import sys
+from itertools import product
+
 
 def parse_definitions_file():
 
@@ -30,7 +32,11 @@ def parse_definitions_file():
 
       else:
 
+         intermediate_steps = []
+
          quasi_steps = definition.split(";")
+
+         print("\n\n\n")
          print(md,definition)
          print("------------------")
 
@@ -46,7 +52,7 @@ def parse_definitions_file():
 
             if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
                
-                  parsed_steps.append(parse_valid_steps_of_a_module([quasi_step]))
+                  intermediate_steps.append(parse_valid_steps_of_a_module([quasi_step]))
 
             else:
 
@@ -63,7 +69,7 @@ def parse_definitions_file():
                
                else:
                   pseudo_step.append(quasi_step)
-                  parsed_steps.append(parse_valid_steps_of_a_module(pseudo_step))
+                  intermediate_steps.append(parse_valid_steps_of_a_module(pseudo_step))
 
                   pseudo_step = []
                   count_front_parenth = 0
@@ -71,8 +77,35 @@ def parse_definitions_file():
                   in_parenthesis = False
                   
 
-         print(parsed_steps)
-         print("\n@@@@@@@@@@@@\n\n")     
+         print(intermediate_steps)
+         print("@@@@@@@@@@@@") 
+
+
+         for int_step in intermediate_steps:
+
+            if len(int_step) > 1: 
+               int_step = ([";".join(i) for i in product(*int_step)])
+
+            """
+            now in int_step we have an actual step 
+            that might have alternatives or/and semi-steps
+            """
+
+
+
+            # for entry in int_step:
+            #    print("entry")
+            #    print(entry)
+            # #    for part in entry: 
+            # #       joint = joint + ";" + part
+            # # joint = joint[:-1]
+
+            # # print(joint)
+            # print("*********")
+
+            # if int_step.count('(') == 2: 
+            #    print(">>>>>>>>>>")
+            #    print(int_step)
 
 
 
