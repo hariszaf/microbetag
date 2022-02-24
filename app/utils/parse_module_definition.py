@@ -243,7 +243,9 @@ def break_down_complex_step(step, defn):
                      finishing_hubs.append(entry[-6:])
                      print("FINISH:", entry[-6:])
 
-                  
+            else:
+
+               print("THERE IS NO SUCH THINGK", part)
                   # if "," in 
 
 
