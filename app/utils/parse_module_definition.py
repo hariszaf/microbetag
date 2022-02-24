@@ -217,9 +217,6 @@ def break_down_complex_step(step, defn, md):
 
       indices_for_unique_alternatives = [0]
 
-
-
-
       for index, character in enumerate(copy): 
 
          """
@@ -272,12 +269,25 @@ def break_down_complex_step(step, defn, md):
 
                indices_for_unique_alternatives.append(index + 1)
 
-      print(indices_for_unique_alternatives)
 
       unique_alternatives = split_stirng_based_on_indeces(copy, indices_for_unique_alternatives)
       
-      print(unique_alternatives)
+      counto = 0
+      for alternative in unique_alternatives:
+         counto += 1
+         # print(counto, alternative)
 
+         if alternative.count("K") == 1:
+            alternative = alternative.replace(",", "")
+            alternative = alternative.replace("*", "")
+            alternative = alternative.replace(";", "")
+            
+            alternatives.append(alternative)
+
+
+         else:
+
+            print(counto, alternative)
 
          # if copy[index + 1] in (";", "(", ")", ",", "*"):
 
