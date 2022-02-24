@@ -79,7 +79,7 @@ def parse_definitions_file():
 
                   # print("COMPLEX STEP: ", complete_step)
 
-                  break_down_complex_step(complete_step, definition)
+                  break_down_complex_step(complete_step, definition, md)
 
 
 
@@ -184,81 +184,164 @@ def map_genome_to_modules(ncbi_taxonomy_id):
    kegg_genome        = json.load(kegg_genome_file)
 
 
-def break_down_complex_step(step, defn):
+def break_down_complex_step(step, defn, md):
 
+   if step[0] != "(" or step[-1] != ")": 
+      step = "(" + step + ")"
 
    openings = step.split("(")
-   print("step", step)
-   
+
    if len(openings) == 2 and openings[0] == "": 
 
       alternatives = openings[1][:-1]
-      print("EASY: ", alternatives)
       return alternatives
+
 
    else:
 
+
       alternatives = []
 
-      print("HARDER: ")
-      print(openings, defn)
+      nodes   = []
+      ko_term = ''
 
       open_parenth_counter  = 0
       closed_parent_counter = 0
-      starting_hubs         = []
-      finishing_hubs        = []
-      compalsorty_substeps  = []
-      alternatives_substeps = []
+      priority_starts       = False # referring to the inner ()
+      priority_stops        = False # referring to the inner ()
+      alternative_option    = False
+      semi_step             = False
 
-      for part in openings: 
+      tailed  = step[1:-1]
+      copy    = tailed + "*"
 
-         if part == "": 
-            open_parenth_counter += 1 
+      indices_for_unique_alternatives = [0]
+
+
+
+
+      for index, character in enumerate(copy): 
+
+         """
+         Loop to get the indices of the unique alternative roads
+         of a step.
+         """         
+
+         if character == "*":
             continue
 
-         else: 
+         if character == "(": 
 
-            while len(starting_hubs) < open_parenth_counter:
-               starting_hubs.append(part[:6])
+            priority_starts = True
+            open_parenth_counter += 1
+            ko_term = ''
+         
+         elif character == ";": 
 
+            semi_step = True
+            ko_term   = ''
 
-            if ")" in part: 
+         elif character == ",": 
+            ko_term = ''
+            alternative_option = True
 
-               closings = part.split(")")
-               print("closings: ", closings)
-               for entry in closings:
+         elif character == ")": 
 
-                  if entry == ";":
+            closed_parent_counter += 1
+            ko_term = ''
+            priority_stops = True
+            alternative_option = False
 
-                     # compalsorty_substeps.append()
-                     continue
+            
+         ko_term = character
+         node      = ko_term ; nodes.append(node)
+         level     = open_parenth_counter - closed_parent_counter
+         link_from = copy[copy.index(node)-1]
+         link_to   = copy[index + 1]
 
-                  if entry == ",": 
+                  
 
-                     # alternatives_substeps.append()
-                     continue
+         if (link_to == "," or link_from == ",") and level <= 0: 
 
-                  if entry != "":
-
-                     finishing_hubs.append(entry[-6:])
-                     print("FINISH:", entry[-6:])
-
+            if len(indices_for_unique_alternatives) > 1: 
+               
+               if index - indices_for_unique_alternatives[-1] > 3:
+                  indices_for_unique_alternatives.append(index + 1)
+            
             else:
 
-               print("THERE IS NO SUCH THINGK", part)
-                  # if "," in 
+               indices_for_unique_alternatives.append(index + 1)
+
+      print(indices_for_unique_alternatives)
+
+      unique_alternatives = split_stirng_based_on_indeces(copy, indices_for_unique_alternatives)
+      
+      print(unique_alternatives)
+
+
+         # if copy[index + 1] in (";", "(", ")", ",", "*"):
+
+
+         #    print("link_from: ", link_from)
+         #    print("link_to:", link_to)
+
+         #    print("priority_starts: ", priority_starts)
+         #    print("priority_stops: ", priority_stops)
+         #    print("alternative_option: ", alternative_option)
+         #    print("semi_step: ", semi_step)
+         #    print("level: ", level)
+
+         #    print("\n---\n")
 
 
 
-         print(starting_hubs, finishing_hubs)
-      # print(starting_hubs, finishing_hubs)
-      print("\n\n~~~~~~~\n\n")
+            # if level == 0 and alternative_option == True: 
+
+            #    alternatives.append([node])
 
 
+            # if len(alternatives) == 0 :
+            #    alternatives.append([node])
+
+            # if semi_step: 
+
+            #    for alternative in alternatives:
+
+            #       alternative.append(node)
+                  
+            #       semi_step = False
+            #       alternative_option = False
+
+
+            # if alternative_option and level == 0: 
+            #    alternatives.append([node])
+
+
+            # if alternative_option and priority_starts and priority_stops == False: 
+
+            #    alternatives.append([node])
+            #    alternative_option = False 
 
 
 
          
+      print(copy, md)
+      print("\n~~~~\n")
+      # sys.exit(0)
+
+
+
+
+
+
+
+def split_stirng_based_on_indeces(s, indices):
+   """
+   REMEMBER! You need to give '0' as your first index, e.g.:
+   indices = [0,5,12,17]
+   """
+   parts = [s[i:j] for i,j in zip(indices, indices[1:]+[None])]
+   return parts
 
 
 
