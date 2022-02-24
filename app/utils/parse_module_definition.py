@@ -18,6 +18,8 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
+
+
       if "(" not in definition and "," not in definition:
 
          """
@@ -29,16 +31,15 @@ def parse_definitions_file():
          parsed_steps = parse_valid_steps_of_a_module(steps)
 
 
-
       else:
 
          intermediate_steps = []
 
          quasi_steps = definition.split(";")
 
-         print("\n\n\n")
-         print(md,definition)
-         print("------------------")
+         # print("\n\n\n")
+         # print(md,definition)
+         # print("------------------")
 
          count_front_parenth   = 0
          count_reverse_parenth = 0
@@ -49,7 +50,6 @@ def parse_definitions_file():
 
             in_parenthesis = False
 
-
             if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
                
                   intermediate_steps.append(parse_valid_steps_of_a_module([quasi_step]))
@@ -57,62 +57,36 @@ def parse_definitions_file():
             else:
 
                if "(" in quasi_step or ")" in quasi_step:
+
                   num_of_open            = quasi_step.count('(')
                   count_front_parenth   += num_of_open
                   num_of_closed          = quasi_step.count(')')
                   count_reverse_parenth += num_of_closed
-
-                  in_parenthesis = True
+                  in_parenthesis         = True
 
                if count_front_parenth > count_reverse_parenth:
                   pseudo_step.append(quasi_step)
                
                else:
                   pseudo_step.append(quasi_step)
-                  intermediate_steps.append(parse_valid_steps_of_a_module(pseudo_step))
+                  # intermediate_steps.append(parse_valid_steps_of_a_module(pseudo_step))
 
-                  pseudo_step = []
-                  count_front_parenth = 0
+                  complete_step = ';'.join(pseudo_step) 
+
+
+                  # print("definition: ", definition)
+                  # print("quasi step: ", quasi_step)
+
+                  # print("COMPLEX STEP: ", complete_step)
+
+                  break_down_complex_step(complete_step, definition)
+
+
+
+                  pseudo_step           = []
+                  count_front_parenth   = 0
                   count_reverse_parenth = 0
-                  in_parenthesis = False
-                  
-
-         print(intermediate_steps)
-         print("@@@@@@@@@@@@") 
-
-
-         for int_step in intermediate_steps:
-
-            if len(int_step) > 1: 
-               int_step = ([";".join(i) for i in product(*int_step)])
-
-            """
-            now in int_step we have an actual step 
-            that might have alternatives or/and semi-steps
-            """
-
-
-
-            # for entry in int_step:
-            #    print("entry")
-            #    print(entry)
-            # #    for part in entry: 
-            # #       joint = joint + ";" + part
-            # # joint = joint[:-1]
-
-            # # print(joint)
-            # print("*********")
-
-            # if int_step.count('(') == 2: 
-            #    print(">>>>>>>>>>")
-            #    print(int_step)
-
-
-
-
-
-
-
+                  in_parenthesis        = False
 
 
       y                                          = 0
@@ -126,21 +100,6 @@ def parse_definitions_file():
    # print(module_definitions_steps)
    with open("test.json", "w") as f:
       json.dump(module_definitions_steps, f)
-
-
-def map_genome_to_modules(ncbi_taxonomy_id):
-
-   ncbi_taxonomy_id = str(ncbi_taxonomy_id)
-
-   module_definitions = open("../ref-dbs/module_definitions.tsv")
-   kegg_genome_file   = glob.glob("../ref-dbs/kegg_genomes/" + ncbi_taxonomy_id + "/*.json") 
-   kegg_genome_file   = open(kegg_genome_file[0])
-   kegg_genome        = json.load(kegg_genome_file)
-
-
-
-
-
 
 
 
@@ -214,6 +173,105 @@ def parse_valid_steps_of_a_module(steps):
             list_of_lists_of_single_steps.append(filtered_step)
 
    return list_of_lists_of_single_steps
+
+def map_genome_to_modules(ncbi_taxonomy_id):
+
+   ncbi_taxonomy_id = str(ncbi_taxonomy_id)
+
+   module_definitions = open("../ref-dbs/module_definitions.tsv")
+   kegg_genome_file   = glob.glob("../ref-dbs/kegg_genomes/" + ncbi_taxonomy_id + "/*.json") 
+   kegg_genome_file   = open(kegg_genome_file[0])
+   kegg_genome        = json.load(kegg_genome_file)
+
+
+def break_down_complex_step(step, defn):
+
+
+   openings = step.split("(")
+   print("step", step)
+   
+   if len(openings) == 2 and openings[0] == "": 
+
+      alternatives = openings[1][:-1]
+      print("EASY: ", alternatives)
+      return alternatives
+
+   else:
+
+      alternatives = []
+
+      print("HARDER: ")
+      print(openings, defn)
+
+      open_parenth_counter  = 0
+      closed_parent_counter = 0
+      starting_hubs         = []
+      finishing_hubs        = []
+      compalsorty_substeps  = []
+      alternatives_substeps = []
+
+      for part in openings: 
+
+         if part == "": 
+            open_parenth_counter += 1 
+            continue
+
+         else: 
+
+            while len(starting_hubs) < open_parenth_counter:
+               starting_hubs.append(part[:6])
+
+
+            if ")" in part: 
+
+               closings = part.split(")")
+               print("closings: ", closings)
+               for entry in closings:
+
+                  if entry == ";":
+
+                     # compalsorty_substeps.append()
+                     continue
+
+                  if entry == ",": 
+
+                     # alternatives_substeps.append()
+                     continue
+
+                  if entry != "":
+
+                     finishing_hubs.append(entry[-6:])
+                     print("FINISH:", entry[-6:])
+
+                  
+                  # if "," in 
+
+
+
+         print(starting_hubs, finishing_hubs)
+      # print(starting_hubs, finishing_hubs)
+      print("\n\n~~~~~~~\n\n")
+
+
+
+
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
