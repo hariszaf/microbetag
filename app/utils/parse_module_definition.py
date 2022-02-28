@@ -55,28 +55,47 @@ def parse_definitions_file():
 
       else:
 
-         intermediate_steps = []
-
-         quasi_steps = definition.split(";")
-
-
+         intermediate_steps    = []
+         quasi_steps           = definition.split(";")
+         print("\n\n\n\n****************** DEFINITION: ", definition, "\n>>>>>>>>>>>>>>>>>> QUASI STEPS: ", quasi_steps)
          count_front_parenth   = 0
          count_reverse_parenth = 0
-         
-         pseudo_step = []
+         pseudo_step           = []
          
          for quasi_step in quasi_steps:
 
-            # print("QUASI STEP: ", quasi_step)
+            print("QUASI STEP: ", quasi_step, "\t", md)
 
             in_parenthesis = False
 
             if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
-               
-                  step_descr = parse_valid_steps_of_a_module([quasi_step])
 
-                  if step_descr:
-                     parsed_steps.append(step_descr[0])
+                  modules = []
+
+                  if "," in quasi_step: 
+
+                     print("___________________MORI MALAKIA EDO EISAI")
+                     quasi_step = quasi_step.split(",")
+                     for x in quasi_step:
+                        print(x)
+                        modules.append(x)
+
+                  else:
+                     modules = [quasi_step]
+
+
+                  print("MODULEs:", modules)
+
+
+                  if modules:
+                     print(modules)
+                     parsed_steps.append(modules)
+                     # for y in modules:
+                     #    if y:
+                     #       if isinstance(y,list):
+                     #          parsed_steps.append(y)
+                     #       else:
+                     #          parsed_steps.append([y])
 
             else:
 
@@ -94,10 +113,9 @@ def parse_definitions_file():
                else:
 
                   pseudo_step.append(quasi_step)
-                  complete_step = ';'.join(pseudo_step) 
+                  complete_step = ' '.join(pseudo_step) 
 
-                  # print("STEP:", complete_step)
-
+                  print("\n\nSTEP:", complete_step, "\t", md)
                   alternatives_for_a_step = break_down_complex_step(complete_step, definition, md)
                   parsed_steps.append(alternatives_for_a_step)
 
@@ -202,14 +220,38 @@ def break_down_complex_step(step, defn, md):
    if step[0] != "(" or step[-1] != ")": 
       step = "(" + step + ")"
 
+   if "-" in step:
+      minus_indices = [0,]
+      [minus_indices.append(i) for i, c in enumerate(step) if c == "-"]
+      step_with_no_minus = split_stirng_based_on_indeces(step, minus_indices)
+
+      parts_of_no_minus_to_keep = [step_with_no_minus[0]]
+
+      for entry in step_with_no_minus[1:]: 
+         check = [e for e in [")", "(", "+", ";"] if e in entry]
+
+         if len(check) == 0:
+            continue
+         else:
+            continue_from = entry.index(check[0])
+            parts_of_no_minus_to_keep.append(entry[continue_from:])
+
+      step = ''.join(parts_of_no_minus_to_keep)
+
+   
+
    openings = step.split("(")
 
+
    if len(openings) == 2 and openings[0] == "": 
+
+      print("OPENINGS WITH LEN 2:", openings)
       alternatives = openings[1][:-1]
 
       if "," in alternatives:
          alternatives = alternatives.split(",")
-
+         
+      print("OPENINGS WITH LEN 2:", alternatives, "MD:", md)
       return alternatives
 
 
@@ -230,7 +272,6 @@ def break_down_complex_step(step, defn, md):
       # Here is the list where we append indices of the string 
       # under study to split it the way it fits us
       indices_for_unique_alternatives = [0]
-
 
       for index, character in enumerate(copy): 
 
@@ -263,8 +304,6 @@ def break_down_complex_step(step, defn, md):
                                  node_index,
                                  node
                                  )
-            
-         # ko_term   = character
 
          if (link_to == "," or link_from == ",") and level <= 0: 
 
@@ -289,7 +328,7 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      # print("DISTINCT ALTERNATIVES: ", unique_alternatives)
+      print("DISTINCT ALTERNATIVES: ", unique_alternatives)
 
       for index, alternative in enumerate(unique_alternatives):
 
@@ -299,9 +338,9 @@ def break_down_complex_step(step, defn, md):
 
             alternative = alternative.replace(",", "")
             alternative = alternative.replace(";", "")
-            
-            alternatives.append(alternative)
 
+            alternatives.append(alternative)
+            print("SINGLE K CASE: ", alternatives)
 
          else:
 
@@ -319,12 +358,12 @@ def break_down_complex_step(step, defn, md):
                alternative = [i for i in alternative if i]
 
                alternatives.append(alternative)
+
+               print("ADDED:", alternative)
                
 
             else:
                
-               # node: mandatory | optional
-               tmp_nodes       = {}
                opening_parenth = 0
                closing_parenth = 0
                complet_parenth = 0
@@ -342,10 +381,8 @@ def break_down_complex_step(step, defn, md):
                      complet_parenth += 1 
 
                if complet_parenth == 1:
-
                   alternative = alternative[1:-1]
                   
-               # print("~~~~~> A SINGLE ALTERNATIVE: ", alternative)   
                indices  = [i for i, c in enumerate(alternative) if c == ";"]
                openings = [i for i, c in enumerate(alternative) if c == "("]
                closings = [i for i, c in enumerate(alternative) if c == ")"]
@@ -378,8 +415,6 @@ def break_down_complex_step(step, defn, md):
 
                      case = case.split("_")
                      combos.append(case)
-
-                  print(">>>>>COMBOS: ", combos, "<<<<<<")
  
                   all_combinations = []
                   if len(combos) == 2:
@@ -405,20 +440,12 @@ def break_down_complex_step(step, defn, md):
                               single_combo.append(z)
                      alternatives.append(single_combo)
 
-               
-               # else:
-               #    print("THE BAD: ", alternative)
-
-      print(md, step, alternatives)
-
-
-
-
-
-
-
+                  print(alternative, alternatives)
 
                
+               else:
+                  print("THE BAD: ", alternative)
+
 
       return alternatives
 
