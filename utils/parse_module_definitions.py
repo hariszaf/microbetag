@@ -23,7 +23,8 @@ would return:
 import glob
 import json
 import sys
-from itertools import product
+import itertools
+
 
 
 def parse_definitions_file():
@@ -38,7 +39,7 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
-      print("\n\n\n>>> MD: ", md, "\n", "definition: ", definition)
+      # print("\n\n\n>>> MD: ", md, "\n", "definition: ", definition)
 
 
       if "(" not in definition and "," not in definition:
@@ -66,7 +67,7 @@ def parse_definitions_file():
          
          for quasi_step in quasi_steps:
 
-            print("QUASI STEP: ", quasi_step)
+            # print("QUASI STEP: ", quasi_step)
 
             in_parenthesis = False
 
@@ -95,7 +96,7 @@ def parse_definitions_file():
                   pseudo_step.append(quasi_step)
                   complete_step = ';'.join(pseudo_step) 
 
-                  print("STEP:", complete_step)
+                  # print("STEP:", complete_step)
 
                   alternatives_for_a_step = break_down_complex_step(complete_step, definition, md)
                   parsed_steps.append(alternatives_for_a_step)
@@ -104,8 +105,6 @@ def parse_definitions_file():
                   count_front_parenth   = 0
                   count_reverse_parenth = 0
                   in_parenthesis        = False
-
-         # print("INTERMEDIATE STEPS: ", intermediate_steps)
 
       y                                          = 0
       num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
@@ -206,13 +205,10 @@ def break_down_complex_step(step, defn, md):
    openings = step.split("(")
 
    if len(openings) == 2 and openings[0] == "": 
-
       alternatives = openings[1][:-1]
 
       if "," in alternatives:
-
          alternatives = alternatives.split(",")
-         print("SEE HERE NOW: ", alternatives)
 
       return alternatives
 
@@ -293,7 +289,7 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      print("DISTINCT ALTERNATIVES: ", unique_alternatives)
+      # print("DISTINCT ALTERNATIVES: ", unique_alternatives)
 
       for index, alternative in enumerate(unique_alternatives):
 
@@ -349,16 +345,81 @@ def break_down_complex_step(step, defn, md):
 
                   alternative = alternative[1:-1]
                   
-               print("~~~~~> A SINGLE ALTERNATIVE: ", alternative)   
-               indices = [i for i, c in enumerate(alternative) if c == ";"]
+               # print("~~~~~> A SINGLE ALTERNATIVE: ", alternative)   
+               indices  = [i for i, c in enumerate(alternative) if c == ";"]
+               openings = [i for i, c in enumerate(alternative) if c == "("]
+               closings = [i for i, c in enumerate(alternative) if c == ")"]
+               open_close_pairs = [[x,y] for x,y in zip(openings, closings)]
+               
+               tmp          = []
+               break_points = [0,]
+               counter = 0 
+               for index in indices:
+                  break_point = True
+                  for pair in open_close_pairs: 
+                     if index > pair[0] and index < pair[1]:
+                        break_point = False
+
+                  if break_point: 
+                     break_points.append(index)
+
+               if len(break_points) > 1:
+
+                  splited_alternative = split_stirng_based_on_indeces(alternative, break_points)    
+               
+                  combos = []
+
+                  for case in splited_alternative:
+
+                     case = case.replace("(", "")
+                     case = case.replace(")", "")
+                     case = case.replace("+", "_")
+                     case = case.replace(",", "_")
+
+                     case = case.split("_")
+                     combos.append(case)
+
+                  print(">>>>>COMBOS: ", combos, "<<<<<<")
+ 
+                  all_combinations = []
+                  if len(combos) == 2:
+                     all_combinations = list(itertools.product(combos[0], combos[1]))
+
+                  else:
+                     all_combinations = list(itertools.product(combos[0], combos[1]))
+                     for lista in combos[2:]:
+                        all_combinations = list(itertools.product(all_combinations, lista))
+
+                  
+                  for i in all_combinations:
+                     single_combo = []
+                     i = list(i)
+                     for y in i: 
+                        if isinstance(y, str):
+                           y = y.replace(";","")
+                           single_combo.append(y)
+                        else:
+                           y = list(y)
+                           for z in y: 
+                              z = z.replace(";","")
+                              single_combo.append(z)
+                     alternatives.append(single_combo)
+
+               
+               # else:
+               #    print("THE BAD: ", alternative)
+
+      print(md, step, alternatives)
+
+
+
+
+
+
 
 
                
 
-
-   
-      # print(copy, md)
-      # sys.exit(0)
       return alternatives
 
 
