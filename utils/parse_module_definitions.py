@@ -24,6 +24,67 @@ import glob
 import json
 import sys
 import itertools
+import re
+
+def split_definition_to_steps(definition, md):
+
+   """
+   Split where there is a ';' being outside of a parenthesis
+   """
+
+   quasi_steps           = definition.split(";")
+   count_front_parenth   = 0
+   count_reverse_parenth = 0
+   pseudo_step           = []
+   in_parenthesis        = False
+   complete_steps        = []
+
+   for quasi_step in quasi_steps:
+
+      print("QUASI STEP: ", quasi_step)
+
+      if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
+
+            modules = []
+
+            if "," in quasi_step: 
+
+               quasi_step = quasi_step.split(",")
+               for x in quasi_step:
+                  modules.append(x)
+
+            else:
+               modules = [quasi_step]
+
+            if modules:
+               complete_steps.append(modules)
+
+      else:
+
+         if "(" in quasi_step or ")" in quasi_step:
+
+            num_of_open            = quasi_step.count('(')
+            count_front_parenth   += num_of_open
+            num_of_closed          = quasi_step.count(')')
+            count_reverse_parenth += num_of_closed
+
+         if count_front_parenth > count_reverse_parenth:
+            in_parenthesis = True
+            pseudo_step.append(quasi_step)
+                     
+         elif count_front_parenth == count_reverse_parenth and in_parenthesis == False:
+
+            complete_steps.append(quasi_step)
+
+         elif count_front_parenth == count_reverse_parenth and in_parenthesis == True:
+            in_parenthesis = False
+            pseudo_step.append(quasi_step)
+            complete_step = ' '.join(pseudo_step)
+            complete_steps.append(complete_step)
+            pseudo_step = []
+
+   if complete_steps:
+      return complete_steps
 
 
 
@@ -39,7 +100,7 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
-      # print("\n\n\n>>> MD: ", md, "\n", "definition: ", definition)
+      print("\n\n\n>>> MD: ", md, "\n", "definition: ", definition)
 
 
       if "(" not in definition and "," not in definition:
@@ -55,64 +116,24 @@ def parse_definitions_file():
 
       else:
 
-         intermediate_steps    = []
-         quasi_steps           = definition.split(";")
-         print(
-            "\n\n\n\n****************** DEFINITION: ", definition, 
-            "\n>>>>>>>>>>>>>>>>>> QUASI STEPS: ", quasi_steps
-         )
-         count_front_parenth   = 0
-         count_reverse_parenth = 0
-         pseudo_step           = []
-         
-         for quasi_step in quasi_steps:
+         complete_steps = split_definition_to_steps(definition, md)
 
-            print("QUASI STEP: ", quasi_step, "\t", md)
+         for step in complete_steps:
 
-            in_parenthesis = False
+            if isinstance(step, list):
 
-            if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
-
-                  modules = []
-
-                  if "," in quasi_step: 
-
-                     quasi_step = quasi_step.split(",")
-                     for x in quasi_step:
-                        modules.append(x)
-
-                  else:
-                     modules = [quasi_step]
-
-                  if modules:
-                     parsed_steps.append(modules)
-
+               parsed_steps.append(step)
+            
             else:
 
-               if "(" in quasi_step or ")" in quasi_step:
+               alternatives_for_a_step = break_down_complex_step(step, definition, md)
+               parsed_steps.append(alternatives_for_a_step)
 
-                  num_of_open            = quasi_step.count('(')
-                  count_front_parenth   += num_of_open
-                  num_of_closed          = quasi_step.count(')')
-                  count_reverse_parenth += num_of_closed
-                  in_parenthesis         = True
 
-               if count_front_parenth > count_reverse_parenth:
-                  pseudo_step.append(quasi_step)
-               
-               else:
-
-                  pseudo_step.append(quasi_step)
-                  complete_step = ' '.join(pseudo_step) 
-
-                  print("\n\nSTEP:", complete_step, "\t", md)
-                  alternatives_for_a_step = break_down_complex_step(complete_step, definition, md)
-                  parsed_steps.append(alternatives_for_a_step)
-
-                  pseudo_step           = []
-                  count_front_parenth   = 0
-                  count_reverse_parenth = 0
-                  in_parenthesis        = False
+         pseudo_step           = []
+         count_front_parenth   = 0
+         count_reverse_parenth = 0
+         in_parenthesis        = False
 
       y                                          = 0
       num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
@@ -158,8 +179,7 @@ def parse_valid_steps_of_a_module(steps):
 
       # Check this if after discussion with KF
       elif "-" in step and "+" in step:
-         
-         # print(step)
+   
          semis = []
          step  = step.split("-")
          semi_counter = 0
@@ -206,6 +226,8 @@ def map_genome_to_modules(ncbi_taxonomy_id):
 
 
 def break_down_complex_step(step, defn, md):
+
+   print("Step as it is coming: ", step)
 
    if step[0] != "(" or step[-1] != ")": 
       step = "(" + step + ")"
@@ -254,12 +276,28 @@ def break_down_complex_step(step, defn, md):
       alternative_option    = False
       semi_step             = False
 
-      tailed  = step[1:-1]
-      copy    = tailed + "*"
+      for character in step[:-1]:
+         if character == "(":
+            open_parenth_counter += 1
+         if character == ")":
+            closed_parent_counter += 1
+
+      if open_parenth_counter > closed_parent_counter:
+         """
+         then the last character of copy needs to be ')'
+         """
+         step  = step[1:-1]
+
+      copy    = step + "*"
 
       # Here is the list where we append indices of the string 
       # under study to split it the way it fits us
       indices_for_unique_alternatives = [0]
+      open_parenth_counter  = 0
+      closed_parent_counter = 0
+
+      print("actual step", copy)
+      
 
       for index, character in enumerate(copy): 
 
@@ -281,17 +319,18 @@ def break_down_complex_step(step, defn, md):
             link_to,
             level,
             node_index, node
-         ) = handle_character(copy,
-                                 index,
-                                 character, 
-                                 open_parenth_counter, 
-                                 closed_parent_counter, 
-                                 semi_step, 
-                                 alternative_option, 
-                                 ko_term,
-                                 node_index,
-                                 node
-                                 )
+         )                    = handle_character(
+                                                   copy,
+                                                   index,
+                                                   character, 
+                                                   open_parenth_counter, 
+                                                   closed_parent_counter, 
+                                                   semi_step, 
+                                                   alternative_option, 
+                                                   ko_term,
+                                                   node_index,
+                                                   node
+                                                )
 
          if (link_to == "," or link_from == ",") and level <= 0: 
 
@@ -310,6 +349,9 @@ def break_down_complex_step(step, defn, md):
                indices_for_unique_alternatives.append(index + 1)
 
 
+
+      
+      
       node_index          = -1
       unique_alternatives = split_stirng_based_on_indeces(copy, indices_for_unique_alternatives)
 
@@ -326,9 +368,7 @@ def break_down_complex_step(step, defn, md):
 
             alternative = alternative.replace(",", "")
             alternative = alternative.replace(";", "")
-
             alternatives.append(alternative)
-            print("SINGLE K CASE: ", alternatives)
 
          else:
 
@@ -341,14 +381,10 @@ def break_down_complex_step(step, defn, md):
                alternative = alternative.replace(")", "_")
                alternative = alternative.replace("+", "_")
                alternative = alternative.replace(";", "_")
-               alternative = alternative.split("_")
-               
+               alternative = alternative.split("_")               
                alternative = [i for i in alternative if i]
 
                alternatives.append(alternative)
-
-               print("ADDED:", alternative)
-               
 
             else:
                
@@ -433,12 +469,97 @@ def break_down_complex_step(step, defn, md):
                
                else:
                   print("\n~~~~~~ THE BAD: ", alternative, "\n")
-                  parts_of_alternatives = alternative.split(" ")
+                  """
+                  Break down the BAD alternative to its pieces
+                  """
 
-                  # for 
+                  clean = parse_to_a_list_of_single_items(alternative)
+
+                  pools = []
+                  add_extra_paths = False
+                  complex_present = False
+
+                  for index, entry in enumerate(clean):
+
+                     if entry == " " or entry == ",":
+                        continue
+
+                     if entry == "(":
+                        pool = []
+                        add_extra_paths = True
+                        continue
+
+                     if entry == "+":
+                        if clean[index - 1] != ")" and clean[index + 1] != "(":
+                           continue
+                        else:
+                           complex_present = True
+                           continue
+                     
+                     if entry == ")":
+                        pools.append(pool)
+                        add_extra_paths = False
+                        print(">>>> THIS IS A POOL: ", pool)
+                        continue
+
+                     if add_extra_paths == False and complex_present == False and "K" in entry:
+                        pools.append([entry])
+
+                     elif add_extra_paths and complex_present == False and "K" in entry: 
+                        pool.append(entry)
+
+                     elif add_extra_paths == False and complex_present == True and "K" in entry:
+                        pools.append([entry])
+
+                     elif add_extra_paths and complex_present and "K" in entry:
+                        if pool: 
+                           pool[-1] = pool[-1] + "+" + entry
+
+                        else:
+                           pool = [entry]
+                        complex_present = False
+
+                     else: 
+                        print("What did I forgot about?")
+                        print(entry, clean)
+
+                  print("Here are the pools to be combined: ", pools)
+
+
 
 
       return alternatives
+
+
+
+def parse_to_a_list_of_single_items(rule):
+
+   parts_of_alts         = rule.split("K")
+   parts_of_rule = []
+   
+   for i in parts_of_alts: 
+
+      if any(map(str.isdigit, i)):
+         new_i = "K"+i
+         asdas = re.split('([^a-zA-Z0-9])', new_i)
+         parts_of_rule.append([x for x in asdas if x != ""])
+         
+      elif i == "":
+         continue
+
+      else:
+         parts_of_rule.append(i)
+
+   clean = []
+
+   for x in parts_of_rule:
+      if isinstance(x,str):
+         clean.append(x)
+      else:
+         for y in x:
+            clean.append(y)
+   print("TRUE DYSKOLAKI: ", clean)
+   return clean
 
 
 
@@ -446,13 +567,10 @@ def break_down_complex_step(step, defn, md):
 def handle_character(part_of_def, index, character, open_parenth_counter, closed_parent_counter, 
                      semi_step, alternative_option, ko_term, node_index, node):
 
-
    if character == "(": 
-      # priority_starts = True
       open_parenth_counter += 1
       ko_term = ''
-      
-   
+
    elif character == ";": 
       semi_step = True
       ko_term   = ''
@@ -464,7 +582,6 @@ def handle_character(part_of_def, index, character, open_parenth_counter, closed
    elif character == ")": 
       closed_parent_counter += 1
       ko_term = ''
-      priority_stops = True
       alternative_option = False
 
    elif character == "K":
@@ -509,5 +626,4 @@ def split_stirng_based_on_indeces(s, indices):
 
 
 parse_definitions_file()
-# map_genome_to_modules(36033)
 
