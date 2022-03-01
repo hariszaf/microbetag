@@ -57,7 +57,10 @@ def parse_definitions_file():
 
          intermediate_steps    = []
          quasi_steps           = definition.split(";")
-         print("\n\n\n\n****************** DEFINITION: ", definition, "\n>>>>>>>>>>>>>>>>>> QUASI STEPS: ", quasi_steps)
+         print(
+            "\n\n\n\n****************** DEFINITION: ", definition, 
+            "\n>>>>>>>>>>>>>>>>>> QUASI STEPS: ", quasi_steps
+         )
          count_front_parenth   = 0
          count_reverse_parenth = 0
          pseudo_step           = []
@@ -74,28 +77,15 @@ def parse_definitions_file():
 
                   if "," in quasi_step: 
 
-                     print("___________________MORI MALAKIA EDO EISAI")
                      quasi_step = quasi_step.split(",")
                      for x in quasi_step:
-                        print(x)
                         modules.append(x)
 
                   else:
                      modules = [quasi_step]
 
-
-                  print("MODULEs:", modules)
-
-
                   if modules:
-                     print(modules)
                      parsed_steps.append(modules)
-                     # for y in modules:
-                     #    if y:
-                     #       if isinstance(y,list):
-                     #          parsed_steps.append(y)
-                     #       else:
-                     #          parsed_steps.append([y])
 
             else:
 
@@ -245,13 +235,11 @@ def break_down_complex_step(step, defn, md):
 
    if len(openings) == 2 and openings[0] == "": 
 
-      print("OPENINGS WITH LEN 2:", openings)
       alternatives = openings[1][:-1]
 
       if "," in alternatives:
          alternatives = alternatives.split(",")
          
-      print("OPENINGS WITH LEN 2:", alternatives, "MD:", md)
       return alternatives
 
 
@@ -444,7 +432,10 @@ def break_down_complex_step(step, defn, md):
 
                
                else:
-                  print("THE BAD: ", alternative)
+                  print("\n~~~~~~ THE BAD: ", alternative, "\n")
+                  parts_of_alternatives = alternative.split(" ")
+
+                  # for 
 
 
       return alternatives
