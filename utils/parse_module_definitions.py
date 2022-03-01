@@ -41,8 +41,6 @@ def split_definition_to_steps(definition, md):
 
    for quasi_step in quasi_steps:
 
-      print("QUASI STEP: ", quasi_step)
-
       if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
 
             modules = []
@@ -100,9 +98,6 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
-      print("\n\n\n>>> MD: ", md, "\n", "definition: ", definition)
-
-
       if "(" not in definition and "," not in definition:
 
          """
@@ -112,7 +107,6 @@ def parse_definitions_file():
          """
          steps = definition.split(";")
          parsed_steps = parse_valid_steps_of_a_module(steps)
-
 
       else:
 
@@ -142,10 +136,12 @@ def parse_definitions_file():
       module_definitions_steps[md]['steps']      = parsed_steps
       module_definitions_steps[md]['# of steps'] = num_of_steps
 
-
-   # print(module_definitions_steps)
+   """
+   Here we save our actual output as a .json file
+   """
    with open("test.json", "w") as f:
       json.dump(module_definitions_steps, f)
+
 
 def parse_valid_steps_of_a_module(steps):
 
@@ -215,19 +211,8 @@ def parse_valid_steps_of_a_module(steps):
    return list_of_lists_of_single_steps
 
 
-def map_genome_to_modules(ncbi_taxonomy_id):
-
-   ncbi_taxonomy_id = str(ncbi_taxonomy_id)
-
-   module_definitions = open("../ref-dbs/module_definitions.tsv")
-   kegg_genome_file   = glob.glob("../ref-dbs/kegg_genomes/" + ncbi_taxonomy_id + "/*.json") 
-   kegg_genome_file   = open(kegg_genome_file[0])
-   kegg_genome        = json.load(kegg_genome_file)
-
 
 def break_down_complex_step(step, defn, md):
-
-   print("Step as it is coming: ", step)
 
    if step[0] != "(" or step[-1] != ")": 
       step = "(" + step + ")"
@@ -296,9 +281,6 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0
       closed_parent_counter = 0
 
-      print("actual step", copy)
-      
-
       for index, character in enumerate(copy): 
 
          """
@@ -347,10 +329,6 @@ def break_down_complex_step(step, defn, md):
             else:
 
                indices_for_unique_alternatives.append(index + 1)
-
-
-
-      
       
       node_index          = -1
       unique_alternatives = split_stirng_based_on_indeces(copy, indices_for_unique_alternatives)
@@ -358,7 +336,7 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      print("DISTINCT ALTERNATIVES: ", unique_alternatives)
+      print("\n\nDISTINCT ALTERNATIVES: ", unique_alternatives)
 
       for index, alternative in enumerate(unique_alternatives):
 
@@ -376,6 +354,8 @@ def break_down_complex_step(step, defn, md):
                alternative = alternative[1:]
 
             if "," not in alternative:
+
+               print("UNIQUE EASY: ", alternative)
 
                alternative = alternative.replace("(", "_")
                alternative = alternative.replace(")", "_")
@@ -424,117 +404,110 @@ def break_down_complex_step(step, defn, md):
                   if break_point: 
                      break_points.append(index)
 
-               if len(break_points) > 1:
+               clean = parse_to_a_list_of_single_items(alternative)
 
-                  splited_alternative = split_stirng_based_on_indeces(alternative, break_points)    
-               
-                  combos = []
+               pools = []
+               add_extra_paths = False
+               complex_present = False
 
-                  for case in splited_alternative:
+               for index, entry in enumerate(clean):
 
-                     case = case.replace("(", "")
-                     case = case.replace(")", "")
-                     case = case.replace("+", "_")
-                     case = case.replace(",", "_")
+                  if entry == " " or entry == ",":
+                     continue
 
-                     case = case.split("_")
-                     combos.append(case)
- 
-                  all_combinations = []
-                  if len(combos) == 2:
-                     all_combinations = list(itertools.product(combos[0], combos[1]))
+                  if entry == "(":
+                     pool = []
+                     add_extra_paths = True
+                     continue
 
-                  else:
-                     all_combinations = list(itertools.product(combos[0], combos[1]))
-                     for lista in combos[2:]:
-                        all_combinations = list(itertools.product(all_combinations, lista))
-
+                  if entry == "+":
+                     if add_extra_paths:
+                        complex_present = True
+                        continue
+                     else:
+                        
+                        continue
                   
-                  for i in all_combinations:
-                     single_combo = []
-                     i = list(i)
-                     for y in i: 
-                        if isinstance(y, str):
-                           y = y.replace(";","")
-                           single_combo.append(y)
-                        else:
-                           y = list(y)
-                           for z in y: 
-                              z = z.replace(";","")
-                              single_combo.append(z)
-                     alternatives.append(single_combo)
-
-                  print(alternative, alternatives)
-
-               
-               else:
-                  print("\n~~~~~~ THE BAD: ", alternative, "\n")
-                  """
-                  Break down the BAD alternative to its pieces
-                  """
-
-                  clean = parse_to_a_list_of_single_items(alternative)
-
-                  pools = []
-                  add_extra_paths = False
-                  complex_present = False
-
-                  for index, entry in enumerate(clean):
-
-                     if entry == " " or entry == ",":
-                        continue
-
-                     if entry == "(":
-                        pool = []
-                        add_extra_paths = True
-                        continue
-
-                     if entry == "+":
-                        if clean[index - 1] != ")" and clean[index + 1] != "(":
-                           continue
-                        else:
-                           complex_present = True
-                           continue
-                     
-                     if entry == ")":
+                  if entry == ")":
+                     if pool:
                         pools.append(pool)
                         add_extra_paths = False
                         print(">>>> THIS IS A POOL: ", pool)
-                        continue
+                        pool = []
+                     continue
 
-                     if add_extra_paths == False and complex_present == False and "K" in entry:
-                        pools.append([entry])
+                  if add_extra_paths == False and complex_present == False and "K" in entry:
+                     pools.append([entry])
 
-                     elif add_extra_paths and complex_present == False and "K" in entry: 
-                        pool.append(entry)
+                  elif add_extra_paths and complex_present == False and "K" in entry: 
+                     pool.append(entry)
 
-                     elif add_extra_paths == False and complex_present == True and "K" in entry:
-                        pools.append([entry])
+                  elif add_extra_paths == False and complex_present and "K" in entry:
+                     pools.append([entry])
 
-                     elif add_extra_paths and complex_present and "K" in entry:
-                        if pool: 
-                           pool[-1] = pool[-1] + "+" + entry
+                  elif add_extra_paths and complex_present and "K" in entry:
+                     if pool: 
+                        print(pool)
+                        pool[-1] = pool[-1] + "+" + entry
+                        print(pool)
 
-                        else:
-                           pool = [entry]
-                        complex_present = False
+                     else:
+                        pool = [entry]
+                     complex_present = False
 
-                     else: 
-                        print("What did I forgot about?")
-                        print(entry, clean)
+                  else: 
+                     print("What did I forgot about?")
+                     print(entry, clean)
 
-                  print("Here are the pools to be combined: ", pools)
+               print("Here are the pools to be combined: ", pools)
 
+               alternatives = combine_alternatives(alternatives, pools)
 
-
+               print("Combos: ", alternatives)
 
       return alternatives
 
 
 
+def combine_alternatives(alternatives, combos):
+
+   all_combinations = []
+
+   if len(combos) == 1: 
+      all_combinations = [tuple(combos[0])]
+      print("LOOK @ ME: ", all_combinations)
+
+   elif len(combos) == 2:
+      all_combinations = list(itertools.product(combos[0], combos[1]))
+
+   else:
+      all_combinations = list(itertools.product(combos[0], combos[1]))
+      for lista in combos[2:]:
+         all_combinations = list(itertools.product(all_combinations, lista))
+
+   # for i in all_combinations:
+
+   #    single_combo = []
+   #    i = list(i)
+   #    for y in i: 
+   #       if isinstance(y, str):
+   #          y = y.replace(";","")
+   #          single_combo.append(y)
+   #       else:
+   #          y = list(y)
+   #          for z in y:
+   #             print("Z MAN :", z) 
+   #             z = z.replace(";","")
+   #             single_combo.append(z)
+   #    alternatives.append(single_combo)
+   
+   # return alternatives
+   return all_combinations
+
+
 def parse_to_a_list_of_single_items(rule):
 
-   parts_of_alts         = rule.split("K")
+   parts_of_alts = rule.split("K")
    parts_of_rule = []
    
    for i in parts_of_alts: 
