@@ -186,11 +186,13 @@ RUN pip install dash-cytoscape &&\
     pip install ipywidgets
 
 
+RUN ln -s /home/external_tools/FAPROTAX_1.2.4/collapse_table.py /app/tools/faprotax
+
 ENV WORKFLOW otu_table
 COPY test/ ./test/
-# CMD ["python3", "app.py"]
+CMD ["python3", "app.py"]
 # # CMD ["cwl-runner", "--debug", "test.cwl", "test-job.yml"]
 # # CMD ["cwl-runner", "--debug", "microbetag.cwl", "microbetag-job.yml"]
 # CMD ["sh", "-c", "python3 test.py ${WORKFLOW}"]
 # CMD ["python3", "scripts/build_a_graph.py", "/mnt/network_output.edgelist"]
-CMD ["python3", "scripts/pass_networkx_to_dash.py"]
+# CMD ["python3", "scripts/pass_networkx_to_dash.py"]
