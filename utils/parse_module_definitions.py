@@ -25,6 +25,8 @@ import json
 import sys
 import itertools
 import re
+from collections.abc import Iterable
+
 
 def split_definition_to_steps(definition, md):
 
@@ -336,7 +338,7 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      print("\n\nDISTINCT ALTERNATIVES: ", unique_alternatives)
+      # print("\n\nDISTINCT ALTERNATIVES: ", unique_alternatives)
 
       for index, alternative in enumerate(unique_alternatives):
 
@@ -354,8 +356,6 @@ def break_down_complex_step(step, defn, md):
                alternative = alternative[1:]
 
             if "," not in alternative:
-
-               print("UNIQUE EASY: ", alternative)
 
                alternative = alternative.replace("(", "_")
                alternative = alternative.replace(")", "_")
@@ -406,67 +406,72 @@ def break_down_complex_step(step, defn, md):
 
                clean = parse_to_a_list_of_single_items(alternative)
 
-               pools = []
-               add_extra_paths = False
-               complex_present = False
-
-               for index, entry in enumerate(clean):
-
-                  if entry == " " or entry == ",":
-                     continue
-
-                  if entry == "(":
-                     pool = []
-                     add_extra_paths = True
-                     continue
-
-                  if entry == "+":
-                     if add_extra_paths:
-                        complex_present = True
-                        continue
-                     else:
-                        
-                        continue
-                  
-                  if entry == ")":
-                     if pool:
-                        pools.append(pool)
-                        add_extra_paths = False
-                        print(">>>> THIS IS A POOL: ", pool)
-                        pool = []
-                     continue
-
-                  if add_extra_paths == False and complex_present == False and "K" in entry:
-                     pools.append([entry])
-
-                  elif add_extra_paths and complex_present == False and "K" in entry: 
-                     pool.append(entry)
-
-                  elif add_extra_paths == False and complex_present and "K" in entry:
-                     pools.append([entry])
-
-                  elif add_extra_paths and complex_present and "K" in entry:
-                     if pool: 
-                        print(pool)
-                        pool[-1] = pool[-1] + "+" + entry
-                        print(pool)
-
-                     else:
-                        pool = [entry]
-                     complex_present = False
-
-                  else: 
-                     print("What did I forgot about?")
-                     print(entry, clean)
-
-               print("Here are the pools to be combined: ", pools)
+               pools = get_possible_alternatives_from_a_step(clean)
 
                alternatives = combine_alternatives(alternatives, pools)
 
-               print("Combos: ", alternatives)
+               print("All combos of a single step: ", alternatives)
+
+      print("ALL ALTERNATIVES OF THE MD: ", alternatives, "\n\n~~~~") 
 
       return alternatives
 
+
+
+def get_possible_alternatives_from_a_step(clean_step):
+
+   pools = []
+   add_extra_paths = False
+   complex_present = False
+
+   for index, entry in enumerate(clean_step):
+
+      if entry == " " or entry == ",":
+         continue
+
+      if entry == "(":
+         pool = []
+         add_extra_paths = True
+         continue
+
+      if entry == "+":
+         if add_extra_paths:
+            complex_present = True
+            continue
+         else:
+            
+            continue
+      
+      if entry == ")":
+         if pool:
+            pools.append(pool)
+            add_extra_paths = False
+            # print(">>>> THIS IS A POOL: ", pool)
+            pool = []
+         continue
+
+      if add_extra_paths == False and complex_present == False and "K" in entry:
+         pools.append([entry])
+
+      elif add_extra_paths and complex_present == False and "K" in entry: 
+         pool.append(entry)
+
+      elif add_extra_paths == False and complex_present and "K" in entry:
+         pools.append([entry])
+
+      elif add_extra_paths and complex_present and "K" in entry:
+         if pool: 
+            pool[-1] = pool[-1] + "+" + entry
+
+         else:
+            pool = [entry]
+         complex_present = False
+
+      # else: 
+
+   print("Here are the pools to be combined: ", pools)
+
+   return pools
 
 
 def combine_alternatives(alternatives, combos):
@@ -475,7 +480,6 @@ def combine_alternatives(alternatives, combos):
 
    if len(combos) == 1: 
       all_combinations = [tuple(combos[0])]
-      print("LOOK @ ME: ", all_combinations)
 
    elif len(combos) == 2:
       all_combinations = list(itertools.product(combos[0], combos[1]))
@@ -485,24 +489,48 @@ def combine_alternatives(alternatives, combos):
       for lista in combos[2:]:
          all_combinations = list(itertools.product(all_combinations, lista))
 
-   # for i in all_combinations:
+   for i in all_combinations:
 
-   #    single_combo = []
-   #    i = list(i)
-   #    for y in i: 
-   #       if isinstance(y, str):
-   #          y = y.replace(";","")
-   #          single_combo.append(y)
-   #       else:
-   #          y = list(y)
-   #          for z in y:
-   #             print("Z MAN :", z) 
-   #             z = z.replace(";","")
-   #             single_combo.append(z)
-   #    alternatives.append(single_combo)
+      single_combo = []
+      i = list(i)
+
+      for y in i: 
+         
+         if isinstance(y, str):
+            single_combo.append(y)
+         
+         else:
+
+            y = list(y)
+            print("NEW: ", y, type(y), len(y))
+
+            for k in y: 
+
+               if isinstance(k, str):
+                  single_combo.append(k)
+
+               elif isinstance(k, tuple):
+                  print(k)
+                  print("THIS IS NOW!!!! ", list(flatten(k)))
+                  single_combo.append(list(flatten(k)))
+
+      if single_combo:
+         alternatives.append(single_combo)
+
+      else:
+         print("TI EGINE EDO? ", all_combinations)
    
-   # return alternatives
-   return all_combinations
+   return alternatives
+   # return all_combinations
+
+
+def flatten(lis):
+     for item in lis:
+         if isinstance(item, Iterable) and not isinstance(item, str):
+             for x in flatten(item):
+                 yield x
+         else:        
+             yield item
 
 
 def parse_to_a_list_of_single_items(rule):
@@ -531,7 +559,7 @@ def parse_to_a_list_of_single_items(rule):
       else:
          for y in x:
             clean.append(y)
-   print("TRUE DYSKOLAKI: ", clean)
+
    return clean
 
 
