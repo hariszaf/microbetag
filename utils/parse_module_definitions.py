@@ -18,6 +18,11 @@ would return:
 2. K07127, K13485
 3. K07127, K16838
 4. K07127, K16838
+
+The json file will have 2 levels, in the first one, the various steps will
+be denoted and in the second the multiple alternative combinations of terms 
+will be shown. 
+All the terms of a combination will be needed for the module to be complete
 """
 
 import glob
@@ -86,8 +91,6 @@ def split_definition_to_steps(definition, md):
    if complete_steps:
       return complete_steps
 
-
-
 def parse_definitions_file():
 
    definitions_file = open("../ref-dbs/module_definitions.tsv", "r")
@@ -107,8 +110,15 @@ def parse_definitions_file():
          REMEMBER! A step can be a complex, so more than 1 KOs may be required for a single sptep, 
          meaning that a single step (a list) may include multiple lists 
          """
-         steps = definition.split(";")
-         parsed_steps = parse_valid_steps_of_a_module(steps)
+
+         if ";" in definition:
+            steps = definition.split(";")
+            parsed_steps = parse_valid_steps_of_a_module(steps)
+
+         if ";" not in definition:
+            if "+" in definition:
+               parsed_steps = [[definition.split("+")]]
+
 
       else:
 
@@ -117,14 +127,12 @@ def parse_definitions_file():
          for step in complete_steps:
 
             if isinstance(step, list):
-
                parsed_steps.append(step)
             
             else:
-
+               print("module: ", md, "step: ", step)
                alternatives_for_a_step = break_down_complex_step(step, definition, md)
                parsed_steps.append(alternatives_for_a_step)
-
 
          pseudo_step           = []
          count_front_parenth   = 0
@@ -133,7 +141,7 @@ def parse_definitions_file():
 
       y                                          = 0
       num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
-      parsed_steps              = tuple(parsed_steps)
+      parsed_steps                               = tuple(parsed_steps)
       module_definitions_steps[md]               = {}
       module_definitions_steps[md]['steps']      = parsed_steps
       module_definitions_steps[md]['# of steps'] = num_of_steps
@@ -141,9 +149,9 @@ def parse_definitions_file():
    """
    Here we save our actual output as a .json file
    """
+
    with open("test.json", "w") as f:
       json.dump(module_definitions_steps, f)
-
 
 def parse_valid_steps_of_a_module(steps):
 
@@ -188,12 +196,14 @@ def parse_valid_steps_of_a_module(steps):
                list_of_lists_of_single_steps.append(components)
 
          else: 
-            # step has more than 2 parts
+            # Step has more than 2 parts
             for semi in step:
                semi_counter += 1
 
                if "+" in semi:
                   semi = semi.split("+")
+
+                  print("HOW TO? ", step)
 
                   if semi_counter == 1:
                      list_of_semis = [part for part in semi]
@@ -208,11 +218,9 @@ def parse_valid_steps_of_a_module(steps):
                for v in range(len(semis[c])):
                   filtered_step.append(semis[c][v])
 
-            list_of_lists_of_single_steps.append(filtered_step)
+            list_of_lists_of_single_steps.append([filtered_step])  # check if needed the list!! 
 
    return list_of_lists_of_single_steps
-
-
 
 def break_down_complex_step(step, defn, md):
 
@@ -237,18 +245,25 @@ def break_down_complex_step(step, defn, md):
 
       step = ''.join(parts_of_no_minus_to_keep)
 
-   
-
    openings = step.split("(")
-
 
    if len(openings) == 2 and openings[0] == "": 
 
-      alternatives = openings[1][:-1]
+      alternatives = []
+      options = openings[1][:-1]
 
-      if "," in alternatives:
-         alternatives = alternatives.split(",")
-         
+      if "," in options:
+         alternatives = options.split(",")
+
+         for case in range(len(alternatives)):
+            if " " in alternatives[case]:
+               alternatives[case] = alternatives[case].split(" ")
+
+      else:
+         alternatives.append(options)
+
+      alternatives = [x for x in alternatives if x]
+      print([x for x in alternatives if x])
       return alternatives
 
 
@@ -282,6 +297,8 @@ def break_down_complex_step(step, defn, md):
       indices_for_unique_alternatives = [0]
       open_parenth_counter  = 0
       closed_parent_counter = 0
+
+      print("COPY: ", copy)
 
       for index, character in enumerate(copy): 
 
@@ -338,7 +355,7 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      # print("\n\nDISTINCT ALTERNATIVES: ", unique_alternatives)
+      print("UNIQUE: ", unique_alternatives)
 
       for index, alternative in enumerate(unique_alternatives):
 
@@ -404,19 +421,31 @@ def break_down_complex_step(step, defn, md):
                   if break_point: 
                      break_points.append(index)
 
+               print(">>>> alternative: ", alternative)
                clean = parse_to_a_list_of_single_items(alternative)
-
+               print(">>>> Clean: ", clean)
                pools = get_possible_alternatives_from_a_step(clean)
+               print(">>>> POols: ", pools)
 
                alternatives = combine_alternatives(alternatives, pools)
 
-               print("All combos of a single step: ", alternatives)
 
-      print("ALL ALTERNATIVES OF THE MD: ", alternatives, "\n\n~~~~") 
+               print("!!!!! Alternatives : ", alternatives)
+               alternatives = [list(flatten(i)) for i in alternatives if isinstance(i, list)]
+               print("!!!!! Flattened lternatives : ", alternatives)
+
+
+
+               print(alternatives)
 
       return alternatives
 
-
+def count_nested_lists(l):
+   count = 0 
+   for e in l: 
+      if isinstance(e, list):
+         count = count + 1 + count_nested_lists(e)
+   return count
 
 def get_possible_alternatives_from_a_step(clean_step):
 
@@ -426,13 +455,18 @@ def get_possible_alternatives_from_a_step(clean_step):
 
    for index, entry in enumerate(clean_step):
 
-      if entry == " " or entry == ",":
+      if entry == " ":
          continue
 
       if entry == "(":
-         pool = []
-         add_extra_paths = True
-         continue
+         if add_extra_paths == False:
+            """
+            This if statement is crucial to keep track of what is happening inside an 
+            already open parenthesis.
+            """
+            pool = []
+            add_extra_paths = True
+            continue
 
       if entry == "+":
          if add_extra_paths:
@@ -446,7 +480,6 @@ def get_possible_alternatives_from_a_step(clean_step):
          if pool:
             pools.append(pool)
             add_extra_paths = False
-            # print(">>>> THIS IS A POOL: ", pool)
             pool = []
          continue
 
@@ -464,15 +497,10 @@ def get_possible_alternatives_from_a_step(clean_step):
             pool[-1] = pool[-1] + "+" + entry
 
          else:
-            pool = [entry]
+            pool.append([entry])
          complex_present = False
-
-      # else: 
-
-   print("Here are the pools to be combined: ", pools)
-
+      
    return pools
-
 
 def combine_alternatives(alternatives, combos):
 
@@ -502,27 +530,28 @@ def combine_alternatives(alternatives, combos):
          else:
 
             y = list(y)
-            print("NEW: ", y, type(y), len(y))
-
             for k in y: 
 
                if isinstance(k, str):
                   single_combo.append(k)
 
                elif isinstance(k, tuple):
-                  print(k)
-                  print("THIS IS NOW!!!! ", list(flatten(k)))
                   single_combo.append(list(flatten(k)))
 
       if single_combo:
+         # remove_pluses = []
+         # for j in single_combo:
+         #    if "+" in j:
+         #       remove_pluses.append(j.split("+"))
+         #    elif " " in j:
+         #       remove_pluses.append(j.split(" "))
+         #    else:
+         #       remove_pluses.append(j)
+         # remove_pluses = list(flatten(remove_pluses))
          alternatives.append(single_combo)
-
-      else:
-         print("TI EGINE EDO? ", all_combinations)
+         # alternatives.append(remove_pluses)
    
    return alternatives
-   # return all_combinations
-
 
 def flatten(lis):
      for item in lis:
@@ -531,7 +560,6 @@ def flatten(lis):
                  yield x
          else:        
              yield item
-
 
 def parse_to_a_list_of_single_items(rule):
 
@@ -561,9 +589,6 @@ def parse_to_a_list_of_single_items(rule):
             clean.append(y)
 
    return clean
-
-
-
 
 def handle_character(part_of_def, index, character, open_parenth_counter, closed_parent_counter, 
                      semi_step, alternative_option, ko_term, node_index, node):
@@ -613,8 +638,6 @@ def handle_character(part_of_def, index, character, open_parenth_counter, closed
    return open_parenth_counter, closed_parent_counter, semi_step, alternative_option,\
             ko_term, link_from, link_to, level, node_index, node
 
-
-
 def split_stirng_based_on_indeces(s, indices):
    """
    REMEMBER! You need to give '0' as your first index, e.g.:
@@ -622,8 +645,6 @@ def split_stirng_based_on_indeces(s, indices):
    """
    parts = [s[i:j] for i,j in zip(indices, indices[1:]+[None])]
    return parts
-
-
 
 
 parse_definitions_file()
