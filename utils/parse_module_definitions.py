@@ -139,12 +139,18 @@ def parse_definitions_file():
          count_reverse_parenth = 0
          in_parenthesis        = False
 
+
+      module_definitions_steps[md]               = {}
       y                                          = 0
       num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
+      module_definitions_steps[md]['#-of-steps'] = num_of_steps
+
       parsed_steps                               = tuple(parsed_steps)
-      module_definitions_steps[md]               = {}
       module_definitions_steps[md]['steps']      = parsed_steps
-      module_definitions_steps[md]['# of steps'] = num_of_steps
+
+      unique_ko_terms = set(list(flatten(parsed_steps)))
+      module_definitions_steps[md]['unique-KOs'] = list(unique_ko_terms)
+
 
    """
    Here we save our actual output as a .json file
