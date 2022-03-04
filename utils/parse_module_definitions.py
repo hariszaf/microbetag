@@ -103,6 +103,9 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
+      # if md != "md:M00785_2":
+      #    continue
+
       if "(" not in definition and "," not in definition:
 
          """
@@ -119,6 +122,8 @@ def parse_definitions_file():
             if "+" in definition:
                parsed_steps = [[definition.split("+")]]
 
+         if ";" not in definition: 
+            parsed_steps = [[definition]]
 
       else:
 
@@ -130,7 +135,6 @@ def parse_definitions_file():
                parsed_steps.append(step)
             
             else:
-               print("module: ", md, "step: ", step)
                alternatives_for_a_step = break_down_complex_step(step, definition, md)
                parsed_steps.append(alternatives_for_a_step)
 
@@ -156,7 +160,7 @@ def parse_definitions_file():
    Here we save our actual output as a .json file
    """
 
-   with open("test.json", "w") as f:
+   with open("../ref-dbs/module_definition_map.json", "w") as f:
       json.dump(module_definitions_steps, f)
 
 def parse_valid_steps_of_a_module(steps):
@@ -208,9 +212,6 @@ def parse_valid_steps_of_a_module(steps):
 
                if "+" in semi:
                   semi = semi.split("+")
-
-                  print("HOW TO? ", step)
-
                   if semi_counter == 1:
                      list_of_semis = [part for part in semi]
                      semis.append(list_of_semis)
@@ -236,20 +237,31 @@ def break_down_complex_step(step, defn, md):
    if "-" in step:
       minus_indices = [0,]
       [minus_indices.append(i) for i, c in enumerate(step) if c == "-"]
-      step_with_no_minus = split_stirng_based_on_indeces(step, minus_indices)
 
+
+      step_with_no_minus = split_stirng_based_on_indeces(step, minus_indices)
       parts_of_no_minus_to_keep = [step_with_no_minus[0]]
 
+
       for entry in step_with_no_minus[1:]: 
-         check = [e for e in [")", "(", "+", ";"] if e in entry]
+         # ORIGINAL ! 
+         # check = [e for e in [")", "(", "+", ";"] if e in entry]
+
+         check = [entry.index(e) for e in [")", "(", "+", ";"] if e in entry]
 
          if len(check) == 0:
             continue
          else:
-            continue_from = entry.index(check[0])
+            # ORIGINAL - QUITE WORKING!!! 
+            # continue_from = entry.index(check[0])
+            continue_from = sorted(check)[0]
+            print("the entry: ", entry)
+            print("check: ", check)
+            print("continue: ", continue_from)
             parts_of_no_minus_to_keep.append(entry[continue_from:])
 
       step = ''.join(parts_of_no_minus_to_keep)
+      print("STEP::: ", step)
 
    openings = step.split("(")
 
@@ -396,6 +408,7 @@ def break_down_complex_step(step, defn, md):
                complet_parenth = 0
 
                # remove "()" from start and end if not necessary
+               print("SOONER  ", alternative)
                for character in alternative:
                   if character == "(":
                      opening_parenth += 1
@@ -427,7 +440,7 @@ def break_down_complex_step(step, defn, md):
                   if break_point: 
                      break_points.append(index)
 
-               print(">>>> alternative: ", alternative)
+               print(">>>> alternative: ", alternative, md)
                clean = parse_to_a_list_of_single_items(alternative)
                print(">>>> Clean: ", clean)
                pools = get_possible_alternatives_from_a_step(clean)
@@ -593,6 +606,10 @@ def parse_to_a_list_of_single_items(rule):
       else:
          for y in x:
             clean.append(y)
+   
+   # with respect to the M00854 case
+   if clean[0] == "(" and (clean.count("(") != clean.count(")")):
+      clean = clean[1:]
 
    return clean
 
@@ -651,7 +668,6 @@ def split_stirng_based_on_indeces(s, indices):
    """
    parts = [s[i:j] for i,j in zip(indices, indices[1:]+[None])]
    return parts
-
 
 parse_definitions_file()
 
