@@ -60,19 +60,22 @@ def main():
    missing_steps_from_module_under_study = {}
 
 
-
+   # Parse genome's KEGG modules and terms as found in the KEGG ORGANISMS db 
    for module, kos_on_its_own in genome_mos.items(): 
 
-      count_of_species_modules += 1
+      list_of_kos_present                           = [k[3:] for k in kos_on_its_own.values()]
+      count_of_species_modules                     += 1
       missing_steps_from_module_under_study[module] = {}
 
-      if module != "md:M00154": 
+      if module != "md:M00873": 
          continue
+
+      print("ON MY OWN: ", kos_on_its_own, "\n")
+      print("The complete module: ", mo_map[module]['steps'], "\n")
 
       for index, step in enumerate(mo_map[module]['steps']):
 
          step_complet = False
-
          nested = count_nested_lists(step)
 
          """
@@ -85,7 +88,6 @@ def main():
          missing_steps_from_module_under_study[module][index] = []
          cases = []
 
-         # print("\n\n>>>>>> ", step, index)
 
          if nested > 0: 
             """
@@ -94,40 +96,49 @@ def main():
             to be complete
             """
 
+            print("STEP: ", step)
+            print("KOs present: ", list_of_kos_present)
+
+            step_alternatives_map = {}
+
             for option, alternative in enumerate(step): 
 
+
+               print("Alternative: >>", alternative)
+               if isinstance(alternative, str):
+                  alternative = [alternative]
+
                # Check for minus or/and pluses in step
-               alternative = check_for_signs(alternative)
+               alternative_to_check = check_for_signs(alternative)
+               checking = alternative_to_check[:]
+
+               print("Alternative_to_check: ", alternative_to_check)
 
                # Investigate the alternatives
-               alternative_to_check = alternative[:]
+               for ko in alternative_to_check: 
+                  print("IN THE LOOP: ", alternative_to_check)
+                  print(ko)   
+                  if ko in list_of_kos_present:
+                     checking.remove(ko)
 
-               for ko in kos_on_its_own.values():
+               if len(checking) == 0: 
 
-                  ko = ko[3:]
+                  print("\n\n >>>> ALL THE STEP IS HERE !!\n\n")
 
-                  if ko in alternative_to_check: 
-                     
-                     if isinstance(alternative_to_check, list):
-                        alternative_to_check.remove(ko) 
-
-                     else: 
-                        # KEEP IN MIND TO CHECK IF THERE IS A CASE OF '+' IN THESE TERMS
-                        print("???! --> ", alternative_to_check)
-                        step_complet = True
-                        break
-
-               if len(alternative_to_check) == 0:
-                  
                   step_complet = True
-                  print("Step is complete by the species on its own")
-                  break
+
 
                else: 
-                  cases.append(alternative_to_check)
+                  step_alternatives_map[option] = checking
 
-            if alternative_to_check == False:
-               missing_steps_from_module_under_study[module][index].append(cases)
+            if step_complet == False: 
+               
+               missing_steps_from_module_under_study[module] = {}
+               missing_steps_from_module_under_study[module] = step_alternatives_map
+
+
+                  
+
 
 
 
@@ -137,24 +148,25 @@ def main():
             and only on of them is needed for the step to be complete
             """
 
-            print(step)
             step_without_signs = check_for_signs(step)
-            print(step_without_signs)
+            missing = step_without_signs[:]
 
-            for ko in kos_on_its_own.values(): 
+            for ko in missing:
 
-               ko = ko[3:]
+               if ko in list_of_kos_present:
 
-               if ko in step: 
-
-                  print("Step is already present from the species itself")
                   step_complet = True
                   break
+            
+            print("\n\n~~~~\n")
+            
+
 
             if step_complet == False: 
+               missing_steps_from_module_under_study[module][index] = missing
 
-               missing_steps_from_module_under_study[module][index] = step
 
+   print(" IN THE END:  ", missing_steps_from_module_under_study)
    missing_steps_from_module_under_study = {k: v for k, v in missing_steps_from_module_under_study.items() if v}
    return missing_steps_from_module_under_study
 
