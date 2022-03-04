@@ -22,24 +22,35 @@ def extract(lists, d):
    for sub_list in lists:
       extract(sub_list, d - 1)
 
-def check_for_signs(alternative):
+def check_for_minus(alternative):
+
+   complex_check = False
+
    if isinstance(alternative, list):
       tmp = []
       for i in alternative:    
+
          if "-" in i:
             tmp.append(i.split("-")[0])
-         elif "+" in i:
-            split = i.split("+")
-            for j in split:
-               tmp.append(j)
+
+         # elif "+" in i:
+         #    split         = i.split("+")
+         #    complex_check = True
+
+         #    for j in split:
+         #       tmp.append(j)
          else:
             tmp.append(i)
       alternative = tmp
+
    else: 
       if "-" in alternative: 
          alternative = alternative.split("-")[0]
-      if "+" in alternative: 
-         alternative = alternative.split("+")
+
+      # if "+" in alternative: 
+      #    alternative = alternative.split("+")
+
+   
    return alternative
 
 
@@ -67,7 +78,7 @@ def main():
       count_of_species_modules                     += 1
       missing_steps_from_module_under_study[module] = {}
 
-      if module != "md:M00873": 
+      if module != "md:M00376": 
          continue
 
       print("ON MY OWN: ", kos_on_its_own, "\n")
@@ -109,7 +120,7 @@ def main():
                   alternative = [alternative]
 
                # Check for minus or/and pluses in step
-               alternative_to_check = check_for_signs(alternative)
+               alternative_to_check = check_for_minus(alternative)
                checking = alternative_to_check[:]
 
                print("Alternative_to_check: ", alternative_to_check)
@@ -133,13 +144,7 @@ def main():
 
             if step_complet == False: 
                
-               missing_steps_from_module_under_study[module] = {}
-               missing_steps_from_module_under_study[module] = step_alternatives_map
-
-
-                  
-
-
+               missing_steps_from_module_under_study[module][index] = step_alternatives_map
 
 
          else:
@@ -148,26 +153,87 @@ def main():
             and only on of them is needed for the step to be complete
             """
 
-            step_without_signs = check_for_signs(step)
-            missing = step_without_signs[:]
+            step_without_signs = check_for_minus(step)
+            step = step_without_signs[:]
+            print("This is step: ", step)
 
-            for ko in missing:
+            if isinstance(step, str):
+               """
+               The step can be as a string
+               """
+               if "+" in step: 
 
-               if ko in list_of_kos_present:
+                  complex       = step.split("+")
+                  complex_check = complex[:]
+                  print(complex) is missi
 
-                  step_complet = True
-                  break
-            
+                  for ko in complex:
+                     if ko in list_of_kos_present:
+                        complex_check.remove(ko)
+
+                  if len(complex_check) == 0:
+                     print("Complex complete on the species")
+
+                  else:
+                     missing_steps_from_module_under_study[module][index] = complex_check
+
+
+            else:
+               """
+               Or as list
+               """
+
+               print("STEp:", step)
+
+               for alternative in step:
+                  """
+
+                  """
+
+                  if "+" in alternative: 
+
+                     """
+                     This is the case where a complex is on the step
+                     """
+
+                     print("Here is a complex:")
+
+                     complex       = alternative.split("+")
+                     complex_check = complex[:]
+                     print(complex)
+
+                     for ko in complex:
+                        if ko in list_of_kos_present:
+                           complex_check.remove(ko)
+
+                     if len(complex_check) == 0:
+                        print("Complex complete on the species")
+
+                     else:
+                        print(">>>> An incomplete complex!")
+                        print(complex_check) 
+                        missing_steps_from_module_under_study[module][index].append(complex_check)
+
+
+                  else:
+
+                     if alternative in list_of_kos_present:
+                        break 
+
+                     else:
+                        missing_steps_from_module_under_study[module][index].append(alternative)
+
             print("\n\n~~~~\n")
             
 
 
-            if step_complet == False: 
-               missing_steps_from_module_under_study[module][index] = missing
+            # if step_complet == False: 
+            #    missing_steps_from_module_under_study[module][index] = missing
 
 
-   print(" IN THE END:  ", missing_steps_from_module_under_study)
    missing_steps_from_module_under_study = {k: v for k, v in missing_steps_from_module_under_study.items() if v}
+   print(" IN THE END:  ", missing_steps_from_module_under_study)
+
    return missing_steps_from_module_under_study
 
 
