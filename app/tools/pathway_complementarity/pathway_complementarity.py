@@ -78,7 +78,7 @@ def main():
       count_of_species_modules                     += 1
       missing_steps_from_module_under_study[module] = {}
 
-      if module != "md:M00376": 
+      if module != "md:M00009": 
          continue
 
       print("ON MY OWN: ", kos_on_its_own, "\n")
@@ -126,20 +126,38 @@ def main():
                print("Alternative_to_check: ", alternative_to_check)
 
                # Investigate the alternatives
-               for ko in alternative_to_check: 
-                  print("IN THE LOOP: ", alternative_to_check)
-                  print(ko)   
-                  if ko in list_of_kos_present:
-                     checking.remove(ko)
+               for inner_index, ko in enumerate(alternative_to_check): 
+
+                  if "+" in ko: 
+
+                     complex   = ko.split("+")
+                     compounds = complex[:]
+
+                     for term in complex: 
+
+                        if term in list_of_kos_present:
+                           compounds.remove(term)
+                     
+                     if len(compounds) == 0:
+                        checking.remove(ko)
+
+                     else:
+                        checking.remove(ko)
+                        checking.append(compounds)
+
+                  else:
+
+                     if ko in list_of_kos_present:
+                        checking.remove(ko)
 
                if len(checking) == 0: 
 
-                  print("\n\n >>>> ALL THE STEP IS HERE !!\n\n")
-
+                  print("\n>>>> ALL THE STEP IS HERE !!\n")
                   step_complet = True
 
 
                else: 
+                  print("CHECKING TO ADD ", checking)
                   step_alternatives_map[option] = checking
 
             if step_complet == False: 
@@ -150,7 +168,7 @@ def main():
          else:
             """
             In that case the alternatives, if any, are at the top level 
-            and only on of them is needed for the step to be complete
+            and only one of them is needed for the step to be complete
             """
 
             step_without_signs = check_for_minus(step)
@@ -179,28 +197,19 @@ def main():
 
 
             else:
-               """
-               Or as list
-               """
-
-               print("STEp:", step)
 
                for alternative in step:
-                  """
 
-                  """
+                  print("\n\n HERE WE GO: " , alternative)
 
                   if "+" in alternative: 
-
                      """
                      This is the case where a complex is on the step
                      """
-
                      print("Here is a complex:")
 
                      complex       = alternative.split("+")
                      complex_check = complex[:]
-                     print(complex)
 
                      for ko in complex:
                         if ko in list_of_kos_present:
@@ -214,26 +223,24 @@ def main():
                         print(complex_check) 
                         missing_steps_from_module_under_study[module][index].append(complex_check)
 
-
                   else:
 
                      if alternative in list_of_kos_present:
-                        break 
+                        step_complet = True
+                        missing_steps_from_module_under_study[module][index] = []
+                        break
 
-                     else:
-                        missing_steps_from_module_under_study[module][index].append(alternative)
+               if step_complet == False: 
+                  missing_steps_from_module_under_study[module][index].append(step)
 
             print("\n\n~~~~\n")
             
-
 
             # if step_complet == False: 
             #    missing_steps_from_module_under_study[module][index] = missing
 
 
    missing_steps_from_module_under_study = {k: v for k, v in missing_steps_from_module_under_study.items() if v}
-   print(" IN THE END:  ", missing_steps_from_module_under_study)
-
    return missing_steps_from_module_under_study
 
 
