@@ -12,16 +12,7 @@ def count_nested_lists(l):
          count = count + 1 + count_nested_lists(e)
    return count
 
-def extract(lists, d):
-
-   output = []
-
-   if d == 1:
-      return output.extend(lists)
-
-   for sub_list in lists:
-      extract(sub_list, d - 1)
-
+# Remove optional parts if any
 def check_for_minus(alternative):
 
    complex_check = False
@@ -33,12 +24,6 @@ def check_for_minus(alternative):
          if "-" in i:
             tmp.append(i.split("-")[0])
 
-         # elif "+" in i:
-         #    split         = i.split("+")
-         #    complex_check = True
-
-         #    for j in split:
-         #       tmp.append(j)
          else:
             tmp.append(i)
       alternative = tmp
@@ -47,21 +32,14 @@ def check_for_minus(alternative):
       if "-" in alternative: 
          alternative = alternative.split("-")[0]
 
-      # if "+" in alternative: 
-      #    alternative = alternative.split("+")
-
-   
    return alternative
 
-
-
-def main():
+# Main function
+def main(ncbi_id):
   
    f      = open("../../ref-dbs/module_definition_map.json", "r")
    mo_map = json.load(f)
 
-
-   ncbi_id = str(435)
    for file in glob.glob("../../ref-dbs/kegg_genomes/" + ncbi_id + "/*.json"):
       with open(file, 'r') as f:
          genome_mos = json.load(f)
@@ -78,10 +56,8 @@ def main():
       count_of_species_modules                     += 1
       missing_steps_from_module_under_study[module] = {}
 
-      if module != "md:M00009": 
-         continue
 
-      print("ON MY OWN: ", kos_on_its_own, "\n")
+      print("MODULE: ", module, "\nON MY OWN: ", kos_on_its_own, "\n")
       print("The complete module: ", mo_map[module]['steps'], "\n")
 
       for index, step in enumerate(mo_map[module]['steps']):
@@ -95,17 +71,16 @@ def main():
          We will only add cases in the missing_steps_from_module_under_study 
          dictionary if and oly if there is not already a way for a complete step
          """
-
-         missing_steps_from_module_under_study[module][index] = []
+         missing_steps_from_module_under_study[module][index] = {}
          cases = []
 
 
+         """
+         In this case the children of the step, are the alternatives 
+         and for each alternative, all the KOs are needed for the step
+         to be complete
+         """
          if nested > 0: 
-            """
-            In this case the children of the step, are the alternatives 
-            and for each alternative, all the KOs are needed for the step
-            to be complete
-            """
 
             print("STEP: ", step)
             print("KOs present: ", list_of_kos_present)
@@ -114,16 +89,12 @@ def main():
 
             for option, alternative in enumerate(step): 
 
-
-               print("Alternative: >>", alternative)
                if isinstance(alternative, str):
                   alternative = [alternative]
 
                # Check for minus or/and pluses in step
                alternative_to_check = check_for_minus(alternative)
                checking = alternative_to_check[:]
-
-               print("Alternative_to_check: ", alternative_to_check)
 
                # Investigate the alternatives
                for inner_index, ko in enumerate(alternative_to_check): 
@@ -152,9 +123,8 @@ def main():
 
                if len(checking) == 0: 
 
-                  print("\n>>>> ALL THE STEP IS HERE !!\n")
+                  # print("\n>>>> ALL THE STEP IS HERE !!\n")
                   step_complet = True
-
 
                else: 
                   print("CHECKING TO ADD ", checking)
@@ -163,7 +133,6 @@ def main():
             if step_complet == False: 
                
                missing_steps_from_module_under_study[module][index] = step_alternatives_map
-
 
          else:
             """
@@ -183,7 +152,7 @@ def main():
 
                   complex       = step.split("+")
                   complex_check = complex[:]
-                  print(complex) is missi
+                  # print(complex) is missi
 
                   for ko in complex:
                      if ko in list_of_kos_present:
@@ -193,14 +162,14 @@ def main():
                      print("Complex complete on the species")
 
                   else:
-                     missing_steps_from_module_under_study[module][index] = complex_check
-
+                     missing_steps_from_module_under_study[module][index] = [complex_check]
 
             else:
 
-               for alternative in step:
+               complexes = False
+               tmps      = {}
 
-                  print("\n\n HERE WE GO: " , alternative)
+               for case, alternative in enumerate(step):
 
                   if "+" in alternative: 
                      """
@@ -208,6 +177,7 @@ def main():
                      """
                      print("Here is a complex:")
 
+                     complexes     = True
                      complex       = alternative.split("+")
                      complex_check = complex[:]
 
@@ -216,14 +186,17 @@ def main():
                            complex_check.remove(ko)
 
                      if len(complex_check) == 0:
-                        print("Complex complete on the species")
+                        tmps[case] = []
 
                      else:
-                        print(">>>> An incomplete complex!")
-                        print(complex_check) 
-                        missing_steps_from_module_under_study[module][index].append(complex_check)
+                        # missing_steps_from_module_under_study[module][index].append(complex_check)
+                        tmps[case] = complex_check
+                        print("~~~", tmps, case, alternative)
 
                   else:
+                     """
+                     This is the case where there is no complex on the step
+                     """
 
                      if alternative in list_of_kos_present:
                         step_complet = True
@@ -231,14 +204,26 @@ def main():
                         break
 
                if step_complet == False: 
-                  missing_steps_from_module_under_study[module][index].append(step)
+
+                  if complexes == False:
+                     for case, i in enumerate(step):
+                        missing_steps_from_module_under_study[module][index][case] = [i]
+                  else:
+                     if len(tmps) == 0:
+                        for case, i in enumerate(step):
+                           missing_steps_from_module_under_study[module][index][case] = [i]
+                     else:
+                        for case, i in enumerate(step):
+                           print(">case: ", case)
+                           print("TMPS:", tmps)
+                           if "+" in i:
+                              print("-------------", tmps[case])
+                              missing_steps_from_module_under_study[module][index][case] = tmps[case]
+                           else:
+                              missing_steps_from_module_under_study[module][index][case] = [i]
+
 
             print("\n\n~~~~\n")
-            
-
-            # if step_complet == False: 
-            #    missing_steps_from_module_under_study[module][index] = missing
-
 
    missing_steps_from_module_under_study = {k: v for k, v in missing_steps_from_module_under_study.items() if v}
    return missing_steps_from_module_under_study
@@ -248,20 +233,7 @@ def main():
 
 
 if __name__=="__main__":
-   
-   to_find = main()
+   ncbi_id = str(435)
+   to_find = main(ncbi_id)
    print(to_find)
-
-
-
-
-
-
-
-# print("\n~~~~~\n")
-# print(genome_mos['md:M00034'])
-# print(missing_steps_from_module_under_study['md:M00034'])
-# print("\n~~~~~\n")
-# print("From its own: ", genome_mos['md:M00854'])
-# print("To get from elsewher: ", missing_steps_from_module_under_study['md:M00854'])
 
