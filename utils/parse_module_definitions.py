@@ -103,7 +103,7 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
-      # if md != "md:M00785_2":
+      # if md != "md:M00641":
       #    continue
 
       if "(" not in definition and "," not in definition:
@@ -168,7 +168,7 @@ def parse_valid_steps_of_a_module(steps):
    list_of_lists_of_single_steps = []
 
    for step in steps:
-
+      print(step)
       # This denotes that there are reactions for whom there are no corresponding KO terms 
       # Check this if after discussion with KF
       if "--" in step:
@@ -178,9 +178,11 @@ def parse_valid_steps_of_a_module(steps):
          list_of_lists_of_single_steps.append([step])
 
       elif "+" in step and "-" not in step:
-         step = step.split("+")
-         list_of_semis = [semi for semi in step]
-         list_of_lists_of_single_steps.append(list_of_semis)
+         # step = step.split("+")
+         print("AM I HERE?", step)
+         # list_of_semis = [semi for semi in step]
+         # list_of_lists_of_single_steps.append(list_of_semis)
+         list_of_lists_of_single_steps.append(step)
 
       elif "-" in step and "+" not in step: 
 
@@ -202,8 +204,9 @@ def parse_valid_steps_of_a_module(steps):
          
          if len(step) == 2 and step[0] != "":
             if "+" in step[0]:
-               components = step[0].split("+")
-               list_of_lists_of_single_steps.append(components)
+               # components = step[0].split("+")
+               # list_of_lists_of_single_steps.append(components)
+               list_of_lists_of_single_steps.append(step[0])
 
          else: 
             # Step has more than 2 parts
