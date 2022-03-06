@@ -103,7 +103,7 @@ def parse_definitions_file():
       definition   = line.split("\t")[1][:-1]
       parsed_steps = []
 
-      # if md != "md:M00641":
+      # if md != "md:M00051":
       #    continue
 
       if "(" not in definition and "," not in definition:
@@ -453,8 +453,16 @@ def break_down_complex_step(step, defn, md):
 
 
                print("!!!!! Alternatives : ", alternatives)
-               alternatives = [list(flatten(i)) for i in alternatives if isinstance(i, list)]
-               print("!!!!! Flattened lternatives : ", alternatives)
+               # alternatives = [list(flatten(i)) for i in alternatives if isinstance(i, list)]
+               TMPS = []
+               for i in alternatives:
+                  if isinstance(i, list):
+                     TMPS.append(i)
+                  elif isinstance(i, str):
+                     print("got you", i)
+                     TMPS.append([i])
+               alternatives = TMPS
+               # print("!!!!! Flattened lternatives : ", alternatives)
 
 
 
@@ -535,6 +543,7 @@ def combine_alternatives(alternatives, combos):
       all_combinations = list(itertools.product(combos[0], combos[1]))
 
    else:
+      print("COMBOS: ", combos)
       all_combinations = list(itertools.product(combos[0], combos[1]))
       for lista in combos[2:]:
          all_combinations = list(itertools.product(all_combinations, lista))
