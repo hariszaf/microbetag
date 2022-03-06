@@ -2,7 +2,14 @@
 
 import json
 import glob
+import sys
 
+def flatten(list_of_lists):
+    if len(list_of_lists) == 0:
+        return list_of_lists
+    if isinstance(list_of_lists[0], list):
+        return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
+    return list_of_lists[:1] + flatten(list_of_lists[1:])
 
 # def get_modules_of_genome_under_study(genome):
 def count_nested_lists(l):
@@ -34,31 +41,31 @@ def check_for_minus(alternative):
 
    return alternative
 
-# Main function
-def main(ncbi_id):
+# Get missing parts from a species modules
+def extract_missing_parts(ncbi_id_beneficiary):
   
    f      = open("../../ref-dbs/module_definition_map.json", "r")
    mo_map = json.load(f)
 
-   for file in glob.glob("../../ref-dbs/kegg_genomes/" + ncbi_id + "/*.json"):
+   for file in glob.glob("../../ref-dbs/kegg_genomes/" + str(ncbi_id_beneficiary) + "/*.json"):
       with open(file, 'r') as f:
          genome_mos = json.load(f)
 
    # Species in-need of by-products
    count_of_species_modules = 0
-   missing_steps_from_module_under_study = {}
-
+   parts_missing_from_modules = {}
+   beneficary_kos_per_module = {}
 
    # Parse genome's KEGG modules and terms as found in the KEGG ORGANISMS db 
    for module, kos_on_its_own in genome_mos.items(): 
 
       list_of_kos_present                           = [k[3:] for k in kos_on_its_own.values()]
+      beneficary_kos_per_module[module]             = list_of_kos_present
       count_of_species_modules                     += 1
-      missing_steps_from_module_under_study[module] = {}
+      parts_missing_from_modules[module] = {}
 
-
-      print("MODULE: ", module, "\nON MY OWN: ", kos_on_its_own, "\n")
-      print("The complete module: ", mo_map[module]['steps'], "\n")
+      if module != "md:M00051":
+         continue
 
       for index, step in enumerate(mo_map[module]['steps']):
 
@@ -68,12 +75,11 @@ def main(ncbi_id):
          """
          We will have a list (cases) for the various alternatives that will
          come up as sets of KOs that if found can complete the step
-         We will only add cases in the missing_steps_from_module_under_study 
+         We will only add cases in the parts_missing_from_modules 
          dictionary if and oly if there is not already a way for a complete step
          """
-         missing_steps_from_module_under_study[module][index] = {}
+         parts_missing_from_modules[module][index] = {}
          cases = []
-
 
          """
          In this case the children of the step, are the alternatives 
@@ -81,9 +87,6 @@ def main(ncbi_id):
          to be complete
          """
          if nested > 0: 
-
-            print("STEP: ", step)
-            print("KOs present: ", list_of_kos_present)
 
             step_alternatives_map = {}
 
@@ -93,15 +96,18 @@ def main(ncbi_id):
                   alternative = [alternative]
 
                # Check for minus or/and pluses in step
+               # print("-------- alternative: ", alternative)
                alternative_to_check = check_for_minus(alternative)
+               # print("========= alternative to check: ", alternative_to_check)
                checking = alternative_to_check[:]
+               # print("********** checking: ", checking)
 
                # Investigate the alternatives
-               for inner_index, ko in enumerate(alternative_to_check): 
+               for inner_index, ko_of_alternative in enumerate(alternative_to_check): 
 
-                  if "+" in ko: 
+                  if "+" in ko_of_alternative: 
 
-                     complex   = ko.split("+")
+                     complex   = ko_of_alternative.split("+")
                      compounds = complex[:]
 
                      for term in complex: 
@@ -110,29 +116,46 @@ def main(ncbi_id):
                            compounds.remove(term)
                      
                      if len(compounds) == 0:
-                        checking.remove(ko)
+                        checking.remove(ko_of_alternative)
 
                      else:
-                        checking.remove(ko)
+                        checking.remove(ko_of_alternative)
+                        checking.append(compounds)
+
+                  if " " in ko_of_alternative: 
+
+                     multistep = ko_of_alternative.split(" ")
+                     compounds = multistep[:]
+
+                     for term in multistep: 
+
+                        if term in list_of_kos_present:
+                           compounds.remove(term)
+                     
+                     if len(compounds) == 0:
+                        checking.remove(ko_of_alternative)
+
+                     else:
+                        checking.remove(ko_of_alternative)
                         checking.append(compounds)
 
                   else:
 
-                     if ko in list_of_kos_present:
-                        checking.remove(ko)
+                     """
+                     check if something's missing...
+                     """
+
+                     if ko_of_alternative in list_of_kos_present:
+                        checking.remove(ko_of_alternative)
 
                if len(checking) == 0: 
-
-                  # print("\n>>>> ALL THE STEP IS HERE !!\n")
                   step_complet = True
 
                else: 
-                  print("CHECKING TO ADD ", checking)
                   step_alternatives_map[option] = checking
 
             if step_complet == False: 
-               
-               missing_steps_from_module_under_study[module][index] = step_alternatives_map
+               parts_missing_from_modules[module][index] = step_alternatives_map
 
          else:
             """
@@ -142,7 +165,6 @@ def main(ncbi_id):
 
             step_without_signs = check_for_minus(step)
             step = step_without_signs[:]
-            print("This is step: ", step)
 
             if isinstance(step, str):
                """
@@ -159,10 +181,11 @@ def main(ncbi_id):
                         complex_check.remove(ko)
 
                   if len(complex_check) == 0:
-                     print("Complex complete on the species")
+                     # print("Complex complete on the species")
+                     continue
 
                   else:
-                     missing_steps_from_module_under_study[module][index] = [complex_check]
+                     parts_missing_from_modules[module][index] = [complex_check]
 
             else:
 
@@ -175,8 +198,6 @@ def main(ncbi_id):
                      """
                      This is the case where a complex is on the step
                      """
-                     print("Here is a complex:")
-
                      complexes     = True
                      complex       = alternative.split("+")
                      complex_check = complex[:]
@@ -189,9 +210,8 @@ def main(ncbi_id):
                         tmps[case] = []
 
                      else:
-                        # missing_steps_from_module_under_study[module][index].append(complex_check)
+                        # parts_missing_from_modules[module][index].append(complex_check)
                         tmps[case] = complex_check
-                        print("~~~", tmps, case, alternative)
 
                   else:
                      """
@@ -200,40 +220,107 @@ def main(ncbi_id):
 
                      if alternative in list_of_kos_present:
                         step_complet = True
-                        missing_steps_from_module_under_study[module][index] = []
+                        parts_missing_from_modules[module][index] = []
                         break
 
                if step_complet == False: 
 
                   if complexes == False:
                      for case, i in enumerate(step):
-                        missing_steps_from_module_under_study[module][index][case] = [i]
+                        parts_missing_from_modules[module][index][case] = [i]
                   else:
                      if len(tmps) == 0:
                         for case, i in enumerate(step):
-                           missing_steps_from_module_under_study[module][index][case] = [i]
+                           parts_missing_from_modules[module][index][case] = [i]
                      else:
                         for case, i in enumerate(step):
-                           print(">case: ", case)
-                           print("TMPS:", tmps)
                            if "+" in i:
-                              print("-------------", tmps[case])
-                              missing_steps_from_module_under_study[module][index][case] = tmps[case]
+                              parts_missing_from_modules[module][index][case] = tmps[case]
                            else:
-                              missing_steps_from_module_under_study[module][index][case] = [i]
+                              parts_missing_from_modules[module][index][case] = [i]
+
+   missing_steps = {}
+   for module, missings in parts_missing_from_modules.items():       
+      if missings: 
+         missing_steps[module] = {}
+         list_of_kos_present   = beneficary_kos_per_module[module]
+         for step, cases in missings.items(): 
+            missing_steps[module][step] = {}
+            if isinstance(cases, list):
+               flat_case = flatten(cases)
+               flat_case = [x for x in flat_case if x not in list_of_kos_present]
+               missing_steps[module][step]['0'] = flat_case
+            elif isinstance(cases, dict):
+               for number, case in cases.items():
+                  flat_case = flatten(case)
+                  flat_case = [x for x in flat_case if x not in list_of_kos_present]
+                  missing_steps[module][step][number] = flat_case
+
+   return missing_steps
+
+# Get complementary cases if any from its partner
+def check_for_complements(ncbi_id_donor, missing_parts, beneficiary_ncbi_id):
+
+   for file in glob.glob("../../ref-dbs/kegg_genomes/" + str(ncbi_id_donor) + "/*.json"):
+      with open(file, 'r') as f:
+         donors_genome_mos = json.load(f)
+
+   metabolic_interactions_per_module = {}
+
+   for module, lacking_steps in missing_parts.items():
+
+      print("MODULE ", module)
+
+      if module not in donors_genome_mos.keys():
+         continue
+
+      else:
+
+         doners_module = list(donors_genome_mos[module].values())
+         doners_module = [x[3:] for x in doners_module]
+
+         print("\n > DONERS MODULE: ", doners_module, "MD: ", module)
+         print("\n > MISSING STEPS: ", lacking_steps)
+
+         for beneficiarys_step_index, kos_missing in lacking_steps.items():
+
+            """
+            Remember! kos_missing might have 1 or more alternatives
+            BUT all the terms of an alternative are required to 
+            have a step completed // for now it might be a list or a dict
+            I need to fix that... make all dicts
+            """
+
+            for missing_ko_alternative in kos_missing.values(): 
+               if len(missing_ko_alternative) > 0:
+                  check = missing_ko_alternative[:]
+                  for potential_interaction in doners_module:
+                     if potential_interaction in check:
+                        print(" HERE IS A POSSIBLE INTERACTION!", potential_interaction)
+                        check.remove(potential_interaction)
+
+                  if len(check) == 0:
+                     print("USING THIS WAY, THE MODULE IS NOW COMPLETE!")
 
 
-            print("\n\n~~~~\n")
-
-   missing_steps_from_module_under_study = {k: v for k, v in missing_steps_from_module_under_study.items() if v}
-   return missing_steps_from_module_under_study
+   # if len(list_of_metabolic_interactions) > 0: 
+   #    print("Species with NCBI Taxonomy Id: ", beneficiary_ncbi_id, "gets KOs", list_of_metabolic_interactions, " from species with NCBI Taxonomy Id: ", doner_ncbi_id)
 
 
+def main(beneficiary_ncbi_id, doner_ncbi_id):
 
+   missing_parts     = extract_missing_parts(beneficiary_ncbi_id)
+   complementarities = check_for_complements(doner_ncbi_id, missing_parts, beneficiary_ncbi_id)
+   return complementarities
 
 
 if __name__=="__main__":
-   ncbi_id = str(435)
-   to_find = main(ncbi_id)
-   print(to_find)
+
+   """
+   35128   : tps
+   1891787 : rpon
+   562     : eco
+   """
+   main(1891787, 562)
+   #print(to_find)
 
