@@ -19,3 +19,4 @@ bin-release/
 
 
 kegg_genomes/
+*.keg
