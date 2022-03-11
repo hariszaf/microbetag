@@ -164,9 +164,14 @@ Therefore, neo4J does not need an index system!
    sed -i 's/.*\[TAX://g ; s/\]//g'  NCBI_IDS 
 
    ```
+
+> **WRONG!**
+The way described above is not correct! 
+This is why there are more than 1 KEGG ids that are linked to the same 
+NCBI Taxonomy Id! 
+
 >**Remember!**
 A certain KO term might contribute in more than 1 KEGG modules ! 
-
 
 
 **Logical Expression**
