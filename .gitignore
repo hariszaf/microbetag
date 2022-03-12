@@ -19,6 +19,7 @@ bin-release/
 
 
 kegg_genomes/
+mgnify_catalogues/
 *.keg
 
 gtdb_metadata_r202.tsv
