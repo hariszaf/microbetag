@@ -137,11 +137,62 @@ WORKDIR /mnt/
 RUN chmod 777 /mnt/ &&\
     chmod g+s /mnt/
 
-# Copy scripts of microbetag 
-WORKDIR /home/scripts
-COPY /scripts/ ./
-RUN chmod -R +777 /home/scripts
+# Install pandas, dash, plotly 
+RUN pip install pandas &&\
+    pip install dash &&\
+    pip install plotly
 
-# Set /home workdir 
-WORKDIR /home
+# Install EnDED
+WORKDIR /home/external_tools
+# The boost library is dependency for that
+RUN apt-get install -y libboost-dev
 
+# Get and install EnDED
+RUN git clone https://github.com/InaMariaDeutschmann/EnDED.git &&\
+    cd EnDED &&\
+    make
+
+# Install FlashWeave
+# As it is written in Julia we need to get that too
+RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz &&\
+    tar -zxvf julia-1.7.1-linux-x86_64.tar.gz &&\
+    echo "export PATH=$PATH:/home/external_tools/julia-1.7.1/bin" >> /root/.bashrc 
+# Get FlashWeave
+RUN /home/external_tools/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
+
+
+# Install cwl-runner
+RUN git clone https://github.com/common-workflow-language/cwltool.git &&\
+    cd cwltool &&\
+    pip install .[deps] 
+
+RUN pip install cwlref-runner
+#------------     SET THE DASH - CYTO - DOCKER SERVER  --------- #
+
+# Copy microbetag app 
+WORKDIR /app
+
+# Add instead of copy.. why?
+COPY app/ ./
+
+# Set port 
+EXPOSE 8050
+
+# Set environmet
+ENV NAME world
+
+RUN pip install dash-cytoscape &&\
+    pip install dash-vtk &&\
+    pip install ipywidgets
+
+
+RUN ln -s /home/external_tools/FAPROTAX_1.2.4/collapse_table.py /app/tools/faprotax
+
+ENV WORKFLOW otu_table
+COPY test/ ./test/
+CMD ["python3", "app.py"]
+# # CMD ["cwl-runner", "--debug", "test.cwl", "test-job.yml"]
+# # CMD ["cwl-runner", "--debug", "microbetag.cwl", "microbetag-job.yml"]
+# CMD ["sh", "-c", "python3 test.py ${WORKFLOW}"]
+# CMD ["python3", "scripts/build_a_graph.py", "/mnt/network_output.edgelist"]
+# CMD ["python3", "scripts/pass_networkx_to_dash.py"]
