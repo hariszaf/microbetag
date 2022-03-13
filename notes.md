@@ -128,8 +128,13 @@ Using these accession numbers, we were able to download their corresponding `.fa
 |:-----:|:-------:|
 |All GTDB  | 258,407 | 
 | Representatives | 47,894 |
-| High quality represntative | 26,778 | 
-| HQ representative with `.faa` | 16,900|
+| High quality represntative | 26,778* | 
+| HQ representative with `.faa` | 16,900** |
+
+\* covering 22,009 unique NCBI Taxonomy Ids.
+
+\** <REMEMBER TO COMPLETE THIS AS ABOVE>
+
 
 We downloaded these 16,900 `.faa` files and then we used the 
 [`kofamscan`](https://github.com/takaram/kofam_scan) software to annotate them with KO terms.
