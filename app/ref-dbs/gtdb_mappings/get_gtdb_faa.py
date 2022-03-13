@@ -6,7 +6,7 @@ to the high quality (completeness > 95% and contamination < 5%) representative g
 Then, the .faa files will be annotated for KEGG terms using HMMER (http://hmmer.org/)
 """
 
-import os 
+import os
 import time
 import sys
 import requests
@@ -20,8 +20,11 @@ for line in metadata_file:
 
    counter +=1 
 
-   if counter % 100 == 0:
+   if counter % 10 == 0:
       print("Genomes parsed: ", str(counter), "out of 26,778")
+
+   if counter <= 20557:
+       continue
 
    ncbi_genome_accession = line.split("\t")[54]
    ncbi_assembly         = line.split("\t")[46]
@@ -35,11 +38,12 @@ for line in metadata_file:
    url = API_BASE + url_letters + "/" + url_numbers + "/" + ncbi_genome_accession + "_" + ncbi_assembly + "/" + ncbi_genome_accession + "_" + ncbi_assembly + "_protein.faa.gz"
 
    ref_dbs_dir = os.path.dirname(os.getcwd())
-   faa_file    = ref_dbs_dir + "/gtdb_genomes/faa_files/" + ncbi_genome_accession + "_" + ncbi_assembly + ".faa.gz"
+   assembly_saving_name = ncbi_assembly.replace("/", "_")
+   faa_file    = ref_dbs_dir + "/gtdb_genomes/faa_files/" + ncbi_genome_accession + "_" + assembly_saving_name + ".faa.gz"
    r = requests.get(url, allow_redirects = True)
    open(faa_file, 'wb').write(r.content)
 
-   time.slee(0.5)
+   time.sleep(0.5)
 
 
 
