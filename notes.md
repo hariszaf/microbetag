@@ -29,13 +29,86 @@ and not having a default one!
 Having a default makes things easier sure, but maybe in this case it would be better
 to ask the user to *build* the pipeline. 
 
-
-
 **Output:** 
 
 - `.tsv` files with the annotations per edge 
 
 - a GUI with the annotated graph
+
+
+
+## How to get KOs per species ? 
+
+This is a strategic conflict point in the pathway complementarity module of *microbetag*. 
+
+> As *microbetag* focus mostly in microbial associations networks coming from 16S rRNA amplicon data, 
+it is most probably to get taxa at the genus level, or even at the species level. 
+However, genomes are at the strain level. 
+So we need to find a way to deal with this. 
+
+
+At the same time, NCBI Taxonomy has been commonly used for a long time. 
+However, GTDB Taxonomy is gaining space regarding the genome and the MAGs submission. 
+So, the choice of the taxonomy about to be used is another strategic decision. 
+
+
+
+
+
+
+
+
+- From KEGG organisms 
+   - Bulk download - needs to pay first
+   - API, for example: http://rest.kegg.jp/link/ko/miu
+
+   The organisms in this case is denoted as "miu" that stands for Mitsuaria
+   One can **map** the NCBI Taxonomy Ids to KEGG Ids by making use of this [file](https://www.genome.jp/kegg-bin/download_htext?htext=br08610&format=htext&filedir=); for browsing on the file click [here](https://www.kegg.jp/brite/br08610) instead.
+   In the last line of this file you may see when it was last updated 
+   ```
+   #Last updated: Feburary 15, 2022
+   ```
+   To get `KEGG_IDs : NCBI Taxonomy` IDs pairs, you just need to run:
+
+   ```
+   grep -A 1 "\[TAX:" br08610.keg > pairs_in_2_lines
+   awk -F" " '{print $2}' pairs_in_2_lines > KEGG_IDS
+   sed -i '/^[[:space:]]*$/d' KEGG_IDS
+   grep "\[TAX:" br08610.keg  > NCBI_IDS
+   sed -i 's/.*\[TAX://g ; s/\]//g'  NCBI_IDS 
+
+   ```
+
+> **WRONG!**
+The way described above is not correct! 
+This is why there are more than 1 KEGG ids that are linked to the same 
+NCBI Taxonomy Id! 
+
+>**Remember!**
+A certain KO term might contribute in more than 1 KEGG modules ! 
+
+
+**Logical Expression**
+
+The pathway module is defined by the logical expression of K numbers, and the signature module is defined by the logical expression of K numbers and M numbers, allowing automatic evaluation of whether the gene set is complete, i.e., the functional unit is present, in a given genome. A space or a plus sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator and a comma, used for alternatives, is treated as an OR operator. A minus sign designates an optional item in the complex.
+
+Each space-separated unit is called a block, and the distinction is made for:
+- complete modules
+- incomplete but almost complete modules with only 1 or 2 blocks missing
+- all modules that contain any matching K numbers
+
+when evaluating the completeness check, such as in [KEGG Mapper](https://www.genome.jp/kegg/mapper/).
+
+The reaction module is defined by the logical expression of RC numbers (Reaction Class identifiers), but this expression is not currently used for any evaluation purpose.
+
+
+It seems like when there is a "--" symbol in a module, there's a missing KO term for a reaction.
+
+
+We assume that a module occurs in a species, if at least the 60% of the KO terms 
+required are available in the species' genome. 
+
+
 
 
 
@@ -53,15 +126,12 @@ to ask the user to *build* the pipeline.
 
 ### What about DASH Cytoscape? 
 
-
 #### Dash Cytoscape as Docker app 
 
 
 We followed  a [`plotly` community thread](https://community.plotly.com/t/running-dash-app-in-docker-container/16067) to build a web app of our own. 
 
 An example of a Docker app is described [`here`](https://docs.docker.com/compose/gettingstarted/) at the Docker communication. 
-
-
 
 We need to consider and study about: 
 
@@ -70,7 +140,11 @@ We need to consider and study about:
 - [`redis`](https://www.fullstackpython.com/redis.html), an in-memory key-value pair database typically classified as a NoSQL database. Redis is commonly used for caching, transient data storage and as a holding area for data during analysis in Python applications.
 
 
-### Learn `neo4j`, `Cypher` and more
+
+
+
+
+### Learn `neo4j`, `Cypher` and more (probably not to use at the time)
 
 ### Cypher Query Language
 
@@ -137,62 +211,6 @@ Because of this principle neo4j does not need to compute the relationships betwe
 the connections are already there stored right in the database. 
 Therefore, neo4J does not need an index system!
 
-
-
-
-
-
-## How to get KOs per species ? 
-
-- From KEGG organisms 
-   - Bulk download - needs to pay first
-   - API, for example: http://rest.kegg.jp/link/ko/miu
-
-   The organisms in this case is denoted as "miu" that stands for Mitsuaria
-   One can **map** the NCBI Taxonomy Ids to KEGG Ids by making use of this [file](https://www.genome.jp/kegg-bin/download_htext?htext=br08610&format=htext&filedir=); for browsing on the file click [here](https://www.kegg.jp/brite/br08610) instead.
-   In the last line of this file you may see when it was last updated 
-   ```
-   #Last updated: Feburary 15, 2022
-   ```
-   To get `KEGG_IDs : NCBI Taxonomy` IDs pairs, you just need to run:
-
-   ```
-   grep -A 1 "\[TAX:" br08610.keg > pairs_in_2_lines
-   awk -F" " '{print $2}' pairs_in_2_lines > KEGG_IDS
-   sed -i '/^[[:space:]]*$/d' KEGG_IDS
-   grep "\[TAX:" br08610.keg  > NCBI_IDS
-   sed -i 's/.*\[TAX://g ; s/\]//g'  NCBI_IDS 
-
-   ```
-
-> **WRONG!**
-The way described above is not correct! 
-This is why there are more than 1 KEGG ids that are linked to the same 
-NCBI Taxonomy Id! 
-
->**Remember!**
-A certain KO term might contribute in more than 1 KEGG modules ! 
-
-
-**Logical Expression**
-
-The pathway module is defined by the logical expression of K numbers, and the signature module is defined by the logical expression of K numbers and M numbers, allowing automatic evaluation of whether the gene set is complete, i.e., the functional unit is present, in a given genome. A space or a plus sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator and a comma, used for alternatives, is treated as an OR operator. A minus sign designates an optional item in the complex.
-
-Each space-separated unit is called a block, and the distinction is made for:
-- complete modules
-- incomplete but almost complete modules with only 1 or 2 blocks missing
-- all modules that contain any matching K numbers
-
-when evaluating the completeness check, such as in [KEGG Mapper](https://www.genome.jp/kegg/mapper/).
-
-The reaction module is defined by the logical expression of RC numbers (Reaction Class identifiers), but this expression is not currently used for any evaluation purpose.
-
-
-It seems like when there is a "--" symbol in a module, there's a missing KO term for a reaction.
-
-
-We assume that a module occurs in a species, if at least the 60% of the KO terms 
-required are available in the species' genome. 
 
 
 
