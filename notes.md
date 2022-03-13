@@ -37,26 +37,22 @@ to ask the user to *build* the pipeline.
 
 
 
-## How to get KOs per species ? 
+## Module 1 : Pathway complementarity
 
-This is a strategic conflict point in the pathway complementarity module of *microbetag*. 
-
-> As *microbetag* focus mostly in microbial associations networks coming from 16S rRNA amplicon data, 
-it is most probably to get taxa at the genus level, or even at the species level. 
+A strategic point of contradiction in the pathway complementarity module, is that 
+*microbetag* focuses mostly in microbial associations networks coming from 16S rRNA amplicon data. 
+Thus, it is most probably to get taxa at the genus level, or even at the species level. 
 However, genomes are at the strain level. 
 So we need to find a way to deal with this. 
-
 
 At the same time, NCBI Taxonomy has been commonly used for a long time. 
 However, GTDB Taxonomy is gaining space regarding the genome and the MAGs submission. 
 So, the choice of the taxonomy about to be used is another strategic decision. 
 
 
+### KEGG
 
-
-
-
-
+KEGG GENOMES are **manually curated** and this makes their contribution essential to our task. 
 
 - From KEGG organisms 
    - Bulk download - needs to pay first
@@ -111,11 +107,67 @@ required are available in the species' genome.
 
 
 
+### MGnify catalogues
+
+
+
+
+
+### GTDB high quality representative genomes 
+
+Using the latest version of GTDB ([v202](https://data.gtdb.ecogenomic.org/releases/release202/202.0/))
+metadata file, we retrieved the ncbi genome accessions of the **representative** genomes 
+of high quality, i.e. completeness > 95%  and contamination < 5%.
+
+Using these accession numbers, we were able to download their corresponding `.faa` files when available. 
+
+| genomes category | # of genomes|
+|:-----:|:-------:|
+|All GTDB  | 258,407 | 
+| Representatives | 47,894 |
+| High quality represntative | 26,778 | 
+| HQ representative with `.faa` | 16,900|
+
+We downnloaded these 16,900 `.faa` files and then we used the 
+`kofamscan` software to annotate them with KO terms.
+
+
+> Between annotations coming from the KEGG genomes and those from MGnify catalogues and GTDB high quality representative genomes there is a crucial difference. The first are manually curated meaning they have a greater level of confidence. *microbetag* combines these sets to cover more taxa with the highest level of confidence possible and highlights which terms are coming from which genomes. 
+
+
+
+
+## Module 2: Phenotypical data
+
+### FAPROTAX
+
+We had to edit the script.
+Line 208 was changed to 
+```python=
+return (s.lower() != 'nan' and is_number(s))
+```
+
+```bash=
+# working
+./collapse_table.py -i finalTable.tsv -o func_table.tsv -g FAPROTAX.txt -d "Classification" -c "#" -v
+```
+
+
+
+
+
+
 
 
 ## Resources & approaches we `microbetag` could integrate (future work)
 
 - https://equilibrator.weizmann.ac.il/
+
+
+
+
+
+## 
 
 
 
@@ -144,6 +196,13 @@ We need to consider and study about:
 
 
 
+
+
+
+
+
+
+<!-- 
 ### Learn `neo4j`, `Cypher` and more (probably not to use at the time)
 
 ### Cypher Query Language
@@ -214,4 +273,4 @@ Therefore, neo4J does not need an index system!
 
 
 
-
+ -->
