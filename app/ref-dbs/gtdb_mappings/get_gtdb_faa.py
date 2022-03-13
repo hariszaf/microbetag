@@ -15,7 +15,13 @@ metadata_file = open("GTDB_QUALITY_REPRESENTATIVE_GENOMES", "r")
 
 API_BASE = "https://ftp.ncbi.nlm.nih.gov/genomes/all/"
 
+counter = 0
 for line in metadata_file:
+
+   counter +=1 
+
+   if counter % 100 == 0:
+      print("Genomes parsed: ", str(counter), "out of 26,778")
 
    ncbi_genome_accession = line.split("\t")[54]
    ncbi_assembly         = line.split("\t")[46]
@@ -33,7 +39,7 @@ for line in metadata_file:
    r = requests.get(url, allow_redirects = True)
    open(faa_file, 'wb').write(r.content)
 
-   sys.exit(0)
+   time.slee(0.5)
 
 
 
