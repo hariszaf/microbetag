@@ -3,6 +3,9 @@
 
 ## `microbetag` scheme
 
+> Taxonomies supported : NCBI Taxonomy Vs GTDB Taxonomy
+
+
 **Input points:**
 
 - OTU table & metadata table
@@ -128,13 +131,11 @@ Using these accession numbers, we were able to download their corresponding `.fa
 | High quality represntative | 26,778 | 
 | HQ representative with `.faa` | 16,900|
 
-We downnloaded these 16,900 `.faa` files and then we used the 
-`kofamscan` software to annotate them with KO terms.
+We downloaded these 16,900 `.faa` files and then we used the 
+[`kofamscan`](https://github.com/takaram/kofam_scan) software to annotate them with KO terms.
 
 
-> Between annotations coming from the KEGG genomes and those from MGnify catalogues and GTDB high quality representative genomes there is a crucial difference. The first are manually curated meaning they have a greater level of confidence. *microbetag* combines these sets to cover more taxa with the highest level of confidence possible and highlights which terms are coming from which genomes. 
-
-
+> Between annotations coming from the KEGG genomes and those from MGnify catalogues and GTDB high quality representative genomes there is a crucial difference. The first are manually curated, meaning their annotations have a greater level of confidence. *microbetag* combines these sets to cover the more taxa with the highest level of confidence possible, indicating which terms are coming from which genomes. 
 
 
 ## Module 2: Phenotypical data
@@ -150,6 +151,11 @@ return (s.lower() != 'nan' and is_number(s))
 ```bash=
 # working
 ./collapse_table.py -i finalTable.tsv -o func_table.tsv -g FAPROTAX.txt -d "Classification" -c "#" -v
+
+# or to get OTU table per functional category 
+
+./collapse_table.py -i finalTable.tsv -o func_table.tsv -g FAPROTAX.txt -d "Classification" -c "#" -v --out_sub_tables_dir .
+
 ```
 
 
