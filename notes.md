@@ -137,8 +137,8 @@ Using these accession numbers, we were able to download their corresponding `.fa
 
 
 We downloaded these 16,900 `.faa` files and then we used the 
-[`kofamscan`](https://github.com/takaram/kofam_scan) software to annotate them with KO terms.
-
+[`kofamscan`](https://github.com/takaram/kofam_scan) software to annotate them with KO terms; `kofamscan` is a KEGG-family software. 
+For more about it, you may see at the [KEGG website](https://www.genome.jp/tools/kofamkoala/) or/and the corresponding [publication](https://doi.org/10.1093/bioinformatics/btz859).
 
 > Between annotations coming from the KEGG genomes and those from MGnify catalogues and GTDB high quality representative genomes there is a crucial difference. The first are manually curated, meaning their annotations have a greater level of confidence. *microbetag* combines these sets to cover the more taxa with the highest level of confidence possible, indicating which terms are coming from which genomes. 
 
