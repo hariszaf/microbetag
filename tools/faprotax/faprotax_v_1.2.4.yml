@@ -1,0 +1,14 @@
+$namespaces:
+ edam: http://edamontology.org/
+ s: http://schema.org/
+
+# script: 
+#   class: File
+#   path: collapse_table.py
+
+input_table:
+  class: File
+  path: /home/haris/Desktop/finalTable.tsv
+  format: edam:data_3707
+
+row_names_are_in_column: "Classification"  
