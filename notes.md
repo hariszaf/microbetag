@@ -3,7 +3,7 @@
 
 ## `microbetag` scheme
 
-> Taxonomies supported : NCBI Taxonomy Vs GTDB Taxonomy
+> *microbetag* needs to assign a NCBI Taxonomy Id to those taxonomies of the OTU table that are at the species level. This is not a straight-forward task across the various reference databases might be used for the taxonomy assignment step. Currently, *microbetag* supports OTU tables derived from the Silva v.138 release; Qiime2 and DADA2 . Alternatively, one may provide an OTU table derived from any reference database of choice with an extra column denoting the NCBI Taxonomy Id assigned to each OTU (see example [here]()). 
 
 
 **Input points:**
@@ -37,6 +37,17 @@ to ask the user to *build* the pipeline.
 - `.tsv` files with the annotations per edge 
 
 - a GUI with the annotated graph
+
+
+
+## Approach 
+
+It is qute often that an OTU table has many non-species level taxonomies. 
+As a result, in microbial co-occurrence networks, there are associations 
+both at the species but also in higher levels. 
+
+The pathway complementarity module of *microbetag* cannot be thought 
+
 
 
 
