@@ -55,20 +55,14 @@ inputs:
       position: 1
 
 outputs:
-  
-  log_out:
-    type: stdout
-  
   faprotax_output:
     label: Contains all FAPROTAX output
     type: Directory
     outputBinding:
       glob: $(inputs.output_directory_path)
-      
-
-
+  log_out:
+    type: stdout
 stdout: faprotax-tool.log
-
 
 baseCommand:
 - python
