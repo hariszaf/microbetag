@@ -96,30 +96,30 @@ RUN Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com")' &&\
 
 
 # Install BugBase
-WORKDIR /home/external_tools
+WORKDIR /app/external_tools
 RUN git clone https://github.com/knights-lab/BugBase.git
 
-RUN echo "export BUGBASE_PATH=/home/external_tools/BugBase" >> /root/.bashrc && \
+RUN echo "export BUGBASE_PATH=/app/external_tools/BugBase" >> /root/.bashrc && \
     echo "export PATH=$PATH:$BUGBASE_PATH/bin" >> /root/.bashrc
 
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
 
 WORKDIR /usr/local/lib64/R/library
-RUN ln -s $PWD/dplyr /home/external_tools/BugBase/R_lib &&\ 
-    ln -s $PWD/RColorBrewer /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/beeswarm /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/reshape2 /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/plyr /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/gridExtra /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/RJSONIO /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/digest /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/optparse /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/Matrix /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/labeling /home/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/ggplot2 /home/external_tools/BugBase/R_lib
+RUN ln -s $PWD/dplyr /app/external_tools/BugBase/R_lib &&\ 
+    ln -s $PWD/RColorBrewer /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/beeswarm /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/reshape2 /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/plyr /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/gridExtra /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/RJSONIO /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/digest /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/optparse /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/Matrix /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/labeling /app/external_tools/BugBase/R_lib &&\
+    ln -s $PWD/ggplot2 /app/external_tools/BugBase/R_lib
 
 # Install FAPRTOTAX
-WORKDIR /home/external_tools/
+WORKDIR /app/external_tools/
 RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Download/MODULE_Downloads/CLASS_Latest%20release/UNIT_FAPROTAX_1.2.4/FAPROTAX_1.2.4.zip &&\
     unzip FAPROTAX_1.2.4.zip &&\
     rm FAPROTAX_1.2.4.zip
@@ -143,7 +143,7 @@ RUN pip install pandas &&\
     pip install plotly
 
 # Install EnDED
-WORKDIR /home/external_tools
+WORKDIR /app/external_tools
 # The boost library is dependency for that
 RUN apt-get install -y libboost-dev
 
@@ -156,9 +156,9 @@ RUN git clone https://github.com/InaMariaDeutschmann/EnDED.git &&\
 # As it is written in Julia we need to get that too
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz &&\
     tar -zxvf julia-1.7.1-linux-x86_64.tar.gz &&\
-    echo "export PATH=$PATH:/home/external_tools/julia-1.7.1/bin" >> /root/.bashrc 
+    echo "export PATH=$PATH:/app/external_tools/julia-1.7.1/bin" >> /root/.bashrc 
 # Get FlashWeave
-RUN /home/external_tools/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
+RUN /app/external_tools/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
 
 
 # Install cwl-runner
@@ -186,7 +186,13 @@ RUN pip install dash-cytoscape &&\
     pip install ipywidgets
 
 
-RUN ln -s /home/external_tools/FAPROTAX_1.2.4/collapse_table.py /app/tools/faprotax
+# WORKDIR /app/external_tools/FAPROTAX_1.2.4/
+# RUN sed -i "208s/return (s.lower() is not 'nan') and is_number(s);/return (s.lower() != 'nan' and is_number(s))/g" collapse_table.py
+
+# Get the Silva - NCBI Taxonomy Id dump files
+RUN wget https://www.arb-silva.de/fileadmin/silva_databases/release_138/Exports/taxonomy/taxmap_ncbi_ssu_parc_138.txt.gz
+
+
 
 ENV WORKFLOW otu_table
 COPY test/ ./test/
