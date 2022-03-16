@@ -1,0 +1,81 @@
+#!/usr/bin/env python 
+
+import pandas as pd
+import logging
+import os
+import sys
+
+from variables import * 
+
+def count_comment_lines(my_otu_table, my_taxonomy_column):
+
+   skip_rows = 0
+   with open(my_otu_table, 'r') as f:
+      for line in f:
+         if line.startswith('#') and my_taxonomy_column not in line :
+            skip_rows += 1
+         elif my_taxonomy_column in line: 
+            line     = line.split("\t")
+            line[-1] = line[-1][:-1]
+         else:
+               break
+   return skip_rows
+
+
+def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
+
+   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+   try: 
+
+      """
+      The pd.filter() function: 
+      Subset rows or columns of dataframe according to labels in the specified index. 
+      Note that this routine does not filter a dataframe on its contents. 
+      The filter is applied to the labels of the index.
+      """
+
+      # keep only otu ids and taxonomies assigned
+      otu_id_and_taxonomy = otu_table.filter([otu_identifier_column, my_taxonomy_column]) 
+
+      logging.info("Your OTU table lead to a dataframe with columns of the following types: \n",
+                     otu_id_and_taxonomy.dtypes.value_counts())
+
+      # keep only the last level of lineage assigned and remove white spaces if any before the species name assigned
+      otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.split(';').str[-1]
+      otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.strip()
+
+   except:
+
+      logging.error("The taxonomy column could not be retrieved from you OTU table. \n \
+                     Check for any strange characters on your OTU table or its format.")
+
+   # Load the Silva species names along with ther NCBI Taxonomy ids
+   silva_species_ncbi_id         = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
+   silva_species_ncbi_id.columns = ['species_name', 'ncbi_tax_id']
+   silva_species_ncbi_id['species_name'].str.strip()
+  
+   # Make a column showing whether or not the species of each row is included on the Silva ref file
+   otu_id_and_taxonomy['present'] = otu_id_and_taxonomy[my_taxonomy_column].isin(silva_species_ncbi_id['species_name'])
+
+   # We make a map (dictionary) keeping as a key the column that links the 2 datadrames; in this case the species name
+   map_dict = dict(zip(silva_species_ncbi_id['species_name'], silva_species_ncbi_id['ncbi_tax_id']))
+   otu_id_and_taxonomy['ncbi_tax_id'] = otu_id_and_taxonomy[my_taxonomy_column].map(map_dict)
+
+   # Keep only those rows that have "True" as a value on the 'present' column
+   otu_id_species_name_ncbi_id = otu_id_and_taxonomy[otu_id_and_taxonomy.present]
+
+   # And then remove the column 'present'
+   otu_id_species_name_ncbi_id.drop('present', inplace=True, axis=1)
+
+   logging.info("A table including only the taxonomies assigned to a valid species name has been built. \n\
+                  The species have been mathed to their corresponding NCBI Taxonomy ids.")
+
+   return(otu_id_species_name_ncbi_id)
+
+
+
+silva_case = BASE + "/input/otu_table_silva132.tsv"
+get_species(silva_case, "taxonomy", "#OTU ID")
