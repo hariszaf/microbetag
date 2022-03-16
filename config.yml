@@ -1,0 +1,12 @@
+otu_table: boolean
+
+silva_db: boolean 
+
+# if otu_table: Y and silva_db: N then the user needs to have an extra column 
+# on the OTU table with the NCBI taxonomy id of the species found
+# ATTENTION! Only for those OTUs that have a taxonomy assignment at the species level. 
+
+silva_version: [128, 132]  # Not sure yet if needed
+
+taxonomy_column_name: string # e.g. "Classification"
+
