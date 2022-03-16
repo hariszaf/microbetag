@@ -10,7 +10,7 @@ BEGIN {
    -F"\t"
 }
 
-(ARGIND=1 && NR>1) {
+(ARGIND=1) {
    accessio_to_ncbi_id[$1"."$2"."$3] = $NF
 }
 
