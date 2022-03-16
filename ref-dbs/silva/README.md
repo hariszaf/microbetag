@@ -45,9 +45,9 @@ grep -v -e 'unculture\|metagenome\|Ambiguous_taxa' species2ncbiId.tsv.tmp > spec
 
 more species_names_to_ncbi_id.tsv | sort | uniq | sort > species_names_to_ncbi_id.tsv.uniq
 
-mv species_names_to_ncbi_id.tsv.uniq species_names_to_ncbi_id.tsv
+mv species_names_to_ncbi_id.tsv.uniq species_names_to_ncbi_id.tsv 
 
-rm species2ncbiId.tsv.tmp species accessions 
+rm species2ncbiId.tsv.tmp species accessions cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt
 
 ```
 
