@@ -158,6 +158,22 @@ For more about it, you may see at the [KEGG website](https://www.genome.jp/tools
 
 ### FAPROTAX
 
+From the FAPROTAX website:
+*The FAPROTAX database is optimized for taxonomies in SILVA releases 128 and 132. Other taxonomies not consistent with SILVA 132 may work sub-optimally.*
+
+
+The way the 7-level files are built in the Qiime files, when the last item of a taxonomy is *uncultured* or something similar, then the NCBI Taxonomy Id is not the one of the genus of the entry (previous taxonomy level) but it corresponds to a general one.
+For example, assuming we have the taxonomy:
+```
+D_0__Bacteria;D_1__Firmicutes;D_2__Clostridia;D_3__Clostridiales;D_4__Lachnospiraceae;D_5__Butyrivibrio 2;D_6__uncultured bacterium
+```
+then, the NCBI Taxonomy Id that Qiime would provide us for that taxonomy, would be the one of the `D_6__uncultured bacterium` ([77133](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=77133)). 
+This way the fact that this is a species of the Butyrivibrio genus is lost. 
+
+*microbetag* is concerned only for the NCBI Taxonomy ids only of those assignments that are in the species or the strain level. 
+So, this is not a problem for our approach. 
+
+
 We had to edit the script.
 Line 208 was changed to 
 ```python=
