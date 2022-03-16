@@ -24,3 +24,7 @@ gtdb_genomes/
 *.keg
 
 gtdb_metadata_r202.tsv
+
+# Silva - Qiime files 
+cons_taxonomy_7_levels_silva_132.txt
+taxmap_embl_ssu_ref_132.txt
