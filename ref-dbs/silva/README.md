@@ -26,11 +26,11 @@ this is not included.
 
 ## Steps
 
+Using Silva v132 and based on the
+[Qiime files of Silva v.132](https://www.arb-silva.de/download/archive/qiime/) we ran the following commands to build our 2-columns file:
 
 
-
-
-```
+```bash=
 grep -v "Eukaryota" cons_taxonomy_7_levels_silva_132.txt > cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt
 
 awk -F" " '{print $1}' cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt > accessions
@@ -43,6 +43,17 @@ paste -d "\t"  accessions species > access2species_silva132.tsv
 
 grep -v -e 'unculture\|metagenome\|Ambiguous_taxa' species2ncbiId.tsv.tmp > species_names_to_ncbi_id.tsv
 
-rm species2ncbiId.tsv.tmp
+more species_names_to_ncbi_id.tsv | sort | uniq | sort > species_names_to_ncbi_id.tsv.uniq
+
+mv species_names_to_ncbi_id.tsv.uniq species_names_to_ncbi_id.tsv
+
+rm species2ncbiId.tsv.tmp species accessions 
 
 ```
+
+Using Silva v132 we ended up with 36,249 unique species names with their corresponding NCBI Taxonomy Ids. 
+
+Ideally, *microbetag* would be able to include KO-annotated genomes for all this list of NCBI Taxonomy ids. 
+
+
+
