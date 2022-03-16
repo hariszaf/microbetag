@@ -23,3 +23,26 @@ where at the 7th level we find the term `D_6__uncultured Firmicutes bacterium`,
 this is not included. 
 
 
+
+## Steps
+
+
+
+
+
+```
+grep -v "Eukaryota" cons_taxonomy_7_levels_silva_132.txt > cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt
+
+awk -F" " '{print $1}' cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt > accessions
+
+awk -F";" '{print $NF}' cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt > species
+
+paste -d "\t"  accessions species > access2species_silva132.tsv
+
+./map_accession_to_ncbi_id.awk taxmap_embl_ssu_ref_132.txt access2species_silva132.tsv > species2ncbiId.tsv.tmp
+
+grep -v -e 'unculture\|metagenome\|Ambiguous_taxa' species2ncbiId.tsv.tmp > species_names_to_ncbi_id.tsv
+
+rm species2ncbiId.tsv.tmp
+
+```
