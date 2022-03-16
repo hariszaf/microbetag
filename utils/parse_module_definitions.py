@@ -93,7 +93,7 @@ def split_definition_to_steps(definition, md):
 
 def parse_definitions_file():
 
-   definitions_file = open("../ref-dbs/module_definitions.tsv", "r")
+   definitions_file = open(KMODULES_DEFINITIONS, "r")
    module_definitions_steps = {}
    
 
@@ -160,7 +160,7 @@ def parse_definitions_file():
    Here we save our actual output as a .json file
    """
 
-   with open("../ref-dbs/module_definition_map.json", "w") as f:
+   with open(KMODULES_DEFINITIONS_PARSED, "w") as f:
       json.dump(module_definitions_steps, f)
 
 def parse_valid_steps_of_a_module(steps):
