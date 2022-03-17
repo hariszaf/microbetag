@@ -1,12 +1,16 @@
-otu_table: boolean
+# Provide the filename of your OTU table
+otu_table: string 
 
+# In case silva_db is False, the user needs to have an extra column 
+# on the OTU table with the NCBI taxonomy id of the species found.
+# Assignmnets that are not at the species level should filled with "null".
 silva_db: boolean 
 
-# if otu_table: Y and silva_db: N then the user needs to have an extra column 
-# on the OTU table with the NCBI taxonomy id of the species found
-# ATTENTION! Only for those OTUs that have a taxonomy assignment at the species level. 
 
 silva_version: [128, 132]  # Not sure yet if needed
 
-taxonomy_column_name: string # e.g. "Classification"
+# 
+otu_identifier_column: string    # e.g. #OTU
+
+taxonomy_column_name: string     # e.g. "Classification"
 
