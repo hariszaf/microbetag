@@ -1,11 +1,13 @@
-#!/usr/bin/env python 
 
 import pandas as pd
 import logging
 import os
 import sys
 
-from variables import * 
+# Line 9 is not that clear to me.. It is my belief that the "utlis" section
+# is needed cause in the package framework our root is at the /microbetag level
+# If we would run this on its own, then variables would be imported without the "utils"
+from utils.variables import * 
 
 def count_comment_lines(my_otu_table, my_taxonomy_column):
 
@@ -68,7 +70,7 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
    otu_id_species_name_ncbi_id = otu_id_and_taxonomy[otu_id_and_taxonomy.present]
 
    # And then remove the column 'present'
-   otu_id_species_name_ncbi_id.drop('present', inplace=True, axis=1)
+   otu_id_species_name_ncbi_id.drop('present', inplace = True, axis = 1)
 
    logging.info("A table including only the taxonomies assigned to a valid species name has been built. \n\
                   The species have been mathed to their corresponding NCBI Taxonomy ids.")
@@ -77,5 +79,5 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
 
 
 
-silva_case = BASE + "/input/otu_table_silva132.tsv"
-get_species(silva_case, "taxonomy", "#OTU ID")
+# silva_case = BASE + "/input/otu_table_silva132.tsv"
+# get_species(silva_case, "taxonomy", "#OTU ID")
