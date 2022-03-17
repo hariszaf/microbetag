@@ -1,43 +1,45 @@
 # Sketching `microbetag` - building new skills!
 
 
-## `microbetag` scheme
+## The workflow
+
+
+
+- FlashWeave (if user does not provide an edge list along with the OTU table)
+
+- EnDED (optional; if yes run 1st)
+
+- BUGBASE \& FAPROTAX (for the phenotipic channel):
+
+- Pathway complementarity module only for the associations where both taxa are at the species level
+
+
 
 > *microbetag* needs to assign a NCBI Taxonomy Id to those taxonomies of the OTU table that are at the species level. This is not a straight-forward task across the various reference databases might be used for the taxonomy assignment step. Currently, *microbetag* supports OTU tables derived from the Silva v.138 release; Qiime2 and DADA2 . Alternatively, one may provide an OTU table derived from any reference database of choice with an extra column denoting the NCBI Taxonomy Id assigned to each OTU (see example [here]()). 
 
 
-**Input points:**
+### Input 
 
-- OTU table & metadata table
+**Mandatory**
 
-- Co-occurrence network & metadata table
+- OTU table 
+
+**Optional**
+
+- co-occurrence network 
+
+- metadata table
+
+
+**Future work**
 
 - Exception case: time series data
 
-**Pipeline*: **
+### Output
 
-- FlashWeave (if user does not have a co-occurrence network as input but an OTU table)
+- per module: the results of every tool invoked as returned
 
-- EnDED (optional; if yes run 1st)
-
-- BUGBASE \& FAPROTAX (for the phenotipic channel)
-
-- Pathway complementarity module 
-
-- EcoEFMSs
-
-\* I am thinking that as all these modules are actually different ways
-to approach our goal, we could ask the user to build his/her own pipeline 
-and not having a default one! 
-Having a default makes things easier sure, but maybe in this case it would be better
-to ask the user to *build* the pipeline. 
-
-**Output:** 
-
-- `.tsv` files with the annotations per edge 
-
-- a GUI with the annotated graph
-
+- integrated: a `.json` file with the annotations from all the different modules per edge 
 
 
 ## Approach 
@@ -46,8 +48,13 @@ It is qute often that an OTU table has many non-species level taxonomies.
 As a result, in microbial co-occurrence networks, there are associations 
 both at the species but also in higher levels. 
 
-The pathway complementarity module of *microbetag* cannot be thought 
+**microbetag** intends to address this challenge by exploiting different sources of information depending on the taxonomic level 
+of the taxa involved in each association pair. 
 
+> Future work: BugBase is supposed to work with shotgun metagenomics as well. 
+If that is so, then it would be great for *microbetag* to go that way. 
+In any case, annotating associations coming from microbial co-occurrence networks derived from shotgun metagenomics can be of higher confidence in general; 
+especially when they correspond to MAGs 
 
 
 
