@@ -31,7 +31,7 @@ import sys
 import itertools
 import re
 from collections.abc import Iterable
-
+from .variables import *
 
 def split_definition_to_steps(definition, md):
 
@@ -168,7 +168,7 @@ def parse_valid_steps_of_a_module(steps):
    list_of_lists_of_single_steps = []
 
    for step in steps:
-      print(step)
+
       # This denotes that there are reactions for whom there are no corresponding KO terms 
       # Check this if after discussion with KF
       if "--" in step:
@@ -179,7 +179,6 @@ def parse_valid_steps_of_a_module(steps):
 
       elif "+" in step and "-" not in step:
          # step = step.split("+")
-         print("AM I HERE?", step)
          # list_of_semis = [semi for semi in step]
          # list_of_lists_of_single_steps.append(list_of_semis)
          list_of_lists_of_single_steps.append(step)
@@ -258,13 +257,9 @@ def break_down_complex_step(step, defn, md):
             # ORIGINAL - QUITE WORKING!!! 
             # continue_from = entry.index(check[0])
             continue_from = sorted(check)[0]
-            print("the entry: ", entry)
-            print("check: ", check)
-            print("continue: ", continue_from)
             parts_of_no_minus_to_keep.append(entry[continue_from:])
 
       step = ''.join(parts_of_no_minus_to_keep)
-      print("STEP::: ", step)
 
    openings = step.split("(")
 
@@ -284,9 +279,7 @@ def break_down_complex_step(step, defn, md):
          alternatives.append(options)
 
       alternatives = [x for x in alternatives if x]
-      print([x for x in alternatives if x])
       return alternatives
-
 
    else:
 
@@ -318,8 +311,6 @@ def break_down_complex_step(step, defn, md):
       indices_for_unique_alternatives = [0]
       open_parenth_counter  = 0
       closed_parent_counter = 0
-
-      print("COPY: ", copy)
 
       for index, character in enumerate(copy): 
 
@@ -376,8 +367,6 @@ def break_down_complex_step(step, defn, md):
       open_parenth_counter  = 0 
       closed_parent_counter = 0
 
-      print("UNIQUE: ", unique_alternatives)
-
       for index, alternative in enumerate(unique_alternatives):
 
          alternative = alternative.replace("*", "")
@@ -411,7 +400,6 @@ def break_down_complex_step(step, defn, md):
                complet_parenth = 0
 
                # remove "()" from start and end if not necessary
-               print("SOONER  ", alternative)
                for character in alternative:
                   if character == "(":
                      opening_parenth += 1
@@ -443,30 +431,20 @@ def break_down_complex_step(step, defn, md):
                   if break_point: 
                      break_points.append(index)
 
-               print(">>>> alternative: ", alternative, md)
-               clean = parse_to_a_list_of_single_items(alternative)
-               print(">>>> Clean: ", clean)
-               pools = get_possible_alternatives_from_a_step(clean)
-               print(">>>> POols: ", pools)
-
+               clean        = parse_to_a_list_of_single_items(alternative)
+               pools        = get_possible_alternatives_from_a_step(clean)
                alternatives = combine_alternatives(alternatives, pools)
 
-
-               print("!!!!! Alternatives : ", alternatives)
                # alternatives = [list(flatten(i)) for i in alternatives if isinstance(i, list)]
                TMPS = []
                for i in alternatives:
+
                   if isinstance(i, list):
                      TMPS.append(i)
                   elif isinstance(i, str):
-                     print("got you", i)
                      TMPS.append([i])
+
                alternatives = TMPS
-               # print("!!!!! Flattened lternatives : ", alternatives)
-
-
-
-               print(alternatives)
 
       return alternatives
 
@@ -543,7 +521,7 @@ def combine_alternatives(alternatives, combos):
       all_combinations = list(itertools.product(combos[0], combos[1]))
 
    else:
-      print("COMBOS: ", combos)
+
       all_combinations = list(itertools.product(combos[0], combos[1]))
       for lista in combos[2:]:
          all_combinations = list(itertools.product(all_combinations, lista))
@@ -681,5 +659,6 @@ def split_stirng_based_on_indeces(s, indices):
    parts = [s[i:j] for i,j in zip(indices, indices[1:]+[None])]
    return parts
 
-parse_definitions_file()
+# To run the module:
+# parse_definitions_file()
 
