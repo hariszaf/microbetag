@@ -1,8 +1,12 @@
-
+"""
+Parse user's input OTU table
+"""
 import pandas as pd
 import logging
 import os
 import sys
+import pyarrow.feather as feather
+
 
 # Line 9 is not that clear to me.. It is my belief that the "utlis" section
 # is needed cause in the package framework our root is at the /microbetag level
@@ -22,6 +26,19 @@ def count_comment_lines(my_otu_table, my_taxonomy_column):
          else:
                break
    return skip_rows
+
+
+def is_tab_separated(my_otu_table, my_taxonomy_column):
+
+   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+   if otu_table.shape[1] < 2:
+
+      logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
+
+   return True
 
 
 def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
@@ -81,3 +98,29 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
 
 # silva_case = BASE + "/input/otu_table_silva132.tsv"
 # get_species(silva_case, "taxonomy", "#OTU ID")
+
+def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
+
+   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+   flashweave_table = otu_table.drop(my_taxonomy_column, axis = 1)
+   
+   float_col = flashweave_table.select_dtypes(include=['float64']) 
+   
+   for col in float_col.columns.values:
+      flashweave_table[col] = flashweave_table[col].astype('int64')
+
+
+   # if flashweave_table[otu_identifier_column].isin(float_col):
+   flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
+
+
+
+   file_to_save = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+   # feather.write_feather(flashweave_table, file_to_save)
+
+   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+
+
