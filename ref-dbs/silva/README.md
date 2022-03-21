@@ -23,6 +23,7 @@ where at the 7th level we find the term `D_6__uncultured Firmicutes bacterium`,
 this is not included. 
 
 
+> It is the entries at the file `species_names_to_ncbi_id.tsv` that will be considered for the pathway complementarity module
 
 ## Steps
 
