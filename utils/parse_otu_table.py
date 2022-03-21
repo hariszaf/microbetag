@@ -5,7 +5,6 @@ import pandas as pd
 import logging
 import os
 import sys
-import pyarrow.feather as feather
 
 
 # Line 9 is not that clear to me.. It is my belief that the "utlis" section
@@ -38,14 +37,11 @@ def is_tab_separated(my_otu_table, my_taxonomy_column):
 
       logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
 
-   return True
+   return otu_table
 
 
 def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
 
-   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
-
-   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
 
    try: 
 
@@ -57,10 +53,10 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
       """
 
       # keep only otu ids and taxonomies assigned
-      otu_id_and_taxonomy = otu_table.filter([otu_identifier_column, my_taxonomy_column]) 
+      otu_id_and_taxonomy = my_otu_table.filter([otu_identifier_column, my_taxonomy_column, 'microbetag_id']) 
 
-      logging.info("Your OTU table lead to a dataframe with columns of the following types: \n",
-                     otu_id_and_taxonomy.dtypes.value_counts())
+      # logging.info("Your OTU table lead to a dataframe with columns of the following types: \n",
+                     # otu_id_and_taxonomy.dtypes.value_counts())
 
       # keep only the last level of lineage assigned and remove white spaces if any before the species name assigned
       otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.split(';').str[-1]
@@ -87,40 +83,78 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
    otu_id_species_name_ncbi_id = otu_id_and_taxonomy[otu_id_and_taxonomy.present]
 
    # And then remove the column 'present'
-   otu_id_species_name_ncbi_id.drop('present', inplace = True, axis = 1)
-
-   logging.info("A table including only the taxonomies assigned to a valid species name has been built. \n\
-                  The species have been mathed to their corresponding NCBI Taxonomy ids.")
-
-   return(otu_id_species_name_ncbi_id)
-
+   """
+   REMEMBER TO REPLACE THE FOLLOWING COMMANDS WITH .loc
+   """
+   otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].apply(lambda f: format(f, '.0f'))
+   otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].map(str)
 
 
-# silva_case = BASE + "/input/otu_table_silva132.tsv"
-# get_species(silva_case, "taxonomy", "#OTU ID")
+   logging.info("\n A table including only the taxonomies assigned to a valid species name has been built. \n \
+                    The species have been mathed to their corresponding NCBI Taxonomy ids.\n")
+
+   return otu_id_species_name_ncbi_id
+
 
 def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
 
-   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
 
-   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
-
-   flashweave_table = otu_table.drop(my_taxonomy_column, axis = 1)
+   flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
    
    float_col = flashweave_table.select_dtypes(include=['float64']) 
    
    for col in float_col.columns.values:
       flashweave_table[col] = flashweave_table[col].astype('int64')
 
-
-   # if flashweave_table[otu_identifier_column].isin(float_col):
    flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
 
+   file_to_save = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
 
+   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+
+   my_otu_table['microbetag_id'] = flashweave_table[otu_identifier_column]
 
    file_to_save = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
-   # feather.write_feather(flashweave_table, file_to_save)
 
    flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
 
 
+   return my_otu_table
+
+
+def edge_list_of_ncbi_ids(edgelist, species_to_ncbi_ids):
+
+   f = open(edgelist, "r")
+   associations = f.readlines()
+
+   counter = 0
+
+   for association in associations[2:]:
+
+      taxon_a = association.split("\t")[0]
+      taxon_b = association.split("\t")[1]
+
+
+      if species_to_ncbi_ids.isin([taxon_a]).any().any() and species_to_ncbi_ids.isin([taxon_b]).any().any():
+
+
+         df2_a = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_a]
+         df2_b = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_b]
+         df2   = pd.concat([df2_a.reset_index(), df2_b.reset_index()], axis = 1)
+
+         if counter == 0:
+
+            species_pairs = df2
+         else:
+            species_pairs = pd.concat([species_pairs, df2], ignore_index=True)
+
+         counter += 1
+
+   return species_pairs
+
+
+
+
+# number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+# otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
