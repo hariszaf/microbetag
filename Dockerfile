@@ -96,30 +96,30 @@ RUN Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com")' &&\
 
 
 # Install BugBase
-WORKDIR /app/external_tools
+WORKDIR /home/software
 RUN git clone https://github.com/knights-lab/BugBase.git
 
-RUN echo "export BUGBASE_PATH=/app/external_tools/BugBase" >> /root/.bashrc && \
+RUN echo "export BUGBASE_PATH=/home/software/BugBase" >> /root/.bashrc && \
     echo "export PATH=$PATH:$BUGBASE_PATH/bin" >> /root/.bashrc
 
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
 
 WORKDIR /usr/local/lib64/R/library
-RUN ln -s $PWD/dplyr /app/external_tools/BugBase/R_lib &&\ 
-    ln -s $PWD/RColorBrewer /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/beeswarm /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/reshape2 /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/plyr /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/gridExtra /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/RJSONIO /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/digest /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/optparse /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/Matrix /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/labeling /app/external_tools/BugBase/R_lib &&\
-    ln -s $PWD/ggplot2 /app/external_tools/BugBase/R_lib
+RUN ln -s $PWD/dplyr /home/software/BugBase/R_lib &&\ 
+    ln -s $PWD/RColorBrewer /home/software/BugBase/R_lib &&\
+    ln -s $PWD/beeswarm /home/software/BugBase/R_lib &&\
+    ln -s $PWD/reshape2 /home/software/BugBase/R_lib &&\
+    ln -s $PWD/plyr /home/software/BugBase/R_lib &&\
+    ln -s $PWD/gridExtra /home/software/BugBase/R_lib &&\
+    ln -s $PWD/RJSONIO /home/software/BugBase/R_lib &&\
+    ln -s $PWD/digest /home/software/BugBase/R_lib &&\
+    ln -s $PWD/optparse /home/software/BugBase/R_lib &&\
+    ln -s $PWD/Matrix /home/software/BugBase/R_lib &&\
+    ln -s $PWD/labeling /home/software/BugBase/R_lib &&\
+    ln -s $PWD/ggplot2 /home/software/BugBase/R_lib
 
 # Install FAPRTOTAX
-WORKDIR /app/external_tools/
+WORKDIR /home/software/
 RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Download/MODULE_Downloads/CLASS_Latest%20release/UNIT_FAPROTAX_1.2.4/FAPROTAX_1.2.4.zip &&\
     unzip FAPROTAX_1.2.4.zip &&\
     rm FAPROTAX_1.2.4.zip
@@ -143,7 +143,7 @@ RUN pip install pandas &&\
     pip install plotly
 
 # Install EnDED
-WORKDIR /app/external_tools
+WORKDIR /home/software
 # The boost library is dependency for that
 RUN apt-get install -y libboost-dev
 
@@ -156,9 +156,9 @@ RUN git clone https://github.com/InaMariaDeutschmann/EnDED.git &&\
 # As it is written in Julia we need to get that too
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz &&\
     tar -zxvf julia-1.7.1-linux-x86_64.tar.gz &&\
-    echo "export PATH=$PATH:/app/external_tools/julia-1.7.1/bin" >> /root/.bashrc 
+    echo "export PATH=$PATH:/home/software/julia-1.7.1/bin" >> /root/.bashrc 
 # Get FlashWeave
-RUN /app/external_tools/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
+RUN /home/software/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
 
 
 # Install cwl-runner
@@ -168,12 +168,6 @@ RUN git clone https://github.com/common-workflow-language/cwltool.git &&\
 
 RUN pip install cwlref-runner
 #------------     SET THE DASH - CYTO - DOCKER SERVER  --------- #
-
-# Copy microbetag app 
-WORKDIR /app
-
-# Add instead of copy.. why?
-COPY app/ ./
 
 # Set port 
 EXPOSE 8050
@@ -186,17 +180,35 @@ RUN pip install dash-cytoscape &&\
     pip install ipywidgets
 
 
-# WORKDIR /app/external_tools/FAPROTAX_1.2.4/
+# WORKDIR /home/software/FAPROTAX_1.2.4/
 # RUN sed -i "208s/return (s.lower() is not 'nan') and is_number(s);/return (s.lower() != 'nan' and is_number(s))/g" collapse_table.py
 
 # Get the Silva - NCBI Taxonomy Id dump files
 RUN wget https://www.arb-silva.de/fileadmin/silva_databases/release_138/Exports/taxonomy/taxmap_ncbi_ssu_parc_138.txt.gz
 
+# Format 
+RUN pip install pyarrow
+
+# -----------------------------------
+#  ADD WHATEVER BEFORE THE COPIES 
+# -----------------------------------
+
+
+
+
+# Copy microbetag utils 
+WORKDIR /home
+
+# Add instead of copy.. why?
+COPY utils/ ./utils/
+COPY tools/ ./tools/
+COPY microbetag.py  ./
+COPY ref-dbs/silva ./ref-dbs/silva
 
 
 ENV WORKFLOW otu_table
-COPY test/ ./test/
-CMD ["python3", "app.py"]
+# COPY test/ ./test/
+# CMD ["python3", "app.py"]
 # # CMD ["cwl-runner", "--debug", "test.cwl", "test-job.yml"]
 # # CMD ["cwl-runner", "--debug", "microbetag.cwl", "microbetag-job.yml"]
 # CMD ["sh", "-c", "python3 test.py ${WORKFLOW}"]
