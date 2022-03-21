@@ -18,10 +18,11 @@ Essential parameters:
 # using Pandas
 using FlashWeave # this has some pre-compilation delay the first time it's called, subsequent imports are fast
 
+FLASHWEAVE_OUTPUT_DIR = ARGS[1]
 
-if length(ARGS) > 1
-   data_path    = ARGS[1]
-   metadata     = ARGS[2]
+if length(ARGS) > 2
+   data_path    = ARGS[2]
+   metadata     = ARGS[3]
    netw_results = learn_network(
                                  data_path, 
                                  meta_data_path, 
@@ -30,7 +31,7 @@ if length(ARGS) > 1
                               )
 
 else
-   data_path    = ARGS[1]
+   data_path    = ARGS[2]
    netw_results = learn_network(
                                  data_path,
                                  n_obs_min = 5,  
@@ -45,6 +46,6 @@ end
 G = graph(netw_results) # weighted graph object representing interactions + weights, 
                         # to be used with the JuliaGraphs ecosystem (https://github.com/JuliaGraphs)
 
-save_network(FLASHWEAVE_OUTPUT_DIR + "/network_output.edgelist", netw_results)
-save_network(FLASHWEAVE_OUTPUT_DIR + "network_detailed_output.edgelist", netw_results, detailed = true)
+save_network(FLASHWEAVE_OUTPUT_DIR * "/network_output.edgelist", netw_results)
+save_network(FLASHWEAVE_OUTPUT_DIR * "/network_detailed_output.edgelist", netw_results, detailed = true)
 
