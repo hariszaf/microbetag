@@ -192,54 +192,7 @@ def get_KOs(metadata_dict):
          
          if os.path.exists(file_mags_kos_per_module):
             continue
-         #    links_file = open(file_mags_kos_per_module, "r")
-         #    links      = json.load(links_file)
-         #    dic        = {}
-         #    mag_kos    = open(dir_for_ncbi_id + "/" + ncbi_tax_id + "_kos.tsv", "w")            
-         #    for mo, kos in links.items():            
-         #       for ko in kos: 
-         #          if mo not in dic: 
-         #             dic[mo] = {}
-         #             dic[mo][str(len(dic[mo]))] = ko
-         #          else:
-         #             dic[mo][str(len(dic[mo]))] = ko
 
-         #    out_file = open(file_mags_kos_per_module, "w")
-         #    json.dump(dic, out_file, indent = 6)
-         #    out_file.close()
-
-         # else:
-
-         #    try:
-         #       annotations = open(mag_data, "r")
-         #       next(annotations)
-
-         #       for line in annotations: 
-
-         #          mag_kos = line.split("\t")[11]
-         #          mag_kos = mag_kos.split(",")
-
-         #          for module, kos in kegg_terms_per_module_reference.items():
-
-         #             for ko in mag_kos:
-
-         #                if ko in kos: 
-         #                   mag_kos_output.write(module + "\t" + ko + "\n")
-
-         #                   if module not in mag_kos_per_module:
-         #                      mag_kos_per_module[module] = {}
-         #                      mag_kos_per_module[module]['1'] = ko
-         #                   else:
-         #                      mag_kos_per_module[module][str(len(mag_kos_per_module[module]) +1)] = ko
-
-         #       out_file = open(file_mags_kos_per_module, "w")
-         #       json.dump(mag_kos_per_module, out_file, indent = 6)
-         #       out_file.close()
-
-         #    except:
-         #       errors.append([ncbi_tax_id, mag])
-
-         # continue
 
       mag_kos_per_module = {}
 
@@ -285,7 +238,7 @@ def get_KOs(metadata_dict):
          out_file.close()
 
       except:
-         print("pali mas gamise")
+         print("Strange behavior")
          errors.append([url, mag])
 
    print("Number of non species level MAGs ", non_species_level_mags)
@@ -296,11 +249,11 @@ def get_KOs(metadata_dict):
    return errors
 
 ## STEP A
-# genomes_metadata = get_quality_mgnify_mags(90, 5)
-# print("\n\n", genomes_metadata)
-# initial_mag_dic = open("genomes_metadata.json", "w")  
-# json.dump(genomes_metadata, initial_mag_dic, indent = 6)
-# initial_mag_dic.close()
+genomes_metadata = get_quality_mgnify_mags(90, 5)
+
+initial_mag_dic = open("genomes_metadata.json", "w")  
+json.dump(genomes_metadata, initial_mag_dic, indent = 6)
+initial_mag_dic.close()
 
 
 # ## STEP B
@@ -337,44 +290,3 @@ esearch -db biosample -query "ERS7766781" | elink -target taxonomy | esummary | 
 
 
 
-#  NOT TO USE !!!! 
-
-
-# from IPython.display import Markdown
-# import pandas as pd
-# def get_variable_from_link_or_input(variable, name = 'accession', default = None):
-#     """
-#     Get a variable value, either from an ENV VAR that would have been set by the shiny_proxy_jlab_query_parms extension, or through direct user input.
-#     """
-#     var = os.getenv(variable)
-#     if var:
-#         display(Markdown(f'<span style="background-color: #0a5032; color: #fff; padding: 8px;">Using {name} <emph>{var}</emph> from the link you followed.</span>'))
-#     else:
-#         var = input(f'Type {"an" if name[0].lower() in "aeiou" else "a"} {name} [default: {str(default)}]')
-#     var = var or default
-#     print(f'Using "{var}" as {name}')
-#     return var
-
-
-# # api_endpoint = get_variable_from_link_or_input('MGYS00000596', 'API Endpoint', 'super-studies')
-# accession = get_variable_from_link_or_input('MGYS', 'Study Accession', 'MGYS00005292')
-
-
-# # # with Session("https://www.ebi.ac.uk/metagenomics/api/v1") as mgnify:
-# # #     resources = map(lambda r: r.json, mgnify.iterate(api_endpoint))
-# # #     resources = pd.json_normalize(resources)
-# # #     resources.to_csv(f"{api_endpoint}.csv")
-# # # resources
-
-# df = DataFrame(columns=('category', 'description', 'annotation counts'))
-# df.index.name = 'GO term'
-
-# with Session(API_BASE) as s:
-#     run = s.get('runs', 'ERR598955').resource
-#     print("Run: ", run, "\t type of run: ", type(run))
-#     for a in run.analyses:
-#         for ann in a.go_slim:
-#             df.loc[ann.accession] = [
-#                 ann.lineage, ann.description, ann.count
-#             ]
-# df
