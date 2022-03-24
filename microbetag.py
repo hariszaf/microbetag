@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
+"""
+what is microbetag about and how to use it 
+"""
+
 __author__  = 'Haris Zafeiropoulos'
 __email__   = 'haris-zaf@hcmr.gr'
 __status__  = 'Development'
 __license__ = 'GPLv3'
-
+__version__ = 'v.0.0.1'
 
 from utils import *
 import os, logging
-
 
 def main():
 
@@ -49,7 +52,7 @@ def main():
    Welcome message and arguments values
    """
    logging.info("Hello microbe-fun! microbetag is about to start!")
-   logging.info('User input: {}'.format(' '.join(sys.argv)))
+   logging.info('Your command was: {}'.format(' '.join(sys.argv)))
 
 
 
@@ -113,9 +116,13 @@ def main():
       species_pairs = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)
 
 
+   """
+   STEP: PATHWAY COMPLEMENTARITY
+   """
+   logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, '*'))
 
-   print(species_pairs)
-   sys.exit(0)
+
+
 
    """
    STEP: FAPROTAX
@@ -191,9 +198,6 @@ def main():
 
       except:
          logging.exception("\nSomething went wrong when running the BugBase analysis!")
-
-
-
 
 
 if __name__ == '__main__':
