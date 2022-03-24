@@ -100,24 +100,16 @@ def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_co
 
 
    flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
-   
-   float_col = flashweave_table.select_dtypes(include=['float64']) 
+   float_col        = flashweave_table.select_dtypes(include=['float64']) 
    
    for col in float_col.columns.values:
       flashweave_table[col] = flashweave_table[col].astype('int64')
 
    flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
-
-   file_to_save = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
-
-   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
-
-   my_otu_table['microbetag_id'] = flashweave_table[otu_identifier_column]
-
-   file_to_save = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+   my_otu_table['microbetag_id']           = flashweave_table[otu_identifier_column]
+   file_to_save                            = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
 
    flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
-
 
    return my_otu_table
 
@@ -129,28 +121,35 @@ def edge_list_of_ncbi_ids(edgelist, species_to_ncbi_ids):
 
    counter = 0
 
+   species_present_ncbi_ids_as_dict = species_to_ncbi_ids.to_dict(orient = 'records')
+
+   associated_pairs = {}
+
    for association in associations[2:]:
 
       taxon_a = association.split("\t")[0]
       taxon_b = association.split("\t")[1]
 
+      taxon_a_index = None
+      taxon_b_index = None
 
-      if species_to_ncbi_ids.isin([taxon_a]).any().any() and species_to_ncbi_ids.isin([taxon_b]).any().any():
+      for index, entry in enumerate(species_present_ncbi_ids_as_dict):
+
+         if taxon_a == entry['microbetag_id']:
+            taxon_a_index = index
+
+         if taxon_b == entry['microbetag_id']:
+            taxon_b_index = index
+
+      if taxon_a_index != None and taxon_b_index != None: 
+         associated_pairs[str(len(associated_pairs))] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = species_present_ncbi_ids_as_dict[taxon_a_index]
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = species_present_ncbi_ids_as_dict[taxon_b_index]
 
 
-         df2_a = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_a]
-         df2_b = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_b]
-         df2   = pd.concat([df2_a.reset_index(), df2_b.reset_index()], axis = 1)
-
-         if counter == 0:
-
-            species_pairs = df2
-         else:
-            species_pairs = pd.concat([species_pairs, df2], ignore_index=True)
-
-         counter += 1
-
-   return species_pairs
+   return associated_pairs
 
 
 
@@ -158,3 +157,11 @@ def edge_list_of_ncbi_ids(edgelist, species_to_ncbi_ids):
 # number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
 
 # otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+
+
+# if species_to_ncbi_ids.isin([taxon_a]).any().any() and species_to_ncbi_ids.isin([taxon_b]).any().any():
+   # df2_a = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_a]
+   # df2_b = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_b]
+   # df2   = pd.concat([df2_a.reset_index(), df2_b.reset_index()], axis = 1)
+
