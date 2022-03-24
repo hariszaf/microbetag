@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Aim of this script is to build all the unique sets 
 of KO terms that can be used to build up each KEGG 

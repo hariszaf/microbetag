@@ -2,12 +2,6 @@
 Global variables
 """
 
-__author__  = 'Haris Zafeiropoulos'
-__email__   = 'haris-zaf@hcmr.gr'
-__status__  = 'Development'
-__license__ = 'GPLv3'
-
-
 import os
 import sys 
 import yaml
