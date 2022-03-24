@@ -3,6 +3,11 @@ Parse the sub tables of the faprotax analysis
 to assign the biological processes related to each OTU 
 """
 
+__author__  = 'Haris Zafeiropoulos'
+__email__   = 'haris-zaf@hcmr.gr'
+__status__  = 'Development'
+__license__ = 'GPLv3'
+
 import os
 
 def otu_faprotax_functions_assignment(path_to_subtables):
