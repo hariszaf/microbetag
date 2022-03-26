@@ -54,7 +54,6 @@ output_directory: output_2
 
 
 
-
 #
 # microbetag optional parameters
 #
@@ -119,6 +118,10 @@ flashweave_opt:
     --make_sparse:                   # use a sparse data representation (should be left at true in almost all cases)
 
 
+
+pathway_complementarity: 
+    value: False
+    default: True
 
 
 
