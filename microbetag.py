@@ -11,20 +11,9 @@ __license__ = 'GPLv3'
 __version__ = 'v.0.0.1'
 
 from utils import *
-import os, logging
+import os
 
 def main():
-
-   """
-   Setting logging
-   """
-   # Set logger
-   logger = logging.getLogger()
-   logger.setLevel(logging.INFO)
-   formatter = logging.Formatter(
-      '%(asctime)s [%(levelname)-8s] %(message)s',
-      datefmt='%Y-%m-%d %H:%M:%S')
-
 
    """
    Assure the output directory
@@ -32,7 +21,9 @@ def main():
    if not os.path.exists(OUT_DIR):
       os.mkdir(OUT_DIR)
 
-
+   """
+   Setting logging
+   """
    # Using FileHandler writing log to file
    logfile = os.path.join(OUT_DIR, 'log.txt')
    fh      = logging.FileHandler(logfile)
@@ -53,9 +44,6 @@ def main():
    """
    logging.info("Hello microbe-fun! microbetag is about to start!")
    logging.info('Your command was: {}'.format(' '.join(sys.argv)))
-
-
-
 
 
    """
@@ -85,13 +73,11 @@ def main():
          ext = otu_table.copy()
          ext['microbetag_id'] = otu_table[OTU_COL]
 
-
       logging.info("Get the NCBI Taxonomy id for the taxonomies at the species level")
-      species_present     = get_species(ext, TAX_COL, OTU_COL)
-      # # Get a list of dictionaries with the OTU ID, the species name, the microbetag id and the NCBI Taxonomy id for each entry 
-      # # e.g.
-      # # {'#OTU ID': 821, 'taxonomy': 'D_6__planctomycete str. 394', 'microbetag_id': 'microbetag_821', 'ncbi_tax_id': '79876'}
-      # otu_species_ncbi_id = species_present.to_dict(orient = 'records')
+
+      # The get_species() function returns a pandas dataframe
+      species_present     = get_species(ext, TAX_COL, OTU_COL)  
+
 
    """
    STEP: Get co-occurrence network
@@ -113,14 +99,46 @@ def main():
       Assign NCBI Taxonomy ids to the nodes of the network
       """
       logging.info("Match a NCBI Taxonomy id to the species present on the OTU table.")
-      species_pairs = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)
+
+      # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
+      # {'0': {taxon_1: {}, taxon_2 }
+      edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)   
 
 
    """
    STEP: PATHWAY COMPLEMENTARITY
    """
    logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, '*'))
+   if PATHWAY_COMPLEMENTARITY == True: 
+      
 
+      """
+      Remember to change the path from kegg_genomes to all_genomes once the latter is ready 
+      """
+
+      set_of_ncbi_ids_with_available_genomes = set(os.listdir('ref-dbs/kegg_genomes/'))
+
+
+
+      if not EDGE_LIST:
+
+         for pair in edge_list.values(): 
+
+            taxon_a = pair['taxon_1']['ncbi_tax_id']
+            taxon_b = pair['taxon_2']['ncbi_tax_id']
+
+            if taxon_a in set_of_ncbi_ids_with_available_genomes and taxon_b in set_of_ncbi_ids_with_available_genomes: 
+
+               pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id)
+
+      else: 
+
+         """
+         In case you are using your own edge list or if you have already run microbetag and you have already one
+         """
+
+
+   sys.exit(0)
 
 
 
@@ -201,4 +219,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+   main()
