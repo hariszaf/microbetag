@@ -36,6 +36,7 @@ for line in metadata_file:
         mappings[ncbi_genome_accession_id] = ncbi_taxonomy_id
         uniq_ncbi_ids.add(ncbi_taxonomy_id)
 
+	# replace testingpy with ko_annotationsal 
         ncbi_path = os.path.join("../gtdb_genomes/testingpy/", ncbi_taxonomy_id)
 
         if os.path.isdir(ncbi_path) == False:
@@ -79,3 +80,4 @@ for line in metadata_file:
 
                 if ko_term in kos: 
                     q.write(md + "\t" + ko_term + "\n")
+
