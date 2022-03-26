@@ -204,7 +204,7 @@ COPY utils/ ./utils/
 COPY tools/ ./tools/
 COPY microbetag.py  ./
 COPY ref-dbs/silva ./ref-dbs/silva
-
+COPY ref-dbs/kegg_genomes ./ref-dbs/kegg_genomes
 
 ENV WORKFLOW otu_table
 # COPY test/ ./test/
