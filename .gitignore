@@ -31,3 +31,7 @@ taxmap_embl_ssu_ref_132.txt
 
 
 __pycache__/
+
+# Ignore NCBI Taxonomy db and mgnify catalogues metadata provided by the MGNify FTP
+ref-dbs/mgnify_mappings/metadata/
+ref-dbs/taxdump/
