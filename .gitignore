@@ -1,0 +1,37 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+
+# Other files and folders
+.settings/
+
+# Executables
+*.swf
+*.air
+*.ipa
+*.apk
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
+
+
+kegg_genomes/
+mgnify_catalogues/
+gtdb_genomes/
+*.keg
+
+gtdb_metadata_r202.tsv
+
+# Silva - Qiime files 
+cons_taxonomy_7_levels_silva_132.txt
+taxmap_embl_ssu_ref_132.txt
+
+
+__pycache__/
+
+# Ignore NCBI Taxonomy db and mgnify catalogues metadata provided by the MGNify FTP
+mappings/mgnify_mappings/metadata/
+ref-dbs/taxdump/
