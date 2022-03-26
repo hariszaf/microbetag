@@ -95,22 +95,19 @@ def extract_missing_parts(ncbi_id_beneficiary):
                if isinstance(alternative, str):
                   alternative = [alternative]
 
-               # Check for minus or/and pluses in step
-               # print("-------- alternative: ", alternative)
+
                alternative_to_check = check_for_minus(alternative)
-               # print("========= alternative to check: ", alternative_to_check)
-               checking = alternative_to_check[:]
-               # print("********** checking: ", checking)
+               checking             = alternative_to_check[:]
 
                # Investigate the alternatives
                for inner_index, ko_of_alternative in enumerate(alternative_to_check): 
 
                   if "+" in ko_of_alternative: 
 
-                     complex   = ko_of_alternative.split("+")
-                     compounds = complex[:]
+                     complexx   = ko_of_alternative.split("+")
+                     compounds = complexx[:]
 
-                     for term in complex: 
+                     for term in complexx: 
 
                         if term in list_of_kos_present:
                            compounds.remove(term)
@@ -172,16 +169,14 @@ def extract_missing_parts(ncbi_id_beneficiary):
                """
                if "+" in step: 
 
-                  complex       = step.split("+")
-                  complex_check = complex[:]
-                  # print(complex) is missi
+                  complexx       = step.split("+")
+                  complex_check = complexx[:]
 
-                  for ko in complex:
+                  for ko in complexx:
                      if ko in list_of_kos_present:
                         complex_check.remove(ko)
 
                   if len(complex_check) == 0:
-                     # print("Complex complete on the species")
                      continue
 
                   else:
@@ -199,10 +194,10 @@ def extract_missing_parts(ncbi_id_beneficiary):
                      This is the case where a complex is on the step
                      """
                      complexes     = True
-                     complex       = alternative.split("+")
-                     complex_check = complex[:]
+                     complexx       = alternative.split("+")
+                     complex_check = complexx[:]
 
-                     for ko in complex:
+                     for ko in complexx:
                         if ko in list_of_kos_present:
                            complex_check.remove(ko)
 
@@ -265,16 +260,24 @@ def check_for_complements(ncbi_id_donor, missing_parts, beneficiary_ncbi_id):
       with open(file, 'r') as f:
          donors_genome_mos = json.load(f)
 
-   metabolic_interactions_per_module = {}
+   pair_metabolic_interactions = {}
+   pair_metabolic_interactions['beneficiary']                     = beneficiary_ncbi_id
+   pair_metabolic_interactions['donor']                           = ncbi_id_donor
+   pair_metabolic_interactions['potent-met-inter'] = {}
 
    for module, lacking_steps in missing_parts.items():
 
-      print("MODULE ", module)
 
       if module not in donors_genome_mos.keys():
          continue
 
       else:
+
+         pair_metabolic_interactions['potent-met-inter'][module] = {}
+         pair_metabolic_interactions['potent-met-inter'][module]['missing-terms'] = lacking_steps
+         pair_metabolic_interactions['potent-met-inter'][module]['module-completed'] = False
+         pair_metabolic_interactions['potent-met-inter'][module]['interactions'] = []
+
 
          doners_module = list(donors_genome_mos[module].values())
          doners_module = [x[3:] for x in doners_module]
@@ -296,31 +299,24 @@ def check_for_complements(ncbi_id_donor, missing_parts, beneficiary_ncbi_id):
                   check = missing_ko_alternative[:]
                   for potential_interaction in doners_module:
                      if potential_interaction in check:
-                        print(" HERE IS A POSSIBLE INTERACTION!", potential_interaction)
+
+                        pair_metabolic_interactions['potent-met-inter'][module]['interactions'].append(potential_interaction)
+
                         check.remove(potential_interaction)
+                        pair_metabolic_interactions[module]['interactions']
 
                   if len(check) == 0:
-                     print("USING THIS WAY, THE MODULE IS NOW COMPLETE!")
+                     pair_metabolic_interactions['potent-met-inter'][module]['module-completed'] = True
 
-
+   return pair_metabolic_interactions
    # if len(list_of_metabolic_interactions) > 0: 
    #    print("Species with NCBI Taxonomy Id: ", beneficiary_ncbi_id, "gets KOs", list_of_metabolic_interactions, " from species with NCBI Taxonomy Id: ", doner_ncbi_id)
 
 
-def main(beneficiary_ncbi_id, doner_ncbi_id):
+def pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id):
 
    missing_parts     = extract_missing_parts(beneficiary_ncbi_id)
    complementarities = check_for_complements(doner_ncbi_id, missing_parts, beneficiary_ncbi_id)
    return complementarities
 
-
-if __name__=="__main__":
-
-   """
-   35128   : tps
-   1891787 : rpon
-   562     : eco
-   """
-   main(1891787, 562)
-   #print(to_find)
 
