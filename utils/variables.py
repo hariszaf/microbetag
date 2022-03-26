@@ -5,8 +5,8 @@ Global variables
 import os
 import sys 
 import yaml
+# from arguments import *
 from .arguments import *
-
 
 # Read configuration file
 with open(args.conf, "r") as ymlfile:
@@ -23,7 +23,6 @@ else:
 
 
 OTU_TABLE = os.path.join(IO_PATH, cfg['otu_table'])
-
 OUT_DIR   = os.path.join(IO_PATH, cfg['output_directory'])
 
 
@@ -35,11 +34,10 @@ if cfg['column_names_are_in'] == True:
    COM_HEAD  = '"' + 'last_comment_line' + '"'
 
 
-EDGE_LIST = cfg['edge_list']
-
+EDGE_LIST     = cfg['edge_list'] if cfg['edge_list'] != None else False
 METADATA_FILE = cfg['metadata_file']
 
-
+PATHWAY_COMPLEMENTARITY = True if cfg['pathway_complementarity'] != False else False
 
 
 # Paths
@@ -66,7 +64,4 @@ FAPROTAX_SUB_TABLES         = os.path.join(FAPROTAX_OUTPUT_DIR, "sub_tables")
 # BugBase
 BUGBASE_OUTPUT              = os.path.join(OUT_DIR, "bugbase")
 BUGBASE_OPTIONAL            = cfg['bugbase_opt']
-
-
-
 
