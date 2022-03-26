@@ -1,0 +1,35 @@
+microbetag:
+    version: v.0.0.1
+
+silva_database:
+    description: Silva version used to map the taxonomy retrived to a NCBI Taxonomy id. microbetag exploits the 7-level version that Qiime builds out of the Silva database. Therefore, as long as Silva does not release a 7-level version of its latest release, microbetag needs to wait the Qiime group to do so.
+    version: 132
+
+new_taxdump:
+    description: To keep track of the NCBI Taxonomy Ids indicating species and strains, microbetag makes use of the NCBI Taxonomy oriented file called "new_taxdump".  
+    last_updated: 2022-03-26
+
+gtdb_database:
+    description: microbetag takes exploits GTDB (https://gtdb.ecogenomic.org/) to secure a set of high quality genomes that cover all the different taxonomic branches known up to now. Only the representative for their taxonomic level and those with a completeness > 95% and contamination < 5% are considered on the microbetag framework.
+    version: 202
+
+kegg_genomes_database: 
+    last_updated: 2022-03-24
+
+
+mgnify_cataologues: 
+    - marine: 
+        version: 1.0
+        genomes-metadata: http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/marine/v1.0/genomes-all_metadata.tsv 
+    - human_oral: 
+        version: 1.0
+        genomes-metadata: http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/human-oral/v1.0/genomes-all_metadata.tsv
+    - human_gut: 
+        version: 2.0
+        genomes-metadata: http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/human-gut/v2.0/genomes-all_metadata.tsv
+    - cow_rumen: 
+        version: 1.0
+        genomes-metadata: http://ftp.ebi.ac.uk/pub/databases/metagenomics/mgnify_genomes/cow-rumen/v1.0/genomes-all_metadata.tsv 
+
+
+
