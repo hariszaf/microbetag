@@ -35,3 +35,4 @@ __pycache__/
 # Ignore NCBI Taxonomy db and mgnify catalogues metadata provided by the MGNify FTP
 mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
+ref-dbs/microbetag_genomes/
