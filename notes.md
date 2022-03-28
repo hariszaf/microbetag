@@ -3,39 +3,34 @@
 
 ## The workflow
 
+- [FlashWeave](https://github.com/meringlab/FlashWeave.jl) [1] (if user does not provide an edge list along with the OTU table)
 
+- [FAPROTAX](http://www.loucalab.com/archive/FAPROTAX/lib/php/index.php) (as part of the phenotipic channel)
 
-- FlashWeave (if user does not provide an edge list along with the OTU table)
+- [BugBase](https://bugbase.cs.umn.edu/index.html) (as part of the phenotipic channel)
 
-- EnDED (optional; if yes run 1st)
-
-- BUGBASE \& FAPROTAX (for the phenotipic channel):
-
-- Pathway complementarity module only for the associations where both taxa are at the species level
+- Pathway complementarity module only for the associations where both taxa are at the species or the strain level
 
 
 
 > *microbetag* needs to assign a NCBI Taxonomy Id to those taxonomies of the OTU table that are at the species level. This is not a straight-forward task across the various reference databases might be used for the taxonomy assignment step. Currently, *microbetag* supports OTU tables derived from the Silva v.138 release; Qiime2 and DADA2 . Alternatively, one may provide an OTU table derived from any reference database of choice with an extra column denoting the NCBI Taxonomy Id assigned to each OTU (see example [here]()). 
 
 
-### Input 
+### I/O 
 
-**Mandatory**
+**Mandatory** input files:
 
 - OTU table 
+- `config.yml` file
 
-**Optional**
+**Optional** input files:
 
 - co-occurrence network 
 
 - metadata table
 
 
-**Future work**
-
-- Exception case: time series data
-
-### Output
+**Output** files:
 
 - per module: the results of every tool invoked as returned
 
@@ -161,6 +156,8 @@ For more about it, you may see at the [KEGG website](https://www.genome.jp/tools
 > Between annotations coming from the KEGG genomes and those from MGnify catalogues and GTDB high quality representative genomes there is a crucial difference. The first are manually curated, meaning their annotations have a greater level of confidence. *microbetag* combines these sets to cover the more taxa with the highest level of confidence possible, indicating which terms are coming from which genomes. 
 
 
+
+
 ## Module 2: Phenotypical data
 
 ### FAPROTAX
@@ -204,21 +201,36 @@ return (s.lower() != 'nan' and is_number(s))
 
 
 
-## Resources & approaches we `microbetag` could integrate (future work)
+## Resources & approaches we `microbetag` could integrate 
 
-- https://equilibrator.weizmann.ac.il/
+Future work as in bullet-points:
 
-
-
-
-
-## 
-
-
+- Exception case: time series data
+- Exploit [EnDED](https://github.com/InaMariaDeutschmann/EnDED) tool
+- Exploit [Metage2Metabo](https://github.com/AuReMe/metage2metabo) software
+- The [equilibrator](https://equilibrator.weizmann.ac.il/) library 
+- GUI
 
 
 
+## References 
 
+
+[1] Tackmann, Janko, João Frederico Matias Rodrigues, and Christian von Mering. "Rapid inference of direct interactions in large-scale ecological networks from heterogeneous microbial sequencing data." Cell systems 9.3 (2019): 286-296.
+
+[2] Parks, Donovan H., et al. "A complete domain-to-species taxonomy for Bacteria and Archaea." Nature biotechnology 38.9 (2020): 1079-1086.
+
+[3] Kanehisa, Minoru, et al. "KEGG: new perspectives on genomes, pathways, diseases and drugs." Nucleic acids research 45.D1 (2017): D353-D361.
+
+[4] Mitchell, Alex L., et al. "MGnify: the microbiome analysis resource in 2020." Nucleic acids research 48.D1 (2020): D570-D578.
+
+[5] Louca, Stilianos, Laura Wegener Parfrey, and Michael Doebeli. "Decoupling function and taxonomy in the global ocean microbiome." Science 353.6305 (2016): 1272-1277.
+
+[6] Ward, Tonya, et al. "BugBase predicts organism-level microbiome phenotypes." BioRxiv (2017): 133462.
+
+
+
+<!-- 
 ## Visualization libraries and alternatives 
 
 ### What about DASH Cytoscape? 
@@ -237,7 +249,7 @@ We need to consider and study about:
 - [`redis`](https://www.fullstackpython.com/redis.html), an in-memory key-value pair database typically classified as a NoSQL database. Redis is commonly used for caching, transient data storage and as a holding area for data during analysis in Python applications.
 
 
-
+ -->
 
 
 
