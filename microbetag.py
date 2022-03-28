@@ -105,6 +105,82 @@ def main():
       edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)   
 
 
+
+   """
+   STEP: FAPROTAX
+   """
+   logging.info('STEP: FAPROTAX database oriented analaysis'.center(50, '*'))
+   if OTU_TABLE: 
+
+      if not os.path.exists(FAPROTAX_OUTPUT_DIR):
+         os.mkdir(FAPROTAX_OUTPUT_DIR)
+
+      faprotax_check = False
+
+      faprotax_params = [
+         "python3", FAPROTAX_SCRIPT,
+         "-i",     OTU_TABLE,
+         "-o",     FAPROTAX_FUNCT_TABLE,
+         "-g",     FAPROTAX_DB,
+         "-c", '"' + COM_CHAR + '"',
+         "-d", '"' +  TAX_COL + '"',
+         "-v",
+         "-s",     FAPROTAX_SUB_TABLES,
+      ]
+
+      if COM_HEAD:
+         faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
+
+      cmd = ' '.join(faprotax_params)
+
+      try:
+         logging.info('Phenotypic analysis using FAPROTAX')
+         logging.info(cmd)
+         os.system(cmd)
+         faprotax_check = True
+      except:
+         logging.exception("\nSomething went wrong when running the FAPROTAX analysis!")
+
+      # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes 
+      # retrieved as values
+      if faprotax_check: 
+         path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
+         otu_faprotax_functions_assignment(path_to_subtables)
+
+
+   """
+   STEP: BugBase
+   """
+   logging.info('STEP: BugBase database oriented analaysis'.center(50, '*'))
+   if OTU_TABLE: 
+
+
+      bugbase_commands = [
+         "Rscript", "software/BugBase/bin/run.bugbase.r", 
+         "-i", OTU_TABLE,
+         "-o", BUGBASE_OUTPUT
+      ]
+
+      if METADATA_FILE:
+         bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
+      else: 
+         bugbase_commands = bugbase_commands + ["-a"]
+
+
+      cmd = ' '.join(bugbase_commands)
+
+      try:
+         logging.info('Phenotypic analysis using BugBase')
+         logging.info(cmd)
+         os.system(cmd)
+
+      except:
+         logging.exception("\nSomething went wrong when running the BugBase analysis!")
+
+
+
+   sys.exit(0)
+
    """
    STEP: PATHWAY COMPLEMENTARITY
    """
@@ -138,84 +214,10 @@ def main():
          """
 
 
-   sys.exit(0)
 
 
 
-   """
-   STEP: FAPROTAX
-   """
-   logging.info('STEP: FAPROTAX database oriented analaysis'.center(50, '*'))
-   if OTU_TABLE: 
 
-      if not os.path.exists(FAPROTAX_OUTPUT_DIR):
-         os.mkdir(FAPROTAX_OUTPUT_DIR)
-
-      faprotax_check = False
-
-      faprotax_params = [
-         "python3", FAPROTAX_SCRIPT,
-         "-i",     OTU_TABLE,
-         "-o",     FAPROTAX_FUNCT_TABLE,
-         "-g",     FAPROTAX_DB,
-         "-c", '"' + COM_CHAR + '"',
-         "-d", '"' +  TAX_COL + '"',
-         "-v",
-         "-s",     FAPROTAX_SUB_TABLES,
-      ]
-
-      if COM_HEAD:
-         faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
-
-      cmd = ' '.join(faprotax_params)
-
-      try:
-         logging.info('Phenotypic analysis using BugBase')
-         logging.info(cmd)
-         os.system(cmd)
-         faprotax_check = True
-      except:
-         logging.exception("\nSomething went wrong when running the BugBase analysis!")
-
-      # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes 
-      # retrieved as values
-      if faprotax_check: 
-         path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
-         otu_faprotax_functions_assignment(path_to_subtables)
-
-
-   """
-   STEP: BugBase
-   """
-   logging.info('STEP: BugBase database oriented analaysis'.center(50, '*'))
-   if OTU_TABLE: 
-
-
-      bugbase_commands = [
-         "Rscript", "run.bugbase.r", 
-         "-i", OTU_TABLE,
-         "-o", BUGBASE_OUTPUT
-      ]
-
-      if METADATA_FILE:
-         bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
-
-
-
-      for k,v in BUGBASE_OPTS.items(): 
-         if v is not None:
-            print(k,v)
-
-
-      cmd = ' '.join(bugbase_commands)
-
-      try:
-         logging.info('Phenotypic analysis using BugBase')
-         logging.info(cmd)
-         os.system(cmd)
-
-      except:
-         logging.exception("\nSomething went wrong when running the BugBase analysis!")
 
 
 if __name__ == '__main__':
