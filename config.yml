@@ -120,8 +120,17 @@ flashweave_opt:
 
 
 pathway_complementarity: 
-    value: False
-    default: True
+
+    - skip_it: 
+      default: True
+
+    - mode_for_species: 
+      default: union
+
+    - mode_for_strain: 
+      default: intersection
+
+
 
 
 
