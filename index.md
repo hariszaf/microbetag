@@ -2,15 +2,18 @@
 layout: default
 title: Home
 nav_order: 1
-description: " A place with the background and the *how to* of the *microbetag* tool - currently in production"
+description: " A place with the background and the *how to* of the *microbetag* tool"
 permalink: /
 ---
 
 # annotating microbial co-occurrence networks
 {: .fs-9 }
 
-A place with the background and the *how to* of the *microbetag* tool - currently in production
+A place with the background and the *how to* of the *microbetag* tool
 {: .fs-6 .fw-300 }
+
+Under development
+{: .label .label-yellow }
 
 <!--The ': .btn' flag denotes the button 
 # The ': .fs-5' flag denotes the font size
