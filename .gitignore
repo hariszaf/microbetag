@@ -36,3 +36,5 @@ __pycache__/
 mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
 ref-dbs/microbetag_genomes/
+ref-dbs/gtdb_genomes/all_kofam_scan/
+
