@@ -197,6 +197,12 @@ return (s.lower() != 'nan' and is_number(s))
 
 
 
+### BugBase
+
+BugBase is based on Greengenes. 
+This leads to the need of linking somehow our taxonomies with those of Greengenes. 
+As Greenges 
+
 
 
 
