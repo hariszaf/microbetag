@@ -21,12 +21,16 @@ WORKDIR /home
 RUN apt-get update &&\
     apt-get install -y software-properties-common &&\
     apt-get update --fix-missing && \
-    apt-get install -y wget \ 
-                       git \
-                       unzip \
-                       mlocate \ 
-                       libbz2-dev
+    # apt-get install -y buildessentials && \
+    apt-get install -y wget && \  
+    apt-get install -y git && \
+    apt-get install -y unzip && \
+    apt-get install -y mlocate && \ 
+    apt-get install -y libbz2-dev && \
+    apt-get clean &&\
+    rm -rf /var/lib/apt/lists/*
                      
+
 # Set Python
 RUN add-apt-repository ppa:deadsnakes/ppa &&\
 # Install py39 from deadsnakes repository
@@ -180,21 +184,77 @@ RUN pip install dash-cytoscape &&\
     pip install ipywidgets
 
 
-# WORKDIR /home/software/FAPROTAX_1.2.4/
-# RUN sed -i "208s/return (s.lower() is not 'nan') and is_number(s);/return (s.lower() != 'nan' and is_number(s))/g" collapse_table.py
-
 # Get the Silva - NCBI Taxonomy Id dump files
 RUN wget https://www.arb-silva.de/fileadmin/silva_databases/release_138/Exports/taxonomy/taxmap_ncbi_ssu_parc_138.txt.gz
 
-# Format 
-RUN pip install pyarrow
+
+# Install OpenJDK-11
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jdk && \
+    apt-get install -y ant && \
+    apt-get clean;
+    
+# Fix certificate issues
+RUN apt-get update && \
+    apt-get install ca-certificates-java && \
+    apt-get clean && \
+    update-ca-certificates -f;
+
+# Setup JAVA_HOME -- useful for docker commandline
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
+RUN export JAVA_HOME
+
+
+# Install Graphtools
+
+WORKDIR /home/software
+RUN wget http://msysbiology.com/documents/Graphtools.zip && \ 
+    unzip Graphtools.zip && \ 
+    cd Graphtools && \ 
+    export GRAPHTOOLS_ROOT=/home/software/Graphtools/Graphtools && \ 
+    export CLASSPATH=$CLASSPATH:$GRAPHTOOLS_ROOT/lib/NeAT_javatools.jar &&\ 
+    cd REA &&\  
+    make &&\ 
+    REA_ROOT=$GRAPHTOOLS_ROOT/REA && \ 
+    cd ../kwalks/src/ && \ 
+    make && \ 
+    KWALKS_ROOT=$GRAPHTOOLS_ROOT/kwalks/bin && \ 
+    echo "export CLASSPATH=$CLASSPATH" >> .bashrc && \ 
+    echo "export REA_ROOT=$REA_ROOT" >> .bashrc
+
+
+# Install cmake and then..
+WORKDIR /usr/lib
+
+RUN apt update &&\
+    apt purge --auto-remove cmake
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.4/cmake-3.21.4.tar.gz &&\
+    tar -xzvf cmake-3.21.4.tar.gz
+
+# Get an OpenSSl
+RUN apt-get install -y libssl-dev 
+
+WORKDIR /usr/lib/cmake-3.21.4
+RUN /bin/bash bootstrap
+RUN make -j$(nproc) 
+RUN make install
+
+# the App-SpaM placement tool
+WORKDIR /usr/lib
+
+RUN git clone https://github.com/matthiasblanke/App-SpaM &&\
+    cd App-SpaM &&\
+    mkdir build &&\
+    cd build &&\
+    cmake .. &&\
+    make &&\ 
+    echo "export PATH=$PATH:/usr/lib/App-SpaM/build/" >> /root/.bashrc 
+
+
 
 # -----------------------------------
 #  ADD WHATEVER BEFORE THE COPIES 
 # -----------------------------------
-
-
-
 
 # Copy microbetag utils 
 WORKDIR /home
@@ -207,6 +267,9 @@ COPY ref-dbs/silva ./ref-dbs/silva
 COPY ref-dbs/kegg_genomes ./ref-dbs/kegg_genomes
 
 ENV WORKFLOW otu_table
+
+
+
 # COPY test/ ./test/
 # CMD ["python3", "app.py"]
 # # CMD ["cwl-runner", "--debug", "test.cwl", "test-job.yml"]
@@ -214,3 +277,39 @@ ENV WORKFLOW otu_table
 # CMD ["sh", "-c", "python3 test.py ${WORKFLOW}"]
 # CMD ["python3", "scripts/build_a_graph.py", "/mnt/network_output.edgelist"]
 # CMD ["python3", "scripts/pass_networkx_to_dash.py"]
+
+
+
+
+
+
+# ----------------------------------------------------------------
+
+# WORKDIR /home/software/FAPROTAX_1.2.4/
+# RUN sed -i "208s/return (s.lower() is not 'nan') and is_number(s);/return (s.lower() != 'nan' and is_number(s))/g" collapse_table.py
+
+
+# # Format 
+# RUN pip install pyarrow
+
+
+# # In case Picrust2 is to be integrated // needs to be discussed.. 
+
+# # First, we need to set conda 
+
+# # Install miniconda
+# ENV CONDA_DIR /opt/conda
+# RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+#      /bin/bash ~/miniconda.sh -b -p /opt/conda 
+# RUN echo "export PATH=$CONDA_DIR/bin:$PATH" >> /root/.bashrc 
+
+# # Then, get Picrust2
+# WORKDIR /home/software
+# RUN wget https://github.com/picrust/picrust2/archive/v2.4.2.tar.gz &&\
+#     tar xvzf  v2.4.2.tar.gz &&\
+#     cd picrust2-2.4.2/ &&\
+#     conda env create -f picrust2-env.yaml
+
+# RUN echo "conda activate picrust2" >> ~/.bashrc
+# # SHELL ["/bin/bash", "--login", "-c"]   
+# RUN pip install --editable . 
