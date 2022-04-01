@@ -1,4 +1,4 @@
-# Sketching `microbetag` - building new skills!
+# Sketching `microbetag`
 
 
 ## The workflow
@@ -6,11 +6,6 @@
 - [FlashWeave](https://github.com/meringlab/FlashWeave.jl) [1] (if user does not provide an edge list along with the OTU table)
 
 - [FAPROTAX](http://www.loucalab.com/archive/FAPROTAX/lib/php/index.php) (as part of the phenotipic channel)
-
-- [BugBase](https://bugbase.cs.umn.edu/index.html) (as part of the phenotipic channel)
-
-- Pathway complementarity module only for the associations where both taxa are at the species or the strain level
-
 
 
 > *microbetag* needs to assign a NCBI Taxonomy Id to those taxonomies of the OTU table that are at the species level. This is not a straight-forward task across the various reference databases might be used for the taxonomy assignment step. Currently, *microbetag* supports OTU tables derived from the Silva v.138 release; Qiime2 and DADA2 . Alternatively, one may provide an OTU table derived from any reference database of choice with an extra column denoting the NCBI Taxonomy Id assigned to each OTU (see example [here]()). 
@@ -32,9 +27,7 @@
 
 **Output** files:
 
-- per module: the results of every tool invoked as returned
-
-- integrated: a `.json` file with the annotations from all the different modules per edge 
+- a network file (formats to be supported: `.json`, `.gml`, `.csv`) file with the annotations from all the different modules in each node (taxon) and edge (association) as well as a notion of whether the association can be considered as *of higher confidence*.
 
 
 ## Approach 
@@ -46,10 +39,30 @@ both at the species but also in higher levels.
 **microbetag** intends to address this challenge by exploiting different sources of information depending on the taxonomic level 
 of the taxa involved in each association pair. 
 
-> Future work: BugBase is supposed to work with shotgun metagenomics as well. 
+<!-- > Future work: BugBase is supposed to work with shotgun metagenomics as well. 
 If that is so, then it would be great for *microbetag* to go that way. 
 In any case, annotating associations coming from microbial co-occurrence networks derived from shotgun metagenomics can be of higher confidence in general; 
-especially when they correspond to MAGs 
+especially when they correspond to MAGs  -->
+
+
+
+
+1. amplicon data: 
+
+   * if a taxonomy does not exist, the OTUs/ASVs sequences are required. *microbetag* will use the phylogeny tree built out of the 16S sequences derived from the GTDB genomes (files: `ar122_ssu_reps_r202.fna` and `bac120_ssu_reps_r202.fna` files from the [GTDB FTP](https://data.gtdb.ecogenomic.org/releases/release202/202.0/genomic_files_reps/)) to place user's OTUs/ASVs on it before the annotation step (suggested in terms of the quality of the results)
+
+   * if a taxonomy exists, then this needs to be based on Silva and with tab-separated columns, one column per sample and one row per OTU, using the 7-level format.
+
+
+2. shotgun data: 
+
+   * if a taxonomy does not exist the user needs to provide the genomes. *microbetag* will then run GTDB-tk to assign them, this will take some time. Alternatvely, the user may provide only the 16S sequences of his/her genomes and *microbetag will do as in the amplicon case.
+
+   * if a taxonomy table is provided, it needs to have come using GTDB and the accession number of the closest genome to be provided too (suggested in terms of computation time)
+
+
+In any case, *microbetag* will use the NCBI Taxonomy Id assigned to the species and strains present to extract relative infromation from the phenotypical and environmental data module, and a genome accession id to use the closest GTDB genome to each node for the pathway complementarity module. 
+
 
 
 
@@ -68,7 +81,7 @@ So, the choice of the taxonomy about to be used is another strategic decision.
 
 ### KEGG
 
-KEGG GENOMES are **manually curated** and this makes their contribution essential to our task. 
+<!-- KEGG GENOMES are **manually curated** and this makes their contribution essential to our task. 
 
 - From KEGG organisms 
    - Bulk download - needs to pay first
@@ -94,13 +107,11 @@ KEGG GENOMES are **manually curated** and this makes their contribution essentia
 > **WRONG!**
 The way described above is not correct! 
 This is why there are more than 1 KEGG ids that are linked to the same 
-NCBI Taxonomy Id! 
-
->**Remember!**
-A certain KO term might contribute in more than 1 KEGG modules ! 
+NCBI Taxonomy Id!  -->
 
 
-**Logical Expression**
+
+**Logical Expressions**
 
 The pathway module is defined by the logical expression of K numbers, and the signature module is defined by the logical expression of K numbers and M numbers, allowing automatic evaluation of whether the gene set is complete, i.e., the functional unit is present, in a given genome. A space or a plus sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator and a comma, used for alternatives, is treated as an OR operator. A minus sign designates an optional item in the complex.
 
@@ -120,12 +131,8 @@ It seems like when there is a "--" symbol in a module, there's a missing KO term
 We assume that a module occurs in a species, if at least the 60% of the KO terms 
 required are available in the species' genome. 
 
-
-
-
-### MGnify catalogues
-
-
+>**Remember!**
+A certain KO term might contribute in more than 1 KEGG modules ! 
 
 
 
@@ -157,6 +164,20 @@ For more about it, you may see at the [KEGG website](https://www.genome.jp/tools
 
 
 
+* ssu_all_<release>.tar.gz
+        FASTA file containing 16S rRNA sequences identified across the set of GTDB genomes passing QC. The assigned taxonomy
+        reflects the GTDB classification of the genome. Sequences are identified using nhmmer with the 16S rRNA model (RF00177)
+        from the RFAM database. All sequences with a length >=200 bp and an E-value <= 1e-06 are reported.
+* bac120_ssu_reps_<release>.tar.gz
+        FASTA file of 16S rRNA gene sequences identified within the set of bacterial representative genomes. The longest
+        identified 16S rRNA sequence is selected for each representative genomes. The assigned taxonomy reflects the
+        GTDB classification of the genome. Sequences are identified using nhmmer with the 16S rRNA model (RF00177) from the
+        RFAM database. Only sequences with a length >=200 bp and an E-value <= 1e-06 are reported. In a small number of cases,
+        the 16S rRNA sequences are incongruent with this taxonomic assignment as a result of contaminating 16S rRNA sequences.
+
+
+
+
 
 ## Module 2: Phenotypical data
 
@@ -166,16 +187,9 @@ From the FAPROTAX website:
 *The FAPROTAX database is optimized for taxonomies in SILVA releases 128 and 132. Other taxonomies not consistent with SILVA 132 may work sub-optimally.*
 
 
-The way the 7-level files are built in the Qiime files, when the last item of a taxonomy is *uncultured* or something similar, then the NCBI Taxonomy Id is not the one of the genus of the entry (previous taxonomy level) but it corresponds to a general one.
-For example, assuming we have the taxonomy:
-```
-D_0__Bacteria;D_1__Firmicutes;D_2__Clostridia;D_3__Clostridiales;D_4__Lachnospiraceae;D_5__Butyrivibrio 2;D_6__uncultured bacterium
-```
-then, the NCBI Taxonomy Id that Qiime would provide us for that taxonomy, would be the one of the `D_6__uncultured bacterium` ([77133](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=77133)). 
-This way the fact that this is a species of the Butyrivibrio genus is lost. 
+In the *microbetag* framework, the taxonomies assigned are first filtered and only those from the family level and lower are kept. 
+Then FAPROTAX will run for the rest of the taxonomies of the OTU table. 
 
-*microbetag* is concerned only for the NCBI Taxonomy ids only of those assignments that are in the species or the strain level. 
-So, this is not a problem for our approach. 
 
 
 We had to edit the script.
@@ -194,17 +208,29 @@ return (s.lower() != 'nan' and is_number(s))
 
 ```
 
+### Traits from all over 
+
+Super useful [repo](https://github.com/bacteria-archaea-traits/bacteria-archaea-traits). 
+
+Relative publication at [Scientific data](https://www.nature.com/articles/s41597-020-0497-4) journal. 
+
+The repo exploits both the NCBI and the GTDB taxonomies.
+
+However, it is the NCBI Taxonomy ids that are used as keys. 
+Moreover, a certain NCBI Taxonomy id may occur more than one in the `condensed` files 
+and that is the `traits` files but only once in the `species` files. 
+
+*microbetag* will use the `species` file if it is a species under study 
+and the `traits` if it is a strain. 
+If a strain is not present in the `traits` file, then the species will be used. 
 
 
 
-### BugBase
-
-BugBase is based on Greengenes. 
-This leads to the need of linking somehow our taxonomies with those of Greengenes. 
-As Greenges 
 
 
+### PhenDB 
 
+https://phendb.org/
 
 
 ## Resources & approaches we `microbetag` could integrate 
