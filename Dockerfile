@@ -21,21 +21,20 @@ WORKDIR /home
 RUN apt-get update &&\
     apt-get install -y software-properties-common &&\
     apt-get update --fix-missing && \
-    # apt-get install -y buildessentials && \
-    apt-get install -y wget && \  
+    apt-get install -y wget && \
     apt-get install -y git && \
     apt-get install -y unzip && \
-    apt-get install -y mlocate && \ 
+    apt-get install -y mlocate && \
     apt-get install -y libbz2-dev && \
     apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
                      
 
 # Set Python
-RUN add-apt-repository ppa:deadsnakes/ppa &&\
 # Install py39 from deadsnakes repository
+# Install pip from standard ubuntu packages
+RUN add-apt-repository ppa:deadsnakes/ppa &&\
     apt-get install -y python3 &&\
-    # Install pip from standard ubuntu packages
     apt-get install -y python3-pip
 
 
@@ -46,7 +45,7 @@ RUN apt-get install -y gfortran && \
     apt-get install -y build-essential && \
     apt-get install -y fort77 && \
     apt-get install -y xorg-dev && \
-    apt-get install -y libblas-dev &&\ 
+    apt-get install -y libblas-dev &&\
     apt-get install -y gcc-multilib && \
     apt-get install -y gobjc++ && \
     apt-get install -y aptitude && \
@@ -104,12 +103,14 @@ WORKDIR /home/software
 RUN git clone https://github.com/knights-lab/BugBase.git
 
 RUN echo "export BUGBASE_PATH=/home/software/BugBase" >> /root/.bashrc && \
-    echo "export PATH=$PATH:$BUGBASE_PATH/bin" >> /root/.bashrc
+    echo "export PATH=$BUGBASE_PATH/bin:$PATH" >> /root/.bashrc
+
+ENV PATH="${BUGBASE_PATH}/bin:${PATH}"
 
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
 
 WORKDIR /usr/local/lib64/R/library
-RUN ln -s $PWD/dplyr /home/software/BugBase/R_lib &&\ 
+RUN ln -s $PWD/dplyr /home/software/BugBase/R_lib &&\
     ln -s $PWD/RColorBrewer /home/software/BugBase/R_lib &&\
     ln -s $PWD/beeswarm /home/software/BugBase/R_lib &&\
     ln -s $PWD/reshape2 /home/software/BugBase/R_lib &&\
@@ -160,7 +161,10 @@ RUN git clone https://github.com/InaMariaDeutschmann/EnDED.git &&\
 # As it is written in Julia we need to get that too
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz &&\
     tar -zxvf julia-1.7.1-linux-x86_64.tar.gz &&\
-    echo "export PATH=$PATH:/home/software/julia-1.7.1/bin" >> /root/.bashrc 
+    echo "export PATH=/home/software/julia-1.7.1/bin:$PATH" >> /root/.bashrc 
+
+ENV PATH="/home/software/julia-1.7.1/bin:${PATH}"
+
 # Get FlashWeave
 RUN /home/software/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
 
@@ -208,18 +212,18 @@ RUN export JAVA_HOME
 # Install Graphtools
 
 WORKDIR /home/software
-RUN wget http://msysbiology.com/documents/Graphtools.zip && \ 
-    unzip Graphtools.zip && \ 
-    cd Graphtools && \ 
-    export GRAPHTOOLS_ROOT=/home/software/Graphtools/Graphtools && \ 
-    export CLASSPATH=$CLASSPATH:$GRAPHTOOLS_ROOT/lib/NeAT_javatools.jar &&\ 
-    cd REA &&\  
-    make &&\ 
-    REA_ROOT=$GRAPHTOOLS_ROOT/REA && \ 
-    cd ../kwalks/src/ && \ 
-    make && \ 
-    KWALKS_ROOT=$GRAPHTOOLS_ROOT/kwalks/bin && \ 
-    echo "export CLASSPATH=$CLASSPATH" >> .bashrc && \ 
+RUN wget http://msysbiology.com/documents/Graphtools.zip && \
+    unzip Graphtools.zip && \
+    cd Graphtools && \
+    export GRAPHTOOLS_ROOT=/home/software/Graphtools/Graphtools && \
+    export CLASSPATH=$CLASSPATH:$GRAPHTOOLS_ROOT/lib/NeAT_javatools.jar &&\
+    cd REA &&\
+    make &&\
+    REA_ROOT=$GRAPHTOOLS_ROOT/REA && \
+    cd ../kwalks/src/ && \
+    make && \
+    KWALKS_ROOT=$GRAPHTOOLS_ROOT/kwalks/bin && \
+    echo "export CLASSPATH=$CLASSPATH" >> .bashrc && \
     echo "export REA_ROOT=$REA_ROOT" >> .bashrc
 
 
@@ -247,9 +251,10 @@ RUN git clone https://github.com/matthiasblanke/App-SpaM &&\
     mkdir build &&\
     cd build &&\
     cmake .. &&\
-    make &&\ 
-    echo "export PATH=$PATH:/usr/lib/App-SpaM/build/" >> /root/.bashrc 
+    make &&\
+    echo "export PATH=/usr/lib/App-SpaM/build/:$PATH" >> /root/.bashrc 
 
+ENV PATH="/usr/lib/App-SpaM/build/:${PATH}"
 
 
 # -----------------------------------
@@ -266,7 +271,7 @@ COPY microbetag.py  ./
 COPY ref-dbs/silva ./ref-dbs/silva
 COPY ref-dbs/kegg_genomes ./ref-dbs/kegg_genomes
 
-ENV WORKFLOW otu_table
+# ENV WORKFLOW otu_table
 
 
 
