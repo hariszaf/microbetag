@@ -142,16 +142,41 @@ def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
 
          if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
             print("Here is an association at the species level")
-            associations_dict['tax_level'] = "species"
+            associations_dict[k]['tax_level'] = "species"
          else:
             print("Case where at least on of the parts of the pair is not at the species level.")
-            associations_dict['tax_level'] = "genus or family"
+            associations_dict[k]['tax_level'] = "genus or family"
 
       except:
          print("OTU not found in species, genus or family level")
-         associations_dict['tax_level'] = "NA"
+         associations_dict[k]['tax_level'] = "NA"
 
    return associations_dict
 
 
+def otu_faprotax_functions_assignment(path_to_subtables):
+   """
+   Parse the sub tables of the faprotax analysis 
+   to assign the biological processes related to each OTU 
+   """
+   otu_faprotax_assignments = {}
 
+   for process_name in os.listdir(path_to_subtables): 
+      
+      f = os.path.join(path_to_subtables, process_name)
+      table_file = open(f, "r")
+      table_file = table_file.readlines()
+
+      for line in table_file[2:]:
+
+         otu_id = line.split("\t")[1]
+
+         if otu_id not in otu_faprotax_assignments:
+
+            otu_faprotax_assignments[otu_id] = [process_name]
+         
+         else:
+
+            otu_faprotax_assignments[otu_id].append(process_name)
+
+   return otu_faprotax_assignments
