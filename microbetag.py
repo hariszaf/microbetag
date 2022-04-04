@@ -98,10 +98,6 @@ def main():
    else: 
       edge_list = edgelist_to_ncbi_ids(EDGE_LIST, otu_to_tax_level)
 
-
-
-   print(edge_list)
-   sys.exit(0)
    
    """
    STEP: FAPROTAX
@@ -142,41 +138,16 @@ def main():
       # retrieved as values
       if faprotax_check: 
          path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
-         otu_faprotax_functions_assignment(path_to_subtables)
+         functions_per_otu = otu_faprotax_functions_assignment(path_to_subtables)
 
 
-   """
-   STEP: BugBase
-   """
-   logging.info('STEP: BugBase database oriented analaysis'.center(50, '*'))
-   if OTU_TABLE: 
-
-
-      bugbase_commands = [
-         "Rscript", "software/BugBase/bin/run.bugbase.r", 
-         "-i", OTU_TABLE,
-         "-o", BUGBASE_OUTPUT
-      ]
-
-      if METADATA_FILE:
-         bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
-      else: 
-         bugbase_commands = bugbase_commands + ["-a"]
-
-
-      cmd = ' '.join(bugbase_commands)
-
-      try:
-         logging.info('Phenotypic analysis using BugBase')
-         logging.info(cmd)
-         os.system(cmd)
-
-      except:
-         logging.exception("\nSomething went wrong when running the BugBase analysis!")
+         print(functions_per_otu)
+         sys.exit(0)
 
 
 
-   sys.exit(0)
+
+
 
    """
    STEP: PATHWAY COMPLEMENTARITY

@@ -7,7 +7,9 @@ import os, sys
 from utils.variables import * 
 
 def count_comment_lines(my_otu_table, my_taxonomy_column):
-
+   """
+   Get the number of rows of the OTU table that should be skipped 
+   """
    skip_rows = 0
    with open(my_otu_table, 'r') as f:
       for line in f:
@@ -22,7 +24,11 @@ def count_comment_lines(my_otu_table, my_taxonomy_column):
 
 
 def otu_table_preprocess(my_otu_table, my_taxonomy_column, otu_identifier_column):
-
+   """ 
+   Parse user's OTU table to get: 
+   1. OTU table in a microbetag-oriented format
+   2. a dictionary with the OTU ids as keys and the taxonomic level of the NCBI Taxonomy Id corresponding to the OTU's taxonomy
+   """
    number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
 
    otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
@@ -103,7 +109,9 @@ def otu_table_preprocess(my_otu_table, my_taxonomy_column, otu_identifier_column
 
 
 def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
-
+   """
+   Build an OTU table that will be in a FlashWeave-based format. 
+   """
    flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
    float_col        = flashweave_table.select_dtypes(include=['float64']) 
    
@@ -119,8 +127,10 @@ def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_co
 
 
 def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
-
-
+   """
+   Flag associations of edge list based on whether both taxa are at the species/strain level 
+   or at a higher one.
+   """
    if EDGE_LIST: 
       associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
 
@@ -180,3 +190,4 @@ def otu_faprotax_functions_assignment(path_to_subtables):
             otu_faprotax_assignments[otu_id].append(process_name)
 
    return otu_faprotax_assignments
+
