@@ -53,7 +53,7 @@ def main():
       logging.info("Make sure OTU table in tab separated format")
 
       # Load the initial OTU table as a pandas dataframe
-      otu_table = is_tab_separated(OTU_TABLE, TAX_COL)
+      otu_table, species_present, genus_present, families_present = is_tab_separated(OTU_TABLE, TAX_COL, OTU_COL)
       logging.info("Your OTU table is a tab separated file that microbetag can work with.")
 
 
@@ -76,7 +76,7 @@ def main():
       logging.info("Get the NCBI Taxonomy id for the taxonomies at the species level")
 
       # The get_species() function returns a pandas dataframe
-      species_present     = get_species(ext, TAX_COL, OTU_COL)  
+      # species_present     = get_species(ext, TAX_COL, OTU_COL)  
 
 
    """
@@ -102,10 +102,17 @@ def main():
 
       # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
       # {'0': {taxon_1: {}, taxon_2 }
-      edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)   
+
+      edge_list = edgelist_to_ncbi_ids(FLASHWEAVE_EDGELIST, species_present, OTU_COL) 
+
+   else: 
+      edge_list = edgelist_to_ncbi_ids(EDGE_LIST, species_present, OTU_COL)
 
 
 
+   print(edge_list)
+   sys.exit(0)
+   
    """
    STEP: FAPROTAX
    """
@@ -193,8 +200,6 @@ def main():
       """
 
       set_of_ncbi_ids_with_available_genomes = set(os.listdir('ref-dbs/kegg_genomes/'))
-
-
 
       if not EDGE_LIST:
 

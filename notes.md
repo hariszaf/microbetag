@@ -227,10 +227,15 @@ If a strain is not present in the `traits` file, then the species will be used.
 
 
 
-
 ### PhenDB 
 
 https://phendb.org/
+
+
+
+
+All the RefSeq genomes will be soon available for *microbetag* using the by default scores.
+
 
 
 ## Resources & approaches we `microbetag` could integrate 

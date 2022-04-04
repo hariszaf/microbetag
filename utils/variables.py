@@ -34,7 +34,7 @@ if cfg['column_names_are_in'] == True:
    COM_HEAD  = '"' + 'last_comment_line' + '"'
 
 
-EDGE_LIST     = cfg['edge_list'] if cfg['edge_list'] != None else False
+EDGE_LIST     = os.path.join(IO_PATH, cfg['edge_list']) if cfg['edge_list'] != None else False
 METADATA_FILE = cfg['metadata_file']
 
 PATHWAY_COMPLEMENTARITY = True if cfg['pathway_complementarity'] != False else False
@@ -43,6 +43,8 @@ PATHWAY_COMPLEMENTARITY = True if cfg['pathway_complementarity'] != False else F
 # Paths
 REF_DBS                     = os.path.join(BASE, "ref-dbs")
 SILVA_SPECIES_NCBI_ID       = os.path.join(REF_DBS, "silva/species_names_to_ncbi_id.tsv")
+SILVA_GENUS_NCBI_ID         = os.path.join(REF_DBS, "silva/genus_names_to_ncbiId.tsv")
+SILVA_FAMILY_NCBI_ID        =os.path.join(REF_DBS, "silva/family_names_to_ncbiId.tsv")
 KMODULES_DEFINITIONS        = os.path.join(REF_DBS, "kegg_mappings/module_definitions.tsv")
 KMODULES_DEFINITIONS_PARSED = os.path.join(REF_DBS, "kegg_mappings/module_definition_map.json")
 TOOLS                       = os.path.join(BASE, "tools")

@@ -56,5 +56,27 @@ Using Silva v132 we ended up with 36,249 unique species names with their corresp
 
 Ideally, *microbetag* would be able to include KO-annotated genomes for all this list of NCBI Taxonomy ids. 
 
+In addition, running: 
+```
+awk -F";" '{print $5}' cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt > family
+```
+we get all the entries at the family level. 
+
+And, with 
+
+```
+awk -F";" '{print $6}' cons_taxonomy_7_levels_silva_132_no_eukaryotes.txt > genus
+```
+
+the genus. 
+
+
+However, for those cases where GTDB uses names of lower taxonomic levels to the higher ones, we removed them from the latter ones. 
+For example, *Virgulinella fragilis* is a eukaryota actually but its chloroplast is under the "Chloroplast" "family" of Silva. 
+Its 7-level taxonomy on Silva would be: 
+```
+D_0__Bacteria;D_1__Cyanobacteria;D_2__Oxyphotobacteria;D_3__Chloroplast;D_4__Virgulinella fragilis;D_5__Virgulinella fragilis;D_6__Virgulinella fragilis
+```
+In this case, we skip of keeping that as a genus and a family name and we only keep it at the species level. 
 
 
