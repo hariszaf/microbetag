@@ -21,7 +21,7 @@ def count_comment_lines(my_otu_table, my_taxonomy_column):
    return skip_rows
 
 
-def is_tab_separated(my_otu_table, my_taxonomy_column, otu_identifier_column):
+def otu_table_preprocess(my_otu_table, my_taxonomy_column, otu_identifier_column):
 
    number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
 
@@ -69,10 +69,37 @@ def is_tab_separated(my_otu_table, my_taxonomy_column, otu_identifier_column):
       species_present  = silva_species_ncbi_id.merge(splitted_taxonomies, on = ['Species'])
       species_present  = species_present[['Species', 'ncbi_tax_id', otu_identifier_column]]
       genus_present    = silva_genus_ncbi_id.merge(splitted_taxonomies, on = ['Genus'])
+      genus_present    = genus_present[['Genus', 'ncbi_tax_id', otu_identifier_column]]
       families_present = silva_family_ncbi_id.merge(splitted_taxonomies, on = ['Family'])
+      families_present = families_present[['Family', 'ncbi_tax_id', otu_identifier_column]]
 
 
-   return otu_table, species_present, genus_present, families_present
+      # Match OTU to taxonomic level 
+      otu_to_tax_level = {}
+      spp = species_present.to_dict('index')
+      gsp = genus_present.to_dict('index')
+      fmp = families_present.to_dict('index')
+      
+      for k,v in spp.items():
+         otu_to_tax_level[v[otu_identifier_column]] = {}
+         otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
+         otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Species"
+
+      for k,v in gsp.items():
+
+         if v[otu_identifier_column] not in otu_to_tax_level.keys():
+            otu_to_tax_level[v[otu_identifier_column]] = {}
+            otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
+            otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Genus"
+
+      for k,v in fmp.items():
+
+         if v[otu_identifier_column] not in otu_to_tax_level.keys():
+            otu_to_tax_level[v[otu_identifier_column]] = {}
+            otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
+            otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Family"
+
+   return otu_table, otu_to_tax_level
 
 
 def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
@@ -91,7 +118,7 @@ def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_co
    return my_otu_table
 
 
-def edgelist_to_ncbi_ids(edgelist, species_to_ncbi_ids, otu_identifier_column):
+def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
 
 
    if EDGE_LIST: 
@@ -104,31 +131,27 @@ def edgelist_to_ncbi_ids(edgelist, species_to_ncbi_ids, otu_identifier_column):
 
    associations.columns = ['taxon_A', 'taxon_B', 'evidence']
 
+   associations_dict = associations.to_dict('index')
 
-   left_part = associations[['taxon_A', 'evidence']]
-   left_part.columns = [otu_identifier_column, 'evidence']
-   associations_with_ncbiIds_left = left_part.merge(species_to_ncbi_ids, on = otu_identifier_column)
-   associations_with_ncbiIds_left.columns = [otu_identifier_column, 'evidence', 'Taxon_A', 'NCBI_ID_A' ]
+   for k,v in associations_dict.items(): 
 
+      otu_1 = v['taxon_A']
+      otu_2 = v['taxon_B']
 
-   right_part = associations[['taxon_B', 'evidence']]
-   right_part.columns = [otu_identifier_column, 'evidence']
-   associations_with_ncbiIds_right = right_part.merge(species_to_ncbi_ids, on = otu_identifier_column)
-   associations_with_ncbiIds_right.columns = [otu_identifier_column, 'evidence', 'Taxon_B', 'NCBI_ID_B' ]
-   associations_with_ncbiIds_right.drop("evidence", axis=1, inplace=True)
+      try:
 
+         if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
+            print("Here is an association at the species level")
+            associations_dict['tax_level'] = "species"
+         else:
+            print("Case where at least on of the parts of the pair is not at the species level.")
+            associations_dict['tax_level'] = "genus or family"
 
-   data = [associations_with_ncbiIds_left['Taxon_A'], associations_with_ncbiIds_left['NCBI_ID_A'], associations_with_ncbiIds_right['Taxon_B'], associations_with_ncbiIds_right['NCBI_ID_B>
+      except:
+         print("OTU not found in species, genus or family level")
+         associations_dict['tax_level'] = "NA"
 
-   headers = ["taxon_a", "ncbi_a", "taxon_b", "ncbi_b", "evidence"]
-   
-   associations_with_ncbiIds = pd.concat(data, axis = 1, keys = headers)
-   
-   print(associations_with_ncbiIds)
-   print("\n\n~~~~~~\n\n")
-   print(associations)   
-
-   return associated_pairs
+   return associations_dict
 
 
 

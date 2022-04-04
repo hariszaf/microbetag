@@ -53,30 +53,20 @@ def main():
       logging.info("Make sure OTU table in tab separated format")
 
       # Load the initial OTU table as a pandas dataframe
-      otu_table, species_present, genus_present, families_present = is_tab_separated(OTU_TABLE, TAX_COL, OTU_COL)
-      logging.info("Your OTU table is a tab separated file that microbetag can work with.")
+      otu_table, otu_to_tax_level = otu_table_preprocess(OTU_TABLE, TAX_COL, OTU_COL)
+      logging.info("OTU table parsed. Species, genus and families present kept.")
 
-
+      # If there is no edge list file provided, adjust otu table so it can be used with FlashWeave
       if not EDGE_LIST:
-         """
-         Pre-process
-         """
-         logging.info("The user has not provided an edge list. microbetag will build one using FlashWeaeve.")
          if not os.path.exists(FLASHWEAVE_OUTPUT_DIR):
             os.mkdir(FLASHWEAVE_OUTPUT_DIR)
-
-         logging.info("Assure OTU table format fits FlashWeave")
          ext = ensure_flashweave_format(otu_table, TAX_COL, OTU_COL)
-
+         logging.info("microbetag converted OTU table in a FlashWeave-oriented format.")
+      
       else:
 
          ext = otu_table.copy()
          ext['microbetag_id'] = otu_table[OTU_COL]
-
-      logging.info("Get the NCBI Taxonomy id for the taxonomies at the species level")
-
-      # The get_species() function returns a pandas dataframe
-      # species_present     = get_species(ext, TAX_COL, OTU_COL)  
 
 
    """
@@ -103,10 +93,10 @@ def main():
       # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
       # {'0': {taxon_1: {}, taxon_2 }
 
-      edge_list = edgelist_to_ncbi_ids(FLASHWEAVE_EDGELIST, species_present, OTU_COL) 
+      edge_list = edgelist_to_ncbi_ids(FLASHWEAVE_EDGELIST, otu_to_tax_level) 
 
    else: 
-      edge_list = edgelist_to_ncbi_ids(EDGE_LIST, species_present, OTU_COL)
+      edge_list = edgelist_to_ncbi_ids(EDGE_LIST, otu_to_tax_level)
 
 
 
