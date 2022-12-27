@@ -2,6 +2,14 @@
 microbetag attempts to be a microbial interactions co-occurrence network annotator
 
 
+## How to run 
+
+```bash
+python microbetag.py -conf config.yml 
+```
+
+
+
 ## Docker 
 
 The `microbetag` annotator will be available as a Docker image....

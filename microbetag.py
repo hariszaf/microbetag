@@ -1,190 +1,240 @@
 #!/usr/bin/env python3
 
 """
-what is microbetag about and how to use it 
+[TODO: what is microbetag about and how to use it ]
 """
-
 __author__  = 'Haris Zafeiropoulos'
-__email__   = 'haris-zaf@hcmr.gr'
+__email__    = 'haris-zaf@hcmr.gr'
 __status__  = 'Development'
 __license__ = 'GPLv3'
 __version__ = 'v.0.0.1'
 
 from utils import *
+from tools.faprotax.collapse_table import *
+from tools.pathway_complementarity.pathway_complementarity import *
 import os
 
 def main():
+    """
+    Assure the output directory
+    """
+    if not os.path.exists(OUT_DIR):
+        os.mkdir(OUT_DIR)
 
-   """
-   Assure the output directory
-   """
-   if not os.path.exists(OUT_DIR):
-      os.mkdir(OUT_DIR)
+    """
+    Setting logging
+    """
+    # Using FileHandler writing log to file
+    logfile = os.path.join(OUT_DIR, 'log.txt')
+    fh        = logging.FileHandler(logfile)
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
 
-   """
-   Setting logging
-   """
-   # Using FileHandler writing log to file
-   logfile = os.path.join(OUT_DIR, 'log.txt')
-   fh      = logging.FileHandler(logfile)
-   fh.setLevel(logging.DEBUG)
-   fh.setFormatter(formatter)
+    # Using StreamHandler writing to console
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+    ch.setFormatter(formatter)
 
-   # Using StreamHandler writing to console
-   ch = logging.StreamHandler()
-   ch.setLevel(logging.INFO)
-   ch.setFormatter(formatter)
+    # Using error
+    eh = logging.StreamHandler()
+    eh.setLevel(logging.ERROR)
+    eh.setFormatter(formatter)
 
-   # Add the two Handlers
-   logger.addHandler(ch)
-   logger.addHandler(fh)
+    # Add the two Handlers
+    logger.addHandler(ch)
+    logger.addHandler(fh)
+    logger.addHandler(eh)
 
-   """
-   Welcome message and arguments values
-   """
-   logging.info("Hello microbe-fun! microbetag is about to start!")
-   logging.info('Your command was: {}'.format(' '.join(sys.argv)))
+    """
+    Welcome message and arguments values
+    """
+    logging.info("Hello microbe-fun! microbetag is about to start!")
+    logging.info('Your command was: {}'.format(' '.join(sys.argv)))
 
+    """
+    STEP: OTU table preprocess 
+    """
+    if OTU_TABLE: 
+        logging.info("Make sure OTU table in tab separated format")
 
-   """
-   STEP: OTU table preprocess 
-   """
-   if OTU_TABLE: 
-      logging.info("Make sure OTU table in tab separated format")
-
-      # Load the initial OTU table as a pandas dataframe
-      otu_table, otu_to_tax_level = otu_table_preprocess(OTU_TABLE, TAX_COL, OTU_COL)
-      logging.info("OTU table parsed. Species, genus and families present kept.")
-
-      # If there is no edge list file provided, adjust otu table so it can be used with FlashWeave
-      if not EDGE_LIST:
-         if not os.path.exists(FLASHWEAVE_OUTPUT_DIR):
-            os.mkdir(FLASHWEAVE_OUTPUT_DIR)
-         ext = ensure_flashweave_format(otu_table, TAX_COL, OTU_COL)
-         logging.info("microbetag converted OTU table in a FlashWeave-oriented format.")
-      
-      else:
-
-         ext = otu_table.copy()
-         ext['microbetag_id'] = otu_table[OTU_COL]
+        # Load the initial OTU table as a pandas dataframe
+        otu_table = is_tab_separated(OTU_TABLE, TAX_COL)
+        logging.info("Your OTU table is a tab separated file that microbetag can work with.")
 
 
-   """
-   STEP: Get co-occurrence network
-   """
-   logging.info('STEP: Get co-occurrence network'.center(50, '*'))
-   if not EDGE_LIST:
+        if not EDGE_LIST:
+            """
+            Pre-process
+            """
+            logging.info("The user has not provided an edge list. microbetag will build one using FlashWeaeve.")
+            if not os.path.exists(FLASHWEAVE_OUTPUT_DIR):
+                os.mkdir(FLASHWEAVE_OUTPUT_DIR)
 
-      """
-      Run FlashWeave
-      """
-      logging.info("Run FlashWeave")
-      flashweave_parmas = [
-         "julia", FLASHWEAVE_SCRIPT, FLASHWEAVE_OUTPUT_DIR, FLASHWEAVE_TMP_INPUT
-      ]
-      flashweave_command = ' '.join(flashweave_parmas)
-      os.system(flashweave_command)
+            logging.info("Assure OTU table format fits FlashWeave")
+            ext = ensure_flashweave_format(otu_table, TAX_COL, OTU_COL)
 
-      """
-      Assign NCBI Taxonomy ids to the nodes of the network
-      """
-      logging.info("Match a NCBI Taxonomy id to the species present on the OTU table.")
+        else:
 
-      # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
-      # {'0': {taxon_1: {}, taxon_2 }
+            ext = otu_table.copy()
+            ext['microbetag_id'] = otu_table[OTU_COL]
 
-      edge_list = edgelist_to_ncbi_ids(FLASHWEAVE_EDGELIST, otu_to_tax_level) 
+        logging.info("Get the NCBI Taxonomy id for the taxonomies at the species level")
 
-   else: 
-      edge_list = edgelist_to_ncbi_ids(EDGE_LIST, otu_to_tax_level)
+        # The get_species() function returns a pandas dataframe
+        species_present      = get_species(ext, TAX_COL, OTU_COL)  
 
-   
-   """
-   STEP: FAPROTAX
-   """
-   logging.info('STEP: FAPROTAX database oriented analaysis'.center(50, '*'))
-   if OTU_TABLE: 
+    """
+    STEP: Get co-occurrence network
+    """
+    if not EDGE_LIST:
+        """
+        Run FlashWeave
+        """
+        logging.info('STEP: Get co-occurrence network'.center(50, '*'))
+        logging.info("Run FlashWeave")
 
-      if not os.path.exists(FAPROTAX_OUTPUT_DIR):
-         os.mkdir(FAPROTAX_OUTPUT_DIR)
+        test_julia = os.system( "julia -v")
+        if test_julia != 0:
+            logging.info("Julia is not present in the OS. Please intall or run microbetag as a Docker image.")
+            sys.exit(0)
 
-      faprotax_check = False
+        flashweave_parmas = [
+            "julia", FLASHWEAVE_SCRIPT, FLASHWEAVE_OUTPUT_DIR, FLASHWEAVE_TMP_INPUT
+        ]
+        flashweave_command = ' '.join(flashweave_parmas)
+        
+        if os.system(flashweave_command) == 0:
+            logging.info("FlashWeave performed fine.")
+        else:
+            logging.error("NO FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
+            sys.exit(0)
 
-      faprotax_params = [
-         "python3", FAPROTAX_SCRIPT,
-         "-i",     OTU_TABLE,
-         "-o",     FAPROTAX_FUNCT_TABLE,
-         "-g",     FAPROTAX_DB,
-         "-c", '"' + COM_CHAR + '"',
-         "-d", '"' +  TAX_COL + '"',
-         "-v",
-         "-s",     FAPROTAX_SUB_TABLES,
-      ]
+        # Assign NCBI Taxonomy ids to the nodes of the network
+        logging.info("Match a NCBI Taxonomy id to the species present on the OTU table.")
 
-      if COM_HEAD:
-         faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
+        # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
+        # {'0': {taxon_1: {}, taxon_2 }
+        edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)    
 
-      cmd = ' '.join(faprotax_params)
+    """
+    STEP: FAPROTAX
+    """
+    logging.info('STEP: FAPROTAX database oriented analaysis'.center(50, '*'))
+    if OTU_TABLE: 
 
-      try:
-         logging.info('Phenotypic analysis using FAPROTAX')
-         logging.info(cmd)
-         os.system(cmd)
-         faprotax_check = True
-      except:
-         logging.exception("\nSomething went wrong when running the FAPROTAX analysis!")
+        if not os.path.exists(FAPROTAX_OUTPUT_DIR):
+            os.mkdir(FAPROTAX_OUTPUT_DIR)
 
-      # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes 
-      # retrieved as values
-      if faprotax_check: 
-         path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
-         functions_per_otu = otu_faprotax_functions_assignment(path_to_subtables)
+        faprotax_check = False
+
+        faprotax_params = [
+            "python3", FAPROTAX_SCRIPT,
+            "-i",      OTU_TABLE,
+            "-o",      FAPROTAX_FUNCT_TABLE,
+            "-g",      FAPROTAX_DB,
+            "-c", '"' + COM_CHAR + '"',
+            "-d", '"' +  TAX_COL + '"',
+            "-v",
+            "-s",      FAPROTAX_SUB_TABLES,
+        ]
+
+        if COM_HEAD:
+            faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
+
+        cmd = ' '.join(faprotax_params)
+
+        try:
+            logging.info('Phenotypic analysis using BugBase')
+            logging.info(cmd)
+            os.system(cmd)
+            faprotax_check = True
+        except:
+            logging.exception("\nSomething went wrong when running the BugBase analysis!")
+
+        # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes 
+        # retrieved as values
+        if faprotax_check: 
+            path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
+            otu_faprotax_functions_assignment(path_to_subtables)
+
+    """
+    STEP: BugBase
+    """
+    logging.info('STEP: BugBase database oriented analaysis'.center(50, '*'))
+    if OTU_TABLE: 
+
+        # Make a copy of the otu table without the taxonomy column 
+        f = open(OTU_TABLE, "r")
+        g = open(OUT_DIR + "/tmp_bugbase_otu_table.txt", "w")
+        for line in f:
+            g.write("\t".join(line.split("\t")[:-1]) + "\n")
+
+        bugbase_commands = [
+            "Rscript", BUGBASE_SCRIPT, 
+            "-i", OUT_DIR + "/tmp_bugbase_otu_table.txt",
+            "-o", BUGBASE_OUTPUT, 
+            "-a", 
+        ]
+
+        if METADATA_FILE:
+            bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
+
+        cmd = ' '.join(bugbase_commands)
+
+        # Run BugBase
+        try:
+            logging.info("Phenotypic analysis using BugBase")
+            logging.info(cmd)
+            os.system(cmd)
+
+        except:
+            logging.exception("\nSomething went wrong when running the BugBase analysis!")
+
+    """
+    [TODO: Parse the bugbase/otu_contributions/contributing_otus.txt to assign features in the OTUs ]
+    """
+    os.remove(OUT_DIR + "/tmp_bugbase_otu_table.txt")
 
 
-         print(functions_per_otu)
-         sys.exit(0)
+    """
+    STEP: PATHWAY COMPLEMENTARITY
+    """
+    logging.info("STEP: PhenDB ".center(50, '*'))
+    if PHEN_DB == True: 
+
+        print("run phendb")
 
 
 
+    """
+    STEP: PATHWAY COMPLEMENTARITY
+    """
+    logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, '*'))
+    if PATHWAY_COMPLEMENTARITY == True: 
 
+        """
+        Remember to change the path from kegg_genomes to all_genomes once the latter is ready 
+        """
+        set_of_ncbi_ids_with_available_genomes = set(os.listdir('ref-dbs/kegg_genomes/'))
 
+        if not EDGE_LIST:
 
-   """
-   STEP: PATHWAY COMPLEMENTARITY
-   """
-   logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, '*'))
-   if PATHWAY_COMPLEMENTARITY == True: 
-      
+            for pair in edge_list.values(): 
 
-      """
-      Remember to change the path from kegg_genomes to all_genomes once the latter is ready 
-      """
+                taxon_a = pair['taxon_1']['ncbi_tax_id']
+                taxon_b = pair['taxon_2']['ncbi_tax_id']
 
-      set_of_ncbi_ids_with_available_genomes = set(os.listdir('ref-dbs/kegg_genomes/'))
+                if taxon_a in set_of_ncbi_ids_with_available_genomes and taxon_b in set_of_ncbi_ids_with_available_genomes: 
 
-      if not EDGE_LIST:
+                    pathway_complementarity(taxon_a, taxon_b)
 
-         for pair in edge_list.values(): 
+        else: 
 
-            taxon_a = pair['taxon_1']['ncbi_tax_id']
-            taxon_b = pair['taxon_2']['ncbi_tax_id']
-
-            if taxon_a in set_of_ncbi_ids_with_available_genomes and taxon_b in set_of_ncbi_ids_with_available_genomes: 
-
-               pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id)
-
-      else: 
-
-         """
-         In case you are using your own edge list or if you have already run microbetag and you have already one
-         """
-
-
-
-
-
+            """
+            In case you are using your own edge list or if you have already run microbetag and you have already one
+            """
 
 
 
 if __name__ == '__main__':
-   main()
+    main()

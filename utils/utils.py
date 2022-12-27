@@ -109,52 +109,34 @@ def otu_table_preprocess(my_otu_table, my_taxonomy_column, otu_identifier_column
    return otu_table, otu_to_tax_level
 
 
-def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
-   """
-   Build an OTU table that will be in a FlashWeave-based format. 
-   """
-   flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
-   float_col        = flashweave_table.select_dtypes(include=['float64']) 
-   
-   for col in float_col.columns.values:
-      flashweave_table[col] = flashweave_table[col].astype('int64')
+# def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
+#    """
+#    Flag associations of edge list based on whether both taxa are at the species/strain level 
+#    or at a higher one.
+#    """
+#    if EDGE_LIST: 
+#       associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
+#    else: 
+#       associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
 
-   my_otu_table[otu_identifier_column] = flashweave_table[otu_identifier_column]
-   file_to_save                  = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+#    associations.columns = ['taxon_A', 'taxon_B', 'evidence']
 
-   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+#    associations_dict = associations.to_dict('index')
 
-   return my_otu_table
+#    for k,v in associations_dict.items(): 
 
+#       otu_1 = v['taxon_A']
+#       otu_2 = v['taxon_B']
 
-def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
-   """
-   Flag associations of edge list based on whether both taxa are at the species/strain level 
-   or at a higher one.
-   """
-   if EDGE_LIST: 
-      associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
-   else: 
-      associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
+#       try:
+#          if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
+#             associations_dict[k]['tax_level'] = "species"
+#          else:
+#             associations_dict[k]['tax_level'] = "genus or family"
+#       except:
+#          associations_dict[k]['tax_level'] = "NA"
 
-   associations.columns = ['taxon_A', 'taxon_B', 'evidence']
-
-   associations_dict = associations.to_dict('index')
-
-   for k,v in associations_dict.items(): 
-
-      otu_1 = v['taxon_A']
-      otu_2 = v['taxon_B']
-
-      try:
-         if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
-            associations_dict[k]['tax_level'] = "species"
-         else:
-            associations_dict[k]['tax_level'] = "genus or family"
-      except:
-         associations_dict[k]['tax_level'] = "NA"
-
-   return associations_dict
+#    return associations_dict
 
 
 def otu_faprotax_functions_assignment(path_to_subtables):
@@ -219,11 +201,161 @@ def build_annotated_graph(edgelist, otu2ncbi, **kwargs):
 
       edge               = {} 
       edge["data"]       = {}
-      edge["data"]["id"] = 
+      edge["data"]["id"] = association
       edge["data"]["source"] = edge_elements["taxon_A"]
       edge["data"]["target"] = edge_elements["taxon_B"]
       if not EDGE_LIST: 
          edge["data"]["FlashWeave-weight"] = edge_elements["evidence"]
 
       
+
+
+
+def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
+
+
+   try: 
+
+      """
+      The pd.filter() function: 
+      Subset rows or columns of dataframe according to labels in the specified index. 
+      Note that this routine does not filter a dataframe on its contents. 
+      The filter is applied to the labels of the index.
+      """
+
+      # keep only otu ids and taxonomies assigned
+      otu_id_and_taxonomy = my_otu_table.filter([otu_identifier_column, my_taxonomy_column, 'microbetag_id']) 
+
+      # logging.info("Your OTU table lead to a dataframe with columns of the following types: \n",
+                     # otu_id_and_taxonomy.dtypes.value_counts())
+
+      # keep only the last level of lineage assigned and remove white spaces if any before the species name assigned
+      otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.split(';').str[-1]
+      otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.strip()
+
+   except:
+
+      logging.error("The taxonomy column could not be retrieved from you OTU table. \n \
+                     Check for any strange characters on your OTU table or its format.")
+
+   # Load the Silva species names along with ther NCBI Taxonomy ids
+   silva_species_ncbi_id         = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
+   silva_species_ncbi_id.columns = ['species_name', 'ncbi_tax_id']
+   silva_species_ncbi_id['species_name'].str.strip()
+  
+   # Make a column showing whether or not the species of each row is included on the Silva ref file
+   otu_id_and_taxonomy['present'] = otu_id_and_taxonomy[my_taxonomy_column].isin(silva_species_ncbi_id['species_name'])
+
+   # We make a map (dictionary) keeping as a key the column that links the 2 datadrames; in this case the species name
+   map_dict = dict(zip(silva_species_ncbi_id['species_name'], silva_species_ncbi_id['ncbi_tax_id']))
+   otu_id_and_taxonomy['ncbi_tax_id'] = otu_id_and_taxonomy[my_taxonomy_column].map(map_dict)
+
+   # Keep only those rows that have "True" as a value on the 'present' column
+   otu_id_species_name_ncbi_id = otu_id_and_taxonomy[otu_id_and_taxonomy.present]
+
+   # And then remove the column 'present'
+   """
+   REMEMBER TO REPLACE THE FOLLOWING COMMANDS WITH .loc
+   """
+   otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].apply(lambda f: format(f, '.0f'))
+   otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].map(str)
+
+
+   logging.info("\n A table including only the taxonomies assigned to a valid species name has been built. \n \
+                    The species have been mathed to their corresponding NCBI Taxonomy ids.\n")
+
+   return otu_id_species_name_ncbi_id
+
+
+
+
+def is_tab_separated(my_otu_table, my_taxonomy_column):
+
+   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+   if otu_table.shape[1] < 2:
+
+      logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
+
+   return otu_table
+
+def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
+   """
+   Build an OTU table that will be in a FlashWeave-based format. 
+   """
+   flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
+   float_col        = flashweave_table.select_dtypes(include=['float64']) 
+   
+   for col in float_col.columns.values:
+      flashweave_table[col] = flashweave_table[col].astype('int64')
+
+   flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
+   my_otu_table['microbetag_id']           = flashweave_table[otu_identifier_column]
+   file_to_save                            = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+
+   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+
+   return my_otu_table
+
+
+def edge_list_of_ncbi_ids(edgelist, species_to_ncbi_ids):
+
+   f = open(edgelist, "r")
+   associations = f.readlines()
+
+   species_present_ncbi_ids_as_dict = species_to_ncbi_ids.to_dict(orient = 'records')
+
+   associated_pairs = {}
+
+   for association in associations[2:]:
+
+      taxon_a = association.split("\t")[0]
+      taxon_b = association.split("\t")[1]
+
+      taxon_a_index = None
+      taxon_b_index = None
+
+      for index, entry in enumerate(species_present_ncbi_ids_as_dict):
+
+         if taxon_a == entry['microbetag_id']:
+            taxon_a_index = index
+
+         if taxon_b == entry['microbetag_id']:
+            taxon_b_index = index
+
+      if taxon_a_index != None and taxon_b_index != None: 
+         associated_pairs[str(len(associated_pairs))] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = species_present_ncbi_ids_as_dict[taxon_a_index]
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = {}
+         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = species_present_ncbi_ids_as_dict[taxon_b_index]
+
+   return associated_pairs
+
+
+
+
+# number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+
+# otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+
+
+
+# if species_to_ncbi_ids.isin([taxon_a]).any().any() and species_to_ncbi_ids.isin([taxon_b]).any().any():
+   # df2_a = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_a]
+   # df2_b = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_b]
+   # df2   = pd.concat([df2_a.reset_index(), df2_b.reset_index()], axis = 1)
+
+
+
+
+
+
+
+
+
+
+
 

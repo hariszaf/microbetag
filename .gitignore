@@ -20,6 +20,8 @@ bin-release/
 
 kegg_genomes/
 mgnify_catalogues/
+gtdb_kofam_scan_per_module/
+
 gtdb_genomes/
 *.keg
 
@@ -36,5 +38,8 @@ __pycache__/
 mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
 ref-dbs/microbetag_genomes/
-ref-dbs/gtdb_genomes/all_kofam_scan/
+
+
+
+tools/BugBase/
 

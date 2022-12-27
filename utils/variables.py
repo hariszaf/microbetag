@@ -1,7 +1,6 @@
 """
 Global variables
 """
-
 import os
 import sys 
 import yaml
@@ -12,19 +11,20 @@ from .arguments import *
 with open(args.conf, "r") as ymlfile:
    cfg = yaml.load(ymlfile, Loader = yaml.FullLoader)
 
-
 BASE      = os.getcwd() 
 
 if cfg['approach']['container']:
    IO_PATH   = "/mnt/"
 
 else:
-   IO_PATH   = cfg['approach']['io_path']
+   if BASE in cfg['approach']['io_path']:
+      IO_PATH   = cfg['approach']['io_path']
+   else:
+      IO_PATH = BASE + "/" + cfg['approach']['io_path']
 
 
 OTU_TABLE = os.path.join(IO_PATH, cfg['otu_table'])
 OUT_DIR   = os.path.join(IO_PATH, cfg['output_directory'])
-
 
 TAX_COL   = cfg['taxonomy_column_name']
 OTU_COL   = cfg['otu_identifier_column']
@@ -34,10 +34,11 @@ if cfg['column_names_are_in'] == True:
    COM_HEAD  = '"' + 'last_comment_line' + '"'
 
 
-EDGE_LIST     = os.path.join(IO_PATH, cfg['edge_list']) if cfg['edge_list'] != None else False
-METADATA_FILE = cfg['metadata_file']
+EDGE_LIST            = os.path.join(IO_PATH, cfg[ "edge_list" ]) if cfg[ "edge_list" ] != None else False
+METADATA_FILE = cfg[ "metadata_file" ]
 
-PATHWAY_COMPLEMENTARITY = True if cfg['pathway_complementarity'] != False else False
+PATHWAY_COMPLEMENTARITY = True if cfg[ "pathway_complementarity" ] != False else False
+PHEN_DB                                            = True if cfg[ "PhenDB"] != False else False
 
 
 # Paths
@@ -64,6 +65,9 @@ FAPROTAX_FUNCT_TABLE        = os.path.join(FAPROTAX_OUTPUT_DIR, "functional_otu_
 FAPROTAX_SUB_TABLES         = os.path.join(FAPROTAX_OUTPUT_DIR, "sub_tables")
 
 # BugBase
-BUGBASE_OUTPUT              = os.path.join(OUT_DIR, "bugbase")
-BUGBASE_OPTIONAL            = cfg['bugbase_opt']
+BUGBASE_SCRIPT       = os.path.join(TOOLS, "BugBase/bin/run.bugbase.r")
+BUGBASE_OUTPUT     = os.path.join(OUT_DIR, "bugbase")
+BUGBASE_OPTIONAL  = cfg[ "bugbase_opt" ]
+
+# PhenDB
 
