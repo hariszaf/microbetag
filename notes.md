@@ -66,6 +66,53 @@ In any case, *microbetag* will use the NCBI Taxonomy Id assigned to the species 
 
 
 
+## Silva database
+
+In the `genus_names_to_ncbiId.tsv` file, several names were found to map with more than one NCBI Tax Ids.
+Thus, manually we checked which ids are related to bacteria and it was them we kept.
+For 2 genera (Ponticoccus and Ileibacterium) both ids correspond to Bacteria.
+For the first, [983507](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=983507&lvl=3&lin=f&keep=1&srchmode=1&unlock) was kept.
+For the latter the [1937007](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=1937007&lvl=3&lin=f&keep=1&srchmode=1&unlock#note1) was kept.
+
+```
+323:D_5__Bacillus       1386\n55087
+345:D_5__Bergeriella    758824\n334108
+365:D_5__Bogoriella     1929901\n56054
+371:D_5__Bosea  85413\n169215
+397:D_5__Buchnera       46073\n32199
+672:D_5__Centipeda      82202\n82283
+700:D_5__Chlorosarcina brevispinosa     163096\n2491361
+765:D_5__Coxiella       776\n1260513
+918:D_5__Diplosphaera   381755\n1148783
+940:D_5__Edwardsiella   635\n132406
+978:D_5__Eremococcus    171412\n308526
+1086:D_5__Fuerstia      204225\n1936111
+1154:D_5__Gordonia      2053\n79255
+1219:D_5__Halofilum     2045120\n1929135
+1345:D_5__Ileibacterium 1980680\n1937007
+1431:D_5__Labrys        204476\n2066135
+1451:D_5__Lamprocystis  53452\n424207
+1459:D_5__Lawsonia      1091138\n41707\n141190
+1479:D_5__Leptonema     32205\n177878\n177871
+1482:D_5__Leptothrix    88\n1907117
+1519:D_5__Longispora    203522\n2759766
+1750:D_5__Morganella    90690\n581\n108061
+1848:D_5__Nitrospira    1234\n203693
+1960:D_5__Paracoccus    265\n249411
+2076:D_5__Planococcus   40929\n1372
+2102:D_5__Ponticoccus   983507\n2896773
+2142:D_5__Proteus       210425\n583
+2255:D_5__Rhodobium     34016\n869314
+2258:D_5__Rhodococcus   1661425\n1827
+2317:D_5__Rothia        32207\n508215
+2410:D_5__Schwartzia    164984\n55506
+2599:D_5__Syntrophus    1671858\n43773
+2720:D_5__Thermosipho   2420\n1445919
+3680:D_5__Verticia      991145\n1835332
+3732:D_5__Yersinia      444888\n629
+```
+
+
 ## Module 1 : Pathway complementarity
 
 A strategic point of contradiction in the pathway complementarity module, is that 

@@ -13,25 +13,27 @@ with open(args.conf, "r") as ymlfile:
 
 BASE      = os.getcwd() 
 
-if cfg['approach']['container']:
+if cfg["approach"]["container"]:
    IO_PATH   = "/mnt/"
 
 else:
-   if BASE in cfg['approach']['io_path']:
-      IO_PATH   = cfg['approach']['io_path']
+   if BASE in cfg["approach"]["io_path"]:
+      IO_PATH   = cfg["approach"]["io_path"]
    else:
-      IO_PATH = BASE + "/" + cfg['approach']['io_path']
+      IO_PATH = BASE + "/" + cfg["approach"]["io_path"]
 
 
-OTU_TABLE = os.path.join(IO_PATH, cfg['otu_table'])
-OUT_DIR   = os.path.join(IO_PATH, cfg['output_directory'])
+OTU_TABLE = os.path.join(IO_PATH, cfg["otu_table"])
+OTU_TABLE_DELIM = cfg["otu_table_delim"]
+OUT_DIR   = os.path.join(IO_PATH, cfg["output_directory"])
 
-TAX_COL   = cfg['taxonomy_column_name']
-OTU_COL   = cfg['otu_identifier_column']
-COM_CHAR  = cfg['comments_character']
+TAX_COL   = cfg["taxonomy_column_name"]
+TAX_DELIM = cfg["taxonomy_delimeter"]
+OTU_COL   = cfg["otu_identifier_column"]
+COM_CHAR  = cfg["comments_character"]
 
-if cfg['column_names_are_in'] == True: 
-   COM_HEAD  = '"' + 'last_comment_line' + '"'
+if cfg["column_names_are_in"] == True: 
+   COM_HEAD  = '"' + "last_comment_line" + '"'
 
 
 EDGE_LIST            = os.path.join(IO_PATH, cfg[ "edge_list" ]) if cfg[ "edge_list" ] != None else False
@@ -43,11 +45,17 @@ PHEN_DB                                            = True if cfg[ "PhenDB"] != F
 
 # Paths
 REF_DBS                     = os.path.join(BASE, "ref-dbs")
+
+# Silva paths
 SILVA_SPECIES_NCBI_ID       = os.path.join(REF_DBS, "silva/species_names_to_ncbi_id.tsv")
 SILVA_GENUS_NCBI_ID         = os.path.join(REF_DBS, "silva/genus_names_to_ncbiId.tsv")
 SILVA_FAMILY_NCBI_ID        =os.path.join(REF_DBS, "silva/family_names_to_ncbiId.tsv")
+
+# KEGG paths
 KMODULES_DEFINITIONS        = os.path.join(REF_DBS, "kegg_mappings/module_definitions.tsv")
 KMODULES_DEFINITIONS_PARSED = os.path.join(REF_DBS, "kegg_mappings/module_definition_map.json")
+
+# Tools
 TOOLS                       = os.path.join(BASE, "tools")
 
 # FlashWeave

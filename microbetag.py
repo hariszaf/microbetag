@@ -55,12 +55,11 @@ def main():
     STEP: OTU table preprocess 
     """
     if OTU_TABLE: 
-        logging.info("Make sure OTU table in tab separated format")
+        logging.info("Make sure OTU table is in tab separated format")
 
         # Load the initial OTU table as a pandas dataframe
         otu_table = is_tab_separated(OTU_TABLE, TAX_COL)
         logging.info("Your OTU table is a tab separated file that microbetag can work with.")
-
 
         if not EDGE_LIST:
             """
@@ -74,14 +73,12 @@ def main():
             ext = ensure_flashweave_format(otu_table, TAX_COL, OTU_COL)
 
         else:
-
             ext = otu_table.copy()
             ext['microbetag_id'] = otu_table[OTU_COL]
 
-        logging.info("Get the NCBI Taxonomy id for the taxonomies at the species level")
-
-        # The get_species() function returns a pandas dataframe
-        species_present      = get_species(ext, TAX_COL, OTU_COL)  
+        # Map taxonomies to ontology ids
+        logging.info("Get the NCBI Taxonomy id for those OTUs that have been assigned either at the species, the genus or the family level.")
+        otu_table_ncbi_tax_level_and_id = map_otu_to_ncbi_tax_level_and_id(ext, TAX_COL, OTU_COL)
 
     """
     STEP: Get co-occurrence network
@@ -106,15 +103,15 @@ def main():
         if os.system(flashweave_command) == 0:
             logging.info("FlashWeave performed fine.")
         else:
-            logging.error("NO FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
+            logging.error("No FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
             sys.exit(0)
 
-        # Assign NCBI Taxonomy ids to the nodes of the network
-        logging.info("Match a NCBI Taxonomy id to the species present on the OTU table.")
+        # Build an edge list using NCBI Tax Ids
+        logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
+        edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_table_ncbi_tax_level_and_id)
+        sys.exit(0)
 
-        # The edge_list_of_ncbi_ids() function returns a dictionary like this: 
-        # {'0': {taxon_1: {}, taxon_2 }
-        edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, species_present)    
+
 
     """
     STEP: FAPROTAX
@@ -197,7 +194,7 @@ def main():
 
 
     """
-    STEP: PATHWAY COMPLEMENTARITY
+    STEP: PhenDB
     """
     logging.info("STEP: PhenDB ".center(50, '*'))
     if PHEN_DB == True: 

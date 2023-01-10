@@ -320,7 +320,7 @@ D_5__Azospira	146937
 D_5__Azospirillum	191
 D_5__Azotobacter	352
 D_5__Azovibrio	146935
-D_5__Bacillus	1386\n55087
+D_5__Bacillus	1386
 D_5__Bacteriovorax	146784
 D_5__Bacteroides	816
 D_5__Baia	1763552
@@ -342,7 +342,7 @@ D_5__Beijerinckia	532
 D_5__Belliella	232244
 D_5__Bellilinea	475960
 D_5__Belnapia	365532
-D_5__Bergeriella	758824\n334108
+D_5__Bergeriella	334108
 D_5__Bergeyella	59735
 D_5__Bermanella	599651
 D_5__Bernardetia	1937972
@@ -362,13 +362,13 @@ D_5__Blastomonas	150203
 D_5__Blastopirellula	265487
 D_5__Blattabacterium	34098
 D_5__Blautia	572511
-D_5__Bogoriella	1929901\n56054
+D_5__Bogoriella	56054
 D_5__Bombella	1654741
 D_5__Bombiscardovia	1159909
 D_5__Bordetella	517
 D_5__Borrelia	138
 D_5__Borreliella	64895
-D_5__Bosea	85413\n169215
+D_5__Bosea	85413
 D_5__Boseongicola	1648497
 D_5__Boulardia latisquama	362387
 D_5__Bounagaea	1931219
@@ -394,7 +394,7 @@ D_5__Brooklawnia	369926
 D_5__Brucella	234
 D_5__Brumimicrobium	200473
 D_5__Bryobacter	911113
-D_5__Buchnera	46073\n32199
+D_5__Buchnera	32199
 D_5__Budvicia	82978
 D_5__Bulleidia	118747
 D_5__Buttiauxella	82976
@@ -669,7 +669,7 @@ D_5__Cellulosilyticum	698776
 D_5__Cellulosimicrobium	157920
 D_5__Cellvibrio	10
 D_5__Cenarchaeum	46769
-D_5__Centipeda	82202\n82283
+D_5__Centipeda	82202
 D_5__Cephaloticoccus	1849551
 D_5__Cerasibacillus	227864
 D_5__Cerasicoccus	468938
@@ -697,7 +697,7 @@ D_5__Chlorobium	1091
 D_5__Chloroflexus	1107
 D_5__Chloroherpeton	100715
 D_5__Chloronema	166588
-D_5__Chlorosarcina brevispinosa	163096\n2491361
+D_5__Chlorosarcina brevispinosa	2491361
 D_5__Chondromyces	50
 D_5__Christensenella	990721
 D_5__Chromatium	1047
@@ -762,7 +762,7 @@ D_5__Corynebacterium	1716
 D_5__Cosenzaea	1354333
 D_5__Costertonia	343334
 D_5__Couchioplanes	56433
-D_5__Coxiella	776\n1260513
+D_5__Coxiella	776
 D_5__Crassaminicella	1848399
 D_5__Craurococcus	77583
 D_5__Crenalkalicoccus	1820341
@@ -915,7 +915,7 @@ D_5__Dietzia	37914
 D_5__Dinghuibacter	1795363
 D_5__Dinoroseobacter	309512
 D_5__Diplorickettsia	59195
-D_5__Diplosphaera	381755\n1148783
+D_5__Diplosphaera	1148783
 D_5__Dissulfuribacter	1433998
 D_5__Dissulfurimicrobium	1769732
 D_5__Dissulfurirhabdus	1840207
@@ -937,7 +937,7 @@ D_5__Echinicola	390846
 D_5__Ectothiorhodosinus	233099
 D_5__Ectothiorhodospira	1051
 D_5__Edaphobacter	388463
-D_5__Edwardsiella	635\n132406
+D_5__Edwardsiella	635
 D_5__Effusibacillus	1502725
 D_5__Eggerthella	84111
 D_5__Eggerthia	1279384
@@ -975,7 +975,7 @@ D_5__Eoetvoesia	1477505
 D_5__Epibacterium	1649279
 D_5__Epulopiscium	2383
 D_5__Ercella	1649284
-D_5__Eremococcus	171412\n308526
+D_5__Eremococcus	171412
 D_5__Erysipelatoclostridium	1505663
 D_5__Erysipelothrix	1647
 D_5__Erythrobacter	1041
@@ -1083,7 +1083,7 @@ D_5__Frondibacter	1655196
 D_5__Frondihabitans	447237
 D_5__Fructobacillus	559173
 D_5__Fuchsiella	1242734
-D_5__Fuerstia	204225\n1936111
+D_5__Fuerstia	1936111
 D_5__Fulvibacter	426598
 D_5__Fulvimarina	217510
 D_5__Fulvimonas	155196
@@ -1151,7 +1151,7 @@ D_5__Glutamicibacter	1742989
 D_5__Glycocaulis	1433402
 D_5__Glycomyces	58113
 D_5__Goodfellowiella	334857
-D_5__Gordonia	2053\n79255
+D_5__Gordonia	2053
 D_5__Gordonibacter	644652
 D_5__Gottschalkia	1505664
 D_5__Gracilaria chilensis	2510777
@@ -1216,7 +1216,7 @@ D_5__Halodurantibacterium	1822382
 D_5__Haloechinothrix	1425377
 D_5__Haloferax	2251
 D_5__Haloferula	574899
-D_5__Halofilum	2045120\n1929135
+D_5__Halofilum	1929135
 D_5__Halogeometricum	60846
 D_5__Haloglycomyces	651553
 D_5__Halogranum	695982
@@ -1342,7 +1342,7 @@ D_5__Ignavibacterium	795750
 D_5__Ignavigranum	89092
 D_5__Ignicoccus	54258
 D_5__Ignisphaera	334767
-D_5__Ileibacterium	1980680\n1937007
+D_5__Ileibacterium	1937007
 D_5__Ilumatobacter	682522
 D_5__Ilyobacter	167639
 D_5__Immundisolibacter	1934947
@@ -1428,7 +1428,7 @@ D_5__Labedella	390250
 D_5__Labilibacter	1849718
 D_5__Labilithrix	1524217
 D_5__Labrenzia	478070
-D_5__Labrys	204476\n2066135
+D_5__Labrys	204476
 D_5__Laceyella	292635
 D_5__Lachnoanaerobaculum	1164882
 D_5__Lachnobacterium	140625
@@ -1448,7 +1448,7 @@ D_5__Lactococcus	1357
 D_5__Lactonifactor	420345
 D_5__Lactovum	303226
 D_5__Lacunisphaera	1961799
-D_5__Lamprocystis	53452\n424207
+D_5__Lamprocystis	53452
 D_5__Lampropedia	198705
 D_5__Lapillicoccus	402170
 D_5__Laribacter	168470
@@ -1456,7 +1456,7 @@ D_5__Larkinella	332157
 D_5__Larsenimonas	1775121
 D_5__Lautropia	47670
 D_5__Lawsonella	1847725
-D_5__Lawsonia	1091138\n41707\n141190
+D_5__Lawsonia	41707
 D_5__Leadbetterella	319458
 D_5__Lebetimonas	267989
 D_5__Lecanicillium muscarium	2231603
@@ -1476,10 +1476,10 @@ D_5__Lentimonas	417293
 D_5__Lentisphaera	256846
 D_5__Leptobacterium	472054
 D_5__Leptolinea	475966
-D_5__Leptonema	32205\n177878\n177871
+D_5__Leptonema	32205
 D_5__Leptospira	171
 D_5__Leptospirillum	179
-D_5__Leptothrix	88\n1907117
+D_5__Leptothrix	88
 D_5__Leptotrichia	32067
 D_5__Leuconostoc	1243
 D_5__Leucothrix	45247
@@ -1516,7 +1516,7 @@ D_5__Longilinea	475961
 D_5__Longimicrobium	1804994
 D_5__Longimonas	1829937
 D_5__Longimycelium	1434016
-D_5__Longispora	203522\n2759766
+D_5__Longispora	203522
 D_5__Lonsdalea	1082702
 D_5__Lophozia gillmanii	1285448
 D_5__Luedemannella	349314
@@ -1747,7 +1747,7 @@ D_5__Mongoliitalea	1511649
 D_5__Mooreia	1522130
 D_5__Moorella	44260
 D_5__Moraxella	475
-D_5__Morganella	90690\n581\n108061
+D_5__Morganella	581
 D_5__Moryella	437755
 D_5__Motilibacter	1434021
 D_5__Motilimonas	1914248
@@ -1845,7 +1845,7 @@ D_5__Nitrosococcus	1227
 D_5__Nitrosomonas	914
 D_5__Nitrosospira	35798
 D_5__Nitrospina	35800
-D_5__Nitrospira	1234\n203693
+D_5__Nitrospira	1234
 D_5__Nitrospirillum	1543705
 D_5__Niveibacterium	1769726
 D_5__Niveispirillum	1543704
@@ -1957,7 +1957,7 @@ D_5__Parabacteroides	375288
 D_5__Parablastomonas	1654718
 D_5__Parachlamydia	83551
 D_5__Paraclostridium	1849822
-D_5__Paracoccus	265\n249411
+D_5__Paracoccus	265
 D_5__Paracraurococcus	77674
 D_5__Paraeggerthella	651554
 D_5__Parafilimonas	1649476
@@ -2073,7 +2073,7 @@ D_5__Planktomarina	1284657
 D_5__Planktosalinus	1810932
 D_5__Planktotalea	1195766
 D_5__Planobispora	29298
-D_5__Planococcus	40929\n1372
+D_5__Planococcus	1372
 D_5__Planomicrobium	162291
 D_5__Planomonospora	1998
 D_5__Planosporangium	689760
@@ -2099,7 +2099,7 @@ D_5__Pontibaca	1400059
 D_5__Pontibacillus	289201
 D_5__Pontibacter	323449
 D_5__Ponticaulis	1123044
-D_5__Ponticoccus	983507\n2896773
+D_5__Ponticoccus	983507
 D_5__Pontimonas	1434032
 D_5__Pontivivens	1844015
 D_5__Porphyrobacter	1111
@@ -2139,7 +2139,7 @@ D_5__Proteiniclasticum	1155385
 D_5__Proteiniphilum	294702
 D_5__Proteinivorax	1491776
 D_5__Proteobacteria bacterium B210	2211119
-D_5__Proteus	210425\n583
+D_5__Proteus	583
 D_5__Prototheca kruegeri	2509260
 D_5__Providencia	586
 D_5__Pseudacidovorax	433923
@@ -2252,10 +2252,10 @@ D_5__Rhodanobacter	75309
 D_5__Rhodobaca	119541
 D_5__Rhodobacter	1060
 D_5__Rhodobaculum	1640884
-D_5__Rhodobium	34016\n869314
+D_5__Rhodobium	34016
 D_5__Rhodoblastus	168658
 D_5__Rhodocista	34023
-D_5__Rhodococcus	1661425\n1827
+D_5__Rhodococcus	1827
 D_5__Rhodocyclus	1064
 D_5__Rhodocytophaga	455076
 D_5__Rhodoferax	28065
@@ -2314,7 +2314,7 @@ D_5__Roseomonas	125216
 D_5__Roseospira	86671
 D_5__Roseospirillum	83400
 D_5__Roseovarius	74030
-D_5__Rothia	32207\n508215
+D_5__Rothia	32207
 D_5__Ruania	626119
 D_5__Rubellimicrobium	295418
 D_5__Rubeoparvulum	1935206
@@ -2407,7 +2407,7 @@ D_5__Schlegelella	215579
 D_5__Schleiferia	1333716
 D_5__Schlesneria	656899
 D_5__Schumannella	472058
-D_5__Schwartzia	164984\n55506
+D_5__Schwartzia	55506
 D_5__Sciscionella	596495
 D_5__Scopulibacillus	442527
 D_5__seawater metagenome	1561972
@@ -2596,7 +2596,7 @@ D_5__Syntrophococcus	84036
 D_5__Syntrophomonas	862
 D_5__Syntrophorhabdus	513557
 D_5__Syntrophothermus	129001
-D_5__Syntrophus	1671858\n43773
+D_5__Syntrophus	43773
 D_5__Tabrizicola	1443919
 D_5__Taeseokella	1763563
 D_5__Tagaea	1755817
@@ -2717,7 +2717,7 @@ D_5__Thermoproteus	2270
 D_5__Thermorudis	1649508
 D_5__Thermosediminibacter	291988
 D_5__Thermosinus	261684
-D_5__Thermosipho	2420\n1445919
+D_5__Thermosipho	2420
 D_5__Thermosphaera	54253
 D_5__Thermosporothrix	768650
 D_5__Thermostilla	1755820
@@ -3677,7 +3677,7 @@ D_5__Ventosimonas	1827307
 D_5__Verminephrobacter	364316
 D_5__Verrucomicrobium	2735
 D_5__Verrucosispora	84593
-D_5__Verticia	991145\n1835332
+D_5__Verticia	1835332
 D_5__Vespertiliibacter	1520333
 D_5__Vibrio	662
 D_5__Vibrionimonas	1649511
@@ -3729,7 +3729,7 @@ D_5__Xylophilus	54066
 D_5__Yangia	2919626
 D_5__Yaniella	225447
 D_5__Yeosuana	288018
-D_5__Yersinia	444888\n629
+D_5__Yersinia	629
 D_5__Yokenella	158876
 D_5__Yonghaparkia	355929
 D_5__Youhaiella	1827478

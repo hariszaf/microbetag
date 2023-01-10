@@ -23,121 +23,72 @@ def count_comment_lines(my_otu_table, my_taxonomy_column):
                break
    return skip_rows
 
-
-def otu_table_preprocess(my_otu_table, my_taxonomy_column, otu_identifier_column):
+def map_otu_to_ncbi_tax_level_and_id(otu_table, my_taxonomy_column, otu_identifier_column):
    """ 
-   Parse user's OTU table to get: 
-   1. OTU table in a microbetag-oriented format
-   2. a dictionary with the OTU ids as keys and the taxonomic level of the NCBI Taxonomy Id corresponding to the OTU's taxonomy
+   Parse user's OTU table and the Silva database to get to add 2 extra columns in the OTU table: 
+   1. the lowest taxonomic level of the taxonomy assigned in an OTU, for which an NCBI Taxonomy id exists (e.g., "genus")
+   2. the corresponding NCBI Taxonomy Id (e.g., "343")
    """
-   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
+   taxonomies = otu_table.filter([otu_identifier_column, my_taxonomy_column])
 
-   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
+   # Split the taxonomy column and split it based on semicolumn! 
+   splitted_taxonomies         = taxonomies[my_taxonomy_column].str.split(TAX_DELIM, expand = True)
+   splitted_taxonomies.columns = ["Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
+   splitted_taxonomies[otu_identifier_column] = taxonomies[otu_identifier_column]
 
-   if otu_table.shape[1] < 2:
+   # Make sure there is no white space character in the Species, Genus and Family levels
+   splitted_taxonomies['Species'] = splitted_taxonomies['Species'].str.strip()
+   splitted_taxonomies['Genus']   = splitted_taxonomies['Genus'].str.strip()
+   splitted_taxonomies['Family']  = splitted_taxonomies['Family'].str.strip()
 
-      logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
+   # Read the species, genus and family files of Silva db with their NCBI IDs
+   silva_species_ncbi_id                   = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
+   silva_species_ncbi_id.columns = ['Species', 'ncbi_tax_id']
+   silva_species_ncbi_id['Species'].str.strip()
 
-   else: 
+   silva_genus_ncbi_id                   = pd.read_csv(SILVA_GENUS_NCBI_ID, sep = "\t")
+   silva_genus_ncbi_id.columns = ['Genus', 'ncbi_tax_id']
+   silva_genus_ncbi_id['Genus'].str.strip()
 
-      try: 
+   silva_family_ncbi_id                   = pd.read_csv(SILVA_FAMILY_NCBI_ID, sep = "\t")
+   silva_family_ncbi_id.columns = ['Family', 'ncbi_tax_id']
+   silva_family_ncbi_id['Family'].str.strip()
 
-         # Build a 2-col dataframe (identifier - taxonomy)
-         taxonomies = otu_table.filter([otu_identifier_column, my_taxonomy_column])
+   # Build a dataframe for the Species, Genus and Family taxonomies present on the OTU table along with their corresponding NCBI Tax IDs
+   species_present  = silva_species_ncbi_id.merge(splitted_taxonomies, on = ['Species'])
+   species_present  = species_present[['Species', 'ncbi_tax_id', otu_identifier_column]]
+   species_present.insert(0,"ncbi_tax_level", "species") 
 
-         # Split the taxonomy column and split it based on semicolumn! -----  MAKE THAT MORE GENERAL AT A LATER POINT
-         splitted_taxonomies         = taxonomies[my_taxonomy_column].str.split(';', expand = True)
-         splitted_taxonomies.columns = ["Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
-         splitted_taxonomies[otu_identifier_column] = taxonomies[otu_identifier_column]
+   genera_present    = silva_genus_ncbi_id.merge(splitted_taxonomies, on = ['Genus'])
+   genera_present    = genera_present[['Genus', 'ncbi_tax_id', otu_identifier_column]]
+   genera_present.insert(0,"ncbi_tax_level", "genus") 
+   
+   families_present = silva_family_ncbi_id.merge(splitted_taxonomies, on = ['Family'])
+   families_present = families_present[['Family', 'ncbi_tax_id', otu_identifier_column]]
+   families_present.insert(0,"ncbi_tax_level", "family") 
 
-         # Make sure there is no white space character in the Species, Genus and Family levels
-         splitted_taxonomies['Species'] = splitted_taxonomies['Species'].str.strip()
-         splitted_taxonomies['Genus']   = splitted_taxonomies['Genus'].str.strip()
-         splitted_taxonomies['Family']  = splitted_taxonomies['Family'].str.strip()
+   # Buid a merged df with the NCBI level and the corresponding tax id
+   merged_taxonomies = splitted_taxonomies.set_index(OTU_COL)
+   merged_taxonomies.insert(0,"ncbi_tax_id", "NaN")
+   merged_taxonomies.insert(0,"ncbi_tax_level", "NaN")
 
-      except:
-         logging.error("The taxonomy column could not be retrieved from you OTU table. \n \
-                        Check for any strange characters on your OTU table or its format.")
+   species_present = splitted_taxonomies.set_index(OTU_COL)
+   genera_present = genera_present.set_index(OTU_COL)
+   families_present = families_present.set_index(OTU_COL)
 
-      # Read the species, genus and family files of Silva db with their NCBI IDs
-      silva_species_ncbi_id         = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
-      silva_species_ncbi_id.columns = ['Species', 'ncbi_tax_id']
-      silva_species_ncbi_id['Species'].str.strip()
+   merged_taxonomies.update(families_present)
+   merged_taxonomies.reset_index(inplace=True)
 
-      silva_genus_ncbi_id         = pd.read_csv(SILVA_GENUS_NCBI_ID, sep = "\t")
-      silva_genus_ncbi_id.columns = ['Genus', 'ncbi_tax_id']
-      silva_genus_ncbi_id['Genus'].str.strip()
+   merged_taxonomies.update(genera_present)
+   merged_taxonomies.reset_index(inplace=True)
 
-      silva_family_ncbi_id         = pd.read_csv(SILVA_FAMILY_NCBI_ID, sep = "\t")
-      silva_family_ncbi_id.columns = ['Family', 'ncbi_tax_id']
-      silva_family_ncbi_id['Family'].str.strip()
-
-      # Build a dataframe for the Species, Genus and Family taxonomies present on the OTU table along with their corresponding NCBI Tax IDs
-      species_present  = silva_species_ncbi_id.merge(splitted_taxonomies, on = ['Species'])
-      species_present  = species_present[['Species', 'ncbi_tax_id', otu_identifier_column]]
-      genus_present    = silva_genus_ncbi_id.merge(splitted_taxonomies, on = ['Genus'])
-      genus_present    = genus_present[['Genus', 'ncbi_tax_id', otu_identifier_column]]
-      families_present = silva_family_ncbi_id.merge(splitted_taxonomies, on = ['Family'])
-      families_present = families_present[['Family', 'ncbi_tax_id', otu_identifier_column]]
-
-
-      # Match OTU to taxonomic level 
-      otu_to_tax_level = {}
-      spp = species_present.to_dict('index')
-      gsp = genus_present.to_dict('index')
-      fmp = families_present.to_dict('index')
-      
-      for k,v in spp.items():
-         otu_to_tax_level[v[otu_identifier_column]] = {}
-         otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
-         otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Species"
-
-      for k,v in gsp.items():
-
-         if v[otu_identifier_column] not in otu_to_tax_level.keys():
-            otu_to_tax_level[v[otu_identifier_column]] = {}
-            otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
-            otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Genus"
-
-      for k,v in fmp.items():
-
-         if v[otu_identifier_column] not in otu_to_tax_level.keys():
-            otu_to_tax_level[v[otu_identifier_column]] = {}
-            otu_to_tax_level[v[otu_identifier_column]]['ncbi_id']   = v['ncbi_tax_id']
-            otu_to_tax_level[v[otu_identifier_column]]['tax_level'] = "Family"
-
-   return otu_table, otu_to_tax_level
-
-
-# def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
-#    """
-#    Flag associations of edge list based on whether both taxa are at the species/strain level 
-#    or at a higher one.
-#    """
-#    if EDGE_LIST: 
-#       associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
-#    else: 
-#       associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
-
-#    associations.columns = ['taxon_A', 'taxon_B', 'evidence']
-
-#    associations_dict = associations.to_dict('index')
-
-#    for k,v in associations_dict.items(): 
-
-#       otu_1 = v['taxon_A']
-#       otu_2 = v['taxon_B']
-
-#       try:
-#          if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
-#             associations_dict[k]['tax_level'] = "species"
-#          else:
-#             associations_dict[k]['tax_level'] = "genus or family"
-#       except:
-#          associations_dict[k]['tax_level'] = "NA"
-
-#    return associations_dict
-
+   merged_taxonomies.update(species_present)
+   merged_taxonomies.reset_index(inplace=True)
+   merged_taxonomies.drop(columns=["level_0", "index"],  inplace=True)
+ 
+   merged_taxonomies[OTU_COL] = merged_taxonomies[OTU_COL].apply(str)
+ 
+   return merged_taxonomies
 
 def otu_faprotax_functions_assignment(path_to_subtables):
    """
@@ -196,7 +147,6 @@ def build_annotated_graph(edgelist, otu2ncbi, **kwargs):
          """
       nodes.append(node)
 
-
    for association, edge_elements in edgelist.items():
 
       edge               = {} 
@@ -207,34 +157,112 @@ def build_annotated_graph(edgelist, otu2ncbi, **kwargs):
       if not EDGE_LIST: 
          edge["data"]["FlashWeave-weight"] = edge_elements["evidence"]
 
-      
+def is_tab_separated(my_otu_table, my_taxonomy_column):
+   """
+   Read the OTU table and make sure it is tab separated and not empty
+   """
 
+   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
 
+   try:
+      otu_table = pd.read_csv(my_otu_table, sep = OTU_TABLE_DELIM, skiprows= number_of_commented_lines)
+   except:
+      logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
+
+   if otu_table.shape[1] < 2 :
+      logging.error("The OTU table you provide has no records.")
+
+   return otu_table
+
+def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
+   """
+   Build an OTU table that will be in a FlashWeave-based format. 
+   """
+   flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
+   float_col                   = flashweave_table.select_dtypes(include=['float64']) 
+   
+   for col in float_col.columns.values:
+      flashweave_table[col] = flashweave_table[col].astype('int64')
+
+   flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
+   my_otu_table['microbetag_id']                     = flashweave_table[otu_identifier_column]
+
+   file_to_save  = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+
+   return my_otu_table
+
+def edge_list_of_ncbi_ids(edgelist, otu_table_with_ncbi_ids):
+   """
+   Read an edge list and build a dataframe with the corresponding ncbi ids for each pair 
+   if and only if, both OTUs have been mapped to a NCBI tax id 
+   e.g.
+       ncbi_tax_id_a       ncbi_tax_level_a     ncbi_tax_id_b      ncbi_tax_level_b
+         0             838          genus                      171552           family
+         1        186803     family                      186807           family
+   """
+   f = open(edgelist, "r")
+   associations = f.readlines()
+   associated_pairs = pd.DataFrame(columns=["ncbi_tax_id_a", 
+                                                                                             "ncbi_tax_level_a", 
+                                                                                             "ncbi_tax_id_b", 
+                                                                                             "ncbi_tax_level_b"]
+                                                                        )
+   counter = 0
+   for association in associations[2:]:
+
+      otu_a = association.split("\t")[0]
+      otu_b = association.split("\t")[1]
+
+      if not EDGE_LIST:
+         otu_a = otu_a[11:]
+         otu_b = otu_b[11:]
+
+      ncbi_id_otu_a      = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_a]["ncbi_tax_id"]
+      ncbi_level_otu_a = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_a]["ncbi_tax_level"]
+      ncbi_id_otu_b      = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_b]["ncbi_tax_id"]
+      ncbi_level_otu_b = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_b]["ncbi_tax_level"]
+
+      if ncbi_id_otu_a.item() != "NaN" and ncbi_id_otu_b.item() !="NaN":
+         df = pd.DataFrame(
+            { "ncbi_tax_id_a": ncbi_id_otu_a.item(),
+              "ncbi_tax_level_a": ncbi_level_otu_a.item(),
+              "ncbi_tax_id_b": ncbi_id_otu_b.item(),
+              "ncbi_tax_level_b": ncbi_level_otu_b.item()
+            }, 
+            index=[counter]
+         )
+         associated_pairs = pd.concat([associated_pairs, df], axis=0)
+         counter += 1
+
+   # In the otu table pd we have floats and strings in the Id column, so we need to make sure we now have only strings 
+   associated_pairs["ncbi_tax_id_a"] = associated_pairs["ncbi_tax_id_a"].apply(int)
+   associated_pairs["ncbi_tax_id_a"] = associated_pairs["ncbi_tax_id_a"].apply(str)
+   associated_pairs["ncbi_tax_id_b"] = associated_pairs["ncbi_tax_id_b"].apply(int)
+   associated_pairs["ncbi_tax_id_b"] = associated_pairs["ncbi_tax_id_b"].apply(str)
+
+   return associated_pairs
 
 def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
-
-
+   """
+   DEPRECATED FUNCTION
+   """
    try: 
 
       """
-      The pd.filter() function: 
-      Subset rows or columns of dataframe according to labels in the specified index. 
-      Note that this routine does not filter a dataframe on its contents. 
-      The filter is applied to the labels of the index.
+      pd.filter(): 
+         Subset rows or columns of dataframe according to labels in the specified index. 
+         Note that this routine does not filter a dataframe on its contents. 
+         The filter is applied to the labels of the index.
       """
-
-      # keep only otu ids and taxonomies assigned
+      # Keep only otu ids and taxonomies assigned
       otu_id_and_taxonomy = my_otu_table.filter([otu_identifier_column, my_taxonomy_column, 'microbetag_id']) 
 
-      # logging.info("Your OTU table lead to a dataframe with columns of the following types: \n",
-                     # otu_id_and_taxonomy.dtypes.value_counts())
-
-      # keep only the last level of lineage assigned and remove white spaces if any before the species name assigned
+      # Keep only the last level of lineage assigned and remove white spaces if any before the species name assigned
       otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.split(';').str[-1]
       otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.strip()
 
    except:
-
       logging.error("The taxonomy column could not be retrieved from you OTU table. \n \
                      Check for any strange characters on your OTU table or its format.")
 
@@ -260,102 +288,40 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
    otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].apply(lambda f: format(f, '.0f'))
    otu_id_species_name_ncbi_id['ncbi_tax_id'] = otu_id_species_name_ncbi_id['ncbi_tax_id'].map(str)
 
-
    logging.info("\n A table including only the taxonomies assigned to a valid species name has been built. \n \
                     The species have been mathed to their corresponding NCBI Taxonomy ids.\n")
 
    return otu_id_species_name_ncbi_id
 
-
-
-
-def is_tab_separated(my_otu_table, my_taxonomy_column):
-
-   number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
-
-   otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
-
-   if otu_table.shape[1] < 2:
-
-      logging.error("The OTU table provided is not a tab separated file. Please convert your OTU table to .tsv or .csv format.")
-
-   return otu_table
-
-def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_column):
+def edgelist_to_ncbi_ids(edgelist, otu_2_tax_level):
    """
-   Build an OTU table that will be in a FlashWeave-based format. 
+   DEPRECATED FUNCTION
    """
-   flashweave_table = my_otu_table.drop(my_taxonomy_column, axis = 1)
-   float_col        = flashweave_table.select_dtypes(include=['float64']) 
-   
-   for col in float_col.columns.values:
-      flashweave_table[col] = flashweave_table[col].astype('int64')
 
-   flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
-   my_otu_table['microbetag_id']           = flashweave_table[otu_identifier_column]
-   file_to_save                            = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
+   """
+   Flag associations of edge list based on whether both taxa are at the species/strain level 
+   or at a higher one.
+   """
+   if EDGE_LIST: 
+      associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
+   else: 
+      associations = pd.read_csv(edgelist, sep = "\t", skiprows = 2)
 
-   flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
+   associations.columns = ['taxon_A', 'taxon_B', 'evidence']
 
-   return my_otu_table
+   associations_dict = associations.to_dict('index')
 
+   for k,v in associations_dict.items(): 
 
-def edge_list_of_ncbi_ids(edgelist, species_to_ncbi_ids):
+      otu_1 = v['taxon_A']
+      otu_2 = v['taxon_B']
 
-   f = open(edgelist, "r")
-   associations = f.readlines()
+      try:
+         if otu_2_tax_level[otu_1]['tax_level'] == "Species" and otu_2_tax_level[otu_2]['tax_level'] == "Species":
+            associations_dict[k]['tax_level'] = "species"
+         else:
+            associations_dict[k]['tax_level'] = "genus or family"
+      except:
+         associations_dict[k]['tax_level'] = "NA"
 
-   species_present_ncbi_ids_as_dict = species_to_ncbi_ids.to_dict(orient = 'records')
-
-   associated_pairs = {}
-
-   for association in associations[2:]:
-
-      taxon_a = association.split("\t")[0]
-      taxon_b = association.split("\t")[1]
-
-      taxon_a_index = None
-      taxon_b_index = None
-
-      for index, entry in enumerate(species_present_ncbi_ids_as_dict):
-
-         if taxon_a == entry['microbetag_id']:
-            taxon_a_index = index
-
-         if taxon_b == entry['microbetag_id']:
-            taxon_b_index = index
-
-      if taxon_a_index != None and taxon_b_index != None: 
-         associated_pairs[str(len(associated_pairs))] = {}
-         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = {}
-         associated_pairs[str(len(associated_pairs) - 1)]['taxon_1'] = species_present_ncbi_ids_as_dict[taxon_a_index]
-         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = {}
-         associated_pairs[str(len(associated_pairs) - 1)]['taxon_2'] = species_present_ncbi_ids_as_dict[taxon_b_index]
-
-   return associated_pairs
-
-
-
-
-# number_of_commented_lines = count_comment_lines(my_otu_table, my_taxonomy_column)
-
-# otu_table = pd.read_csv(my_otu_table, sep = "\t", skiprows= number_of_commented_lines)
-
-
-
-# if species_to_ncbi_ids.isin([taxon_a]).any().any() and species_to_ncbi_ids.isin([taxon_b]).any().any():
-   # df2_a = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_a]
-   # df2_b = species_to_ncbi_ids.loc[species_to_ncbi_ids['microbetag_id'] == taxon_b]
-   # df2   = pd.concat([df2_a.reset_index(), df2_b.reset_index()], axis = 1)
-
-
-
-
-
-
-
-
-
-
-
-
+   return associations_dict

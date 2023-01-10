@@ -11,13 +11,19 @@ approach:
 # ----------
 
 # Filename of your OTU table
-otu_table: table.from_biom_w_taxonomy.txt # otu_table_silva132_partial.tsv 
+otu_table: otu_table_silva132_partial.tsv  #  table.from_biom_w_taxonomy.txt 
+
+# Delimeter used in the OTU table file 
+otu_table_delim: "\t"
 
 # Column name denoting the OTU id
 otu_identifier_column: "#OTU ID"       # if special characters, for example "#", use double quotes 
 
 # Column name denoting the taxonomy assignment of the OTU 
 taxonomy_column_name : taxonomy     
+
+# Delimeter in the taxonomy column 
+taxonomy_delimeter: ";"
 
 # Character denoting commented lines if any in the OTU table
 comments_character: "#"
