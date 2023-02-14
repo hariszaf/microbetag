@@ -43,3 +43,9 @@ ref-dbs/microbetag_genomes/
 
 tools/BugBase/
 
+
+# Ignore software
+tools/phenotrex/
+
+
+

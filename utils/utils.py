@@ -243,6 +243,7 @@ def edge_list_of_ncbi_ids(edgelist, otu_table_with_ncbi_ids):
 
    return associated_pairs
 
+# NOT TO USE
 def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
    """
    DEPRECATED FUNCTION
