@@ -189,7 +189,7 @@ Using the latest version of GTDB ([v202](https://data.gtdb.ecogenomic.org/releas
 metadata file, we retrieved the ncbi genome accessions of the **representative** genomes 
 of high quality, i.e. completeness > 95%  and contamination < 5%.
 
-Using these accession numbers, we were able to download their corresponding `.faa` files when available. 
+Using these accession numbers, we were able to download their corresponding `.faa` files when available (`get_gtdb_faa.py`). 
 
 | genomes category | # of genomes|
 |:-----:|:-------:|
@@ -223,6 +223,18 @@ For more about it, you may see at the [KEGG website](https://www.genome.jp/tools
         the 16S rRNA sequences are incongruent with this taxonomic assignment as a result of contaminating 16S rRNA sequences.
 
 
+There are several NCBI Ids that correspond to more than one genomes (1174). 
+However, the vase majority of those are taxa that are at the species level but there is no complete taxonomy for them, e.g NCBI ID: 2026779 that corresponds to "Planctomycetaceae bacterium". 
+
+metadata file columns:
+#3 : checkm_completeness
+#4: checkm_contamination
+#78: ncbi tax id
+#15: gtdb_genome_representative
+#55: ncbi_genbank_assembly_accession
+
+> SOS! 
+We jumped to GTDB version 207 for building the met models and the phenotrex. 
 
 
 
@@ -279,9 +291,24 @@ If a strain is not present in the `traits` file, then the species will be used.
 https://phendb.org/
 
 
-
-
 All the RefSeq genomes will be soon available for *microbetag* using the by default scores.
+
+To run phenotrex, you first annotate your genomes: 
+```
+phenotrex compute-genotype GCA_000692775_1_trunc2.fna --out dna.genotype
+```
+and then you predict based on several classes: 
+```
+phenotrex predict --genotype dna.genotype --classifier AOB.svm.class  > predictions.tsv
+```
+
+> One might get the genomes the models were trained with from the phenDB site, e.g: https://phendb.org/reports/modeldetails?model_id=39 go on the " Training Data" link
+
+
+The info reg if a taxon is aerobe or an anaerobe, comes also from bugbase!
+
+
+
 
 
 
@@ -587,6 +614,43 @@ Regarding building metabolic models:
 
 
 
+
+## On genius
+
+To install `phenotrax`:
+
+```
+git clone https://github.com/univieCUBE/phenotrex.git
+cd phenotrex
+make full-install
+
+mkdir classes
+# deepNOG classes
+wget http://fileshare.csb.univie.ac.at/phenotrex/latest/deepnog_classifier.tar.gz
+tar -zxvf deepnog_classifier.tar.gz
+rm deepnog_classifier.tar.gz
+```
+however, using the deepNOG classes lead to an error: 
+```
+ModuleNotFoundError: No module named 'phenotrex.ml.vectorizer'
+```
+during loading the classifier. 
+
+We could use the inital classes though:
+```
+wget http://fileshare.csb.univie.ac.at/phenotrex/latest/classifier.tar.gz &&\
+        tar -zxvf classifier.tar.gz &&\
+        rm  classifier.tar.gz
+```
+
+
+To get the GTDB ref-genomes:
+```
+wget https://data.gtdb.ecogenomic.org/releases/latest/genom[17/34$
+s_reps/gtdb_genomes_reps.tar.gz
+```
+
+To set the `gapseq` tool on the VSC HPC the [`conda`-relates instructions](https://github.com/jotech/gapseq/blob/master/docs/install.md#conda) were used.
 
 
 
