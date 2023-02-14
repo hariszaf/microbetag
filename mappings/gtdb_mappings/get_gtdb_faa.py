@@ -44,6 +44,3 @@ for line in metadata_file:
    open(faa_file, 'wb').write(r.content)
 
    time.sleep(0.5)
-
-
-

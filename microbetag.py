@@ -95,23 +95,18 @@ def main():
             logging.info("Julia is not present in the OS. Please intall or run microbetag as a Docker image.")
             sys.exit(0)
 
-        flashweave_parmas = [
+        flashweave_params = [
             "julia", FLASHWEAVE_SCRIPT, FLASHWEAVE_OUTPUT_DIR, FLASHWEAVE_TMP_INPUT
         ]
-        flashweave_command = ' '.join(flashweave_parmas)
+        flashweave_command = ' '.join(flashweave_params)
         
-        if os.system(flashweave_command) == 0:
-            logging.info("FlashWeave performed fine.")
-        else:
+        if os.system(flashweave_command) != 0:
             logging.error("No FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
             sys.exit(0)
 
-        # Build an edge list using NCBI Tax Ids
-        logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
-        edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_table_ncbi_tax_level_and_id)
-        sys.exit(0)
-
-
+    # Taxa pairs as NCBI Tax ids
+    logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
+    edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_table_ncbi_tax_level_and_id)
 
     """
     STEP: FAPROTAX
