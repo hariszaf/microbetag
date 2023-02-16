@@ -3,11 +3,11 @@
 """
 [TODO: what is microbetag about and how to use it ]
 """
-__author__  = 'Haris Zafeiropoulos'
-__email__    = 'haris-zaf@hcmr.gr'
-__status__  = 'Development'
-__license__ = 'GPLv3'
-__version__ = 'v.0.0.1'
+__author__  = "Haris Zafeiropoulos"
+__email__   = "haris.zafeiropoulos@kuleuven.be"
+__status__  = "Development"
+__license__ = "GPLv3"
+__version__ = "v.0.0.1"
 
 from utils import *
 from tools.faprotax.collapse_table import *
@@ -25,7 +25,7 @@ def main():
     Setting logging
     """
     # Using FileHandler writing log to file
-    logfile = os.path.join(OUT_DIR, 'log.txt')
+    logfile = os.path.join(OUT_DIR, "log.txt")
     fh        = logging.FileHandler(logfile)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
@@ -49,7 +49,7 @@ def main():
     Welcome message and arguments values
     """
     logging.info("Hello microbe-fun! microbetag is about to start!")
-    logging.info('Your command was: {}'.format(' '.join(sys.argv)))
+    logging.info("Your command was: {}".format(" ".join(sys.argv)))
 
     """
     STEP: OTU table preprocess 
@@ -74,11 +74,50 @@ def main():
 
         else:
             ext = otu_table.copy()
-            ext['microbetag_id'] = otu_table[OTU_COL]
+            ext["microbetag_id"] = otu_table[OTU_COL]
 
         # Map taxonomies to ontology ids
         logging.info("Get the NCBI Taxonomy id for those OTUs that have been assigned either at the species, the genus or the family level.")
-        otu_table_ncbi_tax_level_and_id = map_otu_to_ncbi_tax_level_and_id(ext, TAX_COL, OTU_COL)
+        otu_taxid_level_repr_genome, repr_genomes_present = map_otu_to_ncbi_tax_level_and_id(ext, TAX_COL, OTU_COL)
+
+    """
+    STEP: PhenDB
+
+    [ TODO: for some reason the class of non_fermentative is not a working one. check if you can figure out why. ]
+    """
+    logging.info("STEP: PhenDB ".center(50, "*"))
+    if PHEN_DB == True: 
+
+        otu_taxid_level_repr_genome_traits = otu_taxid_level_repr_genome.copy()
+
+        for predictions_file in os.listdir(PHEN_DB_PREDICTIONS):
+
+            trait_name  = predictions_file.split(".")[0] #os.path.join(PHEN_DB_PREDICTIONS, predictions_file).split(".")[1]
+            conf_score  = trait_name + "_conf"
+            predictions = pd.read_csv(os.path.join(PHEN_DB_PREDICTIONS, predictions_file), sep = "\t", skiprows=[0])
+
+            genomes_present_trait = predictions.loc[ predictions["Identifier"].isin(repr_genomes_present) ]
+            df  = genomes_present_trait.rename( columns = {
+                                                            "Identifier": "ncbi_genbank_assembly_accession", 
+                                                            "Trait present": trait_name, 
+                                                            "Confidence": conf_score
+                                                        }, 
+                                                inplace = False )
+            df2 = otu_taxid_level_repr_genome.merge(df, on = "ncbi_genbank_assembly_accession", how = "left")
+            otu_taxid_level_repr_genome_traits[trait_name]           = list(df2[trait_name])
+            otu_taxid_level_repr_genome_traits[trait_name + "_conf"] = list(df2[conf_score])
+
+
+    otu_taxid_level_repr_genome_traits.to_csv("checkThis.tsv", sep = "\t")
+    sys.exit(0)
+
+
+
+
+
+
+
+
 
     """
     STEP: Get co-occurrence network
@@ -87,7 +126,7 @@ def main():
         """
         Run FlashWeave
         """
-        logging.info('STEP: Get co-occurrence network'.center(50, '*'))
+        logging.info("STEP: Get co-occurrence network".center(50, "*"))
         logging.info("Run FlashWeave")
 
         test_julia = os.system( "julia -v")
@@ -98,7 +137,7 @@ def main():
         flashweave_params = [
             "julia", FLASHWEAVE_SCRIPT, FLASHWEAVE_OUTPUT_DIR, FLASHWEAVE_TMP_INPUT
         ]
-        flashweave_command = ' '.join(flashweave_params)
+        flashweave_command = " ".join(flashweave_params)
         
         if os.system(flashweave_command) != 0:
             logging.error("No FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
@@ -111,7 +150,7 @@ def main():
     """
     STEP: FAPROTAX
     """
-    logging.info('STEP: FAPROTAX database oriented analaysis'.center(50, '*'))
+    logging.info("STEP: FAPROTAX database oriented analaysis".center(50, "*"))
     if OTU_TABLE: 
 
         if not os.path.exists(FAPROTAX_OUTPUT_DIR):
@@ -133,10 +172,10 @@ def main():
         if COM_HEAD:
             faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
 
-        cmd = ' '.join(faprotax_params)
+        cmd = " ".join(faprotax_params)
 
         try:
-            logging.info('Phenotypic analysis using BugBase')
+            logging.info("Phenotypic analysis using BugBase")
             logging.info(cmd)
             os.system(cmd)
             faprotax_check = True
@@ -152,7 +191,7 @@ def main():
     """
     STEP: BugBase
     """
-    logging.info('STEP: BugBase database oriented analaysis'.center(50, '*'))
+    logging.info("STEP: BugBase database oriented analaysis".center(50, "*"))
     if OTU_TABLE: 
 
         # Make a copy of the otu table without the taxonomy column 
@@ -171,7 +210,7 @@ def main():
         if METADATA_FILE:
             bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
 
-        cmd = ' '.join(bugbase_commands)
+        cmd = " ".join(bugbase_commands)
 
         # Run BugBase
         try:
@@ -188,33 +227,31 @@ def main():
     os.remove(OUT_DIR + "/tmp_bugbase_otu_table.txt")
 
 
-    """
-    STEP: PhenDB
-    """
-    logging.info("STEP: PhenDB ".center(50, '*'))
-    if PHEN_DB == True: 
 
-        print("run phendb")
+
+
+
+
 
 
 
     """
     STEP: PATHWAY COMPLEMENTARITY
     """
-    logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, '*'))
+    logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, "*"))
     if PATHWAY_COMPLEMENTARITY == True: 
 
         """
         Remember to change the path from kegg_genomes to all_genomes once the latter is ready 
         """
-        set_of_ncbi_ids_with_available_genomes = set(os.listdir('ref-dbs/kegg_genomes/'))
+        set_of_ncbi_ids_with_available_genomes = set(os.listdir("ref-dbs/kegg_genomes/"))
 
         if not EDGE_LIST:
 
             for pair in edge_list.values(): 
 
-                taxon_a = pair['taxon_1']['ncbi_tax_id']
-                taxon_b = pair['taxon_2']['ncbi_tax_id']
+                taxon_a = pair["taxon_1"]["ncbi_tax_id"]
+                taxon_b = pair["taxon_2"]["ncbi_tax_id"]
 
                 if taxon_a in set_of_ncbi_ids_with_available_genomes and taxon_b in set_of_ncbi_ids_with_available_genomes: 
 
@@ -228,5 +265,5 @@ def main():
 
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -43,17 +43,25 @@ PATHWAY_COMPLEMENTARITY = True if cfg[ "pathway_complementarity" ] != False else
 PHEN_DB                                            = True if cfg[ "PhenDB"] != False else False
 
 
-# Paths
+# Paths to reference database and mapping folders 
 REF_DBS                     = os.path.join(BASE, "ref-dbs")
+MAPPINGS                    = os.path.join(BASE, "mappings")
+
+# GTDB 
+GTDB_METADATA               = os.path.join(MAPPINGS, "gtdb_mappings/GTDB_QUALITY_REPRESENTATIVE_GENOMES")
 
 # Silva paths
 SILVA_SPECIES_NCBI_ID       = os.path.join(REF_DBS, "silva/species_names_to_ncbi_id.tsv")
 SILVA_GENUS_NCBI_ID         = os.path.join(REF_DBS, "silva/genus_names_to_ncbiId.tsv")
-SILVA_FAMILY_NCBI_ID        =os.path.join(REF_DBS, "silva/family_names_to_ncbiId.tsv")
+SILVA_FAMILY_NCBI_ID        = os.path.join(REF_DBS, "silva/family_names_to_ncbiId.tsv")
 
 # KEGG paths
 KMODULES_DEFINITIONS        = os.path.join(REF_DBS, "kegg_mappings/module_definitions.tsv")
 KMODULES_DEFINITIONS_PARSED = os.path.join(REF_DBS, "kegg_mappings/module_definition_map.json")
+
+# PhenDB predictions
+PHEN_DB_PREDICTIONS         = os.path.join(REF_DBS, "phenDB/predictions/")
+
 
 # Tools
 TOOLS                       = os.path.join(BASE, "tools")
