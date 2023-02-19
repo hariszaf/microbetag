@@ -1,5 +1,7 @@
 # Linking GTDB to NCBI Taxonomy Ids
 
+We are interested in mapping the species/strains present on the network into their corresponding NCBI Taxonomy Ids.
+
 
 ## Using the Qiime2 release of Silva 132 in 7-levels
 

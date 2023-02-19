@@ -8,6 +8,22 @@ microbetag attempts to be a microbial interactions co-occurrence network annotat
 python microbetag.py -conf config.yml 
 ```
 
+`microbetag` expects a **7-level taxonomy** in a `.csv` or `.tsv` format with:
+* **no** `D_1__` or `K__`,`P__` any other similar prefixes befor the taxon name
+* the complete species name if that is available on its last column.
+
+>**Example**
+>
+>If your taxonomy is 
+>
+>`Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Family III;Thermoanaerobacterium;thermosaccharolyticum`, 
+>
+>you need to set it as: 
+>
+>`Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Family III;Thermoanaerobacterium;Thermoanaerobacterium thermosaccharolyticum`
+
+
+
 
 
 ## Docker 
