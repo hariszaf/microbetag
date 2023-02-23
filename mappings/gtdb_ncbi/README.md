@@ -1,11 +1,34 @@
 # Linking GTDB to NCBI Taxonomy Ids
 
+## Using bins as input and GTDB assignments
+
 We are interested in mapping the species/strains present on the network into their corresponding NCBI Taxonomy Ids.
+
+Our high quality genomes (`GTDB_QUALITY_REPRESENTATIVE_GENOMES_v202`) include $26,778$ cases.
+In the `gtdbSpecies2ncbiId2accession.tsv` file, we have: 
+
+| Type | Number of |
+|:-----:|:--------:|
+|ncbi genome accession numbers | 26778 | 
+|ncbi tax ids | 22009 |
+|gtdb genomes|26778|
+
 
 
 ## Using the Qiime2 release of Silva 132 in 7-levels
 
 Based on the `consensus_taxonomy_7_levels.txt` under the 99 folder of the taxonomy `.zip` file of the [Qiime files of Silva v.132](https://www.arb-silva.de/download/archive/qiime/), we build two-column files with the GTDB names of the 7-level taxonomy scheme and their corresponding NCBI Taxonomy ids. 
+
+
+| Type | Number of |
+|:-----:|:--------:|
+| total entries | 369,953 | 
+| unique taxonomies| 57,579 | 
+| unique species | 38,788 | 
+| ncbi tax ids | 38,788  |
+| gtdb genomes |  |
+| ncbi genome accession numbers |  |
+
 
 
 ### Case 1
