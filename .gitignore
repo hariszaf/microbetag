@@ -28,7 +28,7 @@ gtdb_genomes/
 gtdb_metadata_r202.tsv
 
 # Silva - Qiime files 
-cons_taxonomy_7_levels_silva_132.txt
+qiime2_consensus_taxonomy_7_levels.tsv
 taxmap_embl_ssu_ref_132.txt
 
 
@@ -38,8 +38,7 @@ __pycache__/
 mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
 ref-dbs/microbetag_genomes/
-
-
+ref-dbs/all_genome_modules
 
 tools/BugBase/
 
@@ -48,4 +47,17 @@ tools/BugBase/
 tools/phenotrex/
 
 
+mappings/gtdb_ncbi/gtdb_metadata/gtdb_species2ncbi_ids.tsv
+mappings/gtdb_ncbi/qiime2/qiime2species_ncbi_ids.tsv
+mappings/gtdb_ncbi/dada2/dada2genera.tsv
+mappings/gtdb_ncbi/dada2/dada2species.tsv
+mappings/gtdb_ncbi/gtdb_metadata/gtdb_species2ncbi_ids.tsv
+mappings/gtdb_ncbi/qiime2/qiime2species_ncbi_ids.tsv
 
+*.swp
+
+tests/output_dev*
+dada2familiesNcbiIds
+*.nans
+
+*.ini

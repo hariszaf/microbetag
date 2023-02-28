@@ -18,6 +18,8 @@
 - OTU table 
 - `config.yml` file
 
+please make sure you have no blanks between the taxonomic levels.
+
 **Optional** input files:
 
 - co-occurrence network 

@@ -7,20 +7,31 @@ approach:
   container: False
   io_path: /tests/ # if docker : null
 
+# OUTPUT
+# ------
+output_directory: output_dev_qiime2 # output_dev_qiime2
+
 # OTU TABLE
 # ----------
 
 # Filename of your OTU table
-otu_table: otu_table_silva132_partial.tsv  #  table.from_biom_w_taxonomy.txt 
+otu_table: qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt  # dada2_use_case.tsv
 
 # Delimeter used in the OTU table file 
-otu_table_delim: "\t"
+otu_table_delim: \t
 
-# Column name denoting the OTU id
-otu_identifier_column: "#OTU ID"       # if special characters, for example "#", use double quotes 
+# Taxonomy. 
+# Set it to "GTDB" in case you have used the GTDB for your bins.
+# Set it to "qiime2" or "dada2" in case you have used one of those
+# Set it to "any" in case none of the previous apply
+# REMEMBER! In all cases, you need to provide a 7-level taxonomy as described in the "how to"
+taxonomy: qiime2  # dada2
+
+# Column name denoting the OTU id; if special characters, for example "#", use double quotes 
+otu_identifier_column: "#OTU ID"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
 
 # Column name denoting the taxonomy assignment of the OTU 
-taxonomy_column_name : taxonomy     
+taxonomy_column_name : taxonomy
 
 # Delimeter in the taxonomy column 
 taxonomy_delimeter: ";"
@@ -28,8 +39,8 @@ taxonomy_delimeter: ";"
 # Character denoting commented lines if any in the OTU table
 comments_character: "#"
 
-# Column names are in the last comment line prior to any
-column_names_are_in  : True         
+# [ATTENTION! dada2 and qiim2 tests highlight difference] Column names are in the last comment line prior to any
+column_names_are_in  : True # dada2 -> False   qiime2 -> True
 
 # EDGE LIST
 # ---------
@@ -40,10 +51,6 @@ edge_list:
 # METADATA 
 # --------
 metadata_file:
-
-# OUTPUT
-# ------
-output_directory: out_dev_bugbase
 
 # ------
 # TOOLS
