@@ -29,93 +29,114 @@ def map_otu_to_ncbi_tax_level_and_id(otu_table, my_taxonomy_column, otu_identifi
    Parse user's OTU table and the Silva database to get to add 2 extra columns in the OTU table: 
    1. the lowest taxonomic level of the taxonomy assigned in an OTU, for which an NCBI Taxonomy id exists (e.g., "genus")
    2. the corresponding NCBI Taxonomy Id (e.g., "343")
+
+   [TODO] The code of this function can be more clear by writing mspecies, species and genera levels as the on of the family.
    """
-   taxonomies = otu_table.filter([otu_identifier_column, my_taxonomy_column])
+   taxonomies = otu_table.filter([otu_identifier_column, 
+                                  my_taxonomy_column, 
+                                  "microbetag_id"])
 
    # Split the taxonomy column and split it based on semicolumn! 
    splitted_taxonomies         = taxonomies[my_taxonomy_column].str.split(TAX_DELIM, expand = True)
    splitted_taxonomies.columns = ["Domain", "Phylum", "Class", "Order", "Family", "Genus", "Species"]
    splitted_taxonomies[otu_identifier_column] = taxonomies[otu_identifier_column]
+   splitted_taxonomies["microbetag_id"] = taxonomies["microbetag_id"]
 
-   # Make sure there is no white space character in the Species, Genus and Family levels
-   splitted_taxonomies['Species'] = splitted_taxonomies['Species'].str.strip()
-   splitted_taxonomies['Genus']   = splitted_taxonomies['Genus'].str.strip()
-   splitted_taxonomies['Family']  = splitted_taxonomies['Family'].str.strip()
+   splitted_taxonomies_c = splitted_taxonomies.copy()
+
 
    # Read the species, genus and family files of Silva db with their NCBI IDs
    """
-   The SILVA_SPECIES_NCBI_ID, SILVA_GENUS_NCBI_ID and SILVA_FAMILY_NCBI_ID files are like this: 
+   The SPECIES_NCBI_ID, GENERA_NCBI_IDS and FAMILIES_NCBI_IDS files are like this: 
    Species  ncbi_tax_id
    D_6__Abiotrophia sp. oral clone OH2A       319434
    """
-   silva_species_ncbi_id         = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
-   silva_species_ncbi_id.columns = ['Species', 'ncbi_tax_id']
-   silva_species_ncbi_id['Species'].str.strip()
+   gtdb_accession_ids         = pd.read_csv(GTDB_ACCESSION_NCBI_TAX_IDS, sep = "\t")
+   gtdb_accession_ids.columns = ["Species", "ncbi_tax_id", "gtdb_gen_repr"]
+   gtdb_accession_ids["Species"].str.strip()
 
-   silva_genus_ncbi_id         = pd.read_csv(SILVA_GENUS_NCBI_ID, sep = "\t")
-   silva_genus_ncbi_id.columns = ['Genus', 'ncbi_tax_id']
-   silva_genus_ncbi_id['Genus'].str.strip()
+   species_ncbi_id         = pd.read_csv(SPECIES_NCBI_IDS, sep = "\t")
+   species_ncbi_id.columns = ['Species', 'ncbi_tax_id']
+   species_ncbi_id['Species'].str.strip()
 
-   silva_family_ncbi_id         = pd.read_csv(SILVA_FAMILY_NCBI_ID, sep = "\t")
-   silva_family_ncbi_id.columns = ['Family', 'ncbi_tax_id']
-   silva_family_ncbi_id['Family'].str.strip()
+   genera_ncbi_id         = pd.read_csv(GENERA_NCBI_IDS, sep = "\t")
+   genera_ncbi_id.columns = ['Genus', 'ncbi_tax_id']
+   genera_ncbi_id['Genus'].str.strip()
+
+   family_ncbi_id         = pd.read_csv(FAMILIES_NCBI_IDS, sep = "\t")
+   family_ncbi_id.columns = ['Family', 'ncbi_tax_id']
+   family_ncbi_id['Family'].str.strip()
 
    # Build a dataframe for the Species, Genus and Family taxonomies present 
    # on the OTU table along with their corresponding NCBI Tax IDs
 
+   # GTDB accession ids
+   genomes_present = gtdb_accession_ids.merge(
+                                             splitted_taxonomies, 
+                                             on = ["Species"]
+                                             )[["ncbi_tax_id","gtdb_gen_repr", otu_identifier_column]]
+
+   splitted_taxonomies = pd.merge(genomes_present, splitted_taxonomies, 
+                                  on = otu_identifier_column, how = 'outer')
+   splitted_taxonomies.loc[ splitted_taxonomies["ncbi_tax_id"].notnull(), "ncbi_tax_level" ] = "mspecies"
+
+   mspecies = splitted_taxonomies[[otu_identifier_column, "gtdb_gen_repr"]]
+
    # Species
-   species_present  = silva_species_ncbi_id.merge(splitted_taxonomies, on = ['Species'])
-   species_present  = species_present[['Species', 'ncbi_tax_id', otu_identifier_column]]
-   species_present.insert(0,"ncbi_tax_level", "species")
-   species_present.drop(columns=["Species"],  inplace=True)
+   species_present  = species_ncbi_id.merge(splitted_taxonomies.query('ncbi_tax_level != "mspecies"'), 
+                                                                     on = ['Species'], 
+                                                                     suffixes = ('_species', '_mspecies')
+                                          )[
+                                             [otu_identifier_column, "ncbi_tax_id_species","ncbi_tax_level"]
+                                          ]
 
-   species_present_ids    = species_present[otu_identifier_column]
-   extend_species_present = splitted_taxonomies.loc[ splitted_taxonomies[otu_identifier_column].isin(species_present_ids) ]
-   extend_species_present = pd.merge(extend_species_present, species_present, on = otu_identifier_column, how= "inner")
+   species_present.loc[ species_present["ncbi_tax_level"] != "mspecies", "ncbi_tax_level"] = "species"
 
-   # Link taxa at the species level with their corresponding GTDB repr genome
-   gtdb_metadata        = pd.read_csv(GTDB_METADATA, sep = "\t")
-   gtdb_metadata.rename(columns = {'ncbi_taxid':'ncbi_tax_id'}, inplace = True)
+   splitted_taxonomies = pd.merge(splitted_taxonomies, species_present,
+                                 on  = otu_identifier_column, 
+                                 how ="outer", 
+                                 suffixes = ('_species', '_mspecies')
+                                 )
+
+   splitted_taxonomies["ncbi_tax_id"]    = splitted_taxonomies["ncbi_tax_id"].fillna(splitted_taxonomies["ncbi_tax_id_species"])
+   splitted_taxonomies["ncbi_tax_level"] = splitted_taxonomies["ncbi_tax_level_mspecies"].fillna(splitted_taxonomies["ncbi_tax_level_species"])
+
+   splitted_taxonomies = splitted_taxonomies.drop(["ncbi_tax_id_species", "ncbi_tax_level_species" , "ncbi_tax_level_mspecies"], axis = 1)
+
    """ 
    REMEMBER! 
    There is no one-to-one relationship between a NCBI Taxonomy Id and a representative genome 
-   """
-   gtdb_of_interest = gtdb_metadata[["ncbi_tax_id", "ncbi_genbank_assembly_accession"]]
-   extend_species_present = extend_species_present.merge(gtdb_of_interest, on = 'ncbi_tax_id', how = "left")
-   """ 
-   REMEMBER! 
+
    We do not have a hit for ALL NCBI TAX IDs from the species found in our experiment, aka there s 
    no GTDB representative genome for all NCBI Taxonomy Ids, e.g.  Bradyrhizobium sp. J81, NCBI Tax Id: 656743 
    """
-   repr_genomes_present = set(extend_species_present["ncbi_genbank_assembly_accession"])
-   repr_genomes_present.remove(np.nan) ; repr_genomes_present = list(repr_genomes_present)
 
    # Genera
-   genera_present    = silva_genus_ncbi_id.merge(splitted_taxonomies, on = ['Genus'])
-   genera_present    = genera_present[['Genus', 'ncbi_tax_id', otu_identifier_column]]
-   genera_present.insert(0,"ncbi_tax_level", "genus") 
-   genera_present.drop(columns=["Genus"],  inplace=True)
+   pd_genera         = splitted_taxonomies[[otu_identifier_column, "ncbi_tax_level", "ncbi_tax_id", "gtdb_gen_repr", "Genus"]]
+   genera_present    = genera_ncbi_id.merge(pd_genera, on = ['Genus'], suffixes=("_gen", "_over"), how="right")
 
-   genera_ids            = species_present[otu_identifier_column]
-   extend_genera_present = splitted_taxonomies.loc[ splitted_taxonomies[otu_identifier_column].isin(genera_ids) ]
-   extend_genera_present = pd.merge(extend_genera_present, genera_present, on = otu_identifier_column, how= "inner")
-   # As we need to merge with the extended_species, we add a NaN column for the representative genomes
-   extend_genera_present["ncbi_genbank_assembly_accession"] = np.nan
+   genera_present.loc[ genera_present["ncbi_tax_id_gen"].notnull(), "ncbi_tax_level_gen" ] = "genus"
+
+   genera_present["ncbi_tax_id"]    = genera_present['ncbi_tax_id_over'].combine_first(genera_present['ncbi_tax_id_gen'])
+   genera_present["ncbi_tax_level"] = genera_present['ncbi_tax_level'].combine_first(genera_present['ncbi_tax_level_gen'])
+
+   genera_present = genera_present.drop(["ncbi_tax_id_gen", "ncbi_tax_id_over", "Genus"], axis=1)
 
 
    # Families
-   families_present = silva_family_ncbi_id.merge(splitted_taxonomies, on = ['Family'])
-   families_present = families_present[['Family', 'ncbi_tax_id', otu_identifier_column]]
-   families_present.insert(0,"ncbi_tax_level", "family") 
-   families_present.drop(columns=["Family"],  inplace=True)
+   pd_families = splitted_taxonomies[[otu_identifier_column, "Family"]]
+   families_present = family_ncbi_id.merge(pd_families, on = ['Family'], how="right")
+   families_present.loc[ families_present["ncbi_tax_id"].notnull(), "ncbi_tax_level" ] = "family"
 
-   families_ids            = families_present[otu_identifier_column]
-   extend_families_present = splitted_taxonomies.loc[ splitted_taxonomies[otu_identifier_column].isin(families_ids) ]
-   extend_families_present = pd.merge(extend_families_present, families_present, on = otu_identifier_column, how= "inner")
-   extend_families_present["ncbi_genbank_assembly_accession"] = np.nan
+   families_present["ncbi_tax_id"]    = genera_present["ncbi_tax_id"].combine_first(families_present["ncbi_tax_id"])
+   families_present["ncbi_tax_level"] = genera_present["ncbi_tax_level"].combine_first(families_present["ncbi_tax_level"])
+   families_present = families_present.drop(["Family"], axis=1)
 
-   # Merged df with the NCBI level and the corresponding tax id
-   otu_taxid_level_repr_genome = pd.concat([extend_families_present, extend_genera_present, extend_species_present], axis = 0)
+   # Build a unified data frame for all levels and the accession ids when available
+   otu_taxid_level_repr_genome = pd.merge(splitted_taxonomies_c, families_present, on = otu_identifier_column)
+   otu_taxid_level_repr_genome = pd.merge(otu_taxid_level_repr_genome, mspecies, on = otu_identifier_column, how="outer")
+
+   repr_genomes_present = list(mspecies["gtdb_gen_repr"].dropna())
 
    return otu_taxid_level_repr_genome, repr_genomes_present
 
@@ -213,8 +234,12 @@ def ensure_flashweave_format(my_otu_table, my_taxonomy_column, otu_identifier_co
    for col in float_col.columns.values:
       flashweave_table[col] = flashweave_table[col].astype('int64')
 
+   """
+   [TODO] If we come up with a microbetag database, here we need to assign to the "microbetag_id" variable
+   the microbetag db ids to the corresponding taxa BUT apparently, this we ll have to be moved AFTER getting the NCBI ids.
+   """
    flashweave_table[otu_identifier_column] = 'microbetag_' + flashweave_table[otu_identifier_column].astype(str)
-   my_otu_table['microbetag_id']                     = flashweave_table[otu_identifier_column]
+   my_otu_table['microbetag_id']           = flashweave_table[otu_identifier_column]
 
    file_to_save  = os.path.join(FLASHWEAVE_OUTPUT_DIR, "otu_table_flashweave_format.tsv")
    flashweave_table.to_csv(file_to_save, sep ='\t', index = False)
@@ -226,49 +251,32 @@ def edge_list_of_ncbi_ids(edgelist, otu_table_with_ncbi_ids):
    Read an edge list and build a dataframe with the corresponding ncbi ids for each pair 
    if and only if, both OTUs have been mapped to a NCBI tax id 
    e.g.
-       ncbi_tax_id_a       ncbi_tax_level_a     ncbi_tax_id_b      ncbi_tax_level_b
-         0             838          genus                      171552           family
-         1        186803     family                      186807           family
+               ncbi_tax_id_a  ncbi_tax_level_a  ncbi_tax_id_b   ncbi_tax_level_b
+         0        838              genus           171552          family
+         1       186803           family           186807          family
    """
-   f = open(edgelist, "r")
-   associations = f.readlines()
-   associated_pairs = pd.DataFrame(columns=["ncbi_tax_id_a", 
-                                                                                             "ncbi_tax_level_a", 
-                                                                                             "ncbi_tax_id_b", 
-                                                                                             "ncbi_tax_level_b"]
-                                                                        )
-   counter = 0
-   for association in associations[2:]:
+   pd_edgelist = pd.read_csv(edgelist, sep="\t", skiprows=2, header=None)
+   pd_edgelist.columns = ["node_a", "node_b", "score"]
 
-      otu_a = association.split("\t")[0]
-      otu_b = association.split("\t")[1]
+   pd_edgelist["joint"] = pd_edgelist['node_a'].astype(str) +":"+ pd_edgelist["node_b"]
 
-      if not EDGE_LIST:
-         otu_a = otu_a[11:]
-         otu_b = otu_b[11:]
+   associated_pairs_node_a = pd.merge(pd_edgelist[["node_a", "joint"]], otu_table_with_ncbi_ids[["ncbi_tax_id", "gtdb_gen_repr", "ncbi_tax_level", "microbetag_id"]],
+                                                left_on='node_a', right_on='microbetag_id', how="inner").drop(["microbetag_id"], axis=1)
+   associated_pairs_node_a.rename(columns = {
+      "ncbi_tax_level": "ncbi_tax_level_node_a",
+      "gtdb_gen_repr": "gtdb_gen_repr_node_a",
+      "ncbi_tax_id": "ncbi_tax_id_node_a"
+   }, inplace = True)
 
-      ncbi_id_otu_a      = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_a]["ncbi_tax_id"]
-      ncbi_level_otu_a = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_a]["ncbi_tax_level"]
-      ncbi_id_otu_b      = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_b]["ncbi_tax_id"]
-      ncbi_level_otu_b = otu_table_with_ncbi_ids.loc[otu_table_with_ncbi_ids[OTU_COL] == otu_b]["ncbi_tax_level"]
+   associated_pairs_node_b = pd.merge(pd_edgelist[["node_b", "joint", "score"]], otu_table_with_ncbi_ids[["ncbi_tax_id", "gtdb_gen_repr", "ncbi_tax_level", "microbetag_id"]],
+                                                left_on='node_b', right_on='microbetag_id', how="inner").drop(["microbetag_id"], axis=1)
+   associated_pairs_node_b.rename(columns = {
+      "ncbi_tax_level": "ncbi_tax_level_node_b",
+      "gtdb_gen_repr": "gtdb_gen_repr_node_b",
+      "ncbi_tax_id": "ncbi_tax_id_node_b"
+   }, inplace = True)
 
-      if ncbi_id_otu_a.item() != "NaN" and ncbi_id_otu_b.item() !="NaN":
-         df = pd.DataFrame(
-            { "ncbi_tax_id_a": ncbi_id_otu_a.item(),
-              "ncbi_tax_level_a": ncbi_level_otu_a.item(),
-              "ncbi_tax_id_b": ncbi_id_otu_b.item(),
-              "ncbi_tax_level_b": ncbi_level_otu_b.item()
-            }, 
-            index=[counter]
-         )
-         associated_pairs = pd.concat([associated_pairs, df], axis=0)
-         counter += 1
-
-   # In the otu table pd we have floats and strings in the Id column, so we need to make sure we now have only strings 
-   associated_pairs["ncbi_tax_id_a"] = associated_pairs["ncbi_tax_id_a"].apply(int)
-   associated_pairs["ncbi_tax_id_a"] = associated_pairs["ncbi_tax_id_a"].apply(str)
-   associated_pairs["ncbi_tax_id_b"] = associated_pairs["ncbi_tax_id_b"].apply(int)
-   associated_pairs["ncbi_tax_id_b"] = associated_pairs["ncbi_tax_id_b"].apply(str)
+   associated_pairs = pd.merge(associated_pairs_node_a, associated_pairs_node_b, on="joint").drop(["joint"], axis=1)
 
    return associated_pairs
 
@@ -292,20 +300,20 @@ def get_species(my_otu_table, my_taxonomy_column, otu_identifier_column):
       otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.split(';').str[-1]
       otu_id_and_taxonomy[my_taxonomy_column] = otu_id_and_taxonomy[my_taxonomy_column].str.strip()
 
-   except:
+   except KeyboardInterrupt:
       logging.error("The taxonomy column could not be retrieved from you OTU table. \n \
                      Check for any strange characters on your OTU table or its format.")
 
    # Load the Silva species names along with ther NCBI Taxonomy ids
-   silva_species_ncbi_id         = pd.read_csv(SILVA_SPECIES_NCBI_ID, sep = "\t")
-   silva_species_ncbi_id.columns = ['species_name', 'ncbi_tax_id']
-   silva_species_ncbi_id['species_name'].str.strip()
+   species_ncbi_id         = pd.read_csv(SPECIES_NCBI_IDS, sep = "\t")
+   species_ncbi_id.columns = ['species_name', 'ncbi_tax_id']
+   species_ncbi_id['species_name'].str.strip()
   
    # Make a column showing whether or not the species of each row is included on the Silva ref file
-   otu_id_and_taxonomy['present'] = otu_id_and_taxonomy[my_taxonomy_column].isin(silva_species_ncbi_id['species_name'])
+   otu_id_and_taxonomy['present'] = otu_id_and_taxonomy[my_taxonomy_column].isin(species_ncbi_id['species_name'])
 
    # We make a map (dictionary) keeping as a key the column that links the 2 datadrames; in this case the species name
-   map_dict = dict(zip(silva_species_ncbi_id['species_name'], silva_species_ncbi_id['ncbi_tax_id']))
+   map_dict = dict(zip(species_ncbi_id['species_name'], species_ncbi_id['ncbi_tax_id']))
    otu_id_and_taxonomy['ncbi_tax_id'] = otu_id_and_taxonomy[my_taxonomy_column].map(map_dict)
 
    # Keep only those rows that have "True" as a value on the 'present' column
