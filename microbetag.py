@@ -1,20 +1,37 @@
 #!/usr/bin/env python3
 
-"""
-[TODO: what is microbetag about and how to use it ]
-"""
-__author__  = "Haris Zafeiropoulos"
-__email__   = "haris.zafeiropoulos@kuleuven.be"
-__status__  = "Development"
-__license__ = "GPLv3"
-__version__ = "v.0.0.1"
+# Information about the microbetag tool
+version      = "v0.1.0"
+license      = ("GPLv3",)
+packages     = ["microbetag"]
+description  = "a microbial co-occurrence network annotator"
+author       = "Haris Zafeiropoulos"
+author_email = "haris.zafeiropoulos@kuleuven.be"
+name         = "dingo"
 
-from utils import *
-from tools.faprotax.collapse_table import *
-from tools.pathway_complementarity.pathway_complementarity import *
+"""
+microbetag is a microbial network annotator that exploits several software and databases to 
+annotate microbial, co-occurence networks. 
+Functional traits like whether a species is methanotroph, fermentative etc are assigned to 
+each node of the network. 
+
+For the associations that include 2 taxa of the species/strain level, microbetag also performs a 
+pathway complementarity step; species are assigned to their corresponding GTDB representative 
+genomes and using those genomes, complementarity for KEGG modules are investigated. 
+
+Finally, microbetag supports a series of metabolic models covering the GTDB representative genomes. 
+Metabolic analysis methods such as FBA and flux sampling are performed to highlight potential metabolic 
+interactions among the taxa. 
+"""
+
 import os
+from utils import *
+"""
+[TODO] import utils would not work; find out why !
+"""
+from utils.pathway_complementarity import pathway_complementarity
 
-def main():
+def microbetag():
     """
     Assure the output directory
     """
@@ -26,7 +43,7 @@ def main():
     """
     # Using FileHandler writing log to file
     logfile = os.path.join(OUT_DIR, "log.txt")
-    fh        = logging.FileHandler(logfile)
+    fh      = logging.FileHandler(logfile)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
 
@@ -52,24 +69,18 @@ def main():
     logging.info("Your command was: {}".format(" ".join(sys.argv)))
 
     """
-    STEP: OTU table preprocess 
+    STEP 1: OTU table preprocess 
     """
     if OTU_TABLE: 
-        logging.info("Make sure OTU table is in tab separated format")
 
-        # Load the initial OTU table as a pandas dataframe
         otu_table = is_tab_separated(OTU_TABLE, TAX_COL)
-        logging.info("Your OTU table is a tab separated file that microbetag can work with.")
-
+        logging.info("STEP 1: Assign NCBI Tax Id and GTDB reference genomes".center(80, "*"))
         if not EDGE_LIST:
-            """
-            Pre-process
-            """
+
             logging.info("The user has not provided an edge list. microbetag will build one using FlashWeaeve.")
             if not os.path.exists(FLASHWEAVE_OUTPUT_DIR):
                 os.mkdir(FLASHWEAVE_OUTPUT_DIR)
 
-            logging.info("Assure OTU table format fits FlashWeave")
             ext = ensure_flashweave_format(otu_table, TAX_COL, OTU_COL)
 
         else:
@@ -78,56 +89,19 @@ def main():
 
         # Map taxonomies to ontology ids
         logging.info("Get the NCBI Taxonomy id for those OTUs that have been assigned either at the species, the genus or the family level.")
+
         otu_taxid_level_repr_genome, repr_genomes_present = map_otu_to_ncbi_tax_level_and_id(ext, TAX_COL, OTU_COL)
 
-    """
-    STEP: PhenDB
-
-    [ TODO: for some reason the class of non_fermentative is not a working one. check if you can figure out why. ]
-    """
-    logging.info("STEP: PhenDB ".center(50, "*"))
-    if PHEN_DB == True: 
-
-        otu_taxid_level_repr_genome_traits = otu_taxid_level_repr_genome.copy()
-
-        for predictions_file in os.listdir(PHEN_DB_PREDICTIONS):
-
-            trait_name  = predictions_file.split(".")[0] #os.path.join(PHEN_DB_PREDICTIONS, predictions_file).split(".")[1]
-            conf_score  = trait_name + "_conf"
-            predictions = pd.read_csv(os.path.join(PHEN_DB_PREDICTIONS, predictions_file), sep = "\t", skiprows=[0])
-
-            genomes_present_trait = predictions.loc[ predictions["Identifier"].isin(repr_genomes_present) ]
-            df  = genomes_present_trait.rename( columns = {
-                                                            "Identifier": "ncbi_genbank_assembly_accession", 
-                                                            "Trait present": trait_name, 
-                                                            "Confidence": conf_score
-                                                        }, 
-                                                inplace = False )
-            df2 = otu_taxid_level_repr_genome.merge(df, on = "ncbi_genbank_assembly_accession", how = "left")
-            otu_taxid_level_repr_genome_traits[trait_name]           = list(df2[trait_name])
-            otu_taxid_level_repr_genome_traits[trait_name + "_conf"] = list(df2[conf_score])
-
-
-    otu_taxid_level_repr_genome_traits.to_csv("checkThis.tsv", sep = "\t")
-    sys.exit(0)
-
-
-
-
-
-
-
-
+    otu_taxid_level_repr_genome.to_csv( os.path.join( FLASHWEAVE_OUTPUT_DIR, "ncbi_parsed_otu.csv" ), "\t")
 
     """
-    STEP: Get co-occurrence network
+    STEP 2: Get co-occurrence network
     """
     if not EDGE_LIST:
         """
         Run FlashWeave
         """
-        logging.info("STEP: Get co-occurrence network".center(50, "*"))
-        logging.info("Run FlashWeave")
+        logging.info("STEP 2: Get co-occurrence network".center(80, "*"))
 
         test_julia = os.system( "julia -v")
         if test_julia != 0:
@@ -139,24 +113,56 @@ def main():
         ]
         flashweave_command = " ".join(flashweave_params)
         
-        if os.system(flashweave_command) != 0:
-            logging.error("No FlashWeave in the OS. Please add FlashWeave or run microbetag as a Docker image.")
-            sys.exit(0)
+        # if os.system(flashweave_command) != 0:
+        #     logging.error("FlashWeave was not able to perform. Check whether installed. You can either add FlashWeave or run microbetag as a Docker image. Also, check if issue with your OTU/ASV column.")
+        #     sys.exit(0)
 
     # Taxa pairs as NCBI Tax ids
     logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
-    edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_table_ncbi_tax_level_and_id)
+    edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_taxid_level_repr_genome)
 
     """
-    STEP: FAPROTAX
+    STEP 3: PhenDB
     """
-    logging.info("STEP: FAPROTAX database oriented analaysis".center(50, "*"))
+    logging.info("STEP 3: PhenDB ".center(80, "*"))
+    if PHEN_DB == True: 
+
+        otu_taxid_level_repr_genome_traits = otu_taxid_level_repr_genome.copy()
+
+        for predictions_file in os.listdir(PHEN_DB_PREDICTIONS):
+
+            trait_name  = predictions_file.split(".")[0] #os.path.join(PHEN_DB_PREDICTIONS, predictions_file).split(".")[1]
+            conf_score  = trait_name + "_conf"
+            predictions = pd.read_csv(os.path.join(PHEN_DB_PREDICTIONS, predictions_file), sep = "\t", skiprows=[0])
+
+            # Get the predictions of the GTDB representative genomes present on network
+            genomes_present_trait = predictions.loc[ predictions["Identifier"].isin(repr_genomes_present) ]
+            genomes_present_trait = genomes_present_trait.rename( columns = {
+                                                            "Identifier": "gtdb_gen_repr", 
+                                                            "Trait present": trait_name, 
+                                                            "Confidence": conf_score
+                                                        }, 
+                                                inplace = False )
+
+            df = otu_taxid_level_repr_genome.merge(genomes_present_trait, on = "gtdb_gen_repr", how = "left")
+
+            otu_taxid_level_repr_genome_traits[trait_name]           = list(df[trait_name])
+            otu_taxid_level_repr_genome_traits[trait_name + "_conf"] = list(df[conf_score])
+
+        # Save predictions on a .csv file
+        if not os.path.exists(PHEN_OUTPUT_DIR):
+            os.mkdir(PHEN_OUTPUT_DIR)
+
+        otu_taxid_level_repr_genome_traits.to_csv(os.path.join(PHEN_OUTPUT_DIR, "phen_predictions.tsv"), sep = "\t")
+
+    """
+    STEP 4: FAPROTAX
+    """
+    logging.info("STEP 4: FAPROTAX database oriented analaysis".center(80, "*"))
     if OTU_TABLE: 
 
         if not os.path.exists(FAPROTAX_OUTPUT_DIR):
             os.mkdir(FAPROTAX_OUTPUT_DIR)
-
-        faprotax_check = False
 
         faprotax_params = [
             "python3", FAPROTAX_SCRIPT,
@@ -166,79 +172,62 @@ def main():
             "-c", '"' + COM_CHAR + '"',
             "-d", '"' +  TAX_COL + '"',
             "-v",
+            "--force",
             "-s",      FAPROTAX_SUB_TABLES,
         ]
 
         if COM_HEAD:
             faprotax_params = faprotax_params + ["--column_names_are_in", COM_HEAD]
 
-        cmd = " ".join(faprotax_params)
+        faprotax_command = " ".join(faprotax_params)
 
-        try:
-            logging.info("Phenotypic analysis using BugBase")
-            logging.info(cmd)
-            os.system(cmd)
-            faprotax_check = True
-        except:
+        # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes retrieved as values
+        # logging.info(["Command to run: ", faprotax_command])
+        if os.system(faprotax_command) != 0:
             logging.exception("\nSomething went wrong when running the BugBase analysis!")
+            sys.exit(0)
 
-        # If FAPROTAX was completed, make a dictionary with OTUs as keys and processes 
-        # retrieved as values
-        if faprotax_check: 
-            path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
-            otu_faprotax_functions_assignment(path_to_subtables)
+        path_to_subtables = os.path.join(BASE, FAPROTAX_SUB_TABLES)
+        otu_faprotax_functions_assignment(path_to_subtables)
 
     """
-    STEP: BugBase
+    STEP 5: BugBase
     """
-    logging.info("STEP: BugBase database oriented analaysis".center(50, "*"))
-    if OTU_TABLE: 
+    # logging.info("STEP 5: BugBase database oriented analaysis".center(80, "*"))
+    # if OTU_TABLE: 
 
-        # Make a copy of the otu table without the taxonomy column 
-        f = open(OTU_TABLE, "r")
-        g = open(OUT_DIR + "/tmp_bugbase_otu_table.txt", "w")
-        for line in f:
-            g.write("\t".join(line.split("\t")[:-1]) + "\n")
+    #     # Make a copy of the otu table without the taxonomy column 
+    #     f = open(OTU_TABLE, "r")
+    #     g = open(BUGBASE_TMP, "w")
+    #     for line in f:
+    #         g.write("\t".join(line.split("\t")[:-1]) + "\n")
 
-        bugbase_commands = [
-            "Rscript", BUGBASE_SCRIPT, 
-            "-i", OUT_DIR + "/tmp_bugbase_otu_table.txt",
-            "-o", BUGBASE_OUTPUT, 
-            "-a", 
-        ]
+    #     bugbase_params = [
+    #         "Rscript", BUGBASE_SCRIPT, 
+    #         "-i", BUGBASE_TMP,
+    #         "-o", BUGBASE_OUTPUT, 
+    #         "-a", 
+    #     ]
 
-        if METADATA_FILE:
-            bugbase_commands = bugbase_commands + ["-m", METADATA_FILE]
+    #     if METADATA_FILE:
+    #         bugbase_params = bugbase_params + ["-m", METADATA_FILE]
 
-        cmd = " ".join(bugbase_commands)
+    #     bugbase_command = " ".join(bugbase_params)
 
-        # Run BugBase
-        try:
-            logging.info("Phenotypic analysis using BugBase")
-            logging.info(cmd)
-            os.system(cmd)
+    #     # Run BugBase
+    #     logging.info(["Command to run: ", bugbase_command])
+    #     if os.system(bugbase_command) != 0:
+    #         logging.exception("\nSomething went wrong when running the BugBase analysis!")
 
-        except:
-            logging.exception("\nSomething went wrong when running the BugBase analysis!")
-
-    """
-    [TODO: Parse the bugbase/otu_contributions/contributing_otus.txt to assign features in the OTUs ]
-    """
-    os.remove(OUT_DIR + "/tmp_bugbase_otu_table.txt")
-
-
-
-
-
-
-
-
-
+    # """
+    # [TODO: Parse the bugbase/otu_contributions/contributing_otus.txt to assign features in the OTUs ]
+    # """
+    # os.remove(BUGBASE_TMP)
 
     """
     STEP: PATHWAY COMPLEMENTARITY
     """
-    logging.info("STEP: Pathway complementarity module: metabolic interactions ".center(50, "*"))
+    logging.info("STEP 6: Pathway complementarity".center(80, "*"))
     if PATHWAY_COMPLEMENTARITY == True: 
 
         """
@@ -246,24 +235,31 @@ def main():
         """
         set_of_ncbi_ids_with_available_genomes = set(os.listdir("ref-dbs/kegg_genomes/"))
 
-        if not EDGE_LIST:
+        if EDGE_LIST:
 
-            for pair in edge_list.values(): 
+            edge_list = EDGE_LIST.copy()
 
-                taxon_a = pair["taxon_1"]["ncbi_tax_id"]
-                taxon_b = pair["taxon_2"]["ncbi_tax_id"]
+        edgelist_to_pc = edge_list.to_dict(orient="records")
+        """
+        Example:
+        [{'node_a': 'microbetag_17', 'ncbi_tax_id_node_a': 77133.0, 'gtdb_gen_repr_node_a': 'GCA_903925685.1', 'ncbi_tax_level_node_a': 'mspecies', 'node_b': 'microbetag_21', 'ncbi_tax_id_node_b': 136703.0, 'gtdb_gen_repr_node_b': nan, 'ncbi_tax_level_node_b': 'species'}, 
+        {'node_a': 'microbetag_17', 'ncbi_tax_id_node_a': 77133.0, 'gtdb_gen_repr_node_a': 'GCA_903925685.1', 'ncbi_tax_level_node_a': 'mspecies', 'node_b': 'microbetag_74', 'ncbi_tax_id_node_b': 77133.0, 'gtdb_gen_repr_node_b': 'GCA_903925685.1', 'ncbi_tax_level_node_b': 'mspecies'}... 
+        """
+
+        for pair in edgelist_to_pc: 
+
+            if pair["ncbi_tax_level_node_a"] == pair["ncbi_tax_level_node_b"] == "mspecies":
+
+                taxon_a = str(pair["ncbi_tax_id_node_a"]).split(".")[0]
+                taxon_b = str(pair["ncbi_tax_id_node_b"]).split(".")[0]
+
+                print(pair["gtdb_gen_repr_node_a"], pair["gtdb_gen_repr_node_b"])
 
                 if taxon_a in set_of_ncbi_ids_with_available_genomes and taxon_b in set_of_ncbi_ids_with_available_genomes: 
+                    print("hello friend")
+                    print(pathway_complementarity(taxon_a, taxon_b))
 
-                    pathway_complementarity(taxon_a, taxon_b)
-
-        else: 
-
-            """
-            In case you are using your own edge list or if you have already run microbetag and you have already one
-            """
-
-
+    return True
 
 if __name__ == "__main__":
-    main()
+    microbetag()
