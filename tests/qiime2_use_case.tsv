@@ -1,0 +1,794 @@
+# Constructed from biom file
+#OTU ID	PF.AL2	PF.AL5	PF.PF1	PF.PF3	PF.TB3	PF.TB4	BG.rumen.6838	BG.rumen.6852	BG.rumen.6859	BG.rumen.7920	BG.feces.6838	BG.feces.6852	BG.feces.6859	BG.feces.6882	BG.feces.7920	BG.rumen.6882	BG.feces.6803	BG.rumen.6803	taxonomy
+0	1.0	3.0	2.0	11.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured beta proteobacterium
+1	0.0	0.0	0.0	0.0	0.0	0.0	4.0	1.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured rumen bacterium 3C0d-10
+2	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+3	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Desulfuromonadales;BVA18;uncultured Geobacteraceae bacterium;uncultured Geobacteraceae bacterium
+4	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	1.0	2.0	2.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+5	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Coriobacteriia;Coriobacteriales;Coriobacteriaceae;Collinsella;uncultured bacterium
+6	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Desulfuromonadales;Geobacteraceae;Geobacter;Geobacter sp.
+7	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+8	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;Bradyrhizobium sp. J81
+9	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Oxobacter;uncultured Clostridium sp.
+10	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Legionellales;Coxiellaceae;Aquicella;uncultured bacterium
+11	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Roseburia;uncultured organism
+12	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured bacterium
+13	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+14	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+15	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+16	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Coriobacteriia;Coriobacteriales;Coriobacteriaceae;Enterorhabdus;uncultured bacterium
+17	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+18	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Dasytricha;D_8__uncultured rumen protozoa
+19	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+20	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;S-BQ2-57 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+21	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured rumen bacterium
+22	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+23	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Moraxellaceae;Acinetobacter;uncultured Acinetobacter sp.
+24	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;uncultured;uncultured beta proteobacterium
+25	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Incertae Sedis;uncultured bacterium
+26	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;uncultured;uncultured bacterium;uncultured bacterium
+27	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	2.0	0.0	1.0	2.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+28	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	3.0	0.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;uncultured;uncultured bacterium
+29	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Isosphaera;uncultured bacterium
+31	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptococcaceae;Desulfotomaculum;Desulfotomaculum kuznetsovii
+32	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhodobacterales;Rhodobacteraceae;Albimonas;Albimonas donghaensis
+33	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP11;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+34	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+35	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium;Bifidobacterium sp. DJF_RP64k1
+36	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Xanthobacteraceae;Pseudolabrys;uncultured bacterium
+37	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	4.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+38	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Phycisphaerae;Phycisphaerales;ODP1230B30.02 sediment group;uncultured bacterium;uncultured bacterium
+39	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+40	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;Bacillus circulans
+41	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured Nitrosomonadaceae bacterium
+42	1.0	0.0	0.0	0.0	0.0	5.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Opitutae;Opitutales;Opitutaceae;Opitutus;uncultured bacterium
+43	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidales Incertae Sedis;Phocaeicola;uncultured bacterium
+44	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+45	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	0.0	2.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+46	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	2.0	0.0	1.0	1.0	1.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+47	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Bryobacter;uncultured bacterium
+48	3.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured Acidobacteria bacterium
+49	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;Gemmatimonas;uncultured bacterium
+50	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+51	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured Clostridiaceae bacterium
+52	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;Alistipes;uncultured Alistipes sp.
+53	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+54	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	1.0	0.0	4.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;Alistipes;uncultured bacterium
+55	0.0	2.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured alpha proteobacterium;uncultured alpha proteobacterium;uncultured alpha proteobacterium;uncultured alpha proteobacterium
+56	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+57	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;GR-WP33-30;uncultured bacterium;uncultured bacterium;uncultured bacterium
+58	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+59	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+60	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+61	0.0	0.0	0.0	0.0	0.0	0.0	4.0	6.0	0.0	0.0	1.0	1.0	0.0	0.0	1.0	1.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured rumen bacterium
+62	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Marinilabiaceae;uncultured;uncultured organism
+63	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+64	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;FFCH13075;uncultured bacterium;uncultured bacterium
+65	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+66	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured proteobacterium
+67	0.0	0.0	0.0	3.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+68	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	4.0	3.0	0.0	0.0	4.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+69	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Bryobacter;uncultured Acidobacteria bacterium
+70	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+71	1.0	8.0	5.0	7.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;JG37-AG-4;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+72	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+73	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptococcaceae;Desulfosporosinus;uncultured bacterium
+74	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+75	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	1.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__uncultured;D_8__uncultured Canadian Arcott wether rumen protozoa
+76	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+77	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured rumen bacterium
+78	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Saccharofermentans;uncultured bacterium
+79	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Thaumarchaeota;terrestrial group;uncultured crenarchaeote;uncultured crenarchaeote;uncultured crenarchaeote;uncultured crenarchaeote
+81	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+82	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Intrasporangiaceae;Terrabacter;uncultured bacterium
+83	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Singulisphaera;uncultured bacterium
+84	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+85	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured Clostridiales bacterium
+86	1.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+87	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	4.0	2.0	2.0	0.0	3.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+88	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptostreptococcaceae;uncultured;uncultured bacterium
+89	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+90	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+91	0.0	1.0	11.0	8.0	2.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Lentisphaerae;WCHB1-41;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+92	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+93	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhizobiales Incertae Sedis;Rhizomicrobium;uncultured alpha proteobacterium
+94	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;uncultured;uncultured bacterium;uncultured bacterium
+95	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;uncultured;uncultured bacterium
+96	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Desulfuromonadales;Geobacteraceae;Geobacter;uncultured bacterium
+97	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+98	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Hydrogenophilales;Hydrogenophilaceae;Sulfuricella;uncultured bacterium
+99	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured Verrucomicrobia bacterium;uncultured Verrucomicrobia bacterium;uncultured Verrucomicrobia bacterium;uncultured Verrucomicrobia bacterium
+100	2.0	3.0	4.0	8.0	7.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;KD4-96;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+101	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;GR-WP33-30;uncultured proteobacterium;uncultured proteobacterium;uncultured proteobacterium
+102	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Phaselicystidaceae;Phaselicystis;uncultured bacterium
+103	0.0	0.0	1.0	0.0	3.0	5.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP11;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium
+104	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+105	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Lentisphaerae;RFP12 gut group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+106	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+107	0.0	0.0	0.0	0.0	0.0	27.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Spirochaetae;Spirochaetes;Spirochaetales;Spirochaetaceae;uncultured;uncultured soil bacterium
+108	0.0	1.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;Patulibacteraceae;Patulibacter;uncultured bacterium
+109	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured rumen methanogen
+110	0.0	2.0	1.0	4.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;JG37-AG-4;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+111	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+112	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+113	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	5.0	2.0	0.0	0.0	4.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+114	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Clostridium sensu stricto 9;uncultured bacterium
+115	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	2.0	3.0	3.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured Ruminococcaceae bacterium
+116	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Gardnerella;uncultured bacterium
+117	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+118	0.0	2.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Bryobacter;uncultured bacterium
+119	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+120	0.0	0.0	0.0	2.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OD1;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+121	1.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	11.0	1.0	1.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Entodinium;D_8__uncultured rumen protozoa
+122	1.0	5.0	2.0	3.0	3.0	17.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;KD4-96;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+123	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Coprococcus;uncultured bacterium
+124	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Hydrogenophilales;Hydrogenophilaceae;Thiobacillus;uncultured beta proteobacterium
+125	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Propionibacteriales;Propionibacteriaceae;Propionibacterium;uncultured bacterium
+126	2.0	2.0	0.0	0.0	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;480-2;uncultured bacterium;uncultured bacterium
+128	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;Opisthokonta;Nucletmycea;Fungi;D_7__Sordariomycetes;D_8__Hypocreales;D_9__uncultured fungus
+129	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Frankiaceae;Jatrophihabitans;uncultured bacterium
+130	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+131	0.0	1.0	2.0	6.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured Gemmatimonas sp.
+132	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Roseburia;uncultured bacterium
+133	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Defluviitaleaceae;uncultured;uncultured organism
+134	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	6.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+135	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+136	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured bacterium
+137	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Anaerotruncus;uncultured bacterium
+138	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Xanthomonadales;Xanthomonadaceae;Rhodanobacter;uncultured bacterium
+139	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhodobiaceae;Rhodobium;uncultured bacterium
+140	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;uncultured;uncultured bacterium
+141	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	3.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+142	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+143	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+144	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Xanthobacteraceae;uncultured;uncultured bacterium
+145	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Faecalibacterium;uncultured bacterium
+146	1.0	1.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+147	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+148	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	2.0	0.0	0.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Ditoxum;D_8__Ditoxum funinucleum
+149	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+150	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;GOUTB8;uncultured bacterium;uncultured bacterium
+151	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;uncultured;uncultured bacterium
+152	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+153	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+154	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+155	0.0	0.0	0.0	0.0	0.0	0.0	4.0	1.0	1.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+156	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+157	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured archaeon
+158	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured rumen bacterium
+159	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+160	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Hyphomicrobiaceae;Rhodoplanes;uncultured bacterium
+161	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured organism
+162	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+163	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+164	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Saccharofermentans;uncultured rumen bacterium
+165	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+166	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured bacterium
+167	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;uncultured;uncultured Mycobacteriaceae bacterium;uncultured Mycobacteriaceae bacterium
+168	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophaceae;uncultured;uncultured bacterium
+169	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 2;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+170	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Sphingobacteriia;Sphingobacteriales;WCHB1-69;uncultured Bacteroidetes bacterium;uncultured Bacteroidetes bacterium
+171	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhizobiaceae;Ensifer;Sinorhizobium sp. W60
+172	0.0	1.0	1.0	15.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;43F-1404R;uncultured delta proteobacterium;uncultured delta proteobacterium;uncultured delta proteobacterium
+173	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	0.0	1.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+174	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chlorobi;Ignavibacteria;Ignavibacteriales;Ignavibacteriaceae;Ignavibacterium;uncultured bacterium
+175	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;Nocardiaceae;Nocardia;Nocardia concava
+176	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;BS11 gut group;uncultured rumen bacterium;uncultured rumen bacterium
+177	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+178	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+179	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacteriales;Enterobacteriaceae;Escherichia-Shigella;Escherichia coli
+180	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Spartobacteria;Chthoniobacterales;DA101 soil group;uncultured bacterium;uncultured bacterium
+181	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+182	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;Gaiellaceae;Gaiella;uncultured actinobacterium
+183	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+184	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Polyangiaceae;Sorangium;uncultured bacterium
+185	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Xanthomonadales;Xanthomonadaceae;Rhodanobacter;uncultured Xanthomonadaceae bacterium
+186	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured rumen bacterium
+187	3.0	4.0	0.0	2.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;uncultured;uncultured bacterium;uncultured bacterium
+188	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+189	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;TA18;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium
+190	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	1.0	0.0	0.0	1.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured archaeon
+191	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;TA18;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+192	1.0	2.0	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured Acidobacterium sp.
+193	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured bacterium
+194	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	2.0	2.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Tenericutes;Mollicutes;NB1-n;uncultured bacterium;uncultured bacterium;uncultured bacterium
+195	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Sporichthyaceae;hgcI clade;uncultured bacterium
+196	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+197	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Porphyromonadaceae;uncultured;uncultured Bacteroides sp.
+198	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+199	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;Incertae Sedis;uncultured bacterium
+200	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+201	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Roseburia;uncultured bacterium
+202	0.0	2.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+203	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+204	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	1.0	2.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+205	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+206	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	2.0	1.0	0.0	4.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;RF16;uncultured Parabacteroides sp.;uncultured Parabacteroides sp.
+207	1.0	4.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 4;RB41;uncultured bacterium;uncultured bacterium
+208	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptostreptococcaceae;uncultured;uncultured bacterium
+209	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Veillonellaceae;Selenomonas;uncultured rumen bacterium
+210	0.0	2.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+211	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+212	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+213	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;Unknown Class;Unknown Order;Unknown Family;Candidatus Saccharimonas;uncultured bacterium
+214	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	4.0	5.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+215	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Marinilabiaceae;uncultured;uncultured bacterium
+216	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+217	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured bacterium
+218	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+219	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	3.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Anaerotruncus;uncultured bacterium
+220	3.0	3.0	1.0	0.0	3.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured proteobacterium
+221	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+222	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;uncultured bacterium
+223	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Geobacillus;uncultured bacterium
+224	0.0	1.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured Acidobacteria bacterium
+225	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+226	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;Bacillus sp. CB1
+227	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Delftia;uncultured bacterium
+228	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;Solirubrobacteraceae;Solirubrobacter;uncultured bacterium
+229	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Opitutae;Opitutales;Opitutaceae;Alterococcus;uncultured gamma proteobacterium
+230	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Cyanobacteria;Melainabacteria;Gastranaerophilales;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+231	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Nitrospirae;Nitrospira;Nitrospirales;4-29;uncultured bacterium;uncultured bacterium
+232	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;AT425-EubC11 terrestrial group;uncultured bacterium;uncultured bacterium;uncultured bacterium
+233	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas;Pseudomonas sp. RBE1CD-84
+234	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+235	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;480-2;uncultured bacterium;uncultured bacterium
+236	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Micrococcaceae;Rothia;uncultured bacterium
+237	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Kineosporiales;Kineosporiaceae;Angustibacter;bacterium Ellin5251
+238	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptococcaceae;Desulfosporosinus;uncultured bacterium
+239	0.0	0.0	2.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;JG30-KF-CM66;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+240	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Delftia;uncultured organism
+241	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	2.0	0.0	2.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;Alistipes;uncultured bacterium
+242	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+243	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+244	0.0	2.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;JG37-AG-4;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+245	0.0	0.0	0.0	0.0	0.0	0.0	10.0	0.0	0.0	2.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured rumen bacterium
+246	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Coprococcus;uncultured bacterium
+247	0.0	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;0319-6M6;uncultured bacterium;uncultured bacterium
+248	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Acidaminococcaceae;Phascolarctobacterium;uncultured bacterium
+249	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+250	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+251	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+252	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Coriobacteriia;Coriobacteriales;Coriobacteriaceae;Atopobium;uncultured rumen bacterium
+253	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;Opisthokonta;Nucletmycea;Fungi;D_9__Psathyrellaceae;D_10__Lacrymaria;D_11__Lacrymaria velutina
+254	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+255	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Acidobacterium;uncultured bacterium
+256	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	2.0	0.0	0.0	1.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+257	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured organism
+258	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	2.0	0.0	0.0	2.0	0.0	1.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+259	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+260	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured bacterium
+261	0.0	1.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;uncultured bacterium
+262	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Thermoplasmata;uncultured archaeon;uncultured archaeon;uncultured archaeon;uncultured archaeon
+263	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhizobiales Incertae Sedis;Rhizomicrobium;uncultured bacterium
+264	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Deltaproteobacteria Incertae Sedis;Syntrophorhabdaceae;Syntrophorhabdus;uncultured bacterium
+265	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;YNPFFP1;uncultured bacterium;uncultured bacterium
+266	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+267	0.0	1.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;Bacillus sp. P-30
+268	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	5.0	0.0	2.0	4.0	0.0	5.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+269	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	2.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;vadinBB60;uncultured bacterium;uncultured bacterium
+270	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Haliangiaceae;Haliangium;uncultured bacterium
+271	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+272	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Synergistetes;Synergistia;Synergistales;Synergistaceae;uncultured;uncultured rumen bacterium
+273	1.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+274	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Granulicella;Acidobacteriaceae bacterium Gsoil 969
+275	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+276	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chlorobi;Chlorobia;Chlorobiales;OPB56;uncultured Chlorobi bacterium;uncultured Chlorobi bacterium
+277	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Coprococcus;uncultured bacterium
+278	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;AT425-EubC11 terrestrial group;uncultured bacterium;uncultured bacterium;uncultured bacterium
+279	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured rumen bacterium
+280	1.0	1.0	0.0	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Hyphomicrobiaceae;Hyphomicrobium;uncultured bacterium
+281	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+282	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Incertae Sedis;uncultured bacterium
+283	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+284	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Coprococcus;uncultured bacterium
+285	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;uncultured;uncultured bacterium
+286	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;alphaI cluster;uncultured bacterium;uncultured bacterium
+287	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;Incertae Sedis;bacterium NLAE-zl-G43
+288	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Xanthomonadales;uncultured;uncultured bacterium;uncultured bacterium
+289	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;Candidatus Nitrotoga;uncultured soil bacterium
+290	2.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+291	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+292	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;Solirubrobacteraceae;Solirubrobacter;uncultured bacterium
+293	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	1.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+294	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+295	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+296	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Porphyromonadaceae;Parabacteroides;uncultured bacterium
+297	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+298	0.0	0.0	1.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Sphingobacteriia;Sphingobacteriales;WCHB1-69;uncultured bacterium;uncultured bacterium
+299	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+300	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Pseudomonadaceae;Pseudomonas;uncultured soil bacterium
+301	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptostreptococcaceae;uncultured;uncultured bacterium
+302	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Beijerinckiaceae;uncultured;uncultured bacterium
+303	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;43F-1404R;uncultured bacterium;uncultured bacterium;uncultured bacterium
+304	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+305	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+306	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+307	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Caulobacterales;Caulobacteraceae;uncultured;uncultured bacterium
+308	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteriales bacterium;uncultured Acidobacteriales bacterium;uncultured Acidobacteriales bacterium
+309	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+310	0.0	2.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+311	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;Anaerolineae;Anaerolineales;Anaerolineaceae;Leptolinea;uncultured bacterium
+312	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Granulicella;uncultured Acidobacteria bacterium
+313	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+314	0.0	0.0	4.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;Sideroxydans;uncultured bacterium
+315	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Beijerinckiaceae;Methylocella;uncultured bacterium
+316	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+317	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured Firmicutes bacterium
+318	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+319	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;uncultured bacterium
+320	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+321	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP8;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+322	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;Candidatus Nitrotoga;uncultured soil bacterium
+323	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;0319-6M6;uncultured bacterium;uncultured bacterium
+324	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP11;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+325	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+326	0.0	0.0	0.0	0.0	3.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP3;uncultured Banisveld landfill bacterium BVC56;uncultured Banisveld landfill bacterium BVC56;uncultured Banisveld landfill bacterium BVC56;uncultured Banisveld landfill bacterium BVC56;uncultured Banisveld landfill bacterium BVC56
+327	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+328	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Desulfuromonadales;uncultured bacterium;uncultured bacterium;uncultured bacterium
+329	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Holophagae;Subgroup 7;uncultured bacterium;uncultured bacterium;uncultured bacterium
+330	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;Nocardiaceae;Rhodococcus;bacterium OC23(2011)
+331	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;Candidatus Nitrotoga;uncultured bacterium
+332	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Sphingobacteriia;Sphingobacteriales;WCHB1-69;uncultured bacterium;uncultured bacterium
+333	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+334	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;uncultured;uncultured bacterium
+335	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+336	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;uncultured;uncultured bacterium
+337	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+338	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+339	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured organism
+340	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured organism
+341	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured rumen bacterium;uncultured rumen bacterium
+342	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Rhodopseudomonas;Rhodopseudomonas palustris
+343	0.0	0.0	0.0	0.0	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured Acidobacteria bacterium
+344	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	1.0	2.0	2.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+345	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidetes Incertae Sedis;Unknown Order;Unknown Family;Prolixibacter;uncultured bacterium
+346	0.0	1.0	0.0	2.0	41.0	7.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophaceae;Smithella;uncultured bacterium
+347	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;vadinHA17;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+348	0.0	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;uncultured;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+350	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Holophagae;Subgroup 7;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+351	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured rumen bacterium
+352	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+353	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OD1;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+354	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+355	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Brevibacteriaceae;Brevibacterium;uncultured bacterium
+356	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	2.0	1.0	3.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+357	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+358	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP11;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+359	0.0	0.0	0.0	2.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;BSV13;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+360	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured bacterium
+361	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+362	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+363	0.0	0.0	1.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+364	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+365	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+367	0.0	0.0	0.0	1.0	1.0	4.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+368	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 4;Elev-16S-573;uncultured proteobacterium;uncultured proteobacterium
+369	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;SAR;Rhizaria;Cercozoa;Glissomonadida;uncultured eukaryote;uncultured eukaryote
+370	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+371	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhodospirillales;Acetobacteraceae;uncultured;uncultured Acidisphaera sp.
+372	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	2.0	0.0	2.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	Bacteria;Proteobacteria;Gammaproteobacteria;Aeromonadales;Succinivibrionaceae;uncultured;uncultured rumen bacterium
+373	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+374	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+375	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+376	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+377	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;DUNssu371;uncultured bacterium;uncultured bacterium
+378	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Oceanospirillales;SPOTSMAY03-890m3;uncultured bacterium;uncultured bacterium
+379	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;OPB54;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+380	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;uncultured bacterium
+381	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+382	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Marvinbryantia;uncultured bacterium
+383	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+384	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Oscillibacter;uncultured bacterium
+385	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured rumen bacterium
+386	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;Gaiellaceae;Gaiella;uncultured bacterium
+387	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+388	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+389	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Candidatus Koribacter;uncultured bacterium
+390	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+391	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Pseudobutyrivibrio;uncultured Lachnospiraceae bacterium
+392	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Cyanobacteria;ML635J-21;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+393	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	10.0	1.0	6.0	5.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+394	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured soil bacterium
+395	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;uncultured;unidentified rumen bacterium RFN20
+396	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+397	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division SR1;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+398	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;BS11 gut group;uncultured rumen bacterium;uncultured rumen bacterium
+399	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OP11;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium;uncultured Microgenomates bacterium
+400	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Paenibacillaceae;Paenibacillus;Paenibacillus sp. Kongs-47
+401	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Acidovorax;uncultured bacterium
+402	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Veillonellaceae;Selenomonas;uncultured Selenomonas sp.
+403	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+404	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium;uncultured bacterium
+405	0.0	0.0	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;alphaI cluster;uncultured bacterium;uncultured bacterium
+406	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+407	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+408	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Acidobacterium;uncultured bacterium
+409	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+410	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Nakamurellaceae;Nakamurella;uncultured Nakamurellaceae bacterium
+411	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	0.0	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;BS11 gut group;uncultured rumen bacterium;uncultured rumen bacterium
+412	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Coriobacteriia;Coriobacteriales;Coriobacteriaceae;Atopobium;Atopobium sp. ICM58
+413	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured archaeon
+414	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured rumen bacterium
+415	0.0	0.0	2.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Intrasporangiaceae;Terrabacter;Terrabacter sp. THG-e54
+416	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Propionibacteriales;Nocardioidaceae;Nocardioides;uncultured bacterium
+417	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+418	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Lentisphaerae;RFP12 gut group;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+419	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+420	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	2.0	1.0	2.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+421	0.0	2.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;uncultured;uncultured Cystobacteraceae bacterium;uncultured Cystobacteraceae bacterium
+422	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium;Bifidobacterium bifidum
+423	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;uncultured Bradyrhizobium sp.
+424	0.0	0.0	0.0	1.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured Acidobacteria bacterium
+425	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobacterium;uncultured Methanobacteriales archaeon
+426	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured Burkholderia sp.
+427	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Isosphaera;uncultured planctomycete
+428	4.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhizobiales Incertae Sedis;Bauldia;uncultured Phyllobacteriaceae bacterium
+429	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured organism
+430	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	3.0	0.0	3.0	2.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Verrucomicrobiae;Verrucomicrobiales;Verrucomicrobiaceae;Akkermansia;uncultured bacterium
+431	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+432	2.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+433	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured bacterium
+434	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptostreptococcaceae;uncultured;uncultured bacterium
+435	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured rumen bacterium;uncultured rumen bacterium
+436	6.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Afipia;uncultured Afipia sp.
+437	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+438	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Spartobacteria;Chthoniobacterales;FukuN18 freshwater group;uncultured bacterium;uncultured bacterium
+439	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Propionibacteriales;Nocardioidaceae;Nocardioides;uncultured bacterium
+440	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Clostridium sensu stricto 1;uncultured bacterium
+441	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 2;uncultured bacterium;uncultured bacterium;uncultured bacterium
+442	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	2.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+443	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	2.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured rumen bacterium
+444	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Armatimonadetes;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+445	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Methylocystaceae;Methylocystis;Methylocystis sp. R-49794
+446	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Faecalibacterium;uncultured bacterium
+447	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+448	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;uncultured;uncultured bacterium;uncultured bacterium
+449	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured bacterium
+450	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured bacterium
+451	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+452	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Acetitomaculum;uncultured rumen bacterium
+453	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Hyphomicrobiaceae;Rhodoplanes;uncultured bacterium
+454	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured beta proteobacterium
+455	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;OPB35 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+456	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;YNPFFP1;uncultured actinobacterium;uncultured actinobacterium
+457	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	2.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+458	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacteriales;Enterobacteriaceae;Kluyvera;uncultured Kluyvera sp.
+459	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Spirochaetae;Spirochaetes;Spirochaetales;Spirochaetaceae;Treponema;uncultured rumen bacterium
+460	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured rumen bacterium
+461	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;Anaerolineae;Anaerolineales;Anaerolineaceae;uncultured;uncultured bacterium SHD-238
+462	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+463	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+464	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Methylophilales;Methylophilaceae;uncultured;uncultured bacterium
+465	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;Gaiellaceae;Gaiella;uncultured bacterium
+466	0.0	3.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+467	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;uncultured;uncultured bacterium;uncultured bacterium
+468	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	0.0	2.0	0.0	0.0	3.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+469	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+470	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+471	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+472	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;Alistipes;uncultured bacterium
+473	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+474	0.0	0.0	3.0	6.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured Gemmatimonadetes bacterium
+475	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Spirochaetae;Spirochaetes;Spirochaetales;Spirochaetaceae;uncultured;uncultured Treponema sp.
+476	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+477	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;MB-A2-108;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+479	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Granulicella;uncultured bacterium
+480	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+481	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Thaumarchaeota;Miscellaneous Crenarchaeotic Group;uncultured archaeon;uncultured archaeon;uncultured archaeon;uncultured archaeon
+482	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+483	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;SC-I-84;uncultured beta proteobacterium;uncultured beta proteobacterium;uncultured beta proteobacterium
+484	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Porphyromonadaceae;Proteiniphilum;uncultured Bacteroidetes bacterium
+485	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+486	1.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhizobiales Incertae Sedis;Rhizomicrobium;uncultured bacterium
+487	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	1.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+488	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Alteromonadales;Alteromonadaceae;Marinobacter;uncultured bacterium
+489	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;OPB41;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+490	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Cellulomonadaceae;Cellulomonas;Cellulomonas sp.
+491	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;uncultured Bacillus sp.
+492	0.0	0.0	4.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;uncultured;uncultured bacterium
+493	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured organism
+494	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+495	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	1.0	5.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	2.0	Bacteria;Candidate division TM7;Unknown Class;Unknown Order;Unknown Family;Candidatus Saccharimonas;uncultured rumen bacterium
+496	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+497	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured bacterium
+498	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+499	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured rumen bacterium
+500	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	6.0	0.0	1.0	18.0	3.0	0.0	2.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Bifidobacteriales;Bifidobacteriaceae;Bifidobacterium;uncultured bacterium
+501	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;SHA-26;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+502	2.0	2.0	0.0	0.0	1.0	7.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+503	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;dgA-11 gut group;uncultured bacterium
+504	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Spartobacteria;Chthoniobacterales;DA101 soil group;uncultured bacterium;uncultured bacterium
+505	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	8.0	1.0	4.0	3.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+506	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+507	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Lactobacillales;Aerococcaceae;Ignavigranum;uncultured bacterium
+508	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+509	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Sphingomonadales;Sphingomonadaceae;Sphingomonas;uncultured Sphingomonas sp.
+510	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Methylococcales;CABC2E06;uncultured gamma proteobacterium;uncultured gamma proteobacterium
+511	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhodospirillales;Acetobacteraceae;Rhodovastum;Rhodovastum atsumiense
+512	0.0	1.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+513	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured Clostridia bacterium
+514	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+515	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+516	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured rumen bacterium
+517	0.0	0.0	0.0	0.0	1.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Methylococcales;Methylococcaceae;uncultured;uncultured Methylobacter sp.
+518	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured rumen bacterium
+519	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Holophagae;Subgroup 7;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+520	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	0.0	0.0	2.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+521	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+522	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;Opisthokonta;Nucletmycea;Fungi;D_9__Helotiaceae;D_10__Ombrophila;D_11__Neobulgaria lilacina
+523	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Micrococcaceae;Kocuria;Kocuria rhizophila
+524	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+525	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+526	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Acidaminococcaceae;Phascolarctobacterium;uncultured bacterium
+527	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+528	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Rhizobacter;uncultured bacterium
+529	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Sporichthyaceae;uncultured;uncultured bacterium
+530	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+531	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Verrucomicrobia;Verrucomicrobiae;Verrucomicrobiales;Verrucomicrobiaceae;Akkermansia;uncultured bacterium
+532	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;Gaiellaceae;Gaiella;uncultured soil bacterium
+533	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+534	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured Clostridiaceae bacterium
+535	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Planococcaceae;uncultured;uncultured bacterium
+536	1.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Xanthobacteraceae;uncultured;uncultured alpha proteobacterium
+537	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+538	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	1.0	0.0	0.0	0.0	3.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+539	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Faecalibacterium;uncultured bacterium
+540	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+541	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;WCHB1-32;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+542	3.0	1.0	3.0	8.0	4.0	14.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division OD1;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium
+543	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Spartobacteria;Chthoniobacterales;DA101 soil group;uncultured bacterium;uncultured bacterium
+544	0.0	0.0	0.0	0.0	7.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophaceae;Smithella;uncultured soil bacterium
+545	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;Opisthokonta;Nucletmycea;Fungi;D_9__Incertae Sedis;D_10__Wallemia;D_11__uncultured Basidiomycota
+546	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured bacterium
+547	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Planococcaceae;Incertae Sedis;uncultured bacterium
+548	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+549	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured methanogenic archaeon
+550	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;Gaiellaceae;Gaiella;uncultured bacterium
+551	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+552	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhodospirillales;Rhodospirillaceae;Thalassospira;uncultured alpha proteobacterium
+553	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured Acidobacteria bacterium
+554	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured rumen bacterium
+555	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured bacterium
+556	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	3.0	1.0	3.0	4.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+557	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+558	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+559	3.0	5.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Acidothermaceae;Acidothermus;uncultured Thermomonosporaceae bacterium
+560	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+561	0.0	0.0	0.0	0.0	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;uncultured;uncultured bacterium FukuS5;uncultured bacterium FukuS5
+562	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+563	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;KF-JG30-B3;uncultured bacterium;uncultured bacterium
+564	0.0	0.0	0.0	0.0	0.0	0.0	1.0	3.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+565	0.0	5.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured Acidobacteria bacterium
+566	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Oscillibacter;uncultured bacterium
+567	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Alicyclobacillaceae;Alicyclobacillus;uncultured bacterium
+568	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+569	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;SAR;Rhizaria;Cercozoa;Glissomonadida;Heteromita;uncultured eukaryote
+570	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+571	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Porphyromonadaceae;Parabacteroides;uncultured bacterium
+572	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+573	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured actinobacterium;uncultured actinobacterium
+574	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Eukaryota;Excavata;Metamonada;Parabasalia;Trichomonadea;Simplicimonas;Simplicimonas similis
+575	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+576	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;Anaerolineae;Anaerolineales;Anaerolineaceae;uncultured;uncultured soil bacterium
+577	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;unidentified rumen bacterium RFN90
+578	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Frankiaceae;Jatrophihabitans;uncultured bacterium
+579	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+580	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+581	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;alphaI cluster;uncultured type II methanotroph;uncultured type II methanotroph
+582	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Bradyrhizobium;Bradyrhizobium sp. WBOS11
+583	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+584	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Phycisphaerae;WD2101 soil group;uncultured bacterium;uncultured bacterium;uncultured bacterium
+585	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;OPB54;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+586	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	5.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	2.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+588	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+589	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured bacterium
+590	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured rumen bacterium
+591	0.0	0.0	2.0	2.0	5.0	6.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;vadinHA17;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+592	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Roseburia;uncultured bacterium
+593	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+594	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Thaumarchaeota;Miscellaneous Crenarchaeotic Group;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+595	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;Mogibacterium;uncultured rumen bacterium
+596	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+597	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Bacillaceae;Bacillus;Bacillus halodurans
+598	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	0.0	0.0	2.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Oscillibacter;uncultured bacterium
+599	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;Incertae Sedis;unidentified
+600	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+601	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Butyrivibrio;uncultured rumen bacterium
+602	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+603	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Methylophilales;Methylophilaceae;uncultured;Methylophilus sp. enrichment culture clone MWE_C44
+604	2.0	1.0	0.0	1.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+605	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Singulisphaera;Singulisphaera rosea
+606	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Bradyrhizobiaceae;Rhodopseudomonas;Rhodopseudomonas palustris
+607	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+608	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured bacterium;uncultured bacterium;uncultured bacterium
+609	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Xanthomonadales;Xanthomonadaceae;Dokdonella;uncultured Dokdonella sp.
+610	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Alloprevotella;uncultured bacterium
+612	1.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Holophagae;Subgroup 7;uncultured bacterium;uncultured bacterium;uncultured bacterium
+613	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+614	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 17;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+615	1.0	1.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Clostridium sensu stricto 8;uncultured bacterium
+616	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	2.0	3.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+617	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Simplicispira;Simplicispira sp. JPB-3.01
+618	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;uncultured;uncultured bacterium
+619	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Lentisphaerae;RFP12 gut group;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium;uncultured rumen bacterium
+620	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Beijerinckiaceae;Methylorosula;uncultured alpha proteobacterium
+621	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+622	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Planococcaceae;Bhargavaea;Bhargavaea beijingensis
+623	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured rumen bacterium
+624	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+625	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured rumen bacterium
+626	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Gammaproteobacteria;Chromatiales;Chromatiaceae;Nitrosococcus;uncultured bacterium
+627	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;uncultured;uncultured organism;uncultured organism
+628	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+629	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+630	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+631	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	5.0	3.0	0.0	2.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+632	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Sarcina;uncultured bacterium
+633	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;Clostridium leptum
+634	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+635	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Propionibacteriales;Propionibacteriaceae;Propionibacterium;Propionibacterium avidum
+636	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+637	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	9.0	0.0	0.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Entodinium;D_8__uncultured rumen protozoa
+638	0.0	1.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+639	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+640	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+641	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	2.0	2.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	2.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+642	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Sphingobacteriia;Sphingobacteriales;WCHB1-69;uncultured bacterium;uncultured bacterium
+643	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Acidaminococcaceae;Succiniclasticum;uncultured rumen bacterium
+644	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Porphyromonadaceae;Parabacteroides;uncultured bacterium
+645	0.0	0.0	2.0	5.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;TM146;uncultured soil bacterium;uncultured soil bacterium
+646	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;uncultured;uncultured beta proteobacterium
+647	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;GR-WP33-30;uncultured bacterium;uncultured bacterium;uncultured bacterium
+648	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured rumen bacterium
+649	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+650	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Hydrogenophilales;Hydrogenophilaceae;Thiobacillus;uncultured bacterium
+651	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured organism
+652	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured rumen bacterium
+653	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;TRA3-20;uncultured bacterium;uncultured bacterium;uncultured bacterium
+654	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+655	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+656	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium;uncultured soil bacterium
+657	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	2.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+658	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+659	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Flavonifractor;Flavonifractor plautii
+660	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;480-2;uncultured soil bacterium;uncultured soil bacterium
+661	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+662	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+663	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	5.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+664	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Isosphaera;uncultured bacterium
+665	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Hydrogenophilales;Hydrogenophilaceae;Thiobacillus;uncultured bacterium
+666	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured archaeon
+667	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured rumen bacterium
+668	1.0	1.0	0.0	0.0	2.0	6.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;AKIW659;uncultured bacterium;uncultured bacterium
+669	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);Telmatobacter;Acidobacteria bacterium AB60
+670	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Eudiplodinium;D_8__uncultured rumen protozoa
+671	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;SC-I-84;uncultured proteobacterium;uncultured proteobacterium;uncultured proteobacterium
+672	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Spirochaetae;Spirochaetes;Spirochaetales;Spirochaetaceae;uncultured;uncultured Treponema sp.
+673	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Hydrogenophilales;Hydrogenophilaceae;Ferritrophicum;uncultured bacterium
+675	0.0	0.0	4.0	14.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;43F-1404R;uncultured bacterium;uncultured bacterium;uncultured bacterium
+676	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Comamonadaceae;Albidiferax;Albidiferax sp. HME6627
+677	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+678	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	1.0	2.0	0.0	0.0	1.0	3.0	0.0	3.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+679	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+680	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+681	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured rumen bacterium
+682	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+683	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;Corynebacteriaceae;Corynebacterium;uncultured bacterium
+684	0.0	2.0	0.0	1.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;Anaerolineae;Anaerolineales;Anaerolineaceae;uncultured;uncultured Chloroflexi bacterium
+685	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+686	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+687	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Corynebacteriales;uncultured;uncultured bacterium;uncultured bacterium
+688	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured rumen bacterium
+689	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured bacterium
+690	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Gemmatimonadetes;Gemmatimonadetes;Gemmatimonadales;Gemmatimonadaceae;uncultured;uncultured bacterium
+691	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Negativicutes;Selenomonadales;Acidaminococcaceae;Succiniclasticum;uncultured rumen bacterium
+692	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 3;Unknown Family;Candidatus Solibacter;uncultured bacterium
+693	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+694	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+695	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	1.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Paraisotricha;D_8__Paraisotricha minuta
+696	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Cytophagia;Cytophagales;Cytophagaceae;Sunxiuqinia;uncultured bacterium
+697	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+698	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;uncultured;uncultured Actinomycetales bacterium;uncultured Actinomycetales bacterium
+699	0.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Holophagae;Subgroup 7;uncultured bacterium;uncultured bacterium;uncultured bacterium
+700	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;Pir2 lineage;uncultured planctomycete
+701	3.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Frankiales;Sporichthyaceae;uncultured;uncultured bacterium
+702	1.0	4.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Rhodobiaceae;Rhodobium;uncultured Bauldia sp.
+703	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured bacterium
+704	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Cellulomonadaceae;Cellulomonas;actinobacterium MH3-2
+705	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+706	0.0	0.0	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;WCHB1-32;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+707	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+708	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+709	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	2.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+710	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division TM7;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+711	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Planococcaceae;Solibacillus;uncultured bacterium
+712	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured rumen bacterium;uncultured rumen bacterium
+713	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	1.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+714	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Rhodocyclales;Rhodocyclaceae;Propionivibrio;uncultured bacterium
+715	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Microbacteriaceae;Candidatus Rhodoluna;uncultured actinobacterium
+716	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Halobacteria;Halobacteriales;Deep Sea Hydrothermal Vent Gp 6(DHVEG-6);uncultured archaeon;uncultured archaeon
+717	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Polyangiaceae;Sorangium;uncultured bacterium
+718	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Nitrosomonadaceae;uncultured;uncultured proteobacterium
+719	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+720	0.0	0.0	0.0	0.0	6.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophobacteraceae;uncultured;uncultured Desulfobacteraceae bacterium
+721	0.0	0.0	0.0	0.0	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophaceae;Smithella;uncultured bacterium
+722	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;SC-I-84;uncultured bacterium;uncultured bacterium;uncultured bacterium
+723	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Peptostreptococcaceae;uncultured;uncultured bacterium
+724	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+725	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Ruminococcus;uncultured bacterium
+726	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Incertae Sedis;uncultured organism
+727	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micromonosporales;Micromonosporaceae;Micromonospora;Micromonospora sp. FXJ6.338
+729	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+730	0.0	0.0	0.0	0.0	0.0	0.0	3.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;BS11 gut group;uncultured rumen bacterium;uncultured rumen bacterium
+731	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Lentisphaerae;Oligosphaeria;Oligosphaerales;uncultured spirochete;uncultured spirochete;uncultured spirochete
+732	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Erysipelotrichia;Erysipelotrichales;Erysipelotrichaceae;Solobacterium;uncultured bacterium
+733	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Rhodocyclales;Rhodocyclaceae;Georgfuchsia;uncultured bacterium
+734	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Candidate division WS3;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+735	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Syntrophomonadaceae;Syntrophomonas;uncultured Syntrophomonas sp.
+736	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Planctomycetes;Planctomycetacia;Planctomycetales;Planctomycetaceae;uncultured;uncultured planctomycete
+737	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+738	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+739	0.0	0.0	0.0	0.0	0.0	0.0	3.0	2.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured rumen bacterium
+740	0.0	1.0	1.0	9.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Chloroflexi;Gitt-GS-136;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+741	0.0	1.0	0.0	0.0	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Xanthobacteraceae;Pseudolabrys;uncultured bacterium
+742	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;Prevotella bryantii B14
+743	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhodospirillales;JG37-AG-20;uncultured bacterium;uncultured bacterium
+744	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured organism
+745	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+746	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Cyanobacteria;Melainabacteria;Gastranaerophilales;uncultured bacterium;uncultured bacterium;uncultured bacterium
+747	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Bacilli;Bacillales;Paenibacillaceae;Paenibacillus;unidentified eubacterium clone BSV52
+748	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+749	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured rumen bacterium
+750	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Verrucomicrobia;Spartobacteria;Chthoniobacterales;DA101 soil group;uncultured bacterium;uncultured bacterium
+751	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Archaea;Euryarchaeota;Methanobacteria;Methanobacteriales;Methanobacteriaceae;Methanobrevibacter;uncultured rumen methanogen
+752	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Acidobacteriales;Acidobacteriaceae (Subgroup 1);uncultured;uncultured Acidobacteria bacterium
+753	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	2.0	1.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+754	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Clostridium sensu stricto 11;uncultured bacterium
+755	1.0	2.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;YNPFFP1;uncultured bacterium;uncultured bacterium
+756	0.0	0.0	2.0	0.0	2.0	8.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;vadinHA17;uncultured prokaryote;uncultured prokaryote;uncultured prokaryote;uncultured prokaryote
+757	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;Prevotella;uncultured Prevotellaceae bacterium
+758	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+759	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Alphaproteobacteria;Rhizobiales;Hyphomicrobiaceae;Rhodoplanes;uncultured bacterium
+760	0.0	0.0	0.0	0.0	2.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Syntrophobacterales;Syntrophaceae;Smithella;uncultured bacterium
+761	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+762	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;Anaerotruncus;uncultured bacterium
+763	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	1.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	Bacteria;Tenericutes;Mollicutes;RF9;uncultured bacterium;uncultured bacterium;uncultured bacterium
+764	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Gaiellales;uncultured;uncultured bacterium;uncultured bacterium
+765	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Shuttleworthia;uncultured bacterium
+766	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 6;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium;uncultured Acidobacteria bacterium
+767	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Armatimonadetes;Chthonomonadetes;Chthonomonadales;uncultured bacterium;uncultured bacterium;uncultured bacterium
+768	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Coprococcus;uncultured bacterium
+769	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Christensenellaceae;uncultured;uncultured bacterium
+770	2.0	1.0	38.0	33.0	2.0	3.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Intrasporangiaceae;Oryzihumus;uncultured bacterium
+771	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Rhodocyclales;Rhodocyclaceae;Candidatus Accumulibacter;uncultured bacterium
+773	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	3.0	3.0	0.0	0.0	1.0	0.0	2.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;S24-7;uncultured bacterium;uncultured bacterium
+774	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Micrococcaceae;Arthrobacter;uncultured bacterium
+775	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Incertae Sedis;uncultured bacterium
+776	1.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;GR-WP33-30;uncultured bacterium;uncultured bacterium;uncultured bacterium
+777	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Nitrosomonadales;Gallionellaceae;uncultured;uncultured bacterium
+778	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Acidobacteria;Acidobacteria;Subgroup 4;11-24;uncultured bacterium;uncultured bacterium
+779	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	2.0	0.0	1.0	3.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+780	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Prevotellaceae;uncultured;uncultured bacterium
+781	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	2.0	0.0	0.0	Eukaryota;SAR;Alveolata;Ciliophora;Trichostomatia;D_7__Dasytricha;D_8__uncultured rumen protozoa
+782	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	Bacteria;Cyanobacteria;Melainabacteria;Gastranaerophilales;uncultured bacterium;uncultured bacterium;uncultured bacterium
+783	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;Blautia;uncultured bacterium
+784	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+785	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Actinobacteria;Micrococcales;Micrococcaceae;Sinomonas;Citricoccus sp. 3MR2
+786	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Family XIII;uncultured;uncultured rumen bacterium
+787	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Desulfobacterales;Desulfobacteraceae;Candidatus Magnetoglobus;uncultured delta proteobacterium
+788	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Betaproteobacteria;Burkholderiales;Oxalobacteraceae;Massilia;uncultured bacterium
+789	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured rumen bacterium
+790	6.0	9.0	1.0	6.0	2.0	4.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;Thermoleophilia;Solirubrobacterales;TM146;uncultured Actinomycetales bacterium;uncultured Actinomycetales bacterium
+791	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+792	0.0	1.0	0.0	0.0	0.0	2.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Haliangiaceae;Haliangium;uncultured bacterium
+793	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	1.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+794	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides;uncultured bacterium
+795	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Actinobacteria;FFCH16263;uncultured bacterium;uncultured bacterium;uncultured bacterium;uncultured bacterium
+797	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+798	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Proteobacteria;Deltaproteobacteria;Myxococcales;Cystobacteraceae;Anaeromyxobacter;uncultured bacterium
+799	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Lachnospiraceae;uncultured;uncultured bacterium
+800	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Ruminococcaceae;uncultured;uncultured bacterium
+801	0.0	0.0	0.0	0.0	0.0	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Bacteroidetes;Bacteroidia;Bacteroidales;Rikenellaceae;RC9 gut group;uncultured bacterium
+802	0.0	1.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	Bacteria;Firmicutes;Clostridia;Clostridiales;Clostridiaceae 1;Clostridium sensu stricto 1;Clostridium sp. L15
+
