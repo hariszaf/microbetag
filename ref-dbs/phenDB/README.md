@@ -3,4 +3,6 @@ classes were calculated from scratch using the training genomes set as provided 
 
 This process was perfromed at the Genius HPC of KU Leuven. 
 
+To make easier the matching of the accession ids, all the GCF prefixes. were turned into GCA. 
+
 

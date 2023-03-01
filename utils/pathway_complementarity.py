@@ -67,6 +67,16 @@ def split_pluses(path):
 
    return split_path
 
+def commonelem_set(z, x):
+   one = set(z)
+   two = set(x)
+   if (one & two):
+      print("fuunction") ; print(one & two)
+      return True
+   else:
+      return False # There are no common elements
+
+
 def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
    """
    This function aims at finding KO terms missing for the beneficiary species, 
@@ -84,11 +94,9 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
          genome_mos = json.load(f)
 
       # Species in-need of by-products
-      parts_missing_from_modules = {}
-      beneficarys_kos_per_module = {}
       complete_modules    = []
       alternatives_to_gap = {}
-      
+
       # Parse genome's KEGG modules and terms as found in the KEGG ORGANISMS db
       counter_complete_modules = 0
       for module, kos_on_its_own in genome_mos.items(): 
@@ -101,9 +109,6 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
             else:
                list_of_kos_present.append(k)
 
-         beneficarys_kos_per_module[module] = list_of_kos_present
-         parts_missing_from_modules[module] = {}
-
          # Get the definition of the module under study 
          definition_under_study  = mo_map[module]['steps']
          definition_non_optional = check_for_minus(definition_under_study)
@@ -114,8 +119,16 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
                term = [term]
             definition_under_study_proc.append(term)
 
+         """
+         The definition_under_study_proc is a list of lists, where any inner list needs to be fully covered
+         in order the step to be considered as legit. 
+         E.g. [['K00134', 'K00927'], ['K00150', 'K00927'], 'K11389'] 
+         means thath we need either both ['K00134', 'K00927'] or both ['K00150', 'K00927'] or just 'K11389'.
+         """
+
          # Get all the possible combinations to have a complete path 
          potential_compl_paths =  [list(tup) for tup in itertools.product(*definition_under_study_proc)]
+
          # Edit these paths so they are in a flattened format
          flat_potent_compl_paths = []
 
@@ -126,24 +139,48 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
 
          # Check whether the kos present on the potential beneficiary species, cover the path
          for path in flat_potent_compl_paths:
-            check =  all(item in list_of_kos_present for item in path)
+
+            # Check whether all the terms of a path are present in the KOs present on the genome 
+            check    =  all(item in list_of_kos_present for item in path)
+
+            # If yes, then the beneficiary does not need anything to perform this module
             if check:
-               counter_complete_modules += 1
-               complete_modules.append({module:path})
+               if module not in complete_modules:
+                  counter_complete_modules += 1
+                  complete_modules.append(module)
+
             else:
                # Keep track of the missing steps in the alternative 
                # alteritves_to_gap will look like this:
                #  'md:M00550': {"['K02821', 'K02822', 'K03077', 'K03078', 'K03079', 'K03475', 'K03476']": {'K03079', 'K03476', 'K03078'}}
                # where the values of a module is a dictionary
                # where a path is the key and the missing KOs from the genome is the value
+
                gaps = set(x for x in set(path) if x not in set(list_of_kos_present))
+
+               # Add the combination of KOs required to be filled to have that module through the path under study
                if module not in alternatives_to_gap:
                   alternatives_to_gap[module] = {}
                   alternatives_to_gap[module][str(path)] = gaps
                else:
                   alternatives_to_gap[module][str(path)] = gaps
 
-      print("Genome has ", str(counter_complete_modules), " complete modules.")
+      # Remove any complete module
+      for key in complete_modules:
+         if key in alternatives_to_gap:
+            del alternatives_to_gap[key]
+
+      # Keep only the most feasible gap fills 
+      for module, val in alternatives_to_gap.items():
+
+         tmp = alternatives_to_gap[module].copy()
+         min_val = min([len(val[ele]) for ele in val])
+         for path, gaps in alternatives_to_gap[module].items():
+            if len(gaps) > min_val + 1:
+               del tmp[path]
+
+         alternatives_to_gap[module] = tmp
+
       list_of_alternatives_to_gap.append(alternatives_to_gap)
       beneficiarys_genomes.append(gfile.split("/")[-1])
 
@@ -220,11 +257,10 @@ def pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id):
 
    return complementarities
 
-
 if __name__ == "__main__": 
    """
    Run an example case for how this module works.
    Use KEGG genomes so you can easily display those as KEGG maps 
    """
    pathway_complementarity(1520, 476)
-
+   pathway_complementarity(476, 1520)
