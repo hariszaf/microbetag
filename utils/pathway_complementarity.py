@@ -76,7 +76,6 @@ def commonelem_set(z, x):
    else:
       return False # There are no common elements
 
-
 def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
    """
    This function aims at finding KO terms missing for the beneficiary species, 
@@ -173,16 +172,25 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
       # Keep only the most feasible gap fills 
       for module, val in alternatives_to_gap.items():
 
-         tmp = alternatives_to_gap[module].copy()
+         tmp  = alternatives_to_gap[module].copy()
+
+         tmp2 = tmp.copy()
          min_val = min([len(val[ele]) for ele in val])
+
+         # Make sure we do not keep cases that are supersets of another
+         shortest_alternatives = [  list(tmp2.keys())[ list(tmp2.values()).index(s) ]  for s in tmp2.values() if not any( set(s).issuperset(set(i)) and len(s) > len(i) for i in tmp2.values()) ]
+
          for path, gaps in alternatives_to_gap[module].items():
-            if len(gaps) > min_val + 1:
+            if len(gaps) > min_val + 1 or path not in shortest_alternatives:
                del tmp[path]
 
          alternatives_to_gap[module] = tmp
+    
 
       list_of_alternatives_to_gap.append(alternatives_to_gap)
       beneficiarys_genomes.append(gfile.split("/")[-1])
+
+      print("NCBI Tax id:\t", ncbi_id_beneficiary, "\t# of complete modules:\t", str(counter_complete_modules))
 
    return list_of_alternatives_to_gap, beneficiarys_genomes
 
@@ -219,18 +227,30 @@ def check_for_complements(ncbi_id_donor, list_of_missing_parts, beneficiary_ncbi
             donors_module = list(donors_genome_mos[module].values())
             donors_module = [x[3:] for x in donors_module]
 
+            complements = []
+
             for path, missing_kos in alternative_paths.items():
+               
+               # Check whether the donor has all the KOs necessary according to a specific path
                check =  all(item in donors_module for item in missing_kos)
 
                if check:
-                  # Index here denotes the several ways that complementarity might occur in a module using 2 specific genomes 
+
+                  # Index here denotes the several ways that complementarity might occur with different KOs provided 
                   if module not in pair_metabolic_interactions[genome_pair]['potent-met-inter']:
                      pair_metabolic_interactions[genome_pair]['potent-met-inter'][module] = {}
 
-                  index = len(pair_metabolic_interactions[genome_pair]['potent-met-inter'][module])
-                  pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][index] = {}
-                  pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][index]["path"] = path[1:-1].replace("'","").replace(" ", "").split(",")
-                  pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][index]["complements"] = missing_kos
+                  if missing_kos not in complements:
+                     pc_index = len(pair_metabolic_interactions[genome_pair]['potent-met-inter'][module])
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index] = {}
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["complement"] = missing_kos
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["paths"] = {}
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["paths"]["0"] = path[1:-1].replace("'","").replace(" ", "").split(",")
+                     complements.append(missing_kos)
+                  else:
+                     pc_index   = complements.index(missing_kos)
+                     path_index = len(pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["paths"])
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["paths"][path_index] = path[1:-1].replace("'","").replace(" ", "").split(",")                  
 
          counter_beneficiary += 1
       counter_donor += 1
@@ -241,6 +261,8 @@ def set_default(obj):
     if isinstance(obj, set):
         return list(obj)
     raise TypeError
+
+
 
 def pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id):
 
@@ -253,6 +275,7 @@ def pathway_complementarity(beneficiary_ncbi_id, doner_ncbi_id):
    pair_ids = "_".join([str(beneficiary_ncbi_id), str(doner_ncbi_id)])
    namefile = ".".join([pair_ids, "json"])
    out_file = open(namefile, "w")
+
    json.dump(complementarities, out_file, default=set_default)
 
    return complementarities
@@ -262,5 +285,5 @@ if __name__ == "__main__":
    Run an example case for how this module works.
    Use KEGG genomes so you can easily display those as KEGG maps 
    """
-   pathway_complementarity(1520, 476)
+   # pathway_complementarity(1520, 476)
    pathway_complementarity(476, 1520)
