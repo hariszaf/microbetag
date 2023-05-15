@@ -41,6 +41,21 @@ A first thought on how to do this is to follow this scheme:
 - implement `microbetag` so it asks queries on the db
 - output could be a list of files, some of them `.html` so they could provide interactive visualizations such as having annotations on the nodes or/and edges
 
+
+## Dependencies
+
+BugBase requires the `biomformat` library. To install it on R version 4.2 you may run:
+```R
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("biomformat")
+```
+
+
+
+
+
 ## Funding
 
 This project is funded by an [EMBO Short-Term Fellowship](https://www.embo.org/funding/fellowships-grants-and-career-support/scientific-exchange-grants/). 

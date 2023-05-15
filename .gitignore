@@ -61,3 +61,10 @@ dada2familiesNcbiIds
 *.nans
 
 *.ini
+
+
+all-in.csv
+kos_on_modules_graph.tsv
+
+
+
