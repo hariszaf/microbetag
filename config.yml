@@ -1,5 +1,5 @@
 #
-# microbetag: mandatory parameters
+# microbetag parameters
 #
 
 # Run as a container - if True then the IO path will be /mnt. If false please provide the input - output path 
@@ -52,6 +52,28 @@ edge_list:
 # --------
 metadata_file:
 
+
+# STEPS 
+# --------
+
+BugBase: False
+
+PhenDB: False
+
+FAPROTAX: False
+
+NetCooperate: True
+
+pathway_complementarity: 
+    - skip_it: 
+      default: False
+    # - mode_for_species: 
+    #   default: union
+
+    # - mode_for_strain: 
+    #   default: intersection
+
+
 # ------
 # TOOLS
 # ------
@@ -97,18 +119,6 @@ flashweave_opt:
     --make_sparse:                   # use a sparse data representation (should be left at true in almost all cases)
 
 
-# Pathway complementarity optional parameters
-pathway_complementarity: 
-
-    - skip_it: 
-      default: True
-
-    - mode_for_species: 
-      default: union
-
-    - mode_for_strain: 
-      default: intersection
-
 
 # FAPROTAX optional parameters
 faprotax_opt: 
@@ -132,9 +142,6 @@ bugbase_opt:
   -p:           # List modules or traits to predict (comma separated list, no spaces)
   -u:           # Use a user-define trait table. Absolute file path must be specified
   -m:         # give mapping file, example file under the tests/ folder
-
-# PhenDB
-PhenDB: True
 
 
 # microbetag needs to link the species level taxonomy assignments 
