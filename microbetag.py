@@ -7,7 +7,7 @@ packages     = ["microbetag"]
 description  = "a microbial co-occurrence network annotator"
 author       = "Haris Zafeiropoulos"
 author_email = "haris.zafeiropoulos@kuleuven.be"
-name         = "dingo"
+name         = "microbetag"
 
 """
 microbetag is a microbial network annotator that exploits several software and databases to 
@@ -92,7 +92,7 @@ def microbetag():
 
         otu_taxid_level_repr_genome, repr_genomes_present = map_otu_to_ncbi_tax_level_and_id(ext, TAX_COL, OTU_COL)
 
-    otu_taxid_level_repr_genome.to_csv( os.path.join( FLASHWEAVE_OUTPUT_DIR, "ncbi_parsed_otu.csv" ), "\t")
+        otu_taxid_level_repr_genome.to_csv( os.path.join( FLASHWEAVE_OUTPUT_DIR, "ncbi_parsed_otu.csv" ), "\t")
 
     """
     STEP 2: Get co-occurrence network
@@ -113,19 +113,19 @@ def microbetag():
         ]
         flashweave_command = " ".join(flashweave_params)
         
-        # if os.system(flashweave_command) != 0:
-        #     logging.error("FlashWeave was not able to perform. Check whether installed. You can either add FlashWeave or run microbetag as a Docker image. Also, check if issue with your OTU/ASV column.")
-        #     sys.exit(0)
+        if os.system(flashweave_command) != 0:
+            logging.error("FlashWeave was not able to perform. Check whether installed. You can either add FlashWeave or run microbetag as a Docker image. Also, check if issue with your OTU/ASV column.")
+            sys.exit(0)
 
-    # Taxa pairs as NCBI Tax ids
-    logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
-    edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_taxid_level_repr_genome)
+        # Taxa pairs as NCBI Tax ids
+        logging.info("Map your edge list to NCBI Tax ids and keep only associations that both correspond to a such.")
+        edge_list = edge_list_of_ncbi_ids(FLASHWEAVE_EDGELIST, otu_taxid_level_repr_genome)
 
     """
     STEP 3: PhenDB
     """
     logging.info("STEP 3: PhenDB ".center(80, "*"))
-    if PHEN_DB == True: 
+    if PHEN_DB: 
 
         otu_taxid_level_repr_genome_traits = otu_taxid_level_repr_genome.copy()
 
@@ -193,42 +193,42 @@ def microbetag():
     """
     STEP 5: BugBase
     """
-    # logging.info("STEP 5: BugBase database oriented analaysis".center(80, "*"))
-    # if OTU_TABLE: 
+    logging.info("STEP 5: BugBase database oriented analaysis".center(80, "*"))
+    if BUGBASE and OTU_TABLE: 
 
-    #     # Make a copy of the otu table without the taxonomy column 
-    #     f = open(OTU_TABLE, "r")
-    #     g = open(BUGBASE_TMP, "w")
-    #     for line in f:
-    #         g.write("\t".join(line.split("\t")[:-1]) + "\n")
+        # Make a copy of the otu table without the taxonomy column 
+        f = open(OTU_TABLE, "r")
+        g = open(BUGBASE_TMP, "w")
+        for line in f:
+            g.write("\t".join(line.split("\t")[:-1]) + "\n")
 
-    #     bugbase_params = [
-    #         "Rscript", BUGBASE_SCRIPT, 
-    #         "-i", BUGBASE_TMP,
-    #         "-o", BUGBASE_OUTPUT, 
-    #         "-a", 
-    #     ]
+        bugbase_params = [
+            "Rscript", BUGBASE_SCRIPT, 
+            "-i", BUGBASE_TMP,
+            "-o", BUGBASE_OUTPUT, 
+            "-a", 
+        ]
 
-    #     if METADATA_FILE:
-    #         bugbase_params = bugbase_params + ["-m", METADATA_FILE]
+        if METADATA_FILE:
+            bugbase_params = bugbase_params + ["-m", METADATA_FILE]
 
-    #     bugbase_command = " ".join(bugbase_params)
+        bugbase_command = " ".join(bugbase_params)
 
-    #     # Run BugBase
-    #     logging.info(["Command to run: ", bugbase_command])
-    #     if os.system(bugbase_command) != 0:
-    #         logging.exception("\nSomething went wrong when running the BugBase analysis!")
-
-    # """
-    # [TODO: Parse the bugbase/otu_contributions/contributing_otus.txt to assign features in the OTUs ]
-    # """
-    # os.remove(BUGBASE_TMP)
+        # Run BugBase
+        logging.info(["Command to run: ", bugbase_command])
+        if os.system(bugbase_command) != 0:
+            logging.exception("\nSomething went wrong when running the BugBase analysis!")
 
     """
-    STEP: PATHWAY COMPLEMENTARITY
+    [TODO: Parse the bugbase/otu_contributions/contributing_otus.txt to assign features in the OTUs ]
+    """
+    os.remove(BUGBASE_TMP)
+
+    """
+    STEP 6: PATHWAY COMPLEMENTARITY
     """
     logging.info("STEP 6: Pathway complementarity".center(80, "*"))
-    if PATHWAY_COMPLEMENTARITY == True: 
+    if PATHWAY_COMPLEMENTARITY: 
 
         """
         Remember to change the path from kegg_genomes to all_genomes once the latter is ready 
@@ -260,6 +260,19 @@ def microbetag():
                     print(pathway_complementarity(taxon_a, taxon_b))
 
     return True
+
+
+    """
+    STEP 7: Net Cooperate
+    """
+    logging.info("STEP 7: NetCooperate between species/strains paired nodes".center(80, "*"))
+    if NETCOOPERATE: 
+
+        
+
+
+
+
 
 if __name__ == "__main__":
     microbetag()
