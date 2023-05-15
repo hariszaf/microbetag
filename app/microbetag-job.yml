@@ -1,3 +1,0 @@
-parameters:
-  class: File
-  path: /app/app.py
