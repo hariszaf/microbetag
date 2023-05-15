@@ -39,8 +39,13 @@ else:
 EDGE_LIST            = os.path.join(IO_PATH, cfg[ "edge_list" ]) if cfg[ "edge_list" ] != None else False
 METADATA_FILE = cfg[ "metadata_file" ]
 
+# Steps 
 PATHWAY_COMPLEMENTARITY = True if cfg[ "pathway_complementarity" ] != False else False
-PHEN_DB                 = True if cfg[ "PhenDB"]  != False else False
+PHEN_DB                 = True if cfg[ "PhenDB" ]  != False else False
+BUGBASE                 = True if cfg[ "BugBase" ] != False else False
+FAPROTAX                = True if cfg[ "FAPROTAX" ] != False else False
+
+
 USERS_TAXONOMY          = cfg[ "taxonomy" ]
 
 # Paths to reference database and mapping folders 
@@ -68,7 +73,7 @@ FAMILIES_NCBI_IDS      = os.path.join(GTDB_NCBI, "overall/families2ncbiId.tsv")
 # KEGG paths - Pathway complmementarity module
 KMODULES_DEFINITIONS        = os.path.join(REF_DBS, "kegg_mappings/module_definitions.tsv")
 KMODULES_DEFINITIONS_PARSED = os.path.join(REF_DBS, "kegg_mappings/module_definition_map.json")
-ALL_GENOMES_MODULES        = os.path.join(REF_DBS, "all_genomes_modules")
+ALL_GENOMES_MODULES         = os.path.join(REF_DBS, "all_genomes_modules")
 
 # PhenDB predictions
 PHEN_DB_PREDICTIONS         = os.path.join(REF_DBS, "phenDB/predictions/")
