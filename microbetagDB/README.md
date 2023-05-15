@@ -2,7 +2,7 @@
 
 In this folder we have the source code for coming up with the precalculations of `microbetag`.
 
-[!precalc](../figs/microbetag-wf-precalc.png)
+![precalc](../figs/microbetag-wf-precalc.png)
 
 
 ## PhenDB
