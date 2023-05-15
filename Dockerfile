@@ -262,6 +262,11 @@ ENV PATH="/usr/lib/App-SpaM/build/:${PATH}"
 # Copy microbetag utils 
 WORKDIR /home
 
+
+# ONCE THE PYTHON PART IS COMPLETE, REPLACE THE FOLLOWING COPY COMMANDS WITH 
+# RUN pip install microbetag
+
+
 # Add instead of copy.. why?
 COPY utils/ ./utils/
 COPY tools/ ./tools/
@@ -283,13 +288,6 @@ RUN tar -zxvf gtdb_kofam_scan_per_module.tar.gz &&\
          tar -xf mgnify_catalogues.tar.xz &&\
          rm gtdb_kofam_scan_per_module.tar.gz kegg_genomes.tar.xz mgnify_catalogues.tar.xz
 
-# COPY app/ ./app/
-# CMD ["python3", "app.py"]
-# # CMD ["cwl-runner", "--debug", "test.cwl", "test-job.yml"]
-# # CMD ["cwl-runner", "--debug", "microbetag.cwl", "microbetag-job.yml"]
-# CMD ["sh", "-c", "python3 test.py ${WORKFLOW}"]
-# CMD ["python3", "scripts/build_a_graph.py", "/mnt/network_output.edgelist"]
-# CMD ["python3", "scripts/pass_networkx_to_dash.py"]
 
 
 RUN pip install networkx[default] 
