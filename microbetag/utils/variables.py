@@ -36,13 +36,13 @@ if cfg["column_names_are_in"] == True:
 else:
    COM_HEAD = ""
 
-EDGE_LIST            = os.path.join(IO_PATH, cfg[ "edge_list" ]) if cfg[ "edge_list" ] != None else False
+EDGE_LIST     = os.path.join(IO_PATH, cfg[ "edge_list" ]) if cfg[ "edge_list" ] != None else False
 METADATA_FILE = cfg[ "metadata_file" ]
 
 # Steps 
 PATHWAY_COMPLEMENTARITY = True if cfg[ "pathway_complementarity" ] != False else False
-PHEN_DB                 = True if cfg[ "PhenDB" ]  != False else False
-BUGBASE                 = True if cfg[ "BugBase" ] != False else False
+PHEN_DB                 = True if cfg[ "PhenDB" ]   != False else False
+BUGBASE                 = True if cfg[ "BugBase" ]  != False else False
 FAPROTAX                = True if cfg[ "FAPROTAX" ] != False else False
 
 
@@ -90,7 +90,6 @@ FLASHWEAVE_EDGELIST         = os.path.join(FLASHWEAVE_OUTPUT_DIR, "network_outpu
 # FAPROTAX
 FAPROTAX_SCRIPT             = os.path.join(TOOLS, "faprotax/collapse_table.py")
 FAPROTAX_DB                 = os.path.join(TOOLS, "faprotax/FAPROTAX.txt")
-
 FAPROTAX_OUTPUT_DIR         = os.path.join(OUT_DIR, "faprotax")
 FAPROTAX_FUNCT_TABLE        = os.path.join(FAPROTAX_OUTPUT_DIR, "functional_otu_table.tsv")
 FAPROTAX_SUB_TABLES         = os.path.join(FAPROTAX_OUTPUT_DIR, "sub_tables")
