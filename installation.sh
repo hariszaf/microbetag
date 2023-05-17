@@ -31,25 +31,32 @@ rm FAPROTAX_1.2.6.zip
 
 # Install BugBase
 git clone https://github.com/knights-lab/BugBase.git
-echo "export BUGBASE_PATH='/$PWD/microbetag_env/BugBase'" >> ~/.bashrc
+echo "export BUGBASE_PATH='/$PWD/BugBase'" >> ~/.bashrc
 echo "export PATH='$BUGBASE_PATH/bin:$PATH'" >> ~/.bashrc
 source ~/.bashrc
 
 
 # BugBase R libraries
-mkdir R_libs
-Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("RColorBrewer2", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("beeswarm", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("reshape2", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("plyr", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("gridExtra", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("RJSONIO", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("digest", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("optparse", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("Matrix", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("labeling", repos="https://cran.rstudio.com", lib="R_libs")' 
-Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com", lib="R_libs")'
+mkdir R_lib
+Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("RColorBrewer2", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("beeswarm", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("reshape2", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("plyr", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("gridExtra", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("RJSONIO", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("digest", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("optparse", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("Matrix", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("labeling", repos="https://cran.rstudio.com", lib="R_lib")' 
+Rscript -e 'install.packages("isoband", repos="https://cran.rstudio.com", lib="R_lib")'
+Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com", lib="R_lib")'
+Rscript -e 'install.packages("withr", repos="https://cran.rstudio.com", lib="R_lib")'
+
+# In case you are using R>4 to get the biomformat library, you need to go through the BiocManager
+# Rscript -e 'install.packages("BiocManager", lib="R_lib")'
+# Rscript -e 'BiocManager::install("biomformat", lib="R_lib", force = TRUE)'
+# Remove the library(bioformat) from the run.bugabse.r script 
 
 
 # FAPROTAX Python libraries
@@ -57,4 +64,8 @@ conda create -n microbetag
 conda activate microbetag
 python -m pip install "numpy<1.24" pytest-shutil biom-format pandas
 
+# Add the R_lib path to the paths that R is looking for installed libraries
+RlibsPATH="$PWD/R_lib"
+echo "export R_LIBS_USER='$RlibsPATH'" >> ~/.bashrc
+source ~/.bashrc
 

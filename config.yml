@@ -5,17 +5,17 @@
 # Run as a container - if True then the IO path will be /mnt. If false please provide the input - output path 
 approach: 
   container: False
-  io_path: /tests/ # if docker : null
+  io_path: /home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/tests/ # if docker : null
 
 # OUTPUT
 # ------
-output_directory: output_dev_qiime2 # output_dev_qiime2
+output_directory: output_dev_dada2_may # output_dev_qiime2
 
 # OTU TABLE
 # ----------
 
 # Filename of your OTU table
-otu_table: qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt  # dada2_use_case.tsv
+otu_table: dada2_use_case.tsv # qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt 
 
 # Delimeter used in the OTU table file 
 otu_table_delim: \t
@@ -25,10 +25,10 @@ otu_table_delim: \t
 # Set it to "qiime2" or "dada2" in case you have used one of those
 # Set it to "any" in case none of the previous apply
 # REMEMBER! In all cases, you need to provide a 7-level taxonomy as described in the "how to"
-taxonomy: qiime2  # dada2
+taxonomy: dada2  # qiime2
 
 # Column name denoting the OTU id; if special characters, for example "#", use double quotes 
-otu_identifier_column: "#OTU ID"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
+otu_identifier_column: "ASV_id"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
 
 # Column name denoting the taxonomy assignment of the OTU 
 taxonomy_column_name : taxonomy
@@ -40,13 +40,15 @@ taxonomy_delimeter: ";"
 comments_character: "#"
 
 # [ATTENTION! dada2 and qiim2 tests highlight difference] Column names are in the last comment line prior to any
-column_names_are_in  : True # dada2 -> False   qiime2 -> True
+# The FAPROTAX step will break if this is not set properly
+column_names_are_in  : False # dada2 -> False   qiime2 -> True
+
 
 # EDGE LIST
 # ---------
 
 # If co-occurrence network already available, please provide its edge list; a 2 column tab separated file
-edge_list: 
+edge_list: #tests/output_dev_qiime2/flashweave/network_detailed_output.edgelist
 
 # METADATA 
 # --------
@@ -55,23 +57,15 @@ metadata_file:
 
 # STEPS 
 # --------
-
-BugBase: False
-
-PhenDB: False
-
-FAPROTAX: False
-
+PhenDB: True
+FAPROTAX: True
+# BugBase can be quite tricky to install in case you are not using the container option. 
+# If you are still to use it, please make sure you have the $BUGBASE_PATH environmental variable as in the installation.sh script.
+# Further, you need to remember that BugBase only works with GreenGenes IDs; you can get those using OTU pickers such as https://github.com/GabeAl/NINJA-OPS
+# If no GreenGenes IDs for OTUs or IMG IDs for shotgun data are present, microbetag will fail (https://github.com/knights-lab/BugBase/issues/2)
+BugBase: True
 NetCooperate: True
-
-pathway_complementarity: 
-    - skip_it: 
-      default: False
-    # - mode_for_species: 
-    #   default: union
-
-    # - mode_for_strain: 
-    #   default: intersection
+pathway_complementarity: False
 
 
 # ------
@@ -126,9 +120,10 @@ faprotax_opt:
 
 
 # BugBase optional parameters
+# [ATTENTION!] If no GreenGenes IDs for OTUs or IMG IDs for shotgun data are present, microbetag will fail (https://github.com/knights-lab/BugBase/issues/2)
 bugbase_opt:
   
-  -c: taxonomy        # Map column header to plot by (which column denotes treatment groups)
+  -c: taxonomy  # Map column header to plot by (which column denotes treatment groups)
   -w:           # Data is shotgun metagenomic data (picked against IMG database)
   -a:           # Plot all samples (no stats will be run)
   -x:           # Output prediction files only, no plots will be made

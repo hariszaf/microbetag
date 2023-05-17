@@ -1,6 +1,8 @@
 # Ignore python cache 
 __pycache__/
 
+# Ignore pip install dist/ 
+dist/
 
 # Build and Release Folders
 bin-debug/
@@ -42,7 +44,8 @@ __pycache__/
 mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
 ref-dbs/microbetag_genomes/
-ref-dbs/all_genome_modules
+microbetagDB/ref-dbs/all_genome_modules/
+
 
 tools/BugBase/
 
@@ -65,7 +68,7 @@ dada2familiesNcbiIds
 *.nans
 *.ini
 
-all-in.csv
+elos_bins.tsv
 kos_on_modules_graph.tsv
 
 # Ignore the output of the installation.sh script 

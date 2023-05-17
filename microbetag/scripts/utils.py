@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import logging
 import os, sys
-from utils.variables import * 
+from .variables import * 
 import networkx as nx
 
 def count_comment_lines(my_otu_table, my_taxonomy_column):
@@ -279,3 +279,20 @@ def edge_list_of_ncbi_ids(edgelist, otu_table_with_ncbi_ids):
    associated_pairs = pd.merge(associated_pairs_node_a, associated_pairs_node_b, on="joint").drop(["joint"], axis=1)
 
    return associated_pairs
+
+def export_phen_traits_to_file(column_names, rows, filename):
+   with open(filename, 'w') as file:
+         file.write('\t'.join(column_names) + '\n')
+         for row in rows:
+            file.write('\t'.join(row) + '\n')
+
+
+def map_faprotax_traits_to_sp_dataframe(trait_file):
+
+
+   return 1
+
+
+
+
+

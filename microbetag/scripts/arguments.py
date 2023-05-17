@@ -7,8 +7,7 @@ from argparse import RawTextHelpFormatter
 import textwrap
 import os 
 
-# main_path  = '/'.join(os.getcwd().split("/")[:-1])
-# default_config = main_path + "/config.yml"
+
 parser = argparse.ArgumentParser(
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description=textwrap.dedent('''\
@@ -30,10 +29,11 @@ parser = argparse.ArgumentParser(
 
 
 parser.add_argument('-c', '--configuration_file', dest = 'conf', metavar = '',
-                    required = True,
+                    required = False,
                     help = 'YAML configuration file with the parameter values')
 
 """
 Parse arguments
 """
 args = parser.parse_args()
+
