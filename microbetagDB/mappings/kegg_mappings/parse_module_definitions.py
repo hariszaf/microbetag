@@ -86,8 +86,10 @@ def flatten(lis):
              yield item
 
 
-def parse_regular_module_dictionary(bifurcating_list, structural_list, module_components_raw):
-
+def parse_regular_module_dictionary(module_components_raw, structural_list):
+    """
+    bifurcating_list: consider adding it or not, if yes give it as an argument
+    """
     # Parse raw module information
     module_steps_parsed = {}
     for key, values in module_components_raw.items():
@@ -95,7 +97,9 @@ def parse_regular_module_dictionary(bifurcating_list, structural_list, module_co
         #     continue
         values = values.replace(" --", "")
         values = values.replace("-- ", "")
-        if key in bifurcating_list or key in structural_list:
+        
+        # or key in bifurcating_list 
+        if key in structural_list:
             continue
         else:
             module = []
@@ -129,6 +133,15 @@ def parse_regular_module_dictionary(bifurcating_list, structural_list, module_co
     return module_steps_parsed
 
 def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
+    """
+    This function returns all the possible combinations of KOs to have a complete KEGG module
+    Actually it returns also some "over"-loaded combinations like:
+    0 : "K01735"
+    1 : "K03785"
+    2 : "K13832"
+    for the second step of M00022 while K01735 and K13832 would be enough. 
+    As it does not lead to errors, the function is valid. 
+    """
 
     final_regular_dict = {}
     counter = 0
@@ -209,6 +222,7 @@ def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
                     if alt[:2] == "((":
                         alt = alt[1:-1]
 
+
                     pts = re.split(r"\)\+|\)_\(|_\(|\)_", alt)
 
                     for index, pt in enumerate(pts):
@@ -245,7 +259,6 @@ def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
                                             pts[index_1][index_2] = pts[index_1][index_2][index_3]
 
                     alts_for_a_step.append(pts)
-
 
             # Single case steps. Most cases are single KOs or "choose one from" (e.g. (K00969,K06210)) or just a combination of KOs (e.g., K06215+K08681)
             else:
@@ -300,7 +313,7 @@ for line in modules:
 
 
 
-module_steps_parsed = parse_regular_module_dictionary(bifs, structurals, module_components_raw)
+module_steps_parsed = parse_regular_module_dictionary(module_components_raw, structurals)
 
 P = create_final_regular_dictionary(module_steps_parsed, module_components_raw)
 
@@ -308,26 +321,30 @@ q = {}
 for md, steps in P.items():
 
     q[md] = {}
+    q[md]["id"] = md
     q[md]["definition"] = module_components_raw[md]
     q[md]["#-of-steps"] = len(steps)    
     q[md]["steps"] = steps
+    q[md]["unique-KOs"] = list(set(list(flatten(q[md]["steps"].values()))))
 
+    # Make sure all alternatives of a step have the same format
+    for step, opt in q[md]["steps"].items():
+        for index, c in enumerate(opt):
+            if len(c) == 1:
 
-    # for step, cases in steps.items():
-    #     if len(q[md]["steps"]) > 0:
-    #         q[md]["steps"].append([])
-    #     q[md]["steps"] = q[md]["steps"] + []
-    #     for case in cases:
-    #         alts = re.split(r"\+|_", case)
-    #         if len(q[md]["steps"]) == 0:
-    #             q[md]["steps"].append([alts])
-    #         else:
-    #             q[md]["steps"][-1] = q[md]["steps"][-1] + [alts]
-    # # We make the set again a list, in order to be able to dump the dictionary to a json file
-    # q[md]["unique-KOs"] = [list(set(list(flatten(q[md]["steps"]))))]
-    # q[md]["all-alts"] = list(itertools.product(*q[md]["steps"]))
+                if len(c[0]) == 1:
+                    
+                    flat_list = [item for sublist in c for item in sublist]
+                    q[md]["steps"][step][index] = flat_list 
 
+                else:
+                    x = all(len(i) == 1 for i in c[0])
+                    if x:
 
+                        flat_list = [item for sublist in c for item in sublist]
+                        if flat_list:
+                            if flat_list[0] != "K":
+                                q[md]["steps"][step][index] = flat_list 
 
 
 
@@ -335,10 +352,4 @@ for md, steps in P.items():
 import json
 with open('result.json', 'w') as fp:
     json.dump(P, fp, indent=4)
-
-
-print(P["M00855"]) 
-print(q["M00022"])
-print(list(flatten(q["M00022"]["steps"]["1"])))
-
 
