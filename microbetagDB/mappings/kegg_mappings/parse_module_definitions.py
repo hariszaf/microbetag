@@ -263,7 +263,6 @@ def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
                     temp_string[i] = re.split(r"\+|_", temp_string[i])
 
 
-
             # If temp_string is a string, split in spaces
             if isinstance(temp_string, str):
                 temp_string = temp_string.split()
@@ -325,7 +324,7 @@ for md, steps in P.items():
     #         else:
     #             q[md]["steps"][-1] = q[md]["steps"][-1] + [alts]
     # # We make the set again a list, in order to be able to dump the dictionary to a json file
-    q[md]["unique-KOs"] = [list(set(list(flatten(q[md]["steps"]))))]
+    # q[md]["unique-KOs"] = [list(set(list(flatten(q[md]["steps"]))))]
     # q[md]["all-alts"] = list(itertools.product(*q[md]["steps"]))
 
 
@@ -338,8 +337,8 @@ with open('result.json', 'w') as fp:
     json.dump(P, fp, indent=4)
 
 
-
-
-
 print(P["M00855"]) 
-print(q["M00126"])
+print(q["M00022"])
+print(list(flatten(q["M00022"]["steps"]["1"])))
+
+
