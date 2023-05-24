@@ -78,12 +78,137 @@ structurals = [
 ]
 
 def flatten(lis):
-     for item in lis:
-         if isinstance(item, collections.Iterable) and not isinstance(item, str):
-             for x in flatten(item):
-                 yield x
-         else:        
-             yield item
+    for item in lis:
+        if isinstance(item, collections.Iterable) and not isinstance(item, str):
+            for x in flatten(item):
+                yield x
+        else:        
+            yield item
+
+def parenthetic_contents(string):
+    """Generate parenthesized contents in string as pairs (level, contents)."""
+    stack = []
+    for i, c in enumerate(string):
+        if c == '(':
+            stack.append(i)
+        elif c == ')' and stack:
+            start = stack.pop()
+            yield (len(stack), string[start + 1: i])
+
+def get_strong_or(string):
+
+    # Build temp_string ----    First part of the function
+    count = 0
+    options = 0
+    parsing_string = ""
+    for char in string:
+
+        if char == "(":
+            count += 1
+            options += 1
+            if len(parsing_string) > 1 and parsing_string[-1] == "-":
+                parsing_string += "%"
+            if count >= 2 :
+                parsing_string += char
+
+        elif char == ")":
+            count -= 1
+            if count >= 1 or (options == 1 and count >=1):
+                parsing_string += char
+            else:
+                continue
+
+        elif char == ",":
+            if count >= 2:
+                parsing_string += char
+            else:
+                parsing_string += " "
+        else:
+            parsing_string += char
+
+    return parsing_string, options
+
+def split_com_and_uper(alist):
+
+    try:
+        for i in range(len(alist)):
+
+            if "," in alist[i]:
+
+                alist[i] = alist[i].split(",")
+
+        for i in range(len(alist)):
+
+            for j in range(len(alist[i])):
+
+                if "+" in alist[i][j]:
+                    alist[i][j] = alist[i][j].split("+")
+    except:
+        pass
+
+    return alist
+
+def disentangle_splited_alternative(list_of_pars, level, true_alt, md):
+
+    check = False
+    while level > 0:
+        for par1 in list_of_pars: 
+            if par1[0] == level: 
+                for par2 in list_of_pars: 
+                    if par2[0] == level - 1 :
+                        if par1[1] in par2[1]:
+                            check = True
+
+                            index = par2[1].index(par1[1])
+
+                            # [IMPORTANT] NOW I KNOW THAT BOTH par1 and par2 ARE INNER TO THE true_alt PARENTHESIS
+                            if par2[0] > 0:
+                                print(par2, "`````", par1, "~~~~~~~", true_alt)
+
+
+                                continue
+                            # THE REST, YOU TREAT LIK ANY OTHER PART
+                            else:
+                                print(">>", true_alt)
+
+                            # print(true_alt, "~~", get_strong_or(true_alt[0]), "~",  md)
+
+
+        level -= 1
+
+    if not check:
+        if "_" not in true_alt:
+
+            c = re.split(r"\)\+|\+\(", true_alt)
+            d = [s.strip('(|)') for s in c] 
+            e = split_com_and_uper(d)
+
+            if any(isinstance(i, list) for i in e):
+                e = [[i] if isinstance(i,str) else i for i in e  ]
+                e = list(itertools.product(*e))
+                return (list(itertools.product(*e)))
+            else: 
+                e = [e[0].split("+")]
+                return e
+        else:
+            c = (true_alt.split("_")) ; d = []
+            for i in range(len(c)):
+                if c[i][0]=="(" and "," in c[i] and ")" not in c[i]:
+                    d.append(c[i] + "_"+ c[i+1])
+                else:
+                    d.append(c[i])
+            d = [s.strip('(|)') for s in d]
+            e = split_com_and_uper(d)
+            if any(isinstance(i, list) for i in e):
+                e = [[i] if isinstance(i,str) else i for i in e  ]
+                e = list(itertools.product(*e))
+                # print(e)
+                return e
+            else: 
+                return e
+
+
+
 
 
 def parse_regular_module_dictionary(module_components_raw, structural_list):
@@ -132,139 +257,128 @@ def parse_regular_module_dictionary(module_components_raw, structural_list):
 
     return module_steps_parsed
 
-def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
+def create_final_regular_dictionary(module_steps_parsed):
     """
     This function returns all the possible combinations of KOs to have a complete KEGG module
-    Actually it returns also some "over"-loaded combinations like:
-    0 : "K01735"
-    1 : "K03785"
-    2 : "K13832"
-    for the second step of M00022 while K01735 and K13832 would be enough. 
-    As it does not lead to errors, the function is valid. 
     """
 
     final_regular_dict = {}
-    counter = 0
 
     # Parse module steps and export them into a text file
     for module, steps in module_steps_parsed.items():
 
         final_regular_dict[module] = {}
-        step_number = 0
+        step_number = 0 
 
         # Deal with one step at a time
         for step in steps:
 
+            step_number += 1
             check = False
 
-            # Build temp_string ----    First part of the function
-            step_number += 1
-            count = 0
-            options = 0
-            temp_string = ""
-            for char in step:
+            temp_string, options = get_strong_or(step)
 
-                if char == "(":
-                    count += 1
-                    options += 1
-                    if len(temp_string) > 1 and temp_string[-1] == "-":
-                        temp_string += "%"
-                    if count >= 2 :
-                        temp_string += char
-
-                elif char == ")":
-                    count -= 1
-                    if count >= 1 or (options == 1 and count >=1):
-                        temp_string += char
-                    else:
-                        continue
-
-                elif char == ",":
-                    if count >= 2:
-                        temp_string += char
-                    else:
-                        temp_string += " "
-
-                else:
-                    temp_string += char
-
+            
             # Steps, i.e. temp_string, with more than one alternatives ----    Second part of the function
-            if options >= 2:
-
-                counter += 1
+            if options > 1:
 
                 # Check for "-" terms
-                temp_string = re.sub("-%(.*)", "", temp_string, count=0, flags=0)
+                if "-%" in temp_string:
+                    temp_string = re.sub("-%\(.*\)", "", temp_string, count=0, flags=0)
                 if "-" in temp_string:
                     temp_string = re.sub(r'-K[0-9]{5}', '', temp_string)
-
-                # 
-                alts_for_a_step = [] ; check = True
 
                 # I am splitting using the space, as it denotes an INDEPENDENT alternative for the current step
                 alternatives = temp_string.split()
 
-                # and exam each alternatve separately
-                for alt in alternatives:
+                # Keep all alternatives of a step in a list
+                alts_for_a_step = [] ; check = True
 
-                    # Use regular expressions to extract the groups within parentheses
-                    """
-                    it returns the inner parentheses, for example:
-                    alt: ((K03831,K03638)_K03750)
-                    will return:
-                    K03831,K03638
-                    """
-                    pattern = r"\(([^()]+)\)"
-                    matches = re.findall(pattern, alt)
+                # Parse each alternative to get the possible combinations of it
+                for alternative in alternatives:
 
-                    alt_ops = []
+                    splited_alternative = list(parenthetic_contents(alternative))
 
-                    if alt[:2] == "((":
-                        alt = alt[1:-1]
+                    # add the alternative as a list of KO terms in the alternatives list
+                    if len(splited_alternative) == 0:
+                        """
+                        the alternative on the right becomes like in the left
+                        [['K00665']] ~~~ K00665
+                        [['K00665'], ['K00667', 'K00668']] ~~~ K00667+K00668
+                        """
+                        sp = re.split(r"\+|_", alternative)
+                        alts_for_a_step.append(sp)
+
+                    else:
+                        max_levels = max([o[0] for o in splited_alternative])
+
+                        q = disentangle_splited_alternative(splited_alternative, max_levels, alternative, module)
 
 
-                    pts = re.split(r"\)\+|\)_\(|_\(|\)_", alt)
 
-                    for index, pt in enumerate(pts):
-                        if ")" in pt or "(" in pt:
-                            i = re.sub("\(|\)", "", pt)
-                            pts[index] = i
 
-                    for index, pt in enumerate(pts):
-                        if "," in pt:
-                            d = []
-                            for i in pt.split(","):
-                                d.append([i])
-                            pts[index] = d
-                        elif "_" in pt:
-                            h = []
-                            for j in pt.split("_"):
-                                h.append(j)
-                            pts[index] = h
-                        elif "+" in pt:
-                            d = []
-                            for i in pt.split("+"):
-                                d.append([i])
-                            pts[index] = d
-                        else:
-                            pts[index] = [pt]
 
-                    for index_1, i in enumerate(pts):
-                        if isinstance(i,list):
-                            for index_2, j in enumerate(i):
-                                if isinstance(j,list):
-                                    for index_3, z in enumerate(j):
-                                        if "+" in z or "_" in z:
-                                            pts[index_1][index_2][index_3] = re.split(r"\+|_", z)
-                                            pts[index_1][index_2] = pts[index_1][index_2][index_3]
 
-                    alts_for_a_step.append(pts)
+
+
+                # # and exam each alternatve separately
+                # for alt in alternatives:
+
+                #     if alt[:2] == "((":
+                #         alt = alt[1:-1]
+
+                #     # pts = re.split(r"\)_\(", alt)
+
+                #     pts = re.split(r"\)\+|\)_\(|_\(|\)_|_\(\(", alt)
+
+
+                #     for index, pt in enumerate(pts):
+                #         if ")" in pt or "(" in pt:
+                #             i = re.sub("\(|\)", "", pt)
+                #             pts[index] = i                        
+                            
+
+                #         if "," in pt:
+                #             d = []
+                #             for i in pt.split(","):
+                #                 d.append([i])
+                #             pts[index] = d
+
+                #         elif "_" in pt:
+                #             h = []
+                #             for j in pt.split("_"):
+                #                 h.append(j)
+                #             pts[index] = h
+
+
+                #         elif "+" in pt:
+                #             d = []
+                #             for i in pt.split("+"):
+                #                 d.append([i])
+                #             pts[index] = d
+                #         else:
+                #             pts[index] = [pt]
+
+
+                #     for index_1, i in enumerate(pts):
+                #         if isinstance(i,list):
+                #             for index_2, j in enumerate(i):
+                #                 if isinstance(j,list):
+                #                     for index_3, z in enumerate(j):
+                #                         if "+" in z or "_" in z:
+                #                             pts[index_1][index_2][index_3] = re.split(r"\+|_", z)
+                #                             pts[index_1][index_2] = pts[index_1][index_2][index_3]
+
+                #     alts_for_a_step.append(pts)
 
             # Single case steps. Most cases are single KOs or "choose one from" (e.g. (K00969,K06210)) or just a combination of KOs (e.g., K06215+K08681)
             else:
+
                 # Check for "-" terms
                 if "-" in step:
+                    # print(temp_string, "~~~", step)
                     temp_string = [re.sub(r'-K[0-9]{5}', '', step)]
+                    # print(temp_string, "~~~", step)
 
                 # Split if ","; if not one-long list is made
                 else:
@@ -272,6 +386,7 @@ def create_final_regular_dictionary(module_steps_parsed, module_components_raw):
                 temp_string = [re.sub(r'\(|\)', '', i) for i in temp_string]
 
 
+                # [ALERT] This must lead to errors... 
                 for i in range(len(temp_string)):
                     temp_string[i] = re.split(r"\+|_", temp_string[i])
 
@@ -312,10 +427,9 @@ for line in modules:
    module_components_raw[md] = definition
 
 
-
 module_steps_parsed = parse_regular_module_dictionary(module_components_raw, structurals)
 
-P = create_final_regular_dictionary(module_steps_parsed, module_components_raw)
+P = create_final_regular_dictionary(module_steps_parsed)
 
 q = {}
 for md, steps in P.items():
@@ -344,12 +458,17 @@ for md, steps in P.items():
                         flat_list = [item for sublist in c for item in sublist]
                         if flat_list:
                             if flat_list[0] != "K":
-                                q[md]["steps"][step][index] = flat_list 
+                                q[md]["steps"][step][index] = flat_list
 
-
+for md, steps in q.items():
+    for step, opts in q[md]["steps"].items():
+        for index, opt in enumerate(opts):
+            if isinstance(opt[0], list):
+                q[md]["steps"][step][index] = list(flatten(opt))
 
 
 import json
-with open('result.json', 'w') as fp:
-    json.dump(P, fp, indent=4)
+# with open('result.json', 'w') as fp:
+#     json.dump(q, fp, indent=4)
+
 
