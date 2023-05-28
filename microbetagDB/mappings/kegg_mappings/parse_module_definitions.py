@@ -1,74 +1,27 @@
 """
-The pathway module is defined by the logical expression of K numbers, and the signature module 
-is defined by the logical expression of K numbers and M numbers.
-A SPACE ( ) or a PLUS (+) sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator 
-and a COMMA (,), used for alternatives, is treated as an OR operator. 
-A MINUS (-) sign designates an optional item in the complex. 
-
-Aim of this script is to build all the unique sets 
-of KO terms that can be used to build up each KEGG 
-module (https://www.genome.jp/brite/ko00002)
-
-This script is based on 2 function from the following script of microbeAnnotator:
-https://github.com/cruizperez/MicrobeAnnotator/tree/master/microbeannotator/data/01.KEGG_DB/00.KEGG_Data_Scrapper.py
-
-The json file will have 2 levels, in the first one, the various steps will
-be denoted and in the second the multiple alternative combinations of terms 
-will be shown. 
-All the terms of a combination will be needed for the module to be complete
+author: Haris Zafeiropoulos 
+package: microbetag
+description: Aim of this script is to build all the unique sets of KO terms that can be used to build up each KEGG module (https://www.genome.jp/brite/ko00002)
+output: A 2-levels .json file, in the first one, the various steps will be denoted and in the second the multiple alternative combinations of terms 
+        will be shown. All the terms of a combination are necessary for the module to be complete
+notes: The pathway module is defined by the logical expression of K numbers, and the signature module 
+        is defined by the logical expression of K numbers and M numbers.
+        A SPACE ( ) or a PLUS (+) sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator 
+        and a COMMA (,), used for alternatives, is treated as an OR operator. 
+        A MINUS (-) sign designates an optional item in the complex. 
+        This script was inspired by 2 functiosn from the following script of microbeAnnotator:
+        https://github.com/cruizperez/MicrobeAnnotator/tree/master/microbeannotator/data/01.KEGG_DB/00.KEGG_Data_Scrapper.py
 """
-
 import itertools
 import re, sys
 
 bifs = [
-         "M00373",
-         "M00532",
-         "M00376",
-         "M00378",
-         "M00088",
-         "M00031",
-         "M00763",
-         "M00133",
-         "M00075",
-         "M00872",
-         "M00125",
-         "M00119",
-         "M00122",
-         "M00827",
-         "M00828",
-         "M00832",
-         "M00833",
-         "M00837",
-         "M00838",
-         "M00785",
-         "M00307",
-         "M00048",
-         "M00127",
-         "M00893",
-         "M00895",
-         "M00896",
-         "M00897",
-         "M00898",
-         "M00899",
-         "M00911",
-         "M00913",
-         "M00917",
-         "M00935"
+        "M00373","M00532","M00376","M00378","M00088","M00031","M00763","M00133","M00075","M00872","M00125","M00119","M00122",
+        "M00827","M00828","M00832","M00833","M00837","M00838","M00785","M00307","M00048","M00127","M00893","M00895","M00896",
+        "M00897","M00898","M00899","M00911","M00913","M00917","M00935"
       ]
 
-structurals = [
-   "M00144",
-   "M00149",
-   "M00151",
-   "M00152",
-   "M00154",
-   "M00155",
-   "M00153",
-   "M00156",
-   "M00158",
-   "M00160"
-]
+structurals = [ "M00144","M00149","M00151","M00152","M00154","M00155","M00153", "M00156","M00158", "M00160" ]
 
 def flatten(lis):
     """
@@ -77,7 +30,6 @@ def flatten(lis):
     """
     import collections.abc
     collections.Iterable = collections.abc.Iterable
-
     for item in lis:
         if isinstance(item, collections.Iterable) and not isinstance(item, str):
             for x in flatten(item):
@@ -283,60 +235,97 @@ def create_final_regular_dictionary(module_steps_parsed):
         for step in steps:
 
             temp_string = step
-
             step_number += 1
             
             # Check for "-" terms
             if "-(" in temp_string:
-                temp_string = re.sub("-\(.*\)", "", temp_string, count=0, flags=0)
+                temp_string = re.sub("-\(.*?\)", "", temp_string, count=0, flags=0)
             if "-" in temp_string:
                 temp_string = re.sub(r'-K[0-9]{5}', '', temp_string)
             if len(temp_string) == 0:
                 continue
-            
-            indep_alts = get_independent_step_alternatives([temp_string])
-            if len(indep_alts) == 1 and "(" not in indep_alts[0]:
-                indep_alts[0] = re.split(r"\+|\_", indep_alts[0][0])
 
-                final_regular_dict[module][step] = indep_alts
-                continue
+            # Get major independent alternatives to have the step             
+            indep_alts = get_independent_step_alternatives([temp_string])   
 
-            # [TODO] Once we parse each ALTERNATIVE properly, we have to put them out in this up-level of the indep_alt
-            # REMEMBER! An alternative is completely independent from the others
+            # [REMEMBER!] An alternative is completely independent from the others
             tmp_alts = indep_alts.copy()
-            # print(">>>>>>", tmp_alts)
 
+            # Parse each of the independent alternatives found to get the various combinations of KO terms in each 
             for index, alt in enumerate(indep_alts):
+
                 if "(" not in alt[0] :
-                    alt = re.split(r"\+|\_", alt[0]) ; tmp_alts[index] = alt
+                    alt = re.split(r"\+|\_", alt[0]) 
+                    tmp_alts[index] = [alt]
 
                 else:
-                    # In the tmp_alt we keep the semi-steps that will have to be combined to build the alternative
+
+                    # In the tmp_alt we keep the semi-steps that will have to be combined to build the alternative (parts)
                     tmp_alt = []
                     split_indices = split_to_independent_chunks(alt[0])
                     parts = [alt[0][i:j] for i,j in zip(split_indices, split_indices[1:]+[None])]
                     parts = [x for x in parts if x]
 
+                    # Make sure that jumps in an alternative are taken distinct steps in case they're out of an inner_part (see M00083)
+                    new_parts = []
+                    for ppindex, part in enumerate(parts):
+                        ops = 0 ; new_part = ""
+                        for cchar in part: 
+                            if cchar == "(":
+                                ops += 1 ; new_part += cchar
+                            elif cchar == ")":
+                                ops -= 1 ; new_part += cchar
+                            elif cchar =="_":
+                                if ops == 0:
+                                    new_part += " "
+                                else:
+                                    new_part += cchar
+                            else:
+                                new_part += cchar
+                        new_part = new_part.split() ; new_parts += new_part
+                    parts = new_parts
+
+                    # [IMPORTANT STEP!] Parse each part of the alternative to get the various combinations that can build the alterinative
                     for k in range(len(parts)):
                         inner_indices = split_to_independent_chunks(parts[k])
                         inner_parts = [parts[k][i:j] for i,j in zip(inner_indices, inner_indices[1:]+[None])]
                         inner_parts = [x for x in inner_parts if x]
 
-                        # [TODO] CHECK AGAIN IF ALL IN A PARENTHESIS WITH get_independent_step_alternatives()
+                        # Run again the independency step for each inner part 
                         if len(inner_parts) > 0: 
-                            # print(">",inner_parts)
+
+
                             inner_parts = get_independent_step_alternatives(inner_parts)
                             inner_parts = [j for j in inner_parts if j!=["_"]]
+
+                            # Each entry of this list is an alternative for a part of the step
                             ready_to_go = []
-                            for x in range(len(inner_parts)):
-                                coord = split_to_independent_chunks(inner_parts[x][0])
+                            for inner_part_index in range(len(inner_parts)):
+
+                                coord = split_to_independent_chunks(inner_parts[inner_part_index][0])
+
                                 if len(coord) == 0:
-                                    ready_to_go.append(inner_parts[x][0].split("+"))
+                                    ready_to_go.append(inner_parts[inner_part_index][0].split("+"))
+
+                                # [ ATTENTION! ] Up to now, 2023.05, this is only the case for M00022
+                                # Thus, we only deal with this for now so please always check for this warning message in case a new module goes throug this case
                                 else:
-                                    last_parts = [inner_parts[x][0][i:j] for i,j in zip(coord, coord[1:]+[None])]
-                                    last_parts = [x for x in last_parts if x] ; 
-                            
+
+                                    last_parts = [inner_parts[inner_part_index][0][i:j] for i,j in zip(coord, coord[1:]+[None])]
+                                    last_parts = [x for x in last_parts if x] 
+                                    last_parts = [ re.split(r"\+|,|_", x) for x in last_parts ] 
+                                    for x,y in enumerate(last_parts):
+                                        for z in range(len(y)):
+                                            last_parts[x][z] = last_parts[x][z].replace("(","").replace(")","")
+                                    for x,y in enumerate(last_parts):
+                                            last_parts[x] = [k for k in last_parts[x] if k]
+
+                                    for comb in list(itertools.product(*last_parts)):
+                                        ready_to_go.append(list(comb))
+
+
                             tmp_alt.append(ready_to_go)
+
                         else:
                             # All KOs included in this part needs to be used so a nested list with a single entry will be kept, e.g. [['K01041', 'K00252']] 
                             inner_parts = parts[k].split("_") 
@@ -346,19 +335,31 @@ def create_final_regular_dictionary(module_steps_parsed):
                             tmp_alt.append(inner_parts)
 
 
-                    # WE NEED SOMETHING FROM ALL LISTS OF THIS NESTED
-                    # print(tmp_alt)
 
-            continue
+                        # [ATTENTION!] WE NEED SOMETHING FROM ALL LISTS INCLUDED IN THIS NESTED LIST
+                        tmp_alts[index] = tmp_alt
 
+            # Get all the combinations from each of the independent alternatives 
+            all_alternatives = []
+            for calt in tmp_alts:
+                if len(calt)>1:
+                    combos = list(itertools.product(*calt))
+                    combos = [list(flatten(combos[i])) for i in range(len(combos))]
+                    all_alternatives += combos
+
+                else:
+                    all_alternatives += calt
+
+            # Assign the list with all the combinations for a step to the module:step:combinations dictionary
+            final_regular_dict[module][step_number] = all_alternatives
 
     return final_regular_dict
-
 
 # -----   Run modules parsing -----------
 
 modules = open("module_definitions.tsv", "r")
 module_components_raw = {}
+# Build dictionary with module ids as keys and the initial definition as value
 for line in modules:
    # Remove the "md:" prefix from the id and the new line from the definition
    md, definition = line.split("\t")[0][3:], line.split("\t")[1][:-1]
@@ -366,13 +367,31 @@ for line in modules:
    definition = definition.replace(";", " ")
    module_components_raw[md] = definition
 
-
+# Get a dictionary with the major steps of each module, 
+# e.g.: for module md:M00022 with the definition: 
+# (K01626,K03856,K13853);(((K01735,K13829);((K03785,K03786);K00014,K13832)),K13830);((K00891,K13829);(K00800,K24018),K13830);K01736
+# we get the following 4 major steps
+# ['(K01626,K03856,K13853)', '(((K01735,K13829)_((K03785,K03786)_K00014,K13832)),K13830)', '((K00891,K13829)_(K00800,K24018),K13830)', 'K01736']
 module_steps_parsed = parse_regular_module_dictionary(module_components_raw, structurals)
 
+# Get alla the combos to get each and every step of a module
 P = create_final_regular_dictionary(module_steps_parsed)
+
+# Build the final dictionary to be used for the pathway complementarity step ( input for the pathway_complementarity.py )
 q = {}
 for md, steps in P.items():
+    for step_numb, altertnatives in steps.items(): 
+        new_step = {}
+        for alt_index, alternative in enumerate(altertnatives):
 
+            # Remove alts that include empty terms ("") as they're false combinations 
+            if (any(len(ele) == 0 for ele in alternative)):
+                altertnatives.remove(altertnatives[alt_index])
+
+            # Split terms with jumps "_" still included  
+            if (any("_" in ele for ele in alternative)):
+                new_alt = [ ele.split("_") for ele in alternative ]
+                altertnatives[alt_index] = list(flatten(new_alt))
     q[md] = {}
     q[md]["id"] = md
     q[md]["definition"] = module_components_raw[md]
@@ -380,33 +399,6 @@ for md, steps in P.items():
     q[md]["steps"] = steps
     q[md]["unique-KOs"] = list(set(list(flatten(q[md]["steps"].values()))))
 
-    # Make sure all alternatives of a step have the same format
-    for step, opt in q[md]["steps"].items():
-        for index, c in enumerate(opt):
-            if len(c) == 1:
-
-                if len(c[0]) == 1:
-                    
-                    flat_list = [item for sublist in c for item in sublist]
-                    q[md]["steps"][step][index] = flat_list 
-
-                else:
-                    x = all(len(i) == 1 for i in c[0])
-                    if x:
-
-                        flat_list = [item for sublist in c for item in sublist]
-                        if flat_list:
-                            if flat_list[0] != "K":
-                                q[md]["steps"][step][index] = flat_list
-for md, steps in q.items():
-    for step, opts in q[md]["steps"].items():
-        for index, opt in enumerate(opts):
-            if isinstance(opt[0], list):
-                q[md]["steps"][step][index] = list(flatten(opt))
-
 import json
-# with open('result.json', 'w') as fp:
-#     json.dump(q, fp, indent=4)
-
-print(q["M00022"])
-
+with open('module_definition_map.json', 'w') as fp:
+    json.dump(q, fp, indent=4)
