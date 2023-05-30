@@ -74,3 +74,7 @@ kos_on_modules_graph.tsv
 # Ignore the output of the installation.sh script 
 microbetag_env
 
+# Ignore .json files under the scripts folder udner the microbetagDB
+microbetagDB/scripts/*.json 
+
+

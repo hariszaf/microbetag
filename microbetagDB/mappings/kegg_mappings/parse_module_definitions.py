@@ -15,12 +15,6 @@ notes: The pathway module is defined by the logical expression of K numbers, and
 import itertools
 import re, sys
 
-bifs = [
-        "M00373","M00532","M00376","M00378","M00088","M00031","M00763","M00133","M00075","M00872","M00125","M00119","M00122",
-        "M00827","M00828","M00832","M00833","M00837","M00838","M00785","M00307","M00048","M00127","M00893","M00895","M00896",
-        "M00897","M00898","M00899","M00911","M00913","M00917","M00935"
-      ]
-
 structurals = [ "M00144","M00149","M00151","M00152","M00154","M00155","M00153", "M00156","M00158", "M00160" ]
 
 def flatten(lis):
@@ -195,8 +189,6 @@ def parse_regular_module_dictionary(module_components_raw, structural_list):
     # Parse raw module information
     module_steps_parsed = {}
     for key, values in module_components_raw.items():
-        # if key != "M00022":
-        #     continue
         values = values.replace(" --", "")
         values = values.replace("-- ", "")
         
@@ -209,12 +201,13 @@ def parse_regular_module_dictionary(module_components_raw, structural_list):
             # and return the steps as values in the module_steps_parsed dictionary
             module_steps_parsed[key] = steps
 
-    # Remove modules depending on other modules
+    # Add submodules in cases that a module depends on other modules
     temporal_dictionary = module_steps_parsed.copy()
     for key, values in temporal_dictionary.items():
         for value in values:
             if re.search(r'M[0-9]{5}', value) is not None:
-                del module_steps_parsed[key]
+                module_steps_parsed[key].remove(value)
+                module_steps_parsed[key] += module_steps_parsed[value]
                 break
 
     return module_steps_parsed
@@ -334,8 +327,6 @@ def create_final_regular_dictionary(module_steps_parsed):
                             inner_parts = [list(flatten(inner_parts))] ; inner_parts = [[x for x in inner_parts[0] if x]]
                             tmp_alt.append(inner_parts)
 
-
-
                         # [ATTENTION!] WE NEED SOMETHING FROM ALL LISTS INCLUDED IN THIS NESTED LIST
                         tmp_alts[index] = tmp_alt
 
@@ -380,6 +371,7 @@ P = create_final_regular_dictionary(module_steps_parsed)
 # Build the final dictionary to be used for the pathway complementarity step ( input for the pathway_complementarity.py )
 q = {}
 for md, steps in P.items():
+    module = "md:" + md
     for step_numb, altertnatives in steps.items(): 
         new_step = {}
         for alt_index, alternative in enumerate(altertnatives):
@@ -392,12 +384,12 @@ for md, steps in P.items():
             if (any("_" in ele for ele in alternative)):
                 new_alt = [ ele.split("_") for ele in alternative ]
                 altertnatives[alt_index] = list(flatten(new_alt))
-    q[md] = {}
-    q[md]["id"] = md
-    q[md]["definition"] = module_components_raw[md]
-    q[md]["#-of-steps"] = len(steps)    
-    q[md]["steps"] = steps
-    q[md]["unique-KOs"] = list(set(list(flatten(q[md]["steps"].values()))))
+    q[module] = {}
+    q[module]["id"] = md
+    q[module]["definition"] = module_components_raw[md]
+    q[module]["#-of-steps"] = len(steps)    
+    q[module]["steps"] = steps
+    q[module]["unique-KOs"] = list(set(list(flatten(q[module]["steps"].values()))))
 
 import json
 with open('module_definition_map.json', 'w') as fp:

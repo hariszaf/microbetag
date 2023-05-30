@@ -2,7 +2,12 @@
 
 ## Aim
 
-This script is going to run **once** for **all** NCBI Id pairs present in our database so we have all the complementarities as part of the back end. 
+
+
+Scripts under this folder aim at retrieving and parsing the KEGG modules. 
+
+Also, they intend to link each genome retrieved and the KEGG terms that have been annotated to them to their corresponding KEGG modules. 
+
 
 
 ## Structure
@@ -159,14 +164,14 @@ def combinations_on_a_step(step):
         match_start_index = block2.index(block1)
         match_end_index   = match_start_index + len(block1)
         how_to = block2[match_end_index:][0]
-      
+    
         if how_to == ";":
             #that is an add, meaning that in all the previous cases, we need to add the following block
         elif how_to == ","
             #that is an or , meaning perturbations of the previous with the following block
 
     return 1
-          
+        
 
 
 ```
