@@ -47,7 +47,6 @@ def build_genome_url(genomeId, genome_filename):
 
    return url, genomeId
 
-
 def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
    """
    This function aims at finding KO terms missing for the beneficiary species, that if supplied, 
@@ -61,7 +60,7 @@ def extract_alternatives_to_gapfill(ncbi_id_beneficiary, mo_map):
    list_of_alternatives_to_gap = []
    beneficiarys_genomes = []
 
-   # [TODO] Consider how we will handle the unity of the alternatives_to_gap
+   # As we have several genomes per ncbi id we get complements for each pair of beneficiary - donor genomes
    for gfile in glob.glob(ALL_GENOMES_MODULES + "/" + str(ncbi_id_beneficiary) + "/*.json"):
 
       # Load a genome of the beneficiary NCBI TaxID with the KO terms found on it related to each module
@@ -186,6 +185,18 @@ def check_for_complements(ncbi_id_donor, list_of_complPath_gaps, beneficiary_ncb
    pair_metabolic_interactions['beneficiary-NCBI-Id'] = str(beneficiary_ncbi_id)
    pair_metabolic_interactions['donor-NCBI-Id']       = str(ncbi_id_donor)
 
+
+   # Load the dictionary with the kegg modules and their corresponding maps
+   color_mapp_base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
+   present_kos_color   = "%09%23EAD1DC/"
+   complemet_kos_color = "%09%2300A898/"
+   maps = open("../mappings/kegg_mappings/module_map_pairs.tsv", "r")
+   module_map = {}
+   for line in maps:
+      module, mmap = line.split("\t")
+      module_map[module[:-1]] = mmap[1:-1]
+
+   # Parse corresponding genomes of the donor's NCBI Tax Id
    for gfile in glob.glob(ALL_GENOMES_MODULES + "/" + str(ncbi_id_donor) + "/*.json"):
 
       with open(gfile, 'r') as f:
@@ -226,7 +237,10 @@ def check_for_complements(ncbi_id_donor, list_of_complPath_gaps, beneficiary_ncb
             donors_module = list(donors_genome_mos[module].values())
 
             complements = []
+
             for path, missing_kos in alternative_paths.items():
+
+               clean_path = path[1:-1].replace("'","").replace(" ", "").split(",")
                
                # Check whether the donor has all the KOs necessary according to a specific path
                check =  all(item in donors_module for item in missing_kos)
@@ -241,12 +255,27 @@ def check_for_complements(ncbi_id_donor, list_of_complPath_gaps, beneficiary_ncb
                      pc_index = len(pair_metabolic_interactions[genome_pair]['potent-met-inter'][module])
                      pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index] = {}
                      pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["complement"] = missing_kos
-                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["path"] = path[1:-1].replace("'","").replace(" ", "").split(",")
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["path"] = clean_path
                      complements.append(missing_kos)
                   else:
+                     print("TI SKATA...", "missing kos:",missing_kos , "complements:", complements )
                      pc_index   = complements.index(missing_kos)
                      path_index = len(pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["path"])
-                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["path"][path_index] = path[1:-1].replace("'","").replace(" ", "").split(",")                  
+                     pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["path"][path_index] = clean_path
+
+
+                  # Make a url pointing at a colored kegg map based on what's on the beneficiary's genome and what it gets as complement from the donor
+                  beneficiarys_kos = ""
+                  complements_kos  = ""
+                  for ko_term in clean_path:
+                     if ko_term not in missing_kos:
+                        beneficiarys_kos += ko_term + present_kos_color
+                     else:
+                        complements_kos += ko_term + complemet_kos_color
+
+                  ko_map_colored = color_mapp_base_url + module_map[module]  + "/" + beneficiarys_kos + complements_kos
+                  pair_metabolic_interactions[genome_pair]['potent-met-inter'][module][pc_index]["color-map"] = ko_map_colored
+
 
          counter_beneficiary += 1
       counter_donor += 1
@@ -254,7 +283,7 @@ def check_for_complements(ncbi_id_donor, list_of_complPath_gaps, beneficiary_ncb
    return pair_metabolic_interactions
 
 def pathway_complementarity(beneficiary_ncbi_id, donor_ncbi_id):
-   print("\n\n ~~~ PATHWAY COMPLEMENTARITY PRECALCULATION STEP ~~~")
+
    # Load KEGG modules definitions
    definitions       = open(KEGG_MODULES_DEFINITIONS_PARSED, "r")
    definitions_map   = json.load(definitions)
