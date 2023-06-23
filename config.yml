@@ -9,13 +9,13 @@ approach:
 
 # OUTPUT
 # ------
-output_directory: output_dev_dada2_may # output_dev_qiime2
+output_directory: kostas # output_dev_dada2_may # output_dev_qiime2
 
 # OTU TABLE
 # ----------
 
 # Filename of your OTU table
-otu_table: dada2_use_case.tsv # qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt 
+otu_table: konst_test.tsv # dada2_use_case.tsv # qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt 
 
 # Delimeter used in the OTU table file 
 otu_table_delim: \t
@@ -28,10 +28,10 @@ otu_table_delim: \t
 taxonomy: dada2  # qiime2
 
 # Column name denoting the OTU id; if special characters, for example "#", use double quotes 
-otu_identifier_column: "ASV_id"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
+otu_identifier_column: "ASV_ID"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
 
 # Column name denoting the taxonomy assignment of the OTU 
-taxonomy_column_name : taxonomy
+taxonomy_column_name : Taxonomy
 
 # Delimeter in the taxonomy column 
 taxonomy_delimeter: ";"
@@ -39,7 +39,7 @@ taxonomy_delimeter: ";"
 # Character denoting commented lines if any in the OTU table
 comments_character: "#"
 
-# [ATTENTION! dada2 and qiim2 tests highlight difference] Column names are in the last comment line prior to any
+# [ATTENTION! dada2 and qiime2 tests highlight difference] Column names are in the last comment line prior to any
 # The FAPROTAX step will break if this is not set properly
 column_names_are_in  : False # dada2 -> False   qiime2 -> True
 
@@ -48,7 +48,7 @@ column_names_are_in  : False # dada2 -> False   qiime2 -> True
 # ---------
 
 # If co-occurrence network already available, please provide its edge list; a 2 column tab separated file
-edge_list: #tests/output_dev_qiime2/flashweave/network_detailed_output.edgelist
+edge_list:     #tests/output_dev_qiime2/flashweave/network_detailed_output.edgelist
 
 # METADATA 
 # --------
