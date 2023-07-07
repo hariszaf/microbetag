@@ -281,6 +281,39 @@ def main():
 
 #         for pair in edgelist_to_pc: 
 
+""" After establishing a connection to the database, translate the following queries: 
+    use the db_functions.py script 
+    
+-- Get all pathway complementarities for all genomes of the beneficary
+SELECT beneficiaryGenome FROM pathwayComplementarity
+INNER JOIN genome2taxNcbiId 
+ON pathwayComplementarity.beneficiaryGenome = genome2taxNcbiId.genomeId
+WHERE genome2taxNcbiId.ncbiTaxId = "364297" ;
+
+
+-- Get all pathway complementarities for all genomes of the donor
+SELECT donorGenome FROM pathwayComplementarity
+INNER JOIN genome2taxNcbiId 
+ON pathwayComplementarity.donorGenome = genome2taxNcbiId.genomeId
+WHERE genome2taxNcbiId.ncbiTaxId = "2891210" ;
+
+
+-- Get ALL the complementarities between 2 genomes - OK
+SELECT uniqueComplements.KoModuleId, uniqueComplements.complement, uniqueComplements.pathway
+FROM uniqueComplements
+INNER JOIN  pathwayComplementarity
+ON pathwayComplementarity.complmentId = uniqueComplements.complementId
+WHERE  pathwayComplementarity.beneficiaryGenome = "GCA_004365965.1" AND pathwayComplementarity.donorGenome = "tlo";
+
+"""
+
+
+
+
+
+
+
+
 #             if pair["ncbi_tax_level_node_a"] == pair["ncbi_tax_level_node_b"] == "mspecies":
 
 #                 taxon_a = str(pair["ncbi_tax_id_node_a"]).split(".")[0]

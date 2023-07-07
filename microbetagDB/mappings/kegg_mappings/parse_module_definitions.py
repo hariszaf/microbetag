@@ -1,788 +1,396 @@
 """
-Aim of this script is to build all the unique sets 
-of KO terms that can be used to build up each KEGG 
-module (https://www.genome.jp/brite/ko00002)
-
-For example: 
-definition of md:M00545: ((K05708+K05709+K05710+K00529);K05711),K05712
-would return 2 sets:
-1. K05708, K05709, K05710, K00529, K05711
-2. K05712
-
-while 
-definition of md:M00546:  K13484,K07127;(K13485,K16838,K16840)
-would return: 
-1. K13484
-2. K07127, K13485
-3. K07127, K16838
-4. K07127, K16838
-
-The json file will have 2 levels, in the first one, the various steps will
-be denoted and in the second the multiple alternative combinations of terms 
-will be shown. 
-All the terms of a combination will be needed for the module to be complete
+author: Haris Zafeiropoulos 
+package: microbetag
+description: Aim of this script is to build all the unique sets of KO terms that can be used to build up each KEGG module (https://www.genome.jp/brite/ko00002)
+output: A 2-levels .json file, in the first one, the various steps will be denoted and in the second the multiple alternative combinations of terms 
+        will be shown. All the terms of a combination are necessary for the module to be complete
+notes: The pathway module is defined by the logical expression of K numbers, and the signature module 
+        is defined by the logical expression of K numbers and M numbers.
+        A SPACE ( ) or a PLUS (+) sign, representing a connection in the pathway or the molecular complex, is treated as an AND operator 
+        and a COMMA (,), used for alternatives, is treated as an OR operator. 
+        A MINUS (-) sign designates an optional item in the complex. 
+        This script was inspired by 2 functiosn from the following script of microbeAnnotator:
+        https://github.com/cruizperez/MicrobeAnnotator/tree/master/microbeannotator/data/01.KEGG_DB/00.KEGG_Data_Scrapper.py
 """
-
 import itertools
-import re
-# import glob
-# import json
-# import sys
-# from collections.abc import Iterable
-# from .variables import *
+import re, sys
 
-def split_definition_to_steps(definition, md):
-
-   """
-   Split where there is a ';' being outside of a parenthesis
-   """
-
-   quasi_steps           = definition.split(";")
-   count_front_parenth   = 0
-   count_reverse_parenth = 0
-   pseudo_step           = []
-   in_parenthesis        = False
-   complete_steps        = []
-
-   for quasi_step in quasi_steps:
-
-      if "(" not in quasi_step and ")" not in quasi_step and in_parenthesis == False:
-
-            modules = []
-
-            if "," in quasi_step: 
-
-               quasi_step = quasi_step.split(",")
-               for x in quasi_step:
-                  modules.append(x)
-
-            else:
-               modules = [quasi_step]
-
-            if modules:
-               complete_steps.append(modules)
-
-      else:
-
-         if "(" in quasi_step or ")" in quasi_step:
-
-            num_of_open            = quasi_step.count('(')
-            count_front_parenth   += num_of_open
-            num_of_closed          = quasi_step.count(')')
-            count_reverse_parenth += num_of_closed
-
-         if count_front_parenth > count_reverse_parenth:
-            in_parenthesis = True
-            pseudo_step.append(quasi_step)
-                     
-         elif count_front_parenth == count_reverse_parenth and in_parenthesis == False:
-
-            complete_steps.append(quasi_step)
-
-         elif count_front_parenth == count_reverse_parenth and in_parenthesis == True:
-            in_parenthesis = False
-            pseudo_step.append(quasi_step)
-            complete_step = ' '.join(pseudo_step)
-            complete_steps.append(complete_step)
-            pseudo_step = []
-
-   if complete_steps:
-      return complete_steps
-
-def parse_definitions_file():
-
-   definitions_file = open(KMODULES_DEFINITIONS, "r")
-   module_definitions_steps = {}
-   
-
-   for line in definitions_file:
-
-      md           = line.split("\t")[0]
-      definition   = line.split("\t")[1][:-1]
-      parsed_steps = []
-
-      # if md != "md:M00051":
-      #    continue
-
-      if "(" not in definition and "," not in definition:
-
-         """
-         no alternatives per step 
-         REMEMBER! A step can be a complex, so more than 1 KOs may be required for a single sptep, 
-         meaning that a single step (a list) may include multiple lists 
-         """
-
-         if ";" in definition:
-            steps = definition.split(";")
-            parsed_steps = parse_valid_steps_of_a_module(steps)
-
-         if ";" not in definition:
-            if "+" in definition:
-               parsed_steps = [[definition.split("+")]]
-
-         if ";" not in definition: 
-            parsed_steps = [[definition]]
-
-      else:
-
-         complete_steps = split_definition_to_steps(definition, md)
-
-         for step in complete_steps:
-
-            if isinstance(step, list):
-               parsed_steps.append(step)
-            
-            else:
-               alternatives_for_a_step = break_down_complex_step(step, definition, md)
-               parsed_steps.append(alternatives_for_a_step)
-
-         pseudo_step           = []
-         count_front_parenth   = 0
-         count_reverse_parenth = 0
-         in_parenthesis        = False
-
-
-      module_definitions_steps[md]               = {}
-      y                                          = 0
-      num_of_steps                               = len([y+1 for x in parsed_steps if "--" not in x ])
-      module_definitions_steps[md]['#-of-steps'] = num_of_steps
-
-      parsed_steps                               = tuple(parsed_steps)
-      module_definitions_steps[md]['steps']      = parsed_steps
-
-      unique_ko_terms = set(list(flatten(parsed_steps)))
-      module_definitions_steps[md]['unique-KOs'] = list(unique_ko_terms)
-
-
-   """
-   Here we save our actual output as a .json file
-   """
-
-   with open(KMODULES_DEFINITIONS_PARSED, "w") as f:
-      json.dump(module_definitions_steps, f)
-
-def parse_valid_steps_of_a_module(steps):
-
-   list_of_lists_of_single_steps = []
-
-   for step in steps:
-
-      # This denotes that there are reactions for whom there are no corresponding KO terms 
-      # Check this if after discussion with KF
-      if "--" in step:
-         continue
-
-      if "+" not in step and "-" not in step:
-         list_of_lists_of_single_steps.append([step])
-
-      elif "+" in step and "-" not in step:
-         # step = step.split("+")
-         # list_of_semis = [semi for semi in step]
-         # list_of_lists_of_single_steps.append(list_of_semis)
-         list_of_lists_of_single_steps.append(step)
-
-      elif "-" in step and "+" not in step: 
-
-         step  = step.split("-")
-
-         # A term you can ignore
-         if len(step) == 2 and step[0] == "":
-            continue
-
-         else:
-            list_of_lists_of_single_steps.append(step[0])
-
-      # Check this if after discussion with KF
-      elif "-" in step and "+" in step:
-   
-         semis = []
-         step  = step.split("-")
-         semi_counter = 0
-         
-         if len(step) == 2 and step[0] != "":
-            if "+" in step[0]:
-               # components = step[0].split("+")
-               # list_of_lists_of_single_steps.append(components)
-               list_of_lists_of_single_steps.append(step[0])
-
-         else: 
-            # Step has more than 2 parts
-            for semi in step:
-               semi_counter += 1
-
-               if "+" in semi:
-                  semi = semi.split("+")
-                  if semi_counter == 1:
-                     list_of_semis = [part for part in semi]
-                     semis.append(list_of_semis)
-
-                  else:
-                     list_of_semis = [part for part in semi[1:]]
-                     semis.append(list_of_semis)
-
-            filtered_step = []
-            for c in range(len(semis)):                     
-               for v in range(len(semis[c])):
-                  filtered_step.append(semis[c][v])
-
-            list_of_lists_of_single_steps.append([filtered_step])  # check if needed the list!! 
-
-   return list_of_lists_of_single_steps
-
-def break_down_complex_step(step, defn, md):
-
-   if step[0] != "(" or step[-1] != ")": 
-      step = "(" + step + ")"
-
-   if "-" in step:
-      minus_indices = [0,]
-      [minus_indices.append(i) for i, c in enumerate(step) if c == "-"]
-
-
-      step_with_no_minus = split_stirng_based_on_indeces(step, minus_indices)
-      parts_of_no_minus_to_keep = [step_with_no_minus[0]]
-
-
-      for entry in step_with_no_minus[1:]: 
-         # ORIGINAL ! 
-         # check = [e for e in [")", "(", "+", ";"] if e in entry]
-
-         check = [entry.index(e) for e in [")", "(", "+", ";"] if e in entry]
-
-         if len(check) == 0:
-            continue
-         else:
-            # ORIGINAL - QUITE WORKING!!! 
-            # continue_from = entry.index(check[0])
-            continue_from = sorted(check)[0]
-            parts_of_no_minus_to_keep.append(entry[continue_from:])
-
-      step = ''.join(parts_of_no_minus_to_keep)
-
-   openings = step.split("(")
-
-   if len(openings) == 2 and openings[0] == "": 
-
-      alternatives = []
-      options = openings[1][:-1]
-
-      if "," in options:
-         alternatives = options.split(",")
-
-         for case in range(len(alternatives)):
-            if " " in alternatives[case]:
-               alternatives[case] = alternatives[case].split(" ")
-
-      else:
-         alternatives.append(options)
-
-      alternatives = [x for x in alternatives if x]
-      return alternatives
-
-   else:
-
-      alternatives          = []
-      node                  = ''
-      ko_term               = ''
-      open_parenth_counter  = 0
-      closed_parent_counter = 0
-      node_index            = -1
-      alternative_option    = False
-      semi_step             = False
-
-      for character in step[:-1]:
-         if character == "(":
-            open_parenth_counter += 1
-         if character == ")":
-            closed_parent_counter += 1
-
-      if open_parenth_counter > closed_parent_counter:
-         """
-         then the last character of copy needs to be ')'
-         """
-         step  = step[1:-1]
-
-      copy    = step + "*"
-
-      # Here is the list where we append indices of the string 
-      # under study to split it the way it fits us
-      indices_for_unique_alternatives = [0]
-      open_parenth_counter  = 0
-      closed_parent_counter = 0
-
-      for index, character in enumerate(copy): 
-
-         """
-         Loop to get the indices of the unique alternative roads
-         of a step.
-         """
-
-         if character == "*":
-            continue
-
-         (
-            open_parenth_counter,
-            closed_parent_counter,
-            semi_step,
-            alternative_option, 
-            ko_term,
-            link_from,
-            link_to,
-            level,
-            node_index, node
-         )                    = handle_character(
-                                                   copy,
-                                                   index,
-                                                   character, 
-                                                   open_parenth_counter, 
-                                                   closed_parent_counter, 
-                                                   semi_step, 
-                                                   alternative_option, 
-                                                   ko_term,
-                                                   node_index,
-                                                   node
-                                                )
-
-         if (link_to == "," or link_from == ",") and level <= 0: 
-
-            """
-            Level denotes how many parentheses have been opened and closed.
-            If their diffrence equals to zero, then it means we have distinct alternatives
-            """
-
-            if len(indices_for_unique_alternatives) > 1: 
-               
-               if index - indices_for_unique_alternatives[-1] > 3:
-                  indices_for_unique_alternatives.append(index + 1)
-
-            else:
-
-               indices_for_unique_alternatives.append(index + 1)
-      
-      node_index          = -1
-      unique_alternatives = split_stirng_based_on_indeces(copy, indices_for_unique_alternatives)
-
-      open_parenth_counter  = 0 
-      closed_parent_counter = 0
-
-      for index, alternative in enumerate(unique_alternatives):
-
-         alternative = alternative.replace("*", "")
-
-         if alternative.count("K") == 1:
-
-            alternative = alternative.replace(",", "")
-            alternative = alternative.replace(";", "")
-            alternatives.append(alternative)
-
-         else:
-
-            if alternative and alternative[0] == ",": 
-               alternative = alternative[1:]
-
-            if "," not in alternative:
-
-               alternative = alternative.replace("(", "_")
-               alternative = alternative.replace(")", "_")
-               alternative = alternative.replace("+", "_")
-               alternative = alternative.replace(";", "_")
-               alternative = alternative.split("_")               
-               alternative = [i for i in alternative if i]
-
-               alternatives.append(alternative)
-
-            else:
-               
-               opening_parenth = 0
-               closing_parenth = 0
-               complet_parenth = 0
-
-               # remove "()" from start and end if not necessary
-               for character in alternative:
-                  if character == "(":
-                     opening_parenth += 1
-                  if character == ")":
-                     closing_parenth += 1
-
-                  level = opening_parenth - closing_parenth
-
-                  if level == 0:
-                     complet_parenth += 1 
-
-               if complet_parenth == 1:
-                  alternative = alternative[1:-1]
-                  
-               indices  = [i for i, c in enumerate(alternative) if c == ";"]
-               openings = [i for i, c in enumerate(alternative) if c == "("]
-               closings = [i for i, c in enumerate(alternative) if c == ")"]
-               open_close_pairs = [[x,y] for x,y in zip(openings, closings)]
-               
-               tmp          = []
-               break_points = [0,]
-               counter = 0 
-               for index in indices:
-                  break_point = True
-                  for pair in open_close_pairs: 
-                     if index > pair[0] and index < pair[1]:
-                        break_point = False
-
-                  if break_point: 
-                     break_points.append(index)
-
-               clean        = parse_to_a_list_of_single_items(alternative)
-               pools        = get_possible_alternatives_from_a_step(clean)
-               alternatives = combine_alternatives(alternatives, pools)
-
-               # alternatives = [list(flatten(i)) for i in alternatives if isinstance(i, list)]
-               TMPS = []
-               for i in alternatives:
-
-                  if isinstance(i, list):
-                     TMPS.append(i)
-                  elif isinstance(i, str):
-                     TMPS.append([i])
-
-               alternatives = TMPS
-
-      return alternatives
-
-def count_nested_lists(l):
-   count = 0 
-   for e in l: 
-      if isinstance(e, list):
-         count = count + 1 + count_nested_lists(e)
-   return count
-
-def get_possible_alternatives_from_a_step(clean_step):
-
-   pools = []
-   add_extra_paths = False
-   complex_present = False
-
-   for index, entry in enumerate(clean_step):
-
-      if entry == " ":
-         continue
-
-      if entry == "(":
-         if add_extra_paths == False:
-            """
-            This if statement is crucial to keep track of what is happening inside an 
-            already open parenthesis.
-            """
-            pool = []
-            add_extra_paths = True
-            continue
-
-      if entry == "+":
-         if add_extra_paths:
-            complex_present = True
-            continue
-         else:
-            
-            continue
-      
-      if entry == ")":
-         if pool:
-            pools.append(pool)
-            add_extra_paths = False
-            pool = []
-         continue
-
-      if add_extra_paths == False and complex_present == False and "K" in entry:
-         pools.append([entry])
-
-      elif add_extra_paths and complex_present == False and "K" in entry: 
-         pool.append(entry)
-
-      elif add_extra_paths == False and complex_present and "K" in entry:
-         pools.append([entry])
-
-      elif add_extra_paths and complex_present and "K" in entry:
-         if pool: 
-            pool[-1] = pool[-1] + "+" + entry
-
-         else:
-            pool.append([entry])
-         complex_present = False
-      
-   return pools
-
-def combine_alternatives(alternatives, combos):
-
-   all_combinations = []
-
-   if len(combos) == 1: 
-      all_combinations = [tuple(combos[0])]
-
-   elif len(combos) == 2:
-      all_combinations = list(itertools.product(combos[0], combos[1]))
-
-   else:
-
-      all_combinations = list(itertools.product(combos[0], combos[1]))
-      for lista in combos[2:]:
-         all_combinations = list(itertools.product(all_combinations, lista))
-
-   for i in all_combinations:
-
-      single_combo = []
-      i = list(i)
-
-      for y in i: 
-         
-         if isinstance(y, str):
-            single_combo.append(y)
-         
-         else:
-
-            y = list(y)
-            for k in y: 
-
-               if isinstance(k, str):
-                  single_combo.append(k)
-
-               elif isinstance(k, tuple):
-                  single_combo.append(list(flatten(k)))
-
-      if single_combo:
-         # remove_pluses = []
-         # for j in single_combo:
-         #    if "+" in j:
-         #       remove_pluses.append(j.split("+"))
-         #    elif " " in j:
-         #       remove_pluses.append(j.split(" "))
-         #    else:
-         #       remove_pluses.append(j)
-         # remove_pluses = list(flatten(remove_pluses))
-         alternatives.append(single_combo)
-         # alternatives.append(remove_pluses)
-   
-   return alternatives
+structurals = [ "M00144","M00149","M00151","M00152","M00154","M00155","M00153", "M00156","M00158", "M00160" ]
 
 def flatten(lis):
-     for item in lis:
-         if isinstance(item, Iterable) and not isinstance(item, str):
-             for x in flatten(item):
-                 yield x
-         else:        
-             yield item
+    """
+    Takes a nested list and returns its contents in a sequential one
+    e.g. [[a,b,c,][d,e,]] --> [a,b,c,d,e]
+    """
+    import collections.abc
+    collections.Iterable = collections.abc.Iterable
+    for item in lis:
+        if isinstance(item, collections.Iterable) and not isinstance(item, str):
+            for x in flatten(item):
+                yield x
+        else:        
+            yield item
 
-def parse_to_a_list_of_single_items(rule):
+def parse_commas_on_pre_and_post_character(string):
+    """
+    Takes a string and returns independent scenarions separated by commas (,)
+    e.g. K02304,(K24866+K03794)
+    ['K02304', '(K24866+K03794)']
+    """
+    new_true_alt = ""
+    open_pars = 0
+    for cindex, char in enumerate(string):        
+        if char ==",":
+            if string[ cindex + 1 ] == "(":
+                if open_pars == 0:
+                    new_true_alt += " "
+                else:
+                    new_true_alt += char
+            elif string[ cindex - 1] == ")" and open_pars < 2: 
+                new_true_alt += " "
+            elif open_pars == 0:
+                new_true_alt += " "
+            else:
+                new_true_alt += char       
+        else:
+            new_true_alt += char
+            if char == "(":
+                open_pars += 1
+            elif char == ")":
+                open_pars -= 1
+    parts = new_true_alt.split()
+    return parts
 
-   parts_of_alts = rule.split("K")
-   parts_of_rule = []
-   
-   for i in parts_of_alts: 
+def check_if_all_in_one_par(string):
+    """
+    Function to tell you whether a string is included in a single parenthesis
+    e.g.:  ((K00705,K22451)_(K02438,K01200))
+    or not
+    e.g.: K00975_(K00703,K13679,K20812)
+    """
+    indices_object = re.finditer(pattern="\(", string=string)
+    starts = [index.start() for index in indices_object]
+    indices_object = re.finditer(pattern="\)", string=string)
+    ends = [index.start() for index in indices_object]
+    pars = sorted(starts + ends)
+    if len(ends) == 1:
+        if string[starts[0]] == string[0] and string[ends[0]] == string[-1]:
+            return True
+        else:
+            return False
+    else:
+        for i in range(len(pars)-1):
+            if pars[i] in ends:
+                for j in reversed(pars[:i]):
+                        if j in starts:
+                            pars[i] = ""
+                            starts.remove(j) 
+                            break
+        if 0 in starts:
+            return True
+        else:
+            return False
 
-      if any(map(str.isdigit, i)):
-         new_i = "K"+i
-         asdas = re.split('([^a-zA-Z0-9])', new_i)
-         parts_of_rule.append([x for x in asdas if x != ""])
-         
-      elif i == "":
-         continue
+def get_independent_step_alternatives(step_as_a_list):
+    """    
+    It takes a complete step and returns its unique indipendent pats recursively
+    e.g.:
+    in the first round for
+    ((K13939,(K13940,K01633 K00950) K00796),(K01633 K13941))
+    we get the (K01633 K13941)) as an independent way
+    while in the second one, we get the K13939     
+    """
+    new_list = []
+    inner = False
+    for index, step in enumerate(step_as_a_list):
+        if isinstance(step,list):
+            inner = True
+            for gindex, inner_step in enumerate(step):
+                check = check_if_all_in_one_par(inner_step)
+                if check:
+                    inner_step = inner_step[1:-1]
+        else:
+            check = check_if_all_in_one_par(step)
+            if check:
+                step = step[1:-1]
+        if inner:
+            get_independent_parts = parse_commas_on_pre_and_post_character(inner_step)
+        else:
+            get_independent_parts = parse_commas_on_pre_and_post_character(step)
 
-      else:
-         parts_of_rule.append(i)
+        for i in get_independent_parts:
+            new_list.append([i])
 
-   clean = []
+    if new_list == step_as_a_list:
+        return new_list
+    else:
+        return get_independent_step_alternatives(new_list)
 
-   for x in parts_of_rule:
-      if isinstance(x,str):
-         clean.append(x)
-      else:
-         for y in x:
-            clean.append(y)
-   
-   # with respect to the M00854 case
-   if clean[0] == "(" and (clean.count("(") != clean.count(")")):
-      clean = clean[1:]
+def split_to_independent_chunks(string):
+    """
+    Takes a string and returns indices where you can split it to parts that can be combined
+    independently to get the part of the corresponding KEGG module definition 
+    e.g. "K00941_(K00788,K21220)"
+    [0, 7, 22]
+    or 
+    "((K03831,K03638)_K03750)"
+    [0, 24]
+    """
+    indices_object = re.finditer(pattern="\(", string=string)
+    starts = [index.start() for index in indices_object]
+    if len(starts) == 0:
+        return []
+    indices_object = re.finditer(pattern="\)", string=string)
+    ends = [index.start() for index in indices_object]
+    pars = sorted(starts + ends)
+    ops = 0 
+    splits = [0]
+    if "(" != string[0]:
+        splits.append(starts[0])
+    for i in pars: 
+        if i in starts:
+            ops += 1 
+        else: 
+            ops -= 1
+        if ops == 0:
+            splits.append(i+1)
+    return splits
 
-   return clean
+def parse(my_string):
+    """
+    Parses a module's definitions to each main steps
+    e.g. 
+    md definition: (K02303,K13542) (K03394,K13540) K02229 (K05934,K13540,K13541) K05936 K02228 K05895 K00595 K06042 K02224 K02230+K09882+K09883
+    ['(K02303,K13542)', '(K03394,K13540)', 'K02229', '(K05934,K13540,K13541)', 'K05936', 'K02228', 'K05895', 'K00595', 'K06042', 'K02224', 'K02230+K09882+K09883']
+    """
+    module = []
+    parenthesis_count = 0
+    for character in my_string:
+        if character == "(":
+            parenthesis_count += 1
+            module.append(character)
+        elif character == " ":
+            if parenthesis_count == 0:
+                module.append(character)
+            else:
+                module.append("_")
+        elif character == ")":
+            parenthesis_count -= 1
+            module.append(character)
+        else:
+            module.append(character)
+    steps = ''.join(module).split()
+    return steps
 
-def handle_character(part_of_def, index, character, open_parenth_counter, closed_parent_counter, 
-                     semi_step, alternative_option, ko_term, node_index, node):
-
-   if character == "(": 
-      open_parenth_counter += 1
-      ko_term = ''
-
-   elif character == ";": 
-      semi_step = True
-      ko_term   = ''
-
-   elif character == ",": 
-      alternative_option = True
-      ko_term = ''
-
-   elif character == ")": 
-      closed_parent_counter += 1
-      ko_term = ''
-      alternative_option = False
-
-   elif character == "K":
-      node_index = index
-
-   level     = open_parenth_counter - closed_parent_counter
-   link_to   = part_of_def[index + 1]
-
-
-   if index == 0 and node_index < 0:
-      link_from = '' ; 
-
-   elif index > 0 and node_index < 0: 
-      link_from = part_of_def[index - 1]
-
-   elif node_index == 0:
-      """
-      part_of_def starting from K0, e.g.: K01196,((K00705,K22451);(K02438,K01200))
-      """
-      link_from = "^"
-
-   else:
-      link_from = part_of_def[index - 1]
-
-   if link_from and link_to in (";", "(", ")", ",", "^"):
-      node = part_of_def[node_index:index + 1]
-
-   return open_parenth_counter, closed_parent_counter, semi_step, alternative_option,\
-            ko_term, link_from, link_to, level, node_index, node
-
-def split_stirng_based_on_indeces(s, indices):
-   """
-   REMEMBER! You need to give '0' as your first index, e.g.:
-   indices = [0,5,12,17]
-   """
-   parts = [s[i:j] for i,j in zip(indices, indices[1:]+[None])]
-   return parts
-
-
-""" 
-Parse the MicrobeAnnotator parse output to come with the .json we need
-See https://github.com/cruizperez/MicrobeAnnotator/tree/master/microbeannotator/data/01.KEGG_DB
-the 00.KEGG_Data_Scrapper.py script and its 05.Modules_Parsed.txt output 
-
-We ran this script to re-build the 05.Modules_Parsed.txt file as new modules have been added to KEGG since it was first built
-but also, modules have been modified! 
-"""
-
-bifs = [
-         "M00373",
-         "M00532",
-         "M00376",
-         "M00378",
-         "M00088",
-         "M00031",
-         "M00763",
-         "M00133",
-         "M00075",
-         "M00872",
-         "M00125",
-         "M00119",
-         "M00122",
-         "M00827",
-         "M00828",
-         "M00832",
-         "M00833",
-         "M00837",
-         "M00838",
-         "M00785",
-         "M00307",
-         "M00048",
-         "M00127",
-         "M00893",
-         "M00895",
-         "M00896",
-         "M00897",
-         "M00898",
-         "M00899",
-         "M00911",
-         "M00913",
-         "M00917",
-         "M00935"
-      ]
-
-structurals = [
-   "M00144",
-   "M00149",
-   "M00151",
-   "M00152",
-   "M00154",
-   "M00155",
-   "M00153",
-   "M00156",
-   "M00158",
-   "M00160"
-]
-
-def Convert(string):
-    li = list(string.split(", "))
-    return li
-
-def RemoveMinuses(string):
-   return re.sub(r"-K\d+", "", string)
-
-def RemoveMinusesFromList(list):
-   return [ RemoveMinuses(x) for x in list ]
-
-
-microbeAnnotator = open("05.Modules_Parsed.txt","r")
-
-records    = []
-tmp_record = []
-for line in microbeAnnotator:
-   if "+++" not in line: 
-      tmp_record.append(line[:-1])
-
-   else:
-      records.append(tmp_record)
-      tmp_record = []
-
-md_steps = {}
-for module in records:
-
-   md = module[0]
-   if md in bifs:
-      continue
-
-   identifier = ":".join(["md", md])
-   steps      = module[4:]
-
-   md_steps[identifier] = {}
-   unique_kos           = set()
-
-   for n_step in range(len(steps)):
-
-      tmp = steps[n_step].replace("'","")
-      tmp = tmp[1:-1]
-      step_alts = Convert(tmp)
-
-      for alt in step_alts: 
-
-         if "_" in alt: 
-            semis = alt.split("_") 
-            for semi in range(len(semis)): 
-               semis[semi] = semis[semi].split(",")
-            alt_combos = list(itertools.product(*semis))
-            print(md, ":", alt, "~~~", alt_combos)
-
-
-         elif "+" in alt:
-            # print(alt)
+def parse_regular_module_dictionary(module_components_raw, structural_list):
+    """
+    Breaks down a module to its steps using the parse() function
+    """
+    # Parse raw module information
+    module_steps_parsed = {}
+    for key, values in module_components_raw.items():
+        values = values.replace(" --", "")
+        values = values.replace("-- ", "")
+        
+        # or key in bifurcating_list 
+        if key in structural_list:
             continue
+        else:
+            # Run the parse() function 
+            steps = parse(values)
+            # and return the steps as values in the module_steps_parsed dictionary
+            module_steps_parsed[key] = steps
 
-         elif "-" in alt:
-            print(alt)
-            print(RemoveMinuses(alt))
+    # Add submodules in cases that a module depends on other modules
+    temporal_dictionary = module_steps_parsed.copy()
+    for key, values in temporal_dictionary.items():
+        for value in values:
+            if re.search(r'M[0-9]{5}', value) is not None:
+                module_steps_parsed[key].remove(value)
+                module_steps_parsed[key] += module_steps_parsed[value]
+                break
 
-         else:
-            continue
-            # print(alt)
+    return module_steps_parsed
+
+def create_final_regular_dictionary(module_steps_parsed):
+    """
+    This function returns all the possible combinations of KOs to have a complete KEGG module
+    """
+    final_regular_dict = {}
+
+    # Parse module steps and export them into a text file
+    for module, steps in module_steps_parsed.items():
+
+        final_regular_dict[module] = {}
+        step_number = 0 
+
+        # Deal with one step at a time
+        for step in steps:
+
+            temp_string = step
+            step_number += 1
+            
+            # Check for "-" terms
+            if "-(" in temp_string:
+                temp_string = re.sub("-\(.*?\)", "", temp_string, count=0, flags=0)
+            if "-" in temp_string:
+                temp_string = re.sub(r'-K[0-9]{5}', '', temp_string)
+            if len(temp_string) == 0:
+                continue
+
+            # Get major independent alternatives to have the step             
+            indep_alts = get_independent_step_alternatives([temp_string])   
+
+            # [REMEMBER!] An alternative is completely independent from the others
+            tmp_alts = indep_alts.copy()
+
+            # Parse each of the independent alternatives found to get the various combinations of KO terms in each 
+            for index, alt in enumerate(indep_alts):
+
+                if "(" not in alt[0] :
+                    alt = re.split(r"\+|\_", alt[0]) 
+                    tmp_alts[index] = [alt]
+
+                else:
+
+                    # In the tmp_alt we keep the semi-steps that will have to be combined to build the alternative (parts)
+                    tmp_alt = []
+                    split_indices = split_to_independent_chunks(alt[0])
+                    parts = [alt[0][i:j] for i,j in zip(split_indices, split_indices[1:]+[None])]
+                    parts = [x for x in parts if x]
+
+                    # Make sure that jumps in an alternative are taken distinct steps in case they're out of an inner_part (see M00083)
+                    new_parts = []
+                    for ppindex, part in enumerate(parts):
+                        ops = 0 ; new_part = ""
+                        for cchar in part: 
+                            if cchar == "(":
+                                ops += 1 ; new_part += cchar
+                            elif cchar == ")":
+                                ops -= 1 ; new_part += cchar
+                            elif cchar =="_":
+                                if ops == 0:
+                                    new_part += " "
+                                else:
+                                    new_part += cchar
+                            else:
+                                new_part += cchar
+                        new_part = new_part.split() ; new_parts += new_part
+                    parts = new_parts
+
+                    # [IMPORTANT STEP!] Parse each part of the alternative to get the various combinations that can build the alterinative
+                    for k in range(len(parts)):
+                        inner_indices = split_to_independent_chunks(parts[k])
+                        inner_parts = [parts[k][i:j] for i,j in zip(inner_indices, inner_indices[1:]+[None])]
+                        inner_parts = [x for x in inner_parts if x]
+
+                        # Run again the independency step for each inner part 
+                        if len(inner_parts) > 0: 
 
 
-   md_steps[identifier]['#-of-steps'] = len(steps)
-   md_steps[identifier]['unique-KOs'] = unique_kos
+                            inner_parts = get_independent_step_alternatives(inner_parts)
+                            inner_parts = [j for j in inner_parts if j!=["_"]]
+
+                            # Each entry of this list is an alternative for a part of the step
+                            ready_to_go = []
+                            for inner_part_index in range(len(inner_parts)):
+
+                                coord = split_to_independent_chunks(inner_parts[inner_part_index][0])
+
+                                if len(coord) == 0:
+                                    ready_to_go.append(inner_parts[inner_part_index][0].split("+"))
+
+                                # [ ATTENTION! ] Up to now, 2023.05, this is only the case for M00022
+                                # Thus, we only deal with this for now so please always check for this warning message in case a new module goes throug this case
+                                else:
+
+                                    last_parts = [inner_parts[inner_part_index][0][i:j] for i,j in zip(coord, coord[1:]+[None])]
+                                    last_parts = [x for x in last_parts if x] 
+                                    last_parts = [ re.split(r"\+|,|_", x) for x in last_parts ] 
+                                    for x,y in enumerate(last_parts):
+                                        for z in range(len(y)):
+                                            last_parts[x][z] = last_parts[x][z].replace("(","").replace(")","")
+                                    for x,y in enumerate(last_parts):
+                                            last_parts[x] = [k for k in last_parts[x] if k]
+
+                                    for comb in list(itertools.product(*last_parts)):
+                                        ready_to_go.append(list(comb))
 
 
+                            tmp_alt.append(ready_to_go)
 
+                        else:
+                            # All KOs included in this part needs to be used so a nested list with a single entry will be kept, e.g. [['K01041', 'K00252']] 
+                            inner_parts = parts[k].split("_") 
+                            inner_parts = [ inner_parts[j] for j in range(len(inner_parts)) if inner_parts[j]]
+                            inner_parts = [ inner_parts[u].split("+") for u in range(len(inner_parts)) ]
+                            inner_parts = [list(flatten(inner_parts))] ; inner_parts = [[x for x in inner_parts[0] if x]]
+                            tmp_alt.append(inner_parts)
+
+                        # [ATTENTION!] WE NEED SOMETHING FROM ALL LISTS INCLUDED IN THIS NESTED LIST
+                        tmp_alts[index] = tmp_alt
+
+            # Get all the combinations from each of the independent alternatives 
+            all_alternatives = []
+            for calt in tmp_alts:
+                if len(calt)>1:
+                    combos = list(itertools.product(*calt))
+                    combos = [list(flatten(combos[i])) for i in range(len(combos))]
+                    all_alternatives += combos
+
+                else:
+                    all_alternatives += calt
+
+            # Assign the list with all the combinations for a step to the module:step:combinations dictionary
+            final_regular_dict[module][step_number] = all_alternatives
+
+    return final_regular_dict
+
+# -----   Run modules parsing -----------
+
+modules = open("module_definitions.tsv", "r")
+module_components_raw = {}
+# Build dictionary with module ids as keys and the initial definition as value
+for line in modules:
+   # Remove the "md:" prefix from the id and the new line from the definition
+   md, definition = line.split("\t")[0][3:], line.split("\t")[1][:-1]
+   # Replace ";" character with a space; this denotes a next layer of the module
+   definition = definition.replace(";", " ")
+   module_components_raw[md] = definition
+
+# Get a dictionary with the major steps of each module, 
+# e.g.: for module md:M00022 with the definition: 
+# (K01626,K03856,K13853);(((K01735,K13829);((K03785,K03786);K00014,K13832)),K13830);((K00891,K13829);(K00800,K24018),K13830);K01736
+# we get the following 4 major steps
+# ['(K01626,K03856,K13853)', '(((K01735,K13829)_((K03785,K03786)_K00014,K13832)),K13830)', '((K00891,K13829)_(K00800,K24018),K13830)', 'K01736']
+module_steps_parsed = parse_regular_module_dictionary(module_components_raw, structurals)
+
+# Get alla the combos to get each and every step of a module
+P = create_final_regular_dictionary(module_steps_parsed)
+
+# Build the final dictionary to be used for the pathway complementarity step ( input for the pathway_complementarity.py )
+q = {}
+for md, steps in P.items():
+    module = "md:" + md
+    for step_numb, altertnatives in steps.items(): 
+        new_step = {}
+        for alt_index, alternative in enumerate(altertnatives):
+
+            # Remove alts that include empty terms ("") as they're false combinations 
+            if (any(len(ele) == 0 for ele in alternative)):
+                altertnatives.remove(altertnatives[alt_index])
+
+            # Split terms with jumps "_" still included  
+            if (any("_" in ele for ele in alternative)):
+                new_alt = [ ele.split("_") for ele in alternative ]
+                altertnatives[alt_index] = list(flatten(new_alt))
+    q[module] = {}
+    q[module]["id"] = md
+    q[module]["definition"] = module_components_raw[md]
+    q[module]["#-of-steps"] = len(steps)    
+    q[module]["steps"] = steps
+    q[module]["unique-KOs"] = list(set(list(flatten(q[module]["steps"].values()))))
+
+import json
+with open('module_definition_map.json', 'w') as fp:
+    json.dump(q, fp, indent=4)

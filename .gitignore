@@ -61,6 +61,8 @@ mappings/gtdb_ncbi/dada2/dada2species.tsv
 mappings/gtdb_ncbi/gtdb_metadata/gtdb_species2ncbi_ids.tsv
 mappings/gtdb_ncbi/qiime2/qiime2species_ncbi_ids.tsv
 
+microbetagDB/ref-dbs/ko_per_mod_in_genome_per_ncbiId.json
+
 *.swp
 
 tests/output_dev*
@@ -73,4 +75,8 @@ kos_on_modules_graph.tsv
 
 # Ignore the output of the installation.sh script 
 microbetag_env
+
+# Ignore .json files under the scripts folder udner the microbetagDB
+microbetagDB/scripts/*.json 
+
 
