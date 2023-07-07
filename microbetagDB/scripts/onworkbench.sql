@@ -1,4 +1,5 @@
-
+DROP DATABASE microbetagDB;
+CREATE DATABASE microbetagDB;
 USE microbetagDB;
 
 DROP TABLE Pathway_complementarity; -- you first need to drop the children tables 

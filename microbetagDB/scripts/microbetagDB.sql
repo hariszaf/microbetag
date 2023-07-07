@@ -1,12 +1,19 @@
-DROP DATABASE microbetagDB;
+/*
+author: Haris Zafeiropoulos
+email: haris.zafeiropoulos@kuleuven.be
+description: Initiate microbetag database scheme and populate data
+usage: mysql  --local-infile=1 -u msysbio -p < init.sql
+*/
+
+DROP DATABASE IF EXISTS microbetagDB;
 CREATE DATABASE microbetagDB; 
 USE microbetagDB;
 
--- ///////////////////////////////////////
--- TABLE RELATADE TO PHEND PREDICTIONS
--- ///////////////////////////////////////
+/* ///////////////////////////////////////
+TABLE RELATADE TO PHEND PREDICTIONS
+/////////////////////////////////////// */
 
-DROP TABLE phenDB; 
+DROP TABLE IF EXISTS  phenDB; 
 CREATE TABLE phenDB(
     gtdbId VARCHAR(15),
 	aceticAcid VARCHAR(5),
@@ -79,12 +86,11 @@ ROW_FORMAT=COMPRESSED;
 -- Disable keys and indexes
 ALTER TABLE phenDB DISABLE KEYS;
 
--- You need to be root to run the following line: sudo mysql  -p --local-infile
+-- You need to be root to run the following line: sudo mysql -p --local-infile
 LOAD DATA INFILE '/var/lib/mysql-files/gtdb_phen_predictions.tsv'
 INTO TABLE phenDB
 FIELDS TERMINATED BY '\t'
-LINES TERMINATED BY '\n'
-IGNORE 1 LINES;
+LINES TERMINATED BY '\n';
 
 -- Enable again keys
 ALTER TABLE phenDB ENABLE KEYS;
@@ -93,14 +99,9 @@ ALTER TABLE phenDB ENABLE KEYS;
 CREATE INDEX idx_column ON phenDB (gtdbId);
 ANALYZE TABLE phenDB;
 
--- ///////////////////////////////////////
--- PATHWAY COMPLEMENTARITY RELATED TABLES 
--- ///////////////////////////////////////
-
--- Query to get the column names
-SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='microbetagDB' AND `TABLE_NAME`='phenDB';
-
-
+/*///////////////////////////////////////
+PATHWAY COMPLEMENTARITY RELATED TABLES 
+///////////////////////////////////////*/
 
 -- Table for GenomeId 2 NCBI TaxId 
 CREATE TABLE genome2taxNcbiId(
@@ -121,7 +122,7 @@ CREATE TABLE uniqueComplements(
 
 
 -- TABLE FOR THE PATHWAY COMPLEMENTARITIES
-DROP TABLE pathwayComplementarity;
+DROP TABLE IF EXISTS pathwayComplementarity;
 CREATE TABLE pathwayComplementarity(
 	beneficiaryGenome VARCHAR(15),
 	donorGenome VARCHAR(15),
@@ -133,18 +134,29 @@ CREATE TABLE pathwayComplementarity(
 ALTER TABLE pathwayComplementarity ADD PRIMARY KEY(beneficiaryGenome, donorGenome);
 
 
+
+
+
+
+
 INSERT INTO genome2taxNcbiId VALUES("GCA_004365965.1", "364297");
 INSERT INTO genome2taxNcbiId VALUES("tlo", "2891210");
 INSERT INTO uniqueComplements VALUES (1, "M00134", "K01476", "K01476;K01581", "urllll");
 INSERT INTO pathwayComplementarity VALUES ("GCA_004365965.1", "tlo", 1);
 
+
+
+
+
+
+
+
+
+
+
+
 -- Get all the complementarity entries of a specific gneome
 SELECT  *  FROM pathwayComplementarity WHERE beneficiaryGenome = "GCA_004365965.1";
-
-
-
-
-
 
 
 -- Get all pathway complementarities for all genomes of the beneficary
@@ -169,9 +181,6 @@ ON pathwayComplementarity.complmentId = uniqueComplements.complementId
 WHERE  pathwayComplementarity.beneficiaryGenome = "GCA_004365965.1" AND pathwayComplementarity.donorGenome = "tlo";
 
 
-
-
-
 -- Get all complements ids for a specific NCBI Taxonomy Id // we do not care about which genome ids are used !
 -- WE STILL NEED TO HAVE A WHERE FOR THE DONOR'S NCBI ID!
 SELECT 
@@ -182,3 +191,33 @@ ON
 	pathwayComplementarity.beneficiaryGenome = genome2taxNcbiId.genomeId 
 WHERE 
 	genome2taxNcbiId.ncbiTaxId = "364297" ;
+
+
+SELECT uniqueComplements.KoModuleId, uniqueComplements.complement, uniqueComplements.pathway FROM uniqueComplements INNER JOIN  pathwayComplementarity ON pathwayComplementarity.complmentId = uniqueComplements.complementId WHERE  pathwayComplementarity.beneficiaryGenome = 'GCA_003184265.1' AND pathwayComplementarity.donorGenome = 'GCA_000015645.1';
+
+
+SELECT DISTINCT beneficiaryGenome FROM pathwayComplementarity;
+
+
+/* 
+to load .tar.gz file without decompressing and after the db is alreayd initiated 
+zcat part_0_mapped_only_gtdb_genomes.tsv.tar.gz | mysql -u root -p microbetagDB --local-infile=1 -e "LOAD DATA LOCAL INFILE '/dev/stdin' INTO TABLE pathwayComplementarity FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 LINES;"
+
+make sure you have first run from within the mysql console the following: 
+set global local_infile = 1; 
+*/
+
+
+LOAD DATA INFILE '/var/lib/mysql-files/complementarities/xaa' INTO TABLE pathwayComplementarity FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+
+SELECT COUNT(*) AS entry_count FROM your_table;
+SHOW PROCESSLIST;
+
+
+SELECT SUM(TABLE_ROWS) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = database();
+
+
+-- ids to remove: 
+-- 1129257 --> uncultured Bacteroidia bacterium  
+
+
