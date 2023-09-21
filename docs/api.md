@@ -100,12 +100,15 @@ this would return (we show only a part of the outcome)
 
 
 
+{: .warning }
+> [Google Analytics 4 will replace Universal Analytics](https://support.google.com/analytics/answer/11583528). On **July 1, 2023**, standard Universal Analytics properties will stop processing new hits. The earlier you migrate, the more historical data and insights you will have in Google Analytics 4.
 
 
 
 
 
-### Common errors
+
+## Common errors
 
 There are three possible types of client errors on API calls:
 
