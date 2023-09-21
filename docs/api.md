@@ -87,21 +87,18 @@ this would return (we show only a part of the outcome)
 }
 ```
 
-
+<!-- 
 {: .warning }
-> Currently, microbetag has annotations only for the GTDB representative genomes. Thus, genomes returned by the `ncbiTaxId-to-genomeId` route that come from other resources (e.g., MGnify, KEGG) do not have phenotypic tratis.
+> Currently, microbetag has annotations only for the GTDB representative genomes. Thus, genomes returned by the `ncbiTaxId-to-genomeId` route that come from other resources (e.g., MGnify, KEGG) do not have phenotypic tratis. -->
 
 
 <!-- > 2. In case a GTDB genome returns an "Internal Server Error", please try again replacing the "GCA" with "GCF".  -->
-
-
-
-
-
+dd
 
 {: .warning }
-> [Google Analytics 4 will replace Universal Analytics](https://support.google.com/analytics/answer/11583528). On **July 1, 2023**, standard Universal Analytics properties will stop processing new hits. The earlier you migrate, the more historical data and insights you will have in Google Analytics 4.
 
+These callout names are *not* pre-defined by the theme: you need to define your own names.
+{: .warning }
 
 
 
