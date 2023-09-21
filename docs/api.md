@@ -91,7 +91,9 @@ this would return (we show only a part of the outcome)
 
 {: .warning }
 > Currently, microbetag has annotations only for the GTDB representative genomes. Thus, genomes returned by the `ncbiTaxId-to-genomeId` route that come from other resources (e.g., MGnify, KEGG) do not have phenotypic tratis.
-> 2. In case a GTDB genome returns an "Internal Server Error", please try again replacing the "GCA" with "GCF". 
+
+
+<!-- > 2. In case a GTDB genome returns an "Internal Server Error", please try again replacing the "GCA" with "GCF".  -->
 
 
 
