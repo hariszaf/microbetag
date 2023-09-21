@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Configuration
-nav_order: 2
+title: Cytoscape App
+nav_order: 3
 ---
 
-# Configuration
+# Cytoscape App
 {: .no_toc }
 
 
