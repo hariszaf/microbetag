@@ -87,7 +87,6 @@ this would return (we show only a part of the outcome)
 }
 ```
 
-{: .d-inline-block }
 
 {: .warning }
 > Currently, microbetag has annotations only for the GTDB representative genomes. Thus, genomes returned by the `ncbiTaxId-to-genomeId` route that come from other resources (e.g., MGnify, KEGG) do not have phenotypic tratis.
