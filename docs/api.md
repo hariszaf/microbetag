@@ -7,8 +7,7 @@ nav_order: 4
 # API documentation
 {: .no_toc }
 
-
-Just the Docs has some specific configuration parameters that can be defined in your Jekyll site's _config.yml file.
+<!-- Just the Docs has some specific configuration parameters that can be defined in your Jekyll site's _config.yml file. -->
 {: .fs-6 .fw-300 }
 
 ## Table of contents
@@ -88,6 +87,7 @@ this would return (we show only a part of the outcome)
 }
 ```
 
+{: .d-inline-block }
 
 {: .warning }
 > Currently, microbetag has annotations only for the GTDB representative genomes. Thus, genomes returned by the `ncbiTaxId-to-genomeId` route that come from other resources (e.g., MGnify, KEGG) do not have phenotypic tratis.
