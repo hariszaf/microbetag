@@ -2,17 +2,55 @@
 title: "microbetag"
 description: A place with the background and the *how to* of the *microbetag* tool - currently in production
 
-remote_theme: pmarsceill/just-the-docs
+# remote_theme: pmarsceill/just-the-docs
 
 # Permalinks are the output path for your pages, posts, or collections. 
 # They allow you to structure the directories of your source code different from the directories in your output.
 # For more check: https://jekyllrb.com/docs/permalinks/
+
+
+
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://just-the-docs.com" # the base hostname & protocol for your site, e.g. http://example.com
+repository: just-the-docs/just-the-docs # for github-metadata
+
+
+
+
 permalink: pretty
 
 # What it says! ;)
-exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  
-"script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
+# exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  
+# "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
 
+exclude:
+ # from https://github.com/jekyll/jekyll/blob/master/lib/site_template/_config.yml:
+   - .sass-cache/
+   - .jekyll-cache/
+   - gemfiles/
+   - Gemfile
+   - Gemfile.lock
+   - node_modules/
+   - vendor/bundle/
+   - vendor/cache/
+   - vendor/gems/
+   - vendor/ruby/
+ # specific to the theme website:
+   - bin/
+   - lib/
+   - "*.gemspec"
+   - "*.gem"
+   - LICENSE.txt
+   - package.json
+   - package-lock.json
+   - Rakefile
+   - README.md
+   - CODE_OF_CONDUCT.md
+   - docker-compose.yml
+   - Dockerfile
+ # theme test code
+   - fixtures/
 
 # Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
 color_scheme: nil
@@ -70,6 +108,8 @@ aux_links:
     - "https://github.com/hariszaf/microbetag/tree/gh-pages"
 
 
+# Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
+color_scheme: nil
 
 callouts_level: quiet # or loud
 callouts:
@@ -88,6 +128,11 @@ callouts:
     title: Warning
     color: red
 
+# Google Analytics Tracking (optional)
+# Supports a CSV of tracking ID strings (eg. "UA-1234567-89,G-1AB234CDE5")
+# Note: the main Just the Docs site does *not* use Google Analytics.
+# ga_tracking: UA-2709176-10,G-5FG1HLH3XQ
+# ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
 plugins:
   - jekyll-seo-tag
@@ -108,4 +153,3 @@ compress_html:
   profile: false
   # ignore:
   #   envs: all
-      
