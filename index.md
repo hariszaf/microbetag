@@ -2,98 +2,96 @@
 layout: default
 title: Home
 nav_order: 1
-description: "Just the Docs is a responsive Jekyll theme with built-in search that is easily customizable and hosted on GitHub Pages."
+description: " A place with the background and the *how to* of the *microbetag* tool"
 permalink: /
 ---
 
-# Focus on writing good documentation
+# annotating microbial co-occurrence networks
 {: .fs-9 }
 
-Just the Docs gives your documentation a jumpstart with a responsive Jekyll theme that is easily customizable and hosted on GitHub Pages.
+A place with the background and the *how to* of the *microbetag* tool
 {: .fs-6 .fw-300 }
 
-[Get started now](#getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[View it on GitHub][Just the Docs repo]{: .btn .fs-5 .mb-4 .mb-md-0 }
+Under development
+{: .label .label-yellow }
+
+<!--The ': .btn' flag denotes the button 
+# The ': .fs-5' flag denotes the font size
+# The ': .mb-4' flag denotes the margin-bottom: https://pmarsceill.github.io/just-the-docs/docs/utilities/layout/#spacing
+# the 'mb'is the margin-bottom as said,  while the 'md' stands for a [responsive modifier](https://pmarsceill.github.io/just-the-docs/docs/utilities/responsive-modifiers/#responsive-modifiers)-->
+
+[View it on GitHub](https://github.com/hariszaf/microbetag){: .btn .btn-purple .fs-5 .mb-4 .mb-md-0 }
+
+[Image on DockerHub](https://hub.docker.com/r/hariszaf/microbetag){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
-{: .warning }
-> This website documents the features of the current `main` branch of the Just the Docs theme. See [the CHANGELOG]({% link CHANGELOG.md %}) for a list of releases, new features, and bug fixes.
+## About
 
-Just the Docs is a theme for generating static websites with [Jekyll]. You can write source files for your web pages using [Markdown], the [Liquid] templating language, and HTML.[^1] Jekyll builds your site by converting all files that have [front matter] to HTML. Your [Jekyll configuration] file determines which theme to use, and sets general parameters for your site, such as the URL of its home page.
+Microbial interactions play a fundamental role in deciphering the underlying mechanisms that govern ecosystem functioning. 
+Co-occurrence networks have been widely used for inferring microbial associations or/and interactions from metagenomic data. 
+However, spurious associations and tool - dependence confine the network inference. 
+The integration of previous evidence or/and knowledge can increase or decrease the confidence level of the retrieved associations. 
+This way, associations can be further investigated and more reliable conclusions can be drawn.  
 
-Jekyll builds this Just the Docs theme docs website using the theme itself. These web pages show how your web pages will look *by default* when you use this theme. But you can easily *[customize]* the theme to make them look completely different!
 
-Browse the docs to learn more about how to use this theme.
+*microbetag* is a command line tool that implements data integration techniques to enhance microbial co-occurrence network analysis for amplicon data. 
+*microbetag* retrieves the KEGG modules that have been assigned to each of the species found related. 
+Based on the pathway complementarity concept, pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a  positive interaction. 
+Likewise, if the same processes are found to occur in both taxa, a negative interaction will be derived.
 
-## Getting started
+On top of that, *microbetag* integrates phenotypic information thanks to resources such as [FAPROTAX](https://github.com/knights-lab/BugBase), [BugBase](https://github.com/knights-lab/BugBase) and [Picrust2](https://github.com/picrust/picrust2); 
+a series of environmental variables (pH optima, oxygen tolerance etc.) are assembled in each node of the network.
+Their comparison in each pair of correlated taxa evaluates their corresponding association further. 
 
-The [Just the Docs Template] provides the simplest, quickest, and easiest way to create a new website that uses the Just the Docs theme. To get started with creating a site, just click "[use the template]"!
 
-{: .note }
-To use the theme, you do ***not*** need to clone or fork the [Just the Docs repo]! You should do that only if you intend to browse the theme docs locally, contribute to the development of the theme, or develop a new theme based on Just the Docs.
 
-You can easily set the site created by the template to be published on [GitHub Pages] – the [template README] file explains how to do that, along with other details.
 
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^2] And you will be able to deploy your local build to a different platform than GitHub Pages.
+## Dependencies
+To run *microbetag* you need to have [Docker](https://www.docker.com/) on your computing environment. 
+As described from IBM, Docker is an open source containerization platform. 
+It enables developers to package applications into containers—standardized executable components combining application source code with the operating system libraries and dependencies required to run that code in any environment.
 
-More specifically, the created site:
+You can install Docker in Linux, MaxOS or Windows systems by following the instructions you will finde [here](https://docs.docker.com/get-docker/).
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
 
-Other than that, you're free to customize sites that you create with the template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
+### Get
 
-{: .note }
-See the theme [README][Just the Docs README] for how to use the theme as a gem without creating a new site.
+Once Docker is available, to get *microbetag* you need to *pull* it from DockerHub. 
+To do this, you need to run: 
+
+```bash=
+docker push hariszaf/microbetag
+```
+
+This way, the latest version of *microbetag* will be pulled. 
+You may specify which version of *microbetag* you wish to pull by running instead:
+
+```bash=
+docker push hariszaf/microbetag:tagname
+```
+where `tagname` is the name of the specific version. 
+
+
+
+
+
+## Run 
+
+To run *microbetag* you need an OTU-table which follows one of the following sets of features: 
+
+- taxonomy assignment using Silva 132 
+- 
+
+
 
 ## About the project
 
-Just the Docs is &copy; 2017-{{ "now" | date: "%Y" }} by [Patrick Marsceill](https://patrickmarsceill.com).
 
-### License
 
-Just the Docs is distributed by an [MIT license](https://github.com/just-the-docs/just-the-docs/tree/main/LICENSE.txt).
+## License
 
-### Contributing
+- *microbetag* is under GNU General Public License v3.0. For third-party components separate licenses apply. 
 
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. Read more about becoming a contributor in [our GitHub repo](https://github.com/just-the-docs/just-the-docs#contributing).
+- This web-page is based on the Just the Docs theme that is distributed by an [MIT license](https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt).
 
-#### Thank you to the contributors of Just the Docs!
-
-<ul class="list-style-none">
-{% for contributor in site.github.contributors %}
-  <li class="d-inline-block mr-1">
-     <a href="{{ contributor.html_url }}"><img src="{{ contributor.avatar_url }}" width="32" height="32" alt="{{ contributor.login }}"></a>
-  </li>
-{% endfor %}
-</ul>
-
-### Code of Conduct
-
-Just the Docs is committed to fostering a welcoming community.
-
-[View our Code of Conduct](https://github.com/just-the-docs/just-the-docs/tree/main/CODE_OF_CONDUCT.md) on our GitHub repository.
-
-----
-
-[^1]: The [source file for this page] uses all three markup languages.
-
-[^2]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
-
-[Jekyll]: https://jekyllrb.com
-[Markdown]: https://daringfireball.net/projects/markdown/
-[Liquid]: https://github.com/Shopify/liquid/wiki
-[Front matter]: https://jekyllrb.com/docs/front-matter/
-[Jekyll configuration]: https://jekyllrb.com/docs/configuration/
-[source file for this page]: https://github.com/just-the-docs/just-the-docs/blob/main/index.md
-[Just the Docs Template]: https://just-the-docs.github.io/just-the-docs-template/
-[Just the Docs]: https://just-the-docs.com
-[Just the Docs repo]: https://github.com/just-the-docs/just-the-docs
-[Just the Docs README]: https://github.com/just-the-docs/just-the-docs/blob/main/README.md
-[GitHub Pages]: https://pages.github.com/
-[Template README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[customize]: {% link docs/customization.md %}
-[use the template]: https://github.com/just-the-docs/just-the-docs-template/generate
