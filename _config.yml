@@ -21,36 +21,36 @@ repository: just-the-docs/just-the-docs # for github-metadata
 permalink: pretty
 
 # What it says! ;)
-# exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  
-# "script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
+exclude: ["node_modules/", "*.gemspec", "*.gem", "Gemfile", "Gemfile.lock", "package.json", "package-lock.json",  
+"script/", "LICENSE.txt", "lib/", "bin/", "README.md", "Rakefile", "docs/tests/"]
 
-exclude:
- # from https://github.com/jekyll/jekyll/blob/master/lib/site_template/_config.yml:
-   - .sass-cache/
-   - .jekyll-cache/
-   - gemfiles/
-   - Gemfile
-   - Gemfile.lock
-   - node_modules/
-   - vendor/bundle/
-   - vendor/cache/
-   - vendor/gems/
-   - vendor/ruby/
- # specific to the theme website:
-   - bin/
-   - lib/
-   - "*.gemspec"
-   - "*.gem"
-   - LICENSE.txt
-   - package.json
-   - package-lock.json
-   - Rakefile
-   - README.md
-   - CODE_OF_CONDUCT.md
-   - docker-compose.yml
-   - Dockerfile
- # theme test code
-   - fixtures/
+# exclude:
+#  # from https://github.com/jekyll/jekyll/blob/master/lib/site_template/_config.yml:
+#    - .sass-cache/
+#    - .jekyll-cache/
+#    - gemfiles/
+#    - Gemfile
+#    - Gemfile.lock
+#    - node_modules/
+#    - vendor/bundle/
+#    - vendor/cache/
+#    - vendor/gems/
+#    - vendor/ruby/
+#  # specific to the theme website:
+#    - bin/
+#    - lib/
+#    - "*.gemspec"
+#    - "*.gem"
+#    - LICENSE.txt
+#    - package.json
+#    - package-lock.json
+#    - Rakefile
+#    - README.md
+#    - CODE_OF_CONDUCT.md
+#    - docker-compose.yml
+#    - Dockerfile
+#  # theme test code
+#    - fixtures/
 
 # Color scheme currently only supports "dark", "light"/nil (default), or a custom scheme that you define
 color_scheme: nil
