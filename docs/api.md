@@ -95,10 +95,10 @@ this would return (we show only a part of the outcome)
 <!-- > 2. In case a GTDB genome returns an "Internal Server Error", please try again replacing the "GCA" with "GCF".  -->
 dd
 
-{: .warning }
-
+{% warning %}
 These callout names are *not* pre-defined by the theme: you need to define your own names.
-{: .warning }
+
+
 
 
 
