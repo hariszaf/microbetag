@@ -15,14 +15,21 @@ A place with the background and the *how to* of the *microbetag* tool
 Under development
 {: .label .label-yellow }
 
+
+
+![microbetag logo](/assets/images/microbetag_logo.png)
+
+
 <!--The ': .btn' flag denotes the button 
 # The ': .fs-5' flag denotes the font size
 # The ': .mb-4' flag denotes the margin-bottom: https://pmarsceill.github.io/just-the-docs/docs/utilities/layout/#spacing
 # the 'mb'is the margin-bottom as said,  while the 'md' stands for a [responsive modifier](https://pmarsceill.github.io/just-the-docs/docs/utilities/responsive-modifiers/#responsive-modifiers)-->
 
 [View it on GitHub](https://github.com/hariszaf/microbetag){: .btn .btn-purple .fs-5 .mb-4 .mb-md-0 }
-
 [Image on DockerHub](https://hub.docker.com/r/hariszaf/microbetag){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 }
+
+
+
 
 ---
 
