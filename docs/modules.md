@@ -27,7 +27,7 @@ microbetag consists of 4 major modules:
 - 
 
 
-
+![complementarity in kegg example](/assets/images/kegg_example.png){: width="250" }
 
 
 
