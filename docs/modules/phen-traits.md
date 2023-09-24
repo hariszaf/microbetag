@@ -1,7 +1,7 @@
 ---
 title: Traits predicted based on phenDB models
-layout: minimal
-parent: modules
+layout: default
+parent: Modules
 nav_order: 2
 ---
 

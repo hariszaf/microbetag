@@ -1,6 +1,6 @@
 ---
 layout: default
-title: modules
+title: Modules
 nav_order: 2
 has_children: true
 permalink: /docs/modules
@@ -44,10 +44,10 @@ microbetag consists of 4 major modules:
 FAPROTAX maps taxa (e.g. genera or species) to metabolic or other ecologically relevant functions based on the literature on cultured representatives. 
 For a thorough description of that, you may have a look to its [documentation site](http://www.loucalab.com/archive/FAPROTAX/lib/php/index.php?section=Instructions). 
 
-The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on the abundance table provided by the user, is mapped to a list of functions we provide here:
+The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on the abundance table provided by the user, is mapped to a list of functions one can check [here](faprotax-functions.md).
 
 
-
+As an example, here is how the FAPROTAX outcome looks like for the case of denitrification function: 
 
 
 ![faprotax example denitrif](../../assets/images/faprotax_denitrification.png)
