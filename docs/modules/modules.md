@@ -63,13 +63,6 @@ As an example, here is how the FAPROTAX outcome looks like for the case of denit
 
 We provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). The annotation is referring to the species under study. For example `NOB` : *species under study is part of the clade of NOB*. 
 
-{: .important-title }
-
-
-
-
-
-
 
 
 

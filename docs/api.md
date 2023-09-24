@@ -30,6 +30,16 @@ The base address to the API is https://msysbio.gbiomed.kuleuven.be/.
 Below you may find the syntax to retrieve the various data and/or annotations included.
 
 
+
+
+<!-- ## a complete run ... 
+
+
+can we have a complete run from python api ?  -->
+
+
+
+
 ## Get genome ids for a NCBI Taxonoy Id
 
 To check whether a species is present on microbetag, one may find its corresponding **NCBI Taxonomy Id** and search for 

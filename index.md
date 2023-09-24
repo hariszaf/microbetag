@@ -53,14 +53,29 @@ Their comparison in each pair of correlated taxa evaluates their corresponding a
 
 
 
-See more in [modules](docs/modules/)
+See more in [modules](docs/modules)
 
 
+## How to use 
+
+microbetag is available as a [Cytoscape App]()
+[Cytoscape](https://cytoscape.org) is a well-established, widely used software for
+network data Integration, analysis, and visualization.
+All you need to do is to [download and install Cytoscape](https://cytoscape.org/download.html) and then visit the [Cytoscape Appstore](https://apps.cytoscape.org) and search for microbetag or click "Apps > App manager.." after lunching Cytoscape, search for microbetag and click  "Install".
+Once microbetag is installed, you are ready to lunch it using an OTUs/ASVs (amplicon data) or bins/MAGs (shotgun data) abundance tabl as input. 
+
+{: .important-title }
+> HOW TO USE AND INTERPRET MICROBETAG's FINDINGS 
+>
+> For a thorough description of the app, please check the [Cytoscape App](docs/cytoApp) tab.
 
 
+microbetag's annotations are also available through its [API](docs/api). 
 
 
+<!-- 
 ## Dependencies
+
 To run *microbetag* you need to have [Docker](https://www.docker.com/) on your computing environment. 
 As described from IBM, Docker is an open source containerization platform. 
 It enables developers to package applications into containers—standardized executable components combining application source code with the operating system libraries and dependencies required to run that code in any environment.
@@ -86,7 +101,7 @@ docker push hariszaf/microbetag:tagname
 where `tagname` is the name of the specific version. 
 
 
-
+ -->
 
 
 
