@@ -2,7 +2,7 @@
 title: Traits predicted based on phenDB models
 layout: minimal
 parent: modules
-has_children: false
+nav_order: 2
 ---
 
 

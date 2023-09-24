@@ -1,8 +1,9 @@
 ---
 layout: default
-title: Modules
+title: modules
 nav_order: 2
 has_children: true
+permalink: /docs/modules
 ---
 
 
@@ -49,7 +50,7 @@ The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on t
 
 
 
-![faprotax example denitrif](../assets/images/faprotax_denitrification.png)
+![faprotax example denitrif](../../assets/images/faprotax_denitrification.png)
 
 
 
@@ -60,7 +61,7 @@ The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on t
 
 
 
-We provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). The annotation is referring to the species under study. For example `NOB` :arrow_right: *species under study is part of the clade of NOB*. 
+We provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). The annotation is referring to the species under study. For example `NOB` : *species under study is part of the clade of NOB*. 
 
 {: .important-title }
 > Abbreviations' descriptions

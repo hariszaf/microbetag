@@ -2,7 +2,7 @@
 title: FAPROTAX functions
 layout: minimal
 parent: modules
-has_children: false
+nav_order: 1
 ---
 
 # FAPROTAX functions
