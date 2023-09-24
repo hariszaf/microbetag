@@ -9,7 +9,7 @@ permalink: /
 # annotating microbial co-occurrence networks
 {: .fs-9 }
 
-A place with the background and the *how to* of the *microbetag* tool
+background, documentation and a use case
 {: .fs-6 .fw-300 }
 
 Under development
@@ -17,7 +17,7 @@ Under development
 
 
 
-![microbetag logo](/assets/images/microbetag_logo.png){: width=15% }
+![microbetag logo](/assets/images/microbetag_logo.png){: width=10% }
 
 
 <!--The ': .btn' flag denotes the button 
@@ -42,14 +42,20 @@ The integration of previous evidence or/and knowledge can increase or decrease t
 This way, associations can be further investigated and more reliable conclusions can be drawn.  
 
 
-*microbetag* is a command line tool that implements data integration techniques to enhance microbial co-occurrence network analysis for amplicon data. 
-*microbetag* retrieves the KEGG modules that have been assigned to each of the species found related. 
+*microbetag* implements data integration techniques to enhance microbial co-occurrence network analysis for amplicon data. 
+It retrieves the KEGG modules that have been assigned to each of the species found related. 
 Based on the pathway complementarity concept, pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a  positive interaction. 
 Likewise, if the same processes are found to occur in both taxa, a negative interaction will be derived.
 
-On top of that, *microbetag* integrates phenotypic information thanks to resources such as [FAPROTAX](https://github.com/knights-lab/BugBase), [BugBase](https://github.com/knights-lab/BugBase) and [Picrust2](https://github.com/picrust/picrust2); 
+On top of that, *microbetag* integrates phenotypic information thanks to resources such as [FAPROTAX](https://github.com/knights-lab/BugBase); 
 a series of environmental variables (pH optima, oxygen tolerance etc.) are assembled in each node of the network.
 Their comparison in each pair of correlated taxa evaluates their corresponding association further. 
+
+
+
+See more in [modules](docs/modules/)
+
+
 
 
 
