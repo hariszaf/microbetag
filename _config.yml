@@ -118,8 +118,8 @@ nav_external_links:
     url: https://github.com/hariszaf/microbetag/tree/gh-pages
 
 
-# Set favicon icon
-favicon_ico: assets/images/favicon.ico
+# # Set favicon icon
+# favicon_ico: assets/images/favicon.ico
 
 
 # Footer content
