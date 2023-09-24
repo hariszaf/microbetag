@@ -53,7 +53,7 @@ Their comparison in each pair of correlated taxa evaluates their corresponding a
 
 
 
-See more in [modules](docs/modules)
+See more in the [modules](docs/modules) tab about the methods used for the annotation process.
 
 
 ## How to use 
@@ -109,11 +109,11 @@ where `tagname` is the name of the specific version.
 
 ## About the project
 
-
+This project was funded by an EMBO Scientific Exchange Grants and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
 
 ## License
 
 - *microbetag* is under GNU General Public License v3.0. For third-party components separate licenses apply. 
 
-- This web-page is based on the Just the Docs theme that is distributed by an [MIT license](https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt).
-
+<!-- - This web-page is based on the Just the Docs theme that is distributed by an [MIT license](https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt).
+ -->

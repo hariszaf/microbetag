@@ -61,7 +61,18 @@ As an example, here is how the FAPROTAX outcome looks like for the case of denit
 
 
 
-We provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). The annotation is referring to the species under study. For example `NOB` : *species under study is part of the clade of NOB*. 
+Under the [Traits predicted based on phenDB models](phen-traits) tab, we provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
+
+
+The annotation is referring to the species under study. 
+Each trait gets a "Yes" or "No" decision along with an accurracy score. 
+For example `NOB` : *species under study is part of the clade of NOB*. 
+
+Here is an example of how 2 GTDB genomes look like: 
+
+![phen traits example](../../assets/images/phen_traits_fmt.png)
+
+
 
 
 
