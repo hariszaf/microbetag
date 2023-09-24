@@ -75,6 +75,7 @@ We provide a description of each feature abbreviation, based on those from the [
 
 ## Pathway complementarity: an example
 
+pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a positive interaction. Likewise, if the same processes are found to occur in both taxa, a negative interaction will be derived.
 
 ![complementarity in kegg example](../assets/images/kegg_example.png){: width=80% }
 
@@ -86,8 +87,11 @@ We provide a description of each feature abbreviation, based on those from the [
 ## References
 
 [1] Tackmann, J., Rodrigues, J.F.M. and von Mering, C., 2019. Rapid inference of direct interactions in large-scale ecological networks from heterogeneous microbial sequencing data. Cell systems, 9(3), pp.286-296, DOI: [10.1016/j.cels.2019.08.002](https://doi.org/10.1016/j.cels.2019.08.002).
+
 [2] Louca, S., Parfrey, L.W., Doebeli, M. (2016) - Decoupling function and taxonomy in the global ocean microbiome. Science 353:1272-1277, DOI: [10.1126/science.aaf4507](https://doi.org/10.1126/science.aaf4507).
+
 [3] Levy, R., Carr, R., Kreimer, A., Freilich, S., Borenstein, E. "NetCooperate: a network-based tool for inferring host-microbe and microbe-microbe cooperation." BMC Bioinformatics, 2015.
+
 [4] Kreimer, A., Doron-Faigenboim, A., Borenstein, E., Freilich, S. "NetCmpt: a network-based tool for calculating the metabolic competition between bacterial species." Bioinformatics, 2012.
 
 

@@ -83,12 +83,6 @@ where `tagname` is the name of the specific version.
 
 
 
-## Run 
-
-To run *microbetag* you need an OTU-table which follows one of the following sets of features: 
-
-- taxonomy assignment using Silva 132 
-- 
 
 
 
