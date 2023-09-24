@@ -91,9 +91,15 @@ We provide a description of each feature abbreviation, based on those from the [
 
 {: .important-title }
 > Abbreviations' descriptions
+>
 > `NOB`: species under study is part of the clade of nitrite-oxidizing bacteria (E)
+>
 > `T3SS`: species under study expresses a Type III secretion system (C)
+>
 > `T6SS`: species under study expresses a Type VI secretion system (C)
+> | Command | Description |
+> | --- | --- |
+> | `git status` | List all *new or modified* files |
 > `aSaccharolytic`: species under study has an asaccharolytic lifestyle
 
 > `aceticAcid`: species under study produces acetic acid
