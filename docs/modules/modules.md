@@ -61,7 +61,7 @@ As an example, here is how the FAPROTAX outcome looks like for the case of denit
 
 
 
-Under the [Traits predicted based on phenDB models](phen-traits) tab, we provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
+Under the [Traits predicted based on phenDB models](phen-traits.md) tab, we provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
 
 
 The annotation is referring to the species under study. 
