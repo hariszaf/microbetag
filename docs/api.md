@@ -168,6 +168,16 @@ Each entry of the above output stands for a specific KEGG module
 
 
 
+## Get competition and complementarity score between a pair of GEMs
+
+`seed-scores` route `genome_A` is the beneficiary and `genome_B` the donor, 
+one may use the `genome-complements` route
+
+
+```bash
+curl -X GET https://msysbio.gbiomed.kuleuven.be/seed-scores/GCA_011364525.1/GCA_002980625.1
+```
+
 
 
 
