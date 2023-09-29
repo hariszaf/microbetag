@@ -40,8 +40,11 @@ The network annotation consists of 4 major modules:
 
 FAPROTAX returns annotations for taxa (nodes) that they have been taxonomically annotated at the family or even at the order level in some cases, while the other 3 annotation types 
 return annotations only at the strain and the species level.
-Nodes that have species or strain taxonomic annotation are mapped to their closest representative GTDB genomes and based on those, they get phenDB-like functional annotations. 
+**Nodes** that have species or strain taxonomic annotation are mapped to their closest representative GTDB genomes and based on those, they get phenDB-like functional annotations. 
+**Edges** linking nodes that have been assigned at the species or strain level, i.e. both nodes of the association have a species/strain taxonomic annotation, are annotated using 
+the pathway complementarity and the seed scores approaches. 
 
+Below, you will find further background and examples of each annotation type. 
 
 
 ## Functional annotations
