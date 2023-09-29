@@ -109,11 +109,11 @@ where `tagname` is the name of the specific version.
 
 ## About the project
 
-This project was funded by an EMBO Scientific Exchange Grants and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
+This project was funded by an [EMBO Scientific Exchange Grants](https://www.embo.org/funding/fellowships-grants-and-career-support/scientific-exchange-grants/) 
+and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
+
+<!-- https://www.embo.org/documents/news/facts_figures/EMBO_facts_figures_2021.pdf -->
 
 ## License
 
 - *microbetag* is under GNU General Public License v3.0. For third-party components separate licenses apply. 
-
-<!-- - This web-page is based on the Just the Docs theme that is distributed by an [MIT license](https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt).
- -->

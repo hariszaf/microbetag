@@ -168,6 +168,33 @@ Each entry of the above output stands for a specific KEGG module
 
 
 
+### Get complements for pair of species 
+
+
+`complements`
+
+
+```bash 
+curl -X GET https://msysbio.gbiomed.kuleuven.be/complements/1281578/146891 
+```
+
+
+```bash
+{
+  "GCA_003184265.1": {
+    "GCA_000015645.1": [
+      [
+        [
+          "M00010",
+          "K01682",
+          "K01647;K01682;K00031",
+          "https://www.kegg.jp/kegg-bin/show_pathway?map00020/K01647%09%23EAD1DC/K00031%09%23EAD1DC/K01682%09%2300A898/"
+        ]
+      ],
+```
+
+
+
 ## Get competition and complementarity score between a pair of GEMs
 
 `seed-scores` route `genome_A` is the beneficiary and `genome_B` the donor, 
