@@ -1,7 +1,7 @@
 ---
 layout: default
 title: API documentation
-nav_order: 4
+nav_order: 5
 ---
 
 # API documentation
@@ -62,17 +62,6 @@ that returns a list of genomes used in microbetag annotations:
 }
 ```
 
-Similarly, in Python:
-
-```python
->>> import requests
->>> url = "https://msysbio.gbiomed.kuleuven.be/ncbiTaxId-to-genomeId/853"
->>> r = requests.get(url)
->>> r.status_code
-200
->>> r.json()
-{"537007": ["GCA_002222595.2"]}
-```
 
 
 ## Get phenotypic traits of a species 
