@@ -42,18 +42,20 @@ The integration of previous evidence or/and knowledge can increase or decrease t
 This way, associations can be further investigated and more reliable conclusions can be drawn.  
 
 
-*microbetag* implements data integration techniques to enhance microbial co-occurrence network analysis for amplicon data. 
-It retrieves the KEGG modules that have been assigned to each of the species found related. 
-Based on the pathway complementarity concept, pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a  positive interaction. 
+*microbetag* implements data integration techniques to annotate both the nodes (taxa) and the edges (predicted associations) of such a network 
+to enhance microbial co-occurrence network analysis for amplicon data. 
+Have a look at the [**modules**](docs/modules) tab to get an overview of the methods used.
+
+<!-- It retrieves the KEGG modules that have been assigned to each of the species found related. 
+Based on the **pathway complementarity** concept, pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a  positive interaction. 
 Likewise, if the same processes are found to occur in both taxa, a negative interaction will be derived.
 
 On top of that, *microbetag* integrates phenotypic information thanks to resources such as [FAPROTAX](https://github.com/knights-lab/BugBase); 
 a series of environmental variables (pH optima, oxygen tolerance etc.) are assembled in each node of the network.
-Their comparison in each pair of correlated taxa evaluates their corresponding association further. 
+Their comparison in each pair of correlated taxa evaluates their corresponding association further.  -->
 
 
 
-See more in the [modules](docs/modules) tab about the methods used for the annotation process.
 
 
 ## How to use 
@@ -61,7 +63,10 @@ See more in the [modules](docs/modules) tab about the methods used for the annot
 microbetag is available as a [Cytoscape App]()
 [Cytoscape](https://cytoscape.org) is a well-established, widely used software for
 network data Integration, analysis, and visualization.
-All you need to do is to [download and install Cytoscape](https://cytoscape.org/download.html) and then visit the [Cytoscape Appstore](https://apps.cytoscape.org) and search for microbetag or click "Apps > App manager.." after lunching Cytoscape, search for microbetag and click  "Install".
+All you need to do is to [download and install Cytoscape](https://cytoscape.org/download.html) and then visit the [Cytoscape Appstore](https://apps.cytoscape.org) and search for microbetag.
+
+Otherwise, you may click `Apps > App manager..` after lunching Cytoscape, then search for "microbetag" in the pop-up box and click  "Install".
+
 Once microbetag is installed, you are ready to lunch it using an OTUs/ASVs (amplicon data) or bins/MAGs (shotgun data) abundance tabl as input. 
 
 {: .important-title }
@@ -70,7 +75,9 @@ Once microbetag is installed, you are ready to lunch it using an OTUs/ASVs (ampl
 > For a thorough description of the app, please check the [Cytoscape App](docs/cytoApp) tab.
 
 
-microbetag's annotations are also available through its [API](docs/api). 
+In addition, microbetag's annotations are also available through its [Application Programming Interface (API)](docs/api). 
+This way, one may have direct access to the microbetagDB and may export annotations for species or pair of species of interest, without the need of a network. 
+
 
 
 <!-- 
