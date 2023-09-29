@@ -53,23 +53,37 @@ Below, you will find further background and examples of each annotation type.
 ### Based on FAPROTAX
 
 
-FAPROTAX maps taxa (e.g. genera or species) to metabolic or other ecologically relevant functions based on the literature on cultured representatives. 
-For a thorough description of that, you may have a look to its [documentation site](http://www.loucalab.com/archive/FAPROTAX/lib/php/index.php?section=Instructions). 
+[**FAPROTAX**](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) [2] maps taxa (e.g. genera or species) 
+to metabolic or other ecologically relevant functions based on the literature on cultured representatives. 
+It currently comprises more than 7600 annotation rules, covering ~4700 prokaryotic clades. 
+Each annotation rule comes with literature citations and can thus be independently verified.
+16S rRNA oriented approaches (e.g., PICRUSt, Tax4Fun etc) estimate community gene content based on available sequenced genomes.
+Contrary, FAPROTAX estimates metabolic phenotypes based on experimental evidence.
 
 The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on the abundance table provided by the user, is mapped to a list of functions one can check [here](faprotax-functions.md).
 
-
-As an example, here is how the FAPROTAX outcome looks like for the case of denitrification function: 
+As an example, here is how the FAPROTAX outcome looks like for the case of **denitrification** function: 
 
 
 ![faprotax example denitrif](../../assets/images/faprotax_denitrification.png)
 
+All ASVs present in this file are related to the **denetrification** function.
+Numbers represent the ASV abundance in each sample. 
 
-
+microbetag runs FAPROTAX agains the abundance table and parses the subtables ([`seqId_faprotax_functions_assignment`](https://github.com/msysbio/microbetagApp/blob/main/services/web/microbetag/scripts/utils.py#L181)) 
+to annotate each node with the corresponding function. 
 
 
 
 ### Based on phenDB 
+
+
+
+[`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html) enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
+
+Phenotrex classifiers were re-trained using the genomes provided by phenDB for each model. 
+For example, for the acetic acid production case, the [corresponding webpage of phenDB](https://phendb.org/reports/modeldetails?model_id=16) pointed to the set of genomes that had been originally used. 
+These genomes were recovered and the classifiers were re-trained using 
 
 
 
@@ -83,6 +97,10 @@ For example `NOB` : *species under study is part of the clade of NOB*.
 Here is an example of how 2 GTDB genomes look like: 
 
 ![phen traits example](../../assets/images/phen_traits_fmt.png)
+
+
+
+
 
 
 
