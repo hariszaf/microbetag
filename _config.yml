@@ -22,6 +22,12 @@ repository: just-the-docs/just-the-docs # for github-metadata
 
 permalink: pretty
 
+ # Build settings
+markdown: kramdown
+
+
+
+
 exclude:
  # from https://github.com/jekyll/jekyll/blob/master/lib/site_template/_config.yml:
    - .sass-cache/
