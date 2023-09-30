@@ -4,7 +4,7 @@ title: Modules
 nav_order: 2
 has_children: true
 permalink: /docs/modules
-usemathjax: true
+usemath: true
 ---
 
 
@@ -151,7 +151,9 @@ As described in the PhyloMint papaer: the **Metabolic Complementarity Index ($MI
 This complementarity score represents the **potential for A’s to utilize the potential metabolic output of B**.
 
 
-$$ MI_{Complementarity} = \frac {\lvert SeedSetA \bigcap \neg SeedSetB \rvert} {\sum SeedSetA \bigcap (SeedSetB \cup \neg SeeedSetB)}$$
+$$ 
+MI_{Complementarity} = \frac {\lvert SeedSetA \bigcap \neg SeedSetB \rvert} {\sum SeedSetA \bigcap (SeedSetB \cup \neg SeeedSetB)}
+$$
 
 
 
@@ -160,7 +162,9 @@ Similarly, again as described in the PhyloMint paper, the **Metabolic Competitio
 MIC estimates the baseline **metabolic overlap** between two given metabolic networks.
 
 
-$$ MI_{Competition} = \frac {\sum C( SeedSetA \bigcap SeedSetB )} {\sum C(SeedSetA)}$$
+$$ 
+MI_{Competition} = \frac {\sum C( SeedSetA \bigcap SeedSetB )} {\sum C(SeedSetA)}
+$$
 
 
 
