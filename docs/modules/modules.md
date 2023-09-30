@@ -79,7 +79,9 @@ to annotate each node with the corresponding function.
 
 
 
-[`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html) enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
+[`phenotrex`](https://phenotn example of how 2 GTDB genomes look like:
+
+rex.readthedocs.io/en/latest/usage.html) enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
 
 Phenotrex classifiers were re-trained using the genomes provided by phenDB for each model. 
 For example, for the acetic acid production case, the [corresponding webpage of phenDB](https://phendb.org/reports/modeldetails?model_id=16) pointed to the set of genomes that had been originally used. 
@@ -99,52 +101,98 @@ Here is an example of how 2 GTDB genomes look like:
 ![phen traits example](../../assets/images/phen_traits_fmt.png)
 
 
-
-
-
-
+microbetag annotates with these functional traits along with their scores, all network nodes that correspond 
+to OTUs/ASVs or bins that have been assigned to species/strain level and mapped to a representative GTDB genome.
 
 
 
 
 ## Pathway complementarity: an example
 
-pathways found in both taxa of an association are further explored to check whether the processes of each of the two taxa are complementary denoting a positive interaction. Likewise, if the same processes are found to occur in both taxa, a negative interaction will be derived.
+
+As defined by the [KEGG resource](https://www.genome.jp/kegg/module.html), "the KEGG MODULE database is a manually curated collection of modular functional units, categorized into pathway modules, signature modules and reaction modules".
+
+All the GTDB representative genomes were KEGG annottated. 
+Considering all pair-wised combinatons of those genomes, microbetag checks whether the KO terms of a genome (donor), 
+if shared, could complete a KEGG module of another (beneficary).
+
+Here is an example where Acidiferrobacter sp. SPIII3 
+(GCA_003184265.1) potentially shares K01626 to complete the Shikimate pathway (M00022) of
+Prochlorococcus marinus AS9601 (GCA_000015645.1).
 
 ![complementarity in kegg example](../../assets/images/kegg_example.png){: width=80% }
 
+As several genomes can be mapped to the same NCBI Taxonomy id, microbetag returns all possible complementarities
+between all the donor's and the beneficary's genomes. 
 
-
-
-
+microbetag annotates with such complementarities all edges where both nodes represent species/strain level taxonomies.
 
 
 
 ## Seed scores based on genome-scale draft reconstructions 
 
-Based on Borenstein et al () a metabolic network's “seed set”—the set of compounds that, based on the network topology, are exogenously acquired"
-
-
-The fraction of A’s seed set that is also in B’s seed set, normalized by the weighted sum of the confidence score
-
-
-As described in the PhyloMint papaer: the Complementarity Index is calculated as the fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network [34, 45]. MIComplementarity represents the potential for A’s to utilize the potential metabolic output of B
-
-
+Based on Borenstein et al (2008) [5] a metabolic network's “seed set”—the set of compounds that, based on the network topology, are exogenously acquired".
+Here is an example (based on the [Borensteil lab webpage](http://borensteinlab.com/software_netseed_examples.html)):
 
 ![seed concept](../../assets/images/seed_concept_example.png)
 
+
 Node A is a seed, as it cannot be activated by any other node in the network.
+Nodes F, G, and H are also seeds but they are interdependent, i.e. activating one of these nodes 
+would activate the rest, but at least one must be active to activate the rest. 
+These nodes form a "seed group".
+To quantify the relevance of each identified seed, we assign each seed a **confidence level (C)**, ranging from 0 to 1. 
+A confidence level of 0 would correspond to a non-seed node, while a 1 would correspond to a seed that cannot be activated by another node. Seeds which belong to a seed group with more than 1 seed are given a fractional confidence level, the inverse of the number of seeds in the group. 
+<!-- Nodes F, G, and H would then each have a confidence level of 1/3. -->
 
-In contrast, nodes F, G, and H are all marked as seeds, but can be seen to be interdependent: Activating one of these nodes would activate the rest, but at least one must be active to activate the rest. These nodes form a "seed group".
+Based on the seed concept, several scores between metabolic models of pair of species have been described. 
+As described in the PhyloMint papaer: the **Metabolic Complementarity Index ($MI_{Complementarity}$)** is calculated as the *"fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network"*. 
+This complementarity score represents the **potential for A’s to utilize the potential metabolic output of B**.
 
-To quantify the relevance of each identified seed, we assign each seed a "confidence level", ranging from 0 to 1. A confidence level of 0 would correspond to a non-seed node, while a 1 would correspond to a seed that cannot be activated by another node. Seeds which belong to a seed group with more than 1 seed are given a fractional confidence level, the inverse of the number of seeds in the group. Nodes F, G, and H would then each have a confidence level of 1/3.
+
+$$ MI_{Complementarity} = \frac {\lvert SeedSetA \bigcap \neg SeedSetB \rvert} {\sum SeedSetA \bigcap (SeedSetB \cup \neg SeeedSetB)}$$
 
 
 
-![netcooperate seed example](../../assets/images/seed_network_example.png)
+Similarly, again as described in the PhyloMint paper, the **Metabolic Competition Index ($MI_{Competition}$)**
+*"is calculated as the fraction of A’s seed set that is also in B’s seed set, normalized by the weighted sum of the confidence score"*.
+MIC estimates the baseline **metabolic overlap** between two given metabolic networks.
 
-In this example, we have a pair of simple networks. The top network has two seed groups, one of size one and the other size three (circled with a double line). The bottom network has three seed groups, two singletons, and one two-node seed group (circled with a double line). Seeds of one network present in the other are circled (solid lines: present, but not a seed of, the second network; dashed lines: present as a seed of the second network). The Biosynthetic Support Score of the top network on the bottom (i.e. treating the top as a parasite of the bottom) is 1.0. Note that all seed groups (but not all seeds) are present in the bottom network, and that node F is a seed of both networks. The Metabolic Complementarity Index of the top network on the bottom (i.e. treating both networks as co-occurring microbes) is 0.5. Because node F is a seed of the bottom network, it is not complementary to the top network’s seed set.
+
+$$ MI_{Competition} = \frac {\sum C( SeedSetA \bigcap SeedSetB )} {\sum C(SeedSetA)}$$
+
+
+
+Here is a toy example to calculate the two indices as shown in the PhyloMint paper:
+
+![seed scores example](../../assets/images/seed-scores-examples.png)
+<!-- In metabolic pathway A, SeedSetA consists of metabolites A, F, G, and H; 
+metabolites F, G, and H form a seed group. 
+Confidence level of seed set metabolites within metabolic network A is $1$, $1/3$, $1/3$, and $1/3$ for metabolites A, F, G, and H, respectively. 
+In metabolic pathway B, SeedSetB consist of F, I, J, and K; metabolites I and J form a SCC. 
+Confidence level of seed set metabolites within metabolic network B is 1, $1/3$, $1/3$, and 1 for metabolites F, I, J, and K, respectively.  -->
+In a comparison between metabolic network A versus metabolic network B, metabolic network A shares only one seed metabolite with metabolic network B (metabolite F) which lies in the seed group in metabolic network A. 
+Thus, the $MI_{Competition}$ between metabolic network A and B is $(1/3) / 2 = 1/6$. 
+
+{: .highlight }
+The $1/3$ term represents the confidence level of the seed group node. 
+
+Among SeedSetA, metabolites A and F are found within the metabolic network B but only metabolite A is within non-SeedSetB, thus the MIComplementarity index between metabolic network A and metabolic network B is 0.5.
+
+
+These indexes can be used in various types of metabolic networks. 
+microbetag 
+
+
+
+
+
+
+
+
+<!-- ![netcooperate seed example](../../assets/images/seed_network_example.png)
+
+In this example, we have a pair of simple networks. The top network has two seed groups, one of size one and the other size three (circled with a double line). The bottom network has three seed groups, two singletons, and one two-node seed group (circled with a double line). Seeds of one network present in the other are circled (solid lines: present, but not a seed of, the second network; dashed lines: present as a seed of the second network). The Biosynthetic Support Score of the top network on the bottom (i.e. treating the top as a parasite of the bottom) is 1.0. Note that all seed groups (but not all seeds) are present in the bottom network, and that node F is a seed of both networks. The Metabolic Complementarity Index of the top network on the bottom (i.e. treating both networks as co-occurring microbes) is 0.5. Because node F is a seed of the bottom network, it is not complementary to the top network’s seed set. -->
 
 
 
@@ -159,4 +207,4 @@ In this example, we have a pair of simple networks. The top network has two seed
 
 [4] Kreimer, A., Doron-Faigenboim, A., Borenstein, E., Freilich, S. "NetCmpt: a network-based tool for calculating the metabolic competition between bacterial species." Bioinformatics, 2012.
 
-
+[5] Borenstein, E., Kupiec, M., Feldman, M.W. and Ruppin, E., 2008. Large-scale reconstruction and phylogenetic analysis of metabolic environments. Proceedings of the National Academy of Sciences, 105(38), pp.14482-14487.
