@@ -55,6 +55,7 @@ a series of environmental variables (pH optima, oxygen tolerance etc.) are assem
 Their comparison in each pair of correlated taxa evaluates their corresponding association further.  -->
 
 
+![microbetagDB content stats](assets/images/content-stats.png)
 
 
 

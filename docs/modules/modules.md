@@ -30,19 +30,18 @@ Once a network is availalbe, microbetag identifies the taxonomic level that has 
 `D_0__Bacteria; D_1__Firmicutes; D_2__Clostridia; D_3__Clostridiales; D_4__Ruminococcaceae; D_5__uncultured; D_6__uncultured rumen bacterium`
 has reached the family level, while
 `D_0__Bacteria; D_1__Actinobacteria; D_2__Coriobacteriia; D_3__Coriobacteriales; D_4__Coriobacteriaceae; D_5__Collinsella; D_6__uncultured bacterium`
-is at the genus level.
+is at the genus level and proceeds with the network annotation. 
 
 The network annotation consists of 4 major modules: 
 
-- **literature oriented** taxa funcitonal annotation using [**FAPROTAX**](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) [2]
-- **genomic oriented** functional annotation using an updated, local instance of [**phenDB**](https://phendb.org) using all representative genomes of GTDB and [`phenotrex](https://phenotrex.readthedocs.io/en/latest/usage.html)
-- **pathway complementarity** annotations between taxa have been found co-correlated; both taxa ara considered as potential donor and beneficiary (see [Pathway complementarity: an example](#pathway-complementarity-an-example) for more)
-- **complementarity** [3] and **competition** [4] **seed scores** between draft metabolic reconstructions of GTDB representative genomes, mapped to the input taxa using [**PhyloMint**](https://github.com/mgtools/PhyloMint) (see [Seed-based complementarity and competition scores]() for more) 
+- **literature oriented** taxa functional annotation using [**FAPROTAX**](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) [2]
+- **genomic oriented** taxa functional annotation using an updated, local instance of [**phenDB**](https://phendb.org) using all representative genomes of GTDB and [`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html)
+- **pathway complementarity** annotations between taxa that have been found co-correlated in the produced (or user provided) network; both taxa were considered as potential donor and beneficiary (see [Pathway complementarity](#pathway-complementarity) for more)
+- **complementarity** [3] and **competition** [4] **seed scores** between draft metabolic reconstructions of GTDB representative genomes, mapped to the input taxa using [**PhyloMInt**](https://github.com/mgtools/PhyloMint) (see [Seed-based complementarity and competition scores]() for more) 
 
-FAPROTAX returns annotations for taxa (nodes) that they have been taxonomically annotated at the family or even at the order level in some cases, while the other 3 annotation types 
-return annotations only at the strain and the species level.
-**Nodes** that have species or strain taxonomic annotation are mapped to their closest representative GTDB genomes and based on those, they get phenDB-like functional annotations. 
-**Edges** linking nodes that have been assigned at the species or strain level, i.e. both nodes of the association have a species/strain taxonomic annotation, are annotated using 
+**Nodes** that have species or strain taxonomic annotation are mapped to their closest representative GTDB genomes and based on those, they get phenDB-like and FAPROTAX functional annotations. Taxa (nodes) that have been taxonomically annotated at the family or order level are annotated using FAPROTAX.
+
+**Edges** linking nodes that have been taxonomically assigned at the species or strain level, i.e. both nodes of the association have a species/strain taxonomic annotation, are annotated using 
 the pathway complementarity and the seed scores approaches. 
 
 Below, you will find further background and examples of each annotation type. 
@@ -55,24 +54,25 @@ Below, you will find further background and examples of each annotation type.
 
 
 [**FAPROTAX**](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) [2] maps taxa (e.g. genera or species) 
-to metabolic or other ecologically relevant functions based on the literature on cultured representatives. 
+to metabolic or other ecologically relevant functions based on the literature for cultured representatives. 
 It currently comprises more than 7600 annotation rules, covering ~4700 prokaryotic clades. 
-Each annotation rule comes with literature citations and can thus be independently verified.
-16S rRNA oriented approaches (e.g., PICRUSt, Tax4Fun etc) estimate community gene content based on available sequenced genomes.
-Contrary, FAPROTAX estimates metabolic phenotypes based on experimental evidence.
+Each annotation rule comes with literature citations and can, thus, be independently verified.
+Similar 16S rRNA oriented approaches (e.g., PICRUSt, Tax4Fun etc.) estimate community gene content based on available sequenced genomes. On the contrary, FAPROTAX estimates metabolic phenotypes based on experimental evidence.
 
 The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on the abundance table provided by the user, is mapped to a list of functions one can check [here](faprotax-functions.md).
 
-As an example, here is how the FAPROTAX outcome looks like for the case of **denitrification** function: 
+As an example, here is how the FAPROTAX output looks like for the **denitrification** function for three samples (columns): 
 
 
 ![faprotax example denitrif](../../assets/images/faprotax_denitrification.png)
 
-All ASVs present in this file are related to the **denetrification** function.
+FAPROTAX returns only the ASVs present in the (user provided) abundance table that are related to the **denetrification** function.
 Numbers represent the ASV abundance in each sample. 
 
 microbetag runs FAPROTAX agains the abundance table and parses the subtables ([`seqId_faprotax_functions_assignment`](https://github.com/msysbio/microbetagApp/blob/main/services/web/microbetag/scripts/utils.py#L181)) 
 to annotate each node with the corresponding function. 
+
+In case the user provides as input a co-occurrence network, microbetag runs FAPROTAX against the nodes.
 
 
 
@@ -81,39 +81,36 @@ to annotate each node with the corresponding function.
 
 
 [`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html) 
-enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
+enables phenotypic trait prediction on user's metagenomic genomes/bins.
 
 Phenotrex classifiers were re-trained using the genomes provided by phenDB for each model. 
 For example, for the acetic acid production case, the [corresponding webpage of phenDB](https://phendb.org/reports/modeldetails?model_id=16) pointed to the set of genomes that had been originally used. 
-These genomes were recovered and the classifiers were re-trained using 
+These genomes were recovered and the classifiers were re-trained to sync with the latest version of [eggNOG](http://eggnog5.embl.de/#/app/home).
 
-
-Under the [Traits predicted based on phenDB models](phen-traits.md) tab, we provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
+Under the [Traits predicted based on phenDB models](phen-traits.md) tab, we provide a description of each feature abbreviation returned from microbetag based on phen feautures, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
 
 
 The annotation is referring to the species under study. 
 Each trait gets a "Yes" or "No" decision along with an accurracy score. 
 For example `NOB` : *species under study is part of the clade of NOB*. 
 
-Here is an example of how 2 GTDB genomes look like: 
+Here is an example of how two GTDB genomes look like: 
 
 ![phen traits example](../../assets/images/phen_traits_fmt.png)
 
 
-microbetag annotates with these functional traits along with their scores, all network nodes that correspond 
-to OTUs/ASVs or bins that have been assigned to species/strain level and mapped to a representative GTDB genome.
+microbetag annotates all network nodes (corresponding to OTUs/ASVs/bins that have been identified to species/strain level) mapped to a representative GTDB genome with these functional traits and scores.
 
 
 
 
-## Pathway complementarity: an example
+## Pathway complementarity
 
 
-As defined by the [KEGG resource](https://www.genome.jp/kegg/module.html), "the KEGG MODULE database is a manually curated collection of modular functional units, categorized into pathway modules, signature modules and reaction modules".
+As defined by the [KEGG resource](https://www.genome.jp/kegg/module.html), *"the KEGG MODULE database is a manually curated collection of modular functional units, categorized into pathway modules, signature modules and reaction modules"*.
 
 All the GTDB representative genomes were KEGG annottated. 
-Considering all pair-wised combinatons of those genomes, microbetag checks whether the KO terms of a genome (donor), 
-if shared, could complete a KEGG module of another (beneficary).
+Considering all pair-wised combinatons of those genomes, microbetag checks whether the KEGG Orthology (KO) terms of a genome (donor) could complete a KEGG module of another (beneficary), if shared.
 
 Here is an example where Acidiferrobacter sp. SPIII3 
 (GCA_003184265.1) potentially shares K01626 to complete the Shikimate pathway (M00022) of
@@ -124,13 +121,13 @@ Prochlorococcus marinus AS9601 (GCA_000015645.1).
 As several genomes can be mapped to the same NCBI Taxonomy id, microbetag returns all possible complementarities
 between all the donor's and the beneficary's genomes. 
 
-microbetag annotates with such complementarities all edges where both nodes represent species/strain level taxonomies.
+microbetag annotates all **edges** where both nodes represent species/strain level taxonomies with such complementarities.
 
 
 
-## Seed scores based on genome-scale draft reconstructions 
+## Seed scores based on genome-scale draft reconstructions (GEMs)
 
-Based on Borenstein *et al.* (2008) [5] a metabolic network's “seed set”—the set of compounds that, based on the network topology, are exogenously acquired".
+Based on Borenstein *et al.* (2008) [5] a metabolic network's “seed set” is the set of compounds that, based on the network topology, are exogenously acquired".
 Here is an example (based on the [Borensteil lab webpage](http://borensteinlab.com/software_netseed_examples.html)):
 
 ![seed concept](../../assets/images/seed_concept_example.png)
@@ -145,7 +142,7 @@ A confidence level of 0 would correspond to a non-seed node, while a 1 would cor
 <!-- Nodes F, G, and H would then each have a confidence level of 1/3. -->
 
 Based on the seed concept, several scores between metabolic models of pair of species have been described. 
-As described in the PhyloMint papaer: the **Metabolic Complementarity Index** ($$ MI_{Complementarity} $$) is calculated as the *"fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network"*. 
+As described in the PhyloMInt paper: the **Metabolic Complementarity Index** ($$ MI_{Complementarity} $$) is calculated as the *"fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network"*. 
 This complementarity score represents the **potential for A’s to utilize the potential metabolic output of B**.
 
 
@@ -155,7 +152,7 @@ $$
 
 
 
-Similarly, as described in the PhyloMint paper, the **Metabolic Competition Index** ($$MI_{Competition}$$)
+Similarly, as described in the PhyloMInt paper, the **Metabolic Competition Index** ($$MI_{Competition}$$)
 *"is calculated as the fraction of A’s seed set that is also in B’s seed set, normalized by the weighted sum of the confidence score"*.
 MIC estimates the baseline **metabolic overlap** between two given metabolic networks.
 
@@ -166,7 +163,7 @@ $$
 
 
 
-Here is a toy example to calculate the two indices as shown in the PhyloMint paper:
+Here is a toy example to calculate the two indices as shown in the PhyloMInt paper:
 
 ![seed scores example](../../assets/images/seed-scores-examples.png)
 <!-- In metabolic pathway A, SeedSetA consists of metabolites A, F, G, and H; 
@@ -184,13 +181,13 @@ Among SeedSetA, metabolites A and F are found within the metabolic network B but
 
 
 These indexes can be used in various types of metabolic networks. 
-microbetag 
-
-
-
-
-
-
+In the framework of microbetag, all GTDB representative genomes were used to come up 
+with draft genome-scale reconstructions using [`modelseedpy`](https://github.com/ModelSEED/ModelSEEDpy)
+with its default gapfilling algorithm and a complete medium. 
+Then, all GEMs pair-wised combinations were considered and using [`PhyloMInt`](https://github.com/mgtools/PhyloMint)
+their $$ MI_{Complementarity} $$ and $$ MI_{Competition} $$ scores were calculated. 
+microbetag annotates all **edges** between species/strain level taxonomically assigned nodes with such scores, 
+considering all the representative GTDB genomes mapping to the corresponding NCBI Taxonomy ids of the nodes.
 
 
 <!-- ![netcooperate seed example](../../assets/images/seed_network_example.png)
