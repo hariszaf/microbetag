@@ -35,7 +35,7 @@ is at the genus level.
 The network annotation consists of 4 major modules: 
 
 - **literature oriented** taxa funcitonal annotation using [**FAPROTAX**](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) [2]
-- **genomic oriented** functional annotation using an updated, local instance of [**phenDB**](https://phendb.org) using all representative genomes of GTDB and [`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html)
+- **genomic oriented** functional annotation using an updated, local instance of [**phenDB**](https://phendb.org) using all representative genomes of GTDB and [`phenotrex](https://phenotrex.readthedocs.io/en/latest/usage.html)
 - **pathway complementarity** annotations between taxa have been found co-correlated; both taxa ara considered as potential donor and beneficiary (see [Pathway complementarity: an example](#pathway-complementarity-an-example) for more)
 - **complementarity** [3] and **competition** [4] **seed scores** between draft metabolic reconstructions of GTDB representative genomes, mapped to the input taxa using [**PhyloMint**](https://github.com/mgtools/PhyloMint) (see [Seed-based complementarity and competition scores]() for more) 
 
@@ -80,14 +80,12 @@ to annotate each node with the corresponding function.
 
 
 
-[`phenotrex`](https://phenotn example of how 2 GTDB genomes look like:
-
-rex.readthedocs.io/en/latest/usage.html) enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
+[`phenotrex`](https://phenotrex.readthedocs.io/en/latest/usage.html) 
+enables phenotypic trait prediction on user's metagenomic genomes/bins etc.
 
 Phenotrex classifiers were re-trained using the genomes provided by phenDB for each model. 
 For example, for the acetic acid production case, the [corresponding webpage of phenDB](https://phendb.org/reports/modeldetails?model_id=16) pointed to the set of genomes that had been originally used. 
 These genomes were recovered and the classifiers were re-trained using 
-
 
 
 Under the [Traits predicted based on phenDB models](phen-traits.md) tab, we provide a description of each feature abbreviation, based on those from the [phenDB group](https://phendb.org/reports/modeloverview). 
@@ -132,7 +130,7 @@ microbetag annotates with such complementarities all edges where both nodes repr
 
 ## Seed scores based on genome-scale draft reconstructions 
 
-Based on Borenstein et al (2008) [5] a metabolic network's “seed set”—the set of compounds that, based on the network topology, are exogenously acquired".
+Based on Borenstein *et al.* (2008) [5] a metabolic network's “seed set”—the set of compounds that, based on the network topology, are exogenously acquired".
 Here is an example (based on the [Borensteil lab webpage](http://borensteinlab.com/software_netseed_examples.html)):
 
 ![seed concept](../../assets/images/seed_concept_example.png)
@@ -147,7 +145,7 @@ A confidence level of 0 would correspond to a non-seed node, while a 1 would cor
 <!-- Nodes F, G, and H would then each have a confidence level of 1/3. -->
 
 Based on the seed concept, several scores between metabolic models of pair of species have been described. 
-As described in the PhyloMint papaer: the **Metabolic Complementarity Index ($MI_{Complementarity}$)** is calculated as the *"fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network"*. 
+As described in the PhyloMint papaer: the **Metabolic Complementarity Index** ($$ MI_{Complementarity} $$) is calculated as the *"fraction of the seed set of the genome-scale reconstruction of species A, that is found within B’s metabolic network but not part of B’s seed set, normalized by the number of A’s seed set in B’s entire metabolic network"*. 
 This complementarity score represents the **potential for A’s to utilize the potential metabolic output of B**.
 
 
@@ -157,7 +155,7 @@ $$
 
 
 
-Similarly, again as described in the PhyloMint paper, the **Metabolic Competition Index ($MI_{Competition}$)**
+Similarly, as described in the PhyloMint paper, the **Metabolic Competition Index** ($$MI_{Competition}$$)
 *"is calculated as the fraction of A’s seed set that is also in B’s seed set, normalized by the weighted sum of the confidence score"*.
 MIC estimates the baseline **metabolic overlap** between two given metabolic networks.
 
