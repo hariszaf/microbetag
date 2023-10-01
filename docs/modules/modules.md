@@ -175,10 +175,10 @@ Confidence level of seed set metabolites within metabolic network A is $1$, $1/3
 In metabolic pathway B, SeedSetB consist of F, I, J, and K; metabolites I and J form a SCC. 
 Confidence level of seed set metabolites within metabolic network B is 1, $1/3$, $1/3$, and 1 for metabolites F, I, J, and K, respectively.  -->
 In a comparison between metabolic network A versus metabolic network B, metabolic network A shares only one seed metabolite with metabolic network B (metabolite F) which lies in the seed group in metabolic network A. 
-Thus, the $MI_{Competition}$ between metabolic network A and B is $(1/3) / 2 = 1/6$. 
+Thus, the $$MI_{Competition}$$ between metabolic network A and B is $$(1/3) / 2 = 1/6$$. 
 
 {: .highlight }
-The $1/3$ term represents the confidence level of the seed group node. 
+The $$1/3$$ term represents the confidence level of the seed group node. 
 
 Among SeedSetA, metabolites A and F are found within the metabolic network B but only metabolite A is within non-SeedSetB, thus the MIComplementarity index between metabolic network A and metabolic network B is 0.5.
 
