@@ -8,12 +8,9 @@ usemath: true
 ---
 
 
-# Modules 
 
-<!-- {: .no_toc } 
-Just the Docs has some specific configuration parameters that can be defined in your Jekyll site's _config.yml file.
-{: .fs-6 .fw-300 } 
--->
+# Modules
+{: .no_toc }
 
 ## Table of contents
 {: .no_toc .text-delta }
@@ -147,7 +144,7 @@ This complementarity score represents the **potential for A’s to utilize the p
 
 
 $$ 
-MI_{Complementarity} = \frac {\lvert SeedSetA \bigcap \neg SeedSetB \rvert} {\sum SeedSetA \bigcap (SeedSetB \cup \neg SeeedSetB)}
+MI_{Complementarity} = \frac {\lvert SeedSetA \cap \neg SeedSetB \rvert} { SeedSetA \cap (SeedSetB \cup \neg SeeedSetB)}
 $$
 
 
@@ -158,7 +155,7 @@ MIC estimates the baseline **metabolic overlap** between two given metabolic net
 
 
 $$ 
-MI_{Competition} = \frac {\sum C( SeedSetA \bigcap SeedSetB )} {\sum C(SeedSetA)}
+MI_{Competition} = \frac {\sum C( SeedSetA \cap SeedSetB )} {\sum C(SeedSetA)}
 $$
 
 

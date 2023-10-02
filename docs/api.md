@@ -1,23 +1,18 @@
 ---
 layout: default
 title: API documentation
-nav_order: 5
+nav_order: 4
 ---
 
 # API documentation
-
-
-<!-- {: .no_toc } -->
-
-
-<!-- Just the Docs has some specific configuration parameters that can be defined in your Jekyll site's _config.yml file. -->
-<!-- {: .fs-6 .fw-300 } -->
+{: .no_toc }
 
 ## Table of contents
 {: .no_toc .text-delta }
 
 1. TOC
 {:toc}
+
 
 ---
 
@@ -28,15 +23,6 @@ microbetagDB API provides programmatic access to the data.
 The base address to the API is https://msysbio.gbiomed.kuleuven.be/.
 
 Below you may find the syntax to retrieve the various data and/or annotations included.
-
-
-
-
-<!-- ## a complete run ... 
-
-
-can we have a complete run from python api ?  -->
-
 
 
 
@@ -205,5 +191,77 @@ There are three possible types of client errors on API calls:
 
 - 404 Not found.
 
+
+
+
+
+## Python 
+
+One may use the API routes described through Python. 
+For example, to get the microbetagDB genomes related species with NCBI Taxonomy id 853:
+
+```python
+import requests
+url = "https://msysbio.gbiomed.kuleuven.be/ncbiTaxId-to-genomeId/853"
+r = requests.get(url)
+r.status_code
+200
+r.json()
+{"537007": ["GCA_002222595.2"]}
+```
+
+
+Furthermore, one may run microbetag directly and not through the CytoscapeApp by simply converting their abundance table or co-occurrence network in a JSON object.
+They would also need to provide the following arguments as part of the JSON obect:
+
+```python
+arguments_list = ["input_category", "taxonomy", "phenDB", "faprotax", "pathway_complement", "seed_scores"]
+```
+
+Here is an example using an ASV abundance table as input, asking
+for all microbetag annotations supported:
+
+```python
+
+import requests
+import json
+
+json_object = {}
+
+data = json.load(open(my_asv_abundance_table.tsv), "r")
+data = data.readlines()
+data = [line.rstrip("\n").split("\t") for line in data]
+json_object["data"] = data
+
+arguments = {}
+arguments["input_category"] = "abundance"
+arguments["taxonomy"] = "dada2"
+arguments["phenDB"] = True
+arguments["faprotax"] = True
+arguments["pathway_complement"] = True
+arguments["seed_scores"] = False
+json_object["inputParameters"] = arguments
+
+url = "https://msysbio.gbiomed.kuleuven.be/upload-abundance-table-dev"
+
+r = requests.post(url, json = json_object)
+
+r.text()
+
+```
+
+{: .important-title}
+> POSSIBLE ARGUMENT'S VALUES
+>
+> `input_category`: [`abundance_table` \| `network`]
+>
+> `taxonomy`: [`GTDB` \| `dada2` \| `qiime2`]
+>
+> `phenDB`, `faprotax`, `pathway_complement`, `seed_scores`: [`True` \| `False`]
+
+{: .warning}
+>You `arguments` dictionary needs to include all the arguments mentioned above. If any is not provided , microbetag will eventually fail and won't return an annotated network. 
+>
+> Syntax common error: make sure you do not have a `/` in the end of the url. If so, microbetag will never start. 
 
 

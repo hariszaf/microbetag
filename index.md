@@ -26,9 +26,7 @@ Under development
 # the 'mb'is the margin-bottom as said,  while the 'md' stands for a [responsive modifier](https://pmarsceill.github.io/just-the-docs/docs/utilities/responsive-modifiers/#responsive-modifiers)-->
 
 [View it on GitHub](https://github.com/hariszaf/microbetag){: .btn .btn-purple .fs-5 .mb-4 .mb-md-0 }
-[Image on DockerHub](https://hub.docker.com/r/hariszaf/microbetag){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 }
-
-
+[CytoscapeApp](){: .btn .btn-green .fs-5 .mb-4 .mb-md-0 }
 
 
 ---
@@ -108,14 +106,15 @@ docker push hariszaf/microbetag:tagname
 ```
 where `tagname` is the name of the specific version. 
 
-
  -->
 
 
 
+## Cite us
+In prep.
 
 
-## About the project
+## Funding
 
 This project was funded by an [EMBO Scientific Exchange Grants](https://www.embo.org/funding/fellowships-grants-and-career-support/scientific-exchange-grants/) 
 and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
@@ -124,4 +123,4 @@ and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
 
 ## License
 
-- *microbetag* is under GNU General Public License v3.0. For third-party components separate licenses apply. 
+- *microbetag* is under [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). For third-party components separate licenses apply. 
