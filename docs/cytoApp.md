@@ -43,6 +43,13 @@ Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Thermoanaerobact
 
 
 
+if you already have a network, then you need to provide both the network and the abundance table ! 
+
+
+fuzzywuzzy uses a threshold - that is set relatively high (90) so there are no false positives. 
+in order not to loose species level annotations, please have a look so you do not any unessary characters on your taxonomies, e.g. `[Salmonella] infantis` 
+would get a lower score that `Salmonella infantis`, so removing `[` and `]` characters would benefit. 
+
 
 
 
