@@ -53,3 +53,27 @@ would get a lower score that `Salmonella infantis`, so removing `[` and `]` char
 
 
 
+
+
+Sensitive vs fast mode
+• Implementation of
+conditional independence:
+– Sensitive mode: partial
+correlations on abundances,
+assumes multivariate normal
+distribution (weak assumption)
+– Fast mode: mutual information
+on presence/absences
+
+
+HE mode
+• FlashWeave can optionally ignore
+zeros (‘structural zeros’) to deal
+with heterogeneous samples 
+
+
+multi-habitat or -protocol data sets with ideally at least thousands of samples;
+
+sensitive=false for faster, but more coarse-grained associations
+
+
