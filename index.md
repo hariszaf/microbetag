@@ -123,4 +123,4 @@ and the [3D’omics](https://www.3domics.eu) Horizon project (101000309).
 
 ## License
 
-- *microbetag* is under [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). For third-party components separate licenses apply. 
+*microbetag* is under [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). For third-party components separate licenses apply. 

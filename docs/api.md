@@ -24,12 +24,22 @@ The base address to the API is https://msysbio.gbiomed.kuleuven.be/.
 
 Below you may find the syntax to retrieve the various data and/or annotations included.
 
+Remember that microbetag is a NCBI Taxonomy oriented resource. That means that a "species" of interest is a NCBI Taxonomy Id.
+For example, if you are interested in *Bifidobacterium animalis*, you first need to go to the [NCBI Taxonomy portal](https://www.ncbi.nlm.nih.gov/taxonomy/) and get its corresponding id.
+However, once you do so you get a list of subspecies and strains available. 
+You can either use the species id or one of a specific strain in your queries. 
+
+microbetag has a special feature called "include species' strains" as in some cases there is no genomic information for the species level but there is at lower levels. 
+For example, in case of *Bifidobacterium animalis*, microbetagDB has no genomes for its corresponding NCBI Taxonomy Id (28025) but it does have for the *Bifidobacterium animalis* subsp. animalis ATCC 25527 (703613). 
+<!-- This example highlights the issues derived from the current taxonomy schemes as 
+Even more interestingly, according to GTDB 
+*Bifidobacterium canis* -->
+
 
 
 ## Get genome ids for a NCBI Taxonoy Id
 
-To check whether a species is present on microbetag, one may find its corresponding **NCBI Taxonomy Id** and search for 
-related genomes present on the microbetag DB. 
+To check whether a species is present on microbetag, one may find its corresponding **NCBI Taxonomy Id** and search for related genomes present on the microbetag DB. 
 
 For example, assuming we are interested in the *Blautia hansenii* DSM 20583 strain, we find from NCBI Taxonomy that its corresponding id is [537007](https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=537007).
 
@@ -38,22 +48,39 @@ Using the `ncbiTaxId-to-genomeId` route we may get the related genomes on microb
 ```bash
 curl -X GET https://msysbio.gbiomed.kuleuven.be/ncbiTaxId-to-genomeId/537007
 ```
+
 that returns a list of genomes used in microbetag annotations:
 
 ```bash
 {
-  "853": [
-    "GCA_002222595",
+  "537007": [
+    "GCF_002222595.2"
   ]
+}
+```
+
+In this case there is a genome available for this NCBI Taxonomy id (GCF_002222595.2).
+
+If no genome is available, then you get an empty value. 
+
+For example, for the *Bifidobacterium animalis* subsp. animalis IM386 (NCBI Tax id: 1402194) there is no genome in microbetagDB:
+
+```bash
+curl -X GET https://msysbio.gbiomed.kuleuven.be/ncbiTaxId-to-genomeId/1402194
+{
+  "1402194": []
 }
 ```
 
 
 
-## Get phenotypic traits of a species 
+## PhenDB-like traits
 
-One may get the corresponding phenotypic traits of a genome present on the microbetag DB 
-using the `/phen-traits/` route and the **GTDB genome id**.
+### Get phenotypic traits of a GTDB genome 
+
+Once you have identified the genomes related to your NCBI Taxonomy id under study using the ``ncbiTaxId-to-genomeId` route, you may get the corresponding phenotypic traits of that genome(s) using the `/phen-traits/` route and the corresponding **genome id**.
+
+For example, in case of *Blautia hansenii* DSM 20583 (NCBI Taxonomy id: 537007) we saw there is a genome on microbetagDB; to get its phenotypic traits we can simply run:
 
 ```bash
 curl -X GET https://msysbio.gbiomed.kuleuven.be/phen-traits/GCF_002222595.2
@@ -84,9 +111,19 @@ For a thorough description of the abbreviations used, have a look in the microbe
 > 2. In case a GTDB genome returns an "Internal Server Error", please try again replacing the "GCA" with "GCF". 
 
 
+In case a non related genome id for which there are no phen-like traits on microbetagDB is provided, a list of 2 zeros is returned.  
+
+```bash
+[
+  0,
+  0
+]
+```
 
 
-## Get pathway complementarities for a pair of genomes 
+## Get pathway complememtarities
+
+### Get pathway complementarities for a pair of genomes 
 
 In case you are interested in the complementarities of a specific pair of GTDB representative genomes, where `genome_A` is the beneficiary and `genome_B` the donor, 
 one may use the `genome-complements` route, followed by `genome_A`, followed by `genome_B`. 
@@ -145,8 +182,11 @@ Each entry of the above output stands for a specific KEGG module
 
 ### Get complements for pair of species 
 
+microbetag can provide the complements between all the genomes related to a species using the `complements` route. 
 
-`complements`
+In this case, NCBI Taxonomy Ids are provided; microbetag gets their corresponding genomes available on microbetagDB and returns their corresponding complements.
+
+For example, 
 
 
 ```bash 
@@ -170,15 +210,53 @@ curl -X GET https://msysbio.gbiomed.kuleuven.be/complements/1281578/146891
 
 
 
-## Get competition and complementarity score between a pair of GEMs
+
+
+
+## Get seed scores
+
+### Get competition and complementarity score between a pair of GEMs
 
 `seed-scores` route `genome_A` is the beneficiary and `genome_B` the donor, 
 one may use the `genome-complements` route
 
 
 ```bash
-curl -X GET https://msysbio.gbiomed.kuleuven.be/seed-scores/GCA_011364525.1/GCA_002980625.1
+curl -X GET https://msysbio.gbiomed.kuleuven.be/seed-scores/1379686/883079
 ```
+
+
+
+
+
+### Get competition and complementarity score between a pair of NCBI Ids
+
+Like in the complements case, seed scores using all the corresponding genomes between 2 species/strains can be retrieved using the `genomes-seed-scores` route.
+
+For example:
+
+```bash
+curl -X GET https://msysbio.gbiomed.kuleuven.be/genomes-seed-scores/GCF_000470535.1/GCF_000336555.1
+[
+  [
+    "GCF_000470535.1",
+    "GCF_000336555.1",
+    "0.596",
+    "0.209"
+  ],
+  [
+    "GCF_000336555.1",
+    "GCF_000470535.1",
+    "0.647",
+    "0.131"
+  ]
+]
+```
+
+The function returns pairs of seed scores,
+ the first genome provided is considered as genome A for the seed metrics (see ["microbetag Modules"](modules/modules.md#seed-scores-based-on-genome-scale-draft-reconstructions-gems) for more) and the second one as genome B.
+
+
 
 
 
@@ -195,7 +273,7 @@ There are three possible types of client errors on API calls:
 
 
 
-## Python 
+## Run `microbetag` from Python 
 
 One may use the API routes described through Python. 
 For example, to get the microbetagDB genomes related species with NCBI Taxonomy id 853:
