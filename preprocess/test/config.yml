@@ -1,0 +1,33 @@
+# Configuration file for microbetag preprocessing
+
+abundance_table_file: 
+  path: test.tsv
+  description: Path to abundance table file. Attention! The path needs to be within the folder that you mount to the Docker container.
+  type: Path
+
+metadata_file: 
+  path: null
+  description: Path to metadata file. Metadata describe the abundance table and is going to be used for building the cooccurrence network. For an example file see https://github.com/meringlab/FlashWeave.jl/tree/master/test/data/HMP_SRA_gut. Remember that each column stands for a trait and each row its corresponding value to each sample. 
+  type: Path
+
+build_network:
+  value: True
+  description: ""
+  type: bool
+
+flashweave_sensitive:
+  value: True
+  type: bool
+  description: (From FlashWeave documentation) Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F 
+
+
+flashweave_heterogeneous:
+  value: True
+  type: bool
+  description: (From FlashWeave documentation) Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)
+
+
+output_directory:
+  path: prep_output
+  description: Folder name to be built within the mounted directory where the files to be used with microbetag will be exported.
+
