@@ -1,5 +1,5 @@
 seqID	sample_1	sample_2	sample_3	sample_4	sample_5	sample_6	sample_7	sample_8	sample_9	path
-ASV_10	0	8	0	0	0	9	8	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Rickettsiales;Rickettsiaceae;Rickettsia;Rickettsia_felis
+ASV_10	0	8	0	0	0	9	8	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Rickettsiales;Rickettsiaceae;Rickettsia;unclassified_Rickettsia
 ASV_29	8	0	0	0	0	0	0	0	0	Root;Bacteria;Bacteroidota;Bacteroidia;Cytophagales;Spirosomaceae;Spirosoma;Spirosoma_linguale
 ASV_30	0	0	0	0	0	9	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Vibrionaceae;Vibrio;Vibrio_sp000169995
 ASV_40	0	0	0	0	8	0	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Cellvibrionaceae;Endobugula;Endobugula_sp000209515
@@ -140,7 +140,7 @@ ASV_1389	8	8	0	0	0	0	0	9	0	Root;Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;
 ASV_1390	0	0	0	8	9	8	0	0	0	Root;Bacteria;Chloroflexota;Dehalococcoidia;UBA3495;UBA3495;UBA11650;UBA11650_sp002401285
 ASV_1400	0	8	0	0	0	0	0	0	0	Root;Bacteria;Chlamydiota;Chlamydiia;Chlamydiales;GCA-2401865;GCA-2401865;GCA-2401865_sp002401865
 ASV_1410	0	8	0	0	8	9	0	0	0	Root;Bacteria;Bacteroidota;Bacteroidia;Bacteroidales;VadinHA17;SR-FBR-E99;SR-FBR-E99_sp002403305
-ASV_1420	9	0	0	0	0	0	0	0	8	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Sphingomonadales;Sphingomonadaceae;unclassified_Sphingomonadaceae
+ASV_1420	9	0	0	0	0	0	0	0	8	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Sphingomonadales;Sphingomonadaceae;Sphingomonas;unclassified_Sphingomonas
 ASV_1430	0	9	8	0	8	0	0	9	0	Root;Bacteria;Spirochaetota;Spirochaetia;Sphaerochaetales;Sphaerochaetaceae;Ornithospirochaeta;Ornithospirochaeta_sp002406055
 ASV_1449	9	0	0	0	0	0	0	0	0	Root;Bacteria;Patescibacteria;Paceibacteria;UBA9983_A;PALSA-1337;C7867-002;C7867-002_sp002413065
 ASV_1450	0	0	0	0	0	9	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Arenicellales;UBA5680;UBA5680;UBA5680_sp002420425

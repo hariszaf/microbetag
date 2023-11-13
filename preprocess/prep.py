@@ -30,27 +30,26 @@ class Config:
         else:
             self.heterogeneous = "false"
 
-# /media/ path to docker
+# Vars
 io_path = "/media"
+main_path = "/pre_microbetag"
+flashweave_input_file = "abundance_table_flashweave.tsv"
+sequence_file_for_taxid = "seqs_tmp.fa"
+tax_assignmets_file = "assignments.tsv"
+julia_path = "/opt/julia-1.7.1/bin/julia/julia"
+rscript_path = "/usr/local/bin/Rscript"
+classify_Rscript = os.path.join(main_path, "classify.R")
+flashweave_script = os.path.join(main_path, "flashweave.jl")
+
 config_file = os.path.join(io_path, "config.yml")
 with open(config_file, 'r') as yaml_file:
     config = Config(io_path, yaml.safe_load(yaml_file))
 
-
-# Vars
 try:
     os.mkdir(config.output_dir)
 except FileExistsError as e:
     warning_message = f"Warning: The output directory '{config.output_dir}' already exists. Its content will be overwritten with the new - {e}"
     print(warning_message)
-
-
-flashweave_input_file = "abundance_table_flashweave.tsv"
-sequence_file_for_taxid = "seqs_tmp.fa"
-tax_assignmets_file = "assignments.tsv"
-tax_annotated_abundance_table_file = os.path.join(config.output_dir, "GTDB_tax_assigned_abundance_table.tsv")
-
-
 
 if config.abundance_table:
 
@@ -70,7 +69,7 @@ if config.abundance_table:
             f.write(line_to_write)
 
     # fix Rscript path 
-    classify_command = " ".join(["/usr/local/bin/Rscript", "classify.R"])
+    classify_command = " ".join([rscript_path, classify_Rscript])
     if os.system(classify_command) != 0:
         raise SystemError("Taxonomy assignment using IDTAXA of the DECIPHER package and the 16S GTDB sequences as reference failed.\
                           Please check R dependencies are ok and that you have the trained gtdb_16S.RData file.")
@@ -82,6 +81,7 @@ if config.abundance_table:
     merged_df = merged_df.drop('seqid', axis=1)
 
     gtdb_df = merged_df.drop(seq, axis=1)
+    tax_annotated_abundance_table_file = os.path.join(config.output_dir, "GTDB_tax_assigned_abundance_table.tsv")
     gtdb_df.to_csv(tax_annotated_abundance_table_file, sep="\t", index=False)
 
 
@@ -100,11 +100,11 @@ if config.build_network:
 
     if config.metadata == "true":
         flashweave_params = [
-            "julia", "flashweave.jl", config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata, config.metadata_file
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata, config.metadata_file
         ]
     else:
         flashweave_params = [
-            "julia", "flashweave.jl", config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata
         ]
     flashweave_command = " ".join(flashweave_params)
 
