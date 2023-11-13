@@ -151,17 +151,18 @@ A thorough description of each argument can be found below as well as in the `co
 |**Parameter**                |**Description**                                                                                         |
 |-----------------------------|--------------------------------------------------------------------------------------------------------|
 |``abundance_table_file``     | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one |
-|``metadata_file``            |  Using the filtered and merged sequences, it returns a taxonomic inventory                             |
-|``build_network``            |  Exports coding sequences                                                                              |
-|``flashweave_sensitive``     |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG    |
-|``flashweave_heterogeneous`` |  Assembles the filtered and merged sequences to contigs                                                |
-|``output_directory``         |  Assembles the filtered and merged sequences to contigs                                                |
-|``16s_gtdb_taxonomy_assign`` |  Assembles the filtered and merged sequences to contigs                                                |
+|``metadata_file``            | A metadata file with samples as rows and descriptions characterizing the samples as columns For an example file see https://github.com/meringlab/FlashWeave.jl/tree/master/test/data/HMP_SRA_gut. |
+|``build_network``            | Build co-occurrence network using FlashWeave |
+|``16s_gtdb_taxonomy_assign`` | Taxonomy assignment of the sequences using IDTAXA and the 16S sequences of the GTDB genomes. |
+|``flashweave_sensitive``     | (From FlashWeave documentation) Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F  |
+|``flashweave_heterogeneous`` | (From FlashWeave documentation) Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE) |
+|``output_directory``         | Output folder name; it will be created within the mounted folder |
 
 
 Now, based on your container technology you are ready to run the preparation image.
 
-An example of a directory to mount can be seen [here](https://github.com/hariszaf/microbetag/tree/preprocess/preprocess/test). Which of the `test.tsv` and `test.csv` file will be used, can be set in the `config.yml` file.
+An example of a directory to mount can be seen [here](https://github.com/hariszaf/microbetag/tree/preprocess/preprocess/test). 
+The mandatory abundance table file can be provided as a `.tsv` or a `.csv` file and needs to be specified in the `config.yml` file accordingly.
 
 
 ### Docker
