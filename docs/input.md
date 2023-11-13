@@ -111,25 +111,21 @@ cd /pre_microbetag/
 ### `config.yml` file for the preparation
 
 
+Two main steps are to be performed from this preparation image. 
+A taxonomy annotation of the OTUs/ASVs to GTDB taxonomies using the IDTAXA algorithm of the DECIPHER package and the 16S sequences of the GTDB genomes or/and the building of a co-occurrence network using FlashWeave. 
+
+The user can select which tasks to run through the `16s_gtdb_taxonomy_assign` and the `build_network` arguments. 
+
+A thorough description of each argument can be found below as well as in the `config.yml` template.
 
 
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|**Parameter**               |**Description**                                                                                           |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``abundance_table_file``    | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one   |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``metadata_file``           |  Using the filtered and merged sequences, it returns a taxonomic inventory                               |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``build_network``           |  Exports coding sequences                                                                                |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``flashweave_sensitive``    |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG      |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``flashweave_heterogeneous``|  Assembles the filtered and merged sequences to contigs                                                  |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``output_directory``        |  Assembles the filtered and merged sequences to contigs                                                  |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-|``16s_gtdb_taxonomy_assign``        |  Assembles the filtered and merged sequences to contigs                                                  |
-+----------------------------+----------------------------------------------------------------------------------------------------------+
-
+|**Parameter**                |**Description**                                                                                         |
+|-----------------------------|--------------------------------------------------------------------------------------------------------|
+|``abundance_table_file``     | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one |
+|``metadata_file``            |  Using the filtered and merged sequences, it returns a taxonomic inventory                             |
+|``build_network``            |  Exports coding sequences                                                                              |
+|``flashweave_sensitive``     |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG    |
+|``flashweave_heterogeneous`` |  Assembles the filtered and merged sequences to contigs                                                |
+|``output_directory``         |  Assembles the filtered and merged sequences to contigs                                                |
+|``16s_gtdb_taxonomy_assign`` |  Assembles the filtered and merged sequences to contigs                                                |
 
