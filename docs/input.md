@@ -38,7 +38,7 @@ However, if you would like to move on with your taxonomy scheme, microbetag enab
 In case 1, one may also have some metadata describing the sequencing data. FlashWeave, the software microbetag invokes to build the co-occurrence network, can exploit metadata. 
 
 {: .important-title}
-> ADVANCE USAGE
+> ADVANCED USAGE
 >
 >If you would like to have extra arguments for FlashWeave, then all you need to do is to run the `prep` image interactively and edit the `flashweave.jl` script accordingly (see [below](#the-preparation)). 
 
@@ -66,9 +66,7 @@ To get the optimal annotations in the more robust way, we **strongly suggest** y
 That will be almost always the case when you have large datasets with more than a few thousands of sequences and no network for them. 
 Yet, even if you have a network, it is still **strongly suggested** to run the *taxonomy assignment* step, so microbetag can map more efficiently the taxa present to their corresponding GTDB genomes. 
 
-Have a loot at the ["preparation"](#the-preparation) section for how to do so! 
-
-
+Have a look at the ["preparation"](#the-preparation) section for how to do so! 
 
 
 
@@ -91,7 +89,6 @@ For example, DADA2 has made a
 | `get_children`      | use genomes of children taxa of the taxa in the abundance table based on the NCBI Taxonomy scheme | bool |
 | `heterogeneous`     | (FlashWeave) enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)| bool | 
 | `sensitive`     | (FlashWeave) enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F | bool | 
-
 
 
 
@@ -123,18 +120,49 @@ singularity pull docker://hariszaf/prep_microbetag
 Then you need to also download the<a href="https://github.com/hariszaf/microbetag/raw/preprocess/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
 
 
-{: .Important}
-The `cofing.yml` file and the files to be used, need to be in the directory to be mounted, see below.
+{: .important}
+The `cofing.yml` file and the input files to be used, need to be in the directory to be mounted (see Docker and Singularity commands below).
 
 
-To have ownership and permissions to use the data products of the container, please first keep the following two variables:
+To have ownership and permissions to use the data products of the container, you need to provide your 
+user and host ids. To do so, run:
 
 ```bash
 HOST_USER_ID=$(id -u)
 HOST_GROUP_ID=$(id -g)
 ```
 
-and then based on your container technology you are ready to run the preparation image.
+
+### I/O folder 
+
+The folder to be mounted needs two mandatory files:
+- an abundance table 
+- the `config.yml` file
+
+
+Two main steps are to be performed from this preparation image. 
+A taxonomy annotation of the OTUs/ASVs to GTDB taxonomies using the IDTAXA algorithm of the DECIPHER package and the 16S sequences of the GTDB genomes or/and the building of a co-occurrence network using FlashWeave. 
+
+The user can select which tasks to run through the `16s_gtdb_taxonomy_assign` and the `build_network` arguments. 
+
+A thorough description of each argument can be found below as well as in the `config.yml` template.
+
+
+|**Parameter**                |**Description**                                                                                         |
+|-----------------------------|--------------------------------------------------------------------------------------------------------|
+|``abundance_table_file``     | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one |
+|``metadata_file``            |  Using the filtered and merged sequences, it returns a taxonomic inventory                             |
+|``build_network``            |  Exports coding sequences                                                                              |
+|``flashweave_sensitive``     |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG    |
+|``flashweave_heterogeneous`` |  Assembles the filtered and merged sequences to contigs                                                |
+|``output_directory``         |  Assembles the filtered and merged sequences to contigs                                                |
+|``16s_gtdb_taxonomy_assign`` |  Assembles the filtered and merged sequences to contigs                                                |
+
+
+Now, based on your container technology you are ready to run the preparation image.
+
+An example of a directory to mount can be seen [here](https://github.com/hariszaf/microbetag/tree/preprocess/preprocess/test). Which of the `test.tsv` and `test.csv` file will be used, can be set in the `config.yml` file.
+
 
 ### Docker
 
@@ -192,25 +220,4 @@ singularity exec -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_G
 cd /pre_microbetag/
 ```
 
-
-### `config.yml` file for the preparation
-
-
-Two main steps are to be performed from this preparation image. 
-A taxonomy annotation of the OTUs/ASVs to GTDB taxonomies using the IDTAXA algorithm of the DECIPHER package and the 16S sequences of the GTDB genomes or/and the building of a co-occurrence network using FlashWeave. 
-
-The user can select which tasks to run through the `16s_gtdb_taxonomy_assign` and the `build_network` arguments. 
-
-A thorough description of each argument can be found below as well as in the `config.yml` template.
-
-
-|**Parameter**                |**Description**                                                                                         |
-|-----------------------------|--------------------------------------------------------------------------------------------------------|
-|``abundance_table_file``     | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one |
-|``metadata_file``            |  Using the filtered and merged sequences, it returns a taxonomic inventory                             |
-|``build_network``            |  Exports coding sequences                                                                              |
-|``flashweave_sensitive``     |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG    |
-|``flashweave_heterogeneous`` |  Assembles the filtered and merged sequences to contigs                                                |
-|``output_directory``         |  Assembles the filtered and merged sequences to contigs                                                |
-|``16s_gtdb_taxonomy_assign`` |  Assembles the filtered and merged sequences to contigs                                                |
 
