@@ -39,6 +39,7 @@ In case 1, one may also have some metadata describing the sequencing data. Flash
 
 {: .important-title}
 > ADVANCE USAGE
+>
 >If you would like to have extra arguments for FlashWeave, then all you need to do is to run the `prep` image interactively and edit the `flashweave.jl` script accordingly (see [below](#the-preparation)). 
 
 
@@ -49,7 +50,7 @@ In this case, you need to provide microbetag with both your abundance table and 
 The latter can be of any form if microbetag is performed through the CytoscapeApp.
 Otherwise, please make sure you provide the network as an edge file, for instance: 
 
-{. note}
+{: .note}
 >ASV_963239	ASV_4372091	0.3769868016242981
 >
 >ASV_4480529	ASV_4472202	0.4468387961387634
@@ -81,7 +82,7 @@ For example, DADA2 has made a
 | Variable      | Description                       | Value |
 |---------------|-----------------------------------|-------|
 |`input_category`| If   | `abundance_table` \| `network` |
-| ``
+| `taxonomy` | In case a user's taxonomy is to be used, denotes which taxonomy scheme to be used from microbetag | [`GTDB` \| `dada2` \| `qiime2`]
 | `phenDB`            | return phenotypic traits based on phen models  | bool |
 | `faprotax`          | return annotations using the FAPROTAX database | bool |
 | `pathway_complement`| return pathway complmementarities between associated nodes | bool |
@@ -90,7 +91,6 @@ For example, DADA2 has made a
 | `get_children`      | use genomes of children taxa of the taxa in the abundance table based on the NCBI Taxonomy scheme | bool |
 | `heterogeneous`     | (FlashWeave) enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)| bool | 
 | `sensitive`     | (FlashWeave) enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F | bool | 
-| `taxonomy` | In case a user's taxonomy is to be used, denotes which taxonomy scheme to be used from microbetag | [`GTDB` \| `dada2` \| `qiime2`]
 
 
 
@@ -145,10 +145,27 @@ If you would like to initiate an interactive container you may run:
 ```bash
 docker run --rm -it --entrypoint /bin/bash -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   prep_microbetag
 ```
+this would initiate a console from within the container with you as a root user:
+
+```bash
+root@69bdeedb582b:/pre_microbetag#
+```
+
 
 {: .highlight}
 This case can be useful when several FlashWeave arguments not included in the basic config file need to be edited. 
 
+You can see what is present under the `/pre_microbetag` directory:
+```bash
+root@69bdeedb582b:/pre_microbetag# ls
+classify.R  flashweave.jl  gtdb_16s.RData  prep.py
+```
+
+and edit scripts, e.g.:
+
+```bash
+vim flashweave.jl
+```
 
 ### Singulariity
 
