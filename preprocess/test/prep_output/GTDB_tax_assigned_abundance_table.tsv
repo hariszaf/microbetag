@@ -1,5 +1,5 @@
 seqID	sample_1	sample_2	sample_3	sample_4	sample_5	sample_6	sample_7	sample_8	sample_9	path
-ASV_10	0	8	0	0	0	9	8	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Rickettsiales;Rickettsiaceae;Rickettsia;Rickettsia_felis
+ASV_10	0	8	0	0	0	9	8	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Rickettsiales;Rickettsiaceae;Rickettsia;unclassified_Rickettsia
 ASV_29	8	0	0	0	0	0	0	0	0	Root;Bacteria;Bacteroidota;Bacteroidia;Cytophagales;Spirosomaceae;Spirosoma;Spirosoma_linguale
 ASV_30	0	0	0	0	0	9	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Vibrionaceae;Vibrio;Vibrio_sp000169995
 ASV_40	0	0	0	0	8	0	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Cellvibrionaceae;Endobugula;Endobugula_sp000209515
@@ -27,11 +27,11 @@ ASV_258	0	0	0	0	0	0	0	0	0	Root;Bacteria;Firmicutes_A;Clostridia;Peptostreptococc
 ASV_260	0	9	0	0	0	0	0	0	0	Root;Bacteria;Actinobacteriota;Actinomycetia;Actinomycetales;Kineosporiaceae;Kineosporia;Kineosporia_aurantiaca
 ASV_270	0	8	0	0	9	0	8	0	0	Root;Bacteria;Verrucomicrobiota;Verrucomicrobiae;Verrucomicrobiales;Verrucomicrobiaceae;Verrucomicrobium;Verrucomicrobium_sp000739655
 ASV_280	8	0	0	8	0	0	0	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Acetobacterales;Acetobacteraceae;Acidicaldus;Acidicaldus_organivorans
-ASV_290	0	0	0	9	0	0	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Moraxellaceae;Acinetobacter;Acinetobacter_idrijaensis
+ASV_290	0	0	0	9	0	0	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Pseudomonadales;Moraxellaceae;Acinetobacter;unclassified_Acinetobacter
 ASV_300	0	0	9	0	0	0	0	8	8	Root;Bacteria;Actinobacteriota;Actinomycetia;Mycobacteriales;Mycobacteriaceae;Mycobacterium;unclassified_Mycobacterium
 ASV_310	0	0	9	0	8	0	0	0	0	Root;Bacteria;Proteobacteria;Gammaproteobacteria;Enterobacterales;Alteromonadaceae;Pseudoalteromonas;unclassified_Pseudoalteromonas
 ASV_328	0	8	0	0	0	0	0	9	0	Root;Bacteria;Firmicutes_A;Clostridia;Lachnospirales;Lachnospiraceae;TWA4;TWA4_sp000875945
-ASV_330	0	0	0	0	0	8	0	0	0	Root;Bacteria;Actinobacteriota;Actinomycetia;unclassified_Actinomycetia
+ASV_330	0	0	0	0	0	8	0	0	0	Root;Bacteria;unclassified_Bacteria
 ASV_349	9	0	0	0	0	0	0	0	0	Root;Bacteria;Firmicutes_B;Peptococcia;Peptococcales;BICA1-8;BICA1-8;BICA1-8_sp000961765
 ASV_350	0	0	0	0	9	9	9	0	0	Root;Bacteria;Patescibacteria;Paceibacteria;UBA9983_A;UBA9973;UBA9973;UBA9973_sp000989515
 ASV_369	0	0	0	0	0	0	0	0	9	Root;Bacteria;Patescibacteria;Paceibacteria;UBA9983_A;UBA9973;UBA8515;UBA8515_sp000991405
@@ -148,4 +148,4 @@ ASV_1460	9	0	0	0	0	0	0	0	0	Root;Bacteria;Chloroflexota;Dehalococcoidia;GIF9;UBA5
 ASV_1479	0	0	0	0	8	0	8	0	0	Root;Bacteria;Actinobacteriota;Actinomycetia;Nanopelagicales;S36-B12;UBA6154;UBA6154_sp002422375
 ASV_1480	0	0	0	9	0	0	0	0	0	Root;Bacteria;Verrucomicrobiota;Kiritimatiellae;UBA8416;UBA8416;UBA8416;UBA8416_sp002428045
 ASV_1490	0	8	0	8	0	0	0	0	0	Root;Bacteria;Patescibacteria;Microgenomatia;UBA12405;UBA6130;UBA6130;UBA6130_sp002428285
-ASV_1500	0	0	0	0	0	0	0	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Caulobacterales;Caulobacteraceae;Brevundimonas;unclassified_Brevundimonas
+ASV_1500	0	0	0	0	0	0	0	0	0	Root;Bacteria;Proteobacteria;Alphaproteobacteria;Caulobacterales;Caulobacteraceae;Brevundimonas;Brevundimonas_sp002430835

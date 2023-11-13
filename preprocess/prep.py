@@ -9,6 +9,7 @@ class Config:
         self.io_path = io_path
         self.abundance_table = os.path.join(io_path, conf["abundance_table_file"]["path"])
         self.build_network = conf["build_network"]["value"]
+        self.annotate = conf["16s_gtdb_taxonomy_assign"]["value"]
         # User's group and user id
         self.user_id = int(os.getenv('USER_ID'))
         self.group_id = int(os.getenv('HOST_GID'))
@@ -51,14 +52,13 @@ except FileExistsError as e:
     warning_message = f"Warning: The output directory '{config.output_dir}' already exists. Its content will be overwritten with the new - {e}"
     print(warning_message)
 
-if config.abundance_table:
-
-    """check if abundance table there and a sequence column included"""
-    if config.abundance_table is None:
-        raise ValueError("You need to provide an abundance table including a column with the ASV/OTU sequence.")
+if config.annotate:
 
     """get taxonomy assignments using DECIPHER and 16S GTDB ref seqs"""
-    abundance_table_data = pd.read_csv(config.abundance_table, sep=None,  engine='python') 
+    try:
+        abundance_table_data = pd.read_csv(config.abundance_table, sep=None,  engine='python')
+    except pd.errors.ParserError:
+        print("The abundance table provided cannot be loaded. Check its format.")
     column_names = list(abundance_table_data.columns)
     seqid = column_names[0]
     seq = column_names[-1]
@@ -86,6 +86,15 @@ if config.abundance_table:
 
 
 if config.build_network:
+
+    """check if abundance table there and a sequence column included"""
+    if config.abundance_table is None:
+        raise ValueError("You need to provide an abundance table including a column with the ASV/OTU sequence.")
+    try:
+        abundance_table_data = pd.read_csv(config.abundance_table, sep=None,  engine='python')
+    except pd.errors.ParserError:
+        print("The abundance table provided cannot be loaded. Check its format.")
+
 
     flashweave_table = abundance_table_data.drop(seq, axis = 1)
     float_col        = flashweave_table.select_dtypes(include=['float64']) 
