@@ -97,4 +97,4 @@ RUN pip install PyYAML pandas
 WORKDIR /pre_microbetag
 COPY prep.py gtdb_16s.RData classify.R flashweave.jl  ./
 
-ENTRYPOINT [ "python3", "prep.py" ]
+ENTRYPOINT [ "/usr/bin/python3", "/pre_microbetag/prep.py" ]

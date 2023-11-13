@@ -12,7 +12,7 @@ seqs <- readDNAStringSet(fas)
 seqs <- RemoveGaps(seqs)
 
 # load training set object (trainingSet)
-load("gtdb_16s.RData")
+load("/pre_microbetag/gtdb_16s.RData")
 
 # classify the sequences
 ids <- IdTaxa(seqs,
