@@ -62,25 +62,74 @@ singularity pull docker://hariszaf/prep_microbetag
 Then you need to also download the<a href="https://github.com/hariszaf/microbetag/raw/preprocess/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
 
 
+To have ownership and permissions to use the data products of the container, please first keep the following two variables:
+
 ```bash
 HOST_USER_ID=$(id -u)
 HOST_GROUP_ID=$(id -g)
 ```
 
+and then based on your container technology you are ready to run the preparation image.
 
+### Docker
+
+To run directly 
 
 ```bash
-docker run --rm -it -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   hariszaf/prep_microbetag
+docker run --rm -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   hariszaf/prep_microbetag
 ```
 
+If you would like to initiate an interactive container you may run: 
 
+```bash
 docker run --rm -it --entrypoint /bin/bash -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   prep_microbetag
+```
+
+{: .highlight}
+This case can be useful when several FlashWeave arguments not included in the basic config file need to be edited. 
+
+
+### Singulariity
+
+The equivalent commands in Singularity would be :
+
+To run the preprocess directly:
+```bash
+singularity run -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID prep_microbetag_latest.sif 
+```
+
+and likewise, to open a console:
 
 ```bash
-docker run --rm -it -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID prep_microbetag
+singularity exec -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID prep_microbetag_latest.sif bash
+
+cd /pre_microbetag/
+
 ```
 
 
-singularity exec -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID prep_microbetag_latest.sif /usr/bin/python3 /pre_microbetag/prep.py
+### `config.yml` file for the preparation
+
+
+
+
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|**Parameter**               |**Description**                                                                                           |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``abundance_table_file``    | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one   |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``metadata_file``           |  Using the filtered and merged sequences, it returns a taxonomic inventory                               |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``build_network``           |  Exports coding sequences                                                                                |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``flashweave_sensitive``    |  Performs functional annotation on the coding genes found using a list of resources: InterPro, KEGG      |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``flashweave_heterogeneous``|  Assembles the filtered and merged sequences to contigs                                                  |
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``output_directory``        |  Assembles the filtered and merged sequences to contigs                                                  |
++----------------------------+----------------------------------------------------------------------------------------------------------+
++----------------------------+----------------------------------------------------------------------------------------------------------+
+|``16s_gtdb_taxonomy_assign``        |  Assembles the filtered and merged sequences to contigs                                                  |
++----------------------------+----------------------------------------------------------------------------------------------------------+
 
 
