@@ -21,6 +21,12 @@ output_directory:
   description: Taxonomy assignment of the sequences using IDTAXA and the 16S sequences of the GTDB genomes.
   type: bool
 
+map_users_taxonomy_to_microbetags:
+  value: False
+  taxonomy: other
+  description: To annotate the network based on the user's taxonomy assignment, a map between their taxonomy and microbetag's is required. In this case, the abundance table needs to have the taxonomies in the last column instead of the sequences. In case that GTDB or Silva was used for the taxonomy assignment of bins/amplicons, set this in the taxonomy argument, otherwise set this as "other".
+  type: bool
+
 build_network:
   value: True
   description: ""
@@ -33,7 +39,7 @@ flashweave_sensitive:
   description: (From FlashWeave documentation) Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F 
 
 flashweave_heterogeneous:
-  value: True
+  value: False
   type: bool
   description: (From FlashWeave documentation) Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)
 
