@@ -22,49 +22,64 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: sn-bibliography.bib
+Warning--entry type for "ali_alishum_2022_6655692" isn't style-file defined
+--line 340 of file sn-bibliography.bib
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"archaea}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"archaea}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"ARCHAEA}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 13 entries,
+You've used 34 entries,
             7480 wiz_defined-function locations,
-            1276 strings with 11683 characters,
-and the built_in function-call counts, 149797 in all, are:
-= -- 27910
-> -- 358
-< -- 156
-+ -- 17105
-- -- 102
-* -- 3377
-:= -- 26070
-add.period$ -- 14
-call.type$ -- 13
-change.case$ -- 112
-chr.to.int$ -- 385
-cite$ -- 13
-duplicate$ -- 488
-empty$ -- 1939
-format.name$ -- 252
-if$ -- 38818
+            1388 strings with 17542 characters,
+and the built_in function-call counts, 235251 in all, are:
+= -- 34455
+> -- 1505
+< -- 594
++ -- 13885
+- -- 389
+* -- 12581
+:= -- 44071
+add.period$ -- 35
+call.type$ -- 34
+change.case$ -- 208
+chr.to.int$ -- 1651
+cite$ -- 34
+duplicate$ -- 1950
+empty$ -- 10834
+format.name$ -- 1214
+if$ -- 56292
 int.to.chr$ -- 1
-int.to.str$ -- 24
+int.to.str$ -- 49
 missing$ -- 0
-newline$ -- 218
-num.names$ -- 72
-pop$ -- 237
+newline$ -- 583
+num.names$ -- 170
+pop$ -- 1000
 preamble$ -- 1
-purify$ -- 61
+purify$ -- 149
 quote$ -- 0
-skip$ -- 17117
+skip$ -- 19619
 stack$ -- 0
-substring$ -- 13392
-swap$ -- 249
-text.length$ -- 164
+substring$ -- 29103
+swap$ -- 1105
+text.length$ -- 364
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 508
+type$ -- 1421
 warning$ -- 0
-while$ -- 339
+while$ -- 1164
 width$ -- 0
-write$ -- 302
+write$ -- 790
+(There were 7 warnings)
