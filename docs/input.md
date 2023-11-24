@@ -69,7 +69,6 @@ In case 1, one may also have some metadata describing the sequencing data. Flash
 >
 >```
 > Metadata_1      0.2     1.7       0
->
 > Metadata_2      Yes      No       Yes 
 >
 >```
