@@ -38,31 +38,21 @@ However, if you would like to move on with your taxonomy scheme, microbetag enab
 In case 1, one may also have some metadata describing the sequencing data. FlashWeave, the software microbetag invokes to build the co-occurrence network, can exploit metadata. 
 
 {: .important-title}
-> ADVANCED USAGE
->
->If you would like to have extra arguments for FlashWeave, then all you need to do is to run the `prep` image interactively and edit the `flashweave.jl` script accordingly (see [below](#the-preparation)). 
-
-
-{: .important-title}
 > METADATA FILE 
 > 
-> For FlashWeave to run with a metadata file, you need to remember that FlashWeave considers as variables your sequence ids (i.e., ASVs/OTUs/bins) and the metavariables (e.g. pH, sex, any 
-> variable on your metadata file). Thus, you need to have both of them as **rows**, contary to what we do in most microbiome analyses. 
+> If you want to run FlashWeave with a metadata file, you need to remember that FlashWeave considers as variables both the sequence ids (i.e., ASVs/OTUs/bins) and the metavariables (e.g. pH, sex, any 
+> variable on your metadata file). Thus, you need to have both of them as **rows**, contrary to what we do in most microbiome analyses. 
 >
 > Here is a toy example of how your files should look like: 
 >
 > `abundance_file.txt`
 > 
 > ```
-> seqId    sample_1     sample_2    sample_3
->
-> asv_1     10             0        3
->
-> asv_2      0             21       43
->
-> asv_3     32             31       2
->
-> asv_4     0             0         12
+> seqId    sample_1    sample_2    sample_3
+> asv_1    10        0        3
+> asv_2     0       21       43
+> asv_3    32       31        2
+> asv_4     0        0       12
 >```
 >
 > `metadata_file.tsv`
@@ -70,9 +60,17 @@ In case 1, one may also have some metadata describing the sequencing data. Flash
 >```
 > Metadata_1      0.2     1.7       0
 > Metadata_2      Yes      No       Yes 
->
 >```
-> In case, this is not provided like this, microbetag and/or the Docker image of microbetag preprocess, will fail.
+> As shown, the sample names are omitted from the `metadata_file.tsv`. 
+> You need to make sure that their corresponding values are in the exact same order as in the `abundance_file.txt`. 
+> In case the files are not provided like this, microbetag and/or the Docker image of microbetag preprocess, will fail.
+
+
+{: .important-title}
+> ADVANCED USAGE
+>
+>If you would like to have extra arguments for FlashWeave, then all you need to do is to run the `prep` image interactively and edit the `flashweave.jl` script accordingly (see [below](#the-preparation)). 
+
 
 
 
