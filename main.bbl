@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{34}
+\begin{thebibliography}{38}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -161,6 +161,21 @@ Msystems,
 \endbibitem
 
 %%% 8
+\bibitem[\protect\citeauthoryear{R{\"o}ttjers and
+  Faust}{2018}]{rottjers2018hairballs}
+\begin{barticle}
+\bauthor{\bsnm{R{\"o}ttjers}, \binits{L.}},
+\bauthor{\bsnm{Faust}, \binits{K.}}:
+\batitle{From hairballs to hypotheses--biological insights from microbial
+  networks}.
+\bjtitle{FEMS microbiology reviews}
+\bvolume{42}(\bissue{6}),
+\bfpage{761}--\blpage{780}
+(\byear{2018})
+\end{barticle}
+\endbibitem
+
+%%% 9
 \bibitem[\protect\citeauthoryear{Ruiz-Perez
   et~al.}{2021}]{ruiz2021microbeannotator}
 \begin{barticle}
@@ -176,7 +191,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 9
+%%% 10
 \bibitem[\protect\citeauthoryear{Karaoz and
   Brodie}{2022}]{karaoz2022microtrait}
 \begin{barticle}
@@ -191,7 +206,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 10
+%%% 11
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -210,7 +225,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 11
+%%% 12
 \bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
 \begin{barticle}
 \bauthor{\bsnm{Quast}, \binits{C.}},
@@ -230,7 +245,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 12
+%%% 13
 \bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
 \begin{barticle}
 \bauthor{\bsnm{Schoch}, \binits{C.L.}},
@@ -252,7 +267,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 13
+%%% 14
 \bibitem[\protect\citeauthoryear{Cole et~al.}{2014}]{cole2014ribosomal}
 \begin{barticle}
 \bauthor{\bsnm{Cole}, \binits{J.R.}},
@@ -274,7 +289,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 15
 \bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
 \begin{botherref}
 \oauthor{\bsnm{Alishum}, \binits{A.}}:
@@ -284,7 +299,7 @@ Msystems,
 \end{botherref}
 \endbibitem
 
-%%% 15
+%%% 16
 \bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
 \begin{barticle}
 \bauthor{\bsnm{Murali}, \binits{A.}},
@@ -299,7 +314,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 16
+%%% 17
 \bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
 \begin{barticle}
 \bauthor{\bsnm{Sunagawa}, \binits{S.}},
@@ -320,7 +335,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 17
+%%% 18
 \bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
 \begin{barticle}
 \bauthor{\bsnm{Louca}, \binits{S.}},
@@ -334,7 +349,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 18
+%%% 19
 \bibitem[\protect\citeauthoryear{Feldbauer
   et~al.}{2015}]{feldbauer2015prediction}
 \begin{barticle}
@@ -350,7 +365,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 19
+%%% 20
 \bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
 \begin{barticle}
 \bauthor{\bsnm{Aramaki}, \binits{T.}},
@@ -369,7 +384,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 20
+%%% 21
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -386,7 +401,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 21
+%%% 22
 \bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
 \begin{barticle}
 \bauthor{\bsnm{Muto}, \binits{A.}},
@@ -404,7 +419,34 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 22
+%%% 23
+\bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}}:
+\batitle{Kegg mapper for inferring cellular functions from protein sequences}.
+\bjtitle{Protein Science}
+\bvolume{29}(\bissue{1}),
+\bfpage{28}--\blpage{35}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 24
+\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}},
+\bauthor{\bsnm{Kawashima}, \binits{M.}}:
+\batitle{Kegg mapping tools for uncovering hidden features in biological data}.
+\bjtitle{Protein Science}
+\bvolume{31}(\bissue{1}),
+\bfpage{47}--\blpage{53}
+(\byear{2022})
+\end{barticle}
+\endbibitem
+
+%%% 25
 \bibitem[\protect\citeauthoryear{Borenstein et~al.}{2008}]{borenstein2008large}
 \begin{barticle}
 \bauthor{\bsnm{Borenstein}, \binits{E.}},
@@ -420,7 +462,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 23
+%%% 26
 \bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
 \begin{barticle}
 \bauthor{\bsnm{Lam}, \binits{T.J.}},
@@ -436,7 +478,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 24
+%%% 27
 \bibitem[\protect\citeauthoryear{Levy et~al.}{2015}]{levy2015netcooperate}
 \begin{barticle}
 \bauthor{\bsnm{Levy}, \binits{R.}},
@@ -453,7 +495,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 25
+%%% 28
 \bibitem[\protect\citeauthoryear{Kreimer et~al.}{2012}]{kreimer2012netcmpt}
 \begin{barticle}
 \bauthor{\bsnm{Kreimer}, \binits{A.}},
@@ -469,7 +511,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 26
+%%% 29
 \bibitem[\protect\citeauthoryear{Wattam et~al.}{2017}]{wattam2017improvements}
 \begin{barticle}
 \bauthor{\bsnm{Wattam}, \binits{A.R.}},
@@ -491,7 +533,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 27
+%%% 30
 \bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
 \begin{barticle}
 \bauthor{\bsnm{Henry}, \binits{C.S.}},
@@ -509,7 +551,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 28
+%%% 31
 \bibitem[\protect\citeauthoryear{R{\"o}ttjers and
   Faust}{2020}]{rottjers2020manta}
 \begin{barticle}
@@ -523,7 +565,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 29
+%%% 32
 \bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
 \begin{barticle}
 \bauthor{\bsnm{Blank}, \binits{C.E.}},
@@ -539,7 +581,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 30
+%%% 33
 \bibitem[\protect\citeauthoryear{Choudhary
   et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
@@ -556,7 +598,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 31
+%%% 34
 \bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
 \begin{barticle}
 \bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
@@ -569,7 +611,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 32
+%%% 35
 \bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
 \begin{botherref}
 \oauthor{\bsnm{Reese}, \binits{W.}}:
@@ -580,7 +622,29 @@ Linux J.
 \end{botherref}
 \endbibitem
 
-%%% 33
+%%% 36
+\bibitem[\protect\citeauthoryear{Huerta-Cepas et~al.}{2019}]{huerta2019eggnog}
+\begin{barticle}
+\bauthor{\bsnm{Huerta-Cepas}, \binits{J.}},
+\bauthor{\bsnm{Szklarczyk}, \binits{D.}},
+\bauthor{\bsnm{Heller}, \binits{D.}},
+\bauthor{\bsnm{Hern{\'a}ndez-Plaza}, \binits{A.}},
+\bauthor{\bsnm{Forslund}, \binits{S.K.}},
+\bauthor{\bsnm{Cook}, \binits{H.}},
+\bauthor{\bsnm{Mende}, \binits{D.R.}},
+\bauthor{\bsnm{Letunic}, \binits{I.}},
+\bauthor{\bsnm{Rattei}, \binits{T.}},
+\bauthor{\bsnm{Jensen}, \binits{L.J.}}, \betal:
+\batitle{eggnog 5.0: a hierarchical, functionally and phylogenetically
+  annotated orthology resource based on 5090 organisms and 2502 viruses}.
+\bjtitle{Nucleic acids research}
+\bvolume{47}(\bissue{D1}),
+\bfpage{309}--\blpage{314}
+(\byear{2019})
+\end{barticle}
+\endbibitem
+
+%%% 37
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -591,7 +655,7 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 34
+%%% 38
 \bibitem[\protect\citeauthoryear{Hessler et~al.}{2023}]{hessler2023vitamin}
 \begin{barticle}
 \bauthor{\bsnm{Hessler}, \binits{T.}},
