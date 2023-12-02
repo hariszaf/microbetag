@@ -20,14 +20,9 @@ nav_order: 3
 
 ### starting from an abundance table 
 
-<!-- <a href="https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv" download="dada2_use_case.tsv">Download</a> -->
-Download `dataset` used for this example.
-
-.. _dataset: https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv
 
 
-
-[here is possible to download the file in PDF][1]
+[Download ][1] dataset used for this example.
 
 [1]:{{ site.url }}/microbetag/download/dada2_use_case.tsv
 
