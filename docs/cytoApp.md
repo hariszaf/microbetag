@@ -11,6 +11,7 @@ nav_order: 3
 
 
 
+
 ![microbetag CyApp](../assets/images/cyApp.png){: width=25% }
 
 
@@ -20,8 +21,16 @@ nav_order: 3
 ### starting from an abundance table 
 
 <!-- <a href="https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv" download="dada2_use_case.tsv">Download</a> -->
-<a href="https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv">Download</a>
-dataset used for this example.
+Download `dataset` used for this example.
+
+.. _dataset: https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv
+
+
+
+[here is possible to download the file in PDF][1]
+
+[1]:{{ site.url }}/download/dada2_use_case.tsv
+
 
 
 microbetag requires for a 7-level taxonomy scheme; 
