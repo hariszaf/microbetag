@@ -19,6 +19,10 @@ nav_order: 3
 
 ### starting from an abundance table 
 
+<a href="https://raw.githubusercontent.com/hariszaf/microbetag/develop/tests/dada2_use_case.tsv" download="dada2_use_case.tsv">Download</a>
+dataset used for this example.
+
+
 microbetag requires for a 7-level taxonomy scheme; 
 for example 
 
