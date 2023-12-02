@@ -29,7 +29,7 @@ Download `dataset` used for this example.
 
 [here is possible to download the file in PDF][1]
 
-[1]:{{ site.url }}/download/dada2_use_case.tsv
+[1]:{{ site.url }}/microbetag/download/dada2_use_case.tsv
 
 
 
