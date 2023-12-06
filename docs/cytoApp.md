@@ -30,18 +30,23 @@ nav_order: 3
 
 microbetag requires for a 7-level taxonomy scheme; 
 for example 
-
+```bash
 Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Thermoanaerobacteraceae;Caldanaerobius;Caldanaerobius polysaccharolyticus
+```
 
 in case an entry reaches only to a higher taxonomic level, microbetag fills the entry with NA values
 
 for example
 
-Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Thermoanaerobacteraceae;
+```bash
+Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Thermoanaerobacteraceae
+```
 
 would become
 
+```bash
 Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Thermoanaerobacteraceae;NA;NA;NA
+```
 
 
 {: .important-title}
@@ -62,6 +67,8 @@ would get a lower score that `Salmonella infantis`, so removing `[` and `]` char
 
 
 
+
+To check 
 
 
 Sensitive vs fast mode

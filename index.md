@@ -17,7 +17,7 @@ Under development
 
 
 
-![microbetag logo](/assets/images/microbetag_logo.png){: width=10% }
+![microbetag logo](/assets/images/microbetag_logo.png){: width=5% }
 
 
 <!--The ': .btn' flag denotes the button 

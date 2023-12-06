@@ -138,41 +138,31 @@ curl -X GET https://msysbio.gbiomed.kuleuven.be/genome-complements/GCA_011364525
 Here is its partial output:
 
 ```bash
-  [
-    [
-      "M00001",
-      "K01803;K21071;K01624",
-      "K25026;K15916;K21071;K01624;K01803;K00150;K00927;K15635;K01689;K00873"
-    ]
-  ],
-  [
-    [
-      "M00002",
-      "K01803",
-      "K01803;K00150;K00927;K15635;K01689;K00873"
-    ]
-  ],
-  [
-    [
-      "M00003",
-      "K01803",
-      "K01596;K01689;K15635;K00927;K00150;K01803;K01622"
-    ]
-  ],
-  [
-    [
-      "M00016",
-      "K00928;K00215;K01586;K00674;K00821;K01778",
-      "K00928;K00133;K01714;K00215;K00674;K00821;K01439;K01778;K01586"
-    ]
-  ],
-  [
-    [
-      "M00016",
-      "K00928;K14267;K00215;K01586;K00674;K01778",
-      "K00928;K00133;K01714;K00215;K00674;K14267;K01439;K01778;K01586"
-    ]
-  ]
+{
+  "beneficiary-genome": "GCA_011364525.1",
+  "complements": {
+    "0": {
+      "coloured-map": "https://www.kegg.jp/kegg-bin/show_pathway?map00010/K25026%09%23EAD1DC/K15916%09%23EAD1DC/K00150%09%23EAD1DC/K00927%09%23EAD1DC/K15635%09%23EAD1DC/K01689%09%23EAD1DC/K00873%09%23EAD1DC/K21071%09%2300A898/K01624%09%2300A898/K01803%09%2300A898/",
+      "complement": "K01803;K21071;K01624",
+      "complete-alternative": "K25026;K15916;K21071;K01624;K01803;K00150;K00927;K15635;K01689;K00873",
+      "module": "M00001"
+    },
+    "1": {
+      "coloured-map": "https://www.kegg.jp/kegg-bin/show_pathway?map00010/K00150%09%23EAD1DC/K00927%09%23EAD1DC/K15635%09%23EAD1DC/K01689%09%23EAD1DC/K00873%09%23EAD1DC/K01803%09%2300A898/",
+      "complement": "K01803",
+      "complete-alternative": "K01803;K00150;K00927;K15635;K01689;K00873",
+      "module": "M00002"
+    },
+    "2": {
+      "coloured-map": "https://www.kegg.jp/kegg-bin/show_pathway?map00010/K01596%09%23EAD1DC/K01689%09%23EAD1DC/K15635%09%23EAD1DC/K00927%09%23EAD1DC/K00150%09%23EAD1DC/K01622%09%23EAD1DC/K01803%09%2300A898/",
+      "complement": "K01803",
+      "complete-alternative": "K01596;K01689;K15635;K00927;K00150;K01803;K01622",
+      "module": "M00003"
+    },
+    ...
+  },
+  "donor-genome": "GCA_002980625.1"
+}
 ```
 
 Let us now describe its meaning. 
@@ -237,20 +227,33 @@ For example:
 
 ```bash
 curl -X GET https://msysbio.gbiomed.kuleuven.be/genomes-seed-scores/GCF_000470535.1/GCF_000336555.1
-[
-  [
-    "GCF_000470535.1",
-    "GCF_000336555.1",
-    "0.596",
-    "0.209"
-  ],
-  [
-    "GCF_000336555.1",
-    "GCF_000470535.1",
-    "0.647",
-    "0.131"
-  ]
-]
+
+{
+  "0": {
+    "A": "1379686",
+    "B": "883079",
+    "scores": {
+      "0": {
+        "competition": "0.596",
+        "cooperatiom": "0.209",
+        "genome_A": "GCF_000470535.1",
+        "genome_B": "GCF_000336555.1"
+      }
+    }
+  },
+  "1": {
+    "A": "883079",
+    "B": "1379686",
+    "scores": {
+      "0": {
+        "competition": "0.647",
+        "cooperatiom": "0.131",
+        "genome_A": "GCF_000336555.1",
+        "genome_B": "GCF_000470535.1"
+      }
+    }
+  }
+}
 ```
 
 The function returns pairs of seed scores,
@@ -338,9 +341,9 @@ with open('new_microbetag.json', 'w') as f:
 >
 > `input_category`: [`abundance_table` \| `network`]
 >
-> `taxonomy`: [`GTDB` \| `dada2` \| `qiime2`]
+> `taxonomy`: [`GTDB` \| `Silva` \| `microbetag_prep` \| `other`]
 >
-> `phenDB`, `faprotax`, `pathway_complement`, `seed_scores`: [`True` \| `False`]
+> `phenDB`, `faprotax`, `pathway_complement`, `seed_scores`: [`True` \| `False`], `get_children`
 
 {: .warning}
 >You `arguments` dictionary needs to include all the arguments mentioned above. If any is not provided , microbetag will eventually fail and won't return an annotated network. 
