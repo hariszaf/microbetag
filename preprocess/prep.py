@@ -4,11 +4,9 @@ import os
 import pandas as pd
 
 """
-Aim: 
-This script supports the preprocessing of a 
-
-
-
+Aim:
+====
+This script supports the preprocessing of an abundance table and the building of a co-occurrence network so it can be then annotated by microbetag (https://hariszaf.github.io/microbetag/)
 
 Usage through Docker:
 =====================
@@ -27,6 +25,10 @@ docker run --rm -it -v /<users_input_folder>/:/media hariszaf/prep_microbetag
 (interactactive)
 docker run --entrypoint /usr/bin/bash  \
             --rm -it -v /<users_input_folder>/:/media hariszaf/prep_microbetag
+
+Author:
+=======
+Haris Zafeiropoulos
 """
 
 class Config:
@@ -82,8 +84,6 @@ def read_abundance_table(file):
         return abundance_table_data
     except pd.errors.ParserError:
         print("The abundance table provided cannot be loaded. Check its format.")
-
-
 
 try:
     os.mkdir(config.output_dir)
