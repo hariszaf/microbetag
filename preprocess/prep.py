@@ -3,6 +3,31 @@ import yaml
 import os
 import pandas as pd
 
+"""
+Aim: 
+This script supports the preprocessing of a 
+
+
+
+
+Usage through Docker:
+=====================
+users_input_folder should contain the following files:
+- an abundance table (.csv, .tsv). 
+    in its first column it needs to have a sequence identifier, e.g. ASV_XX
+    in case the user is about to perform a taxonomy classification the sequence needs to be provided in the last column of this file
+    otherwise, you 
+- a metadata file (.csv, .tsv)
+    make sure the sample names are the exact same in this and the abundance table files
+    follow instructions for the metadata file here: http://tinyurl.com/35xxcnrm
+
+(direct)
+docker run --rm -it -v /<users_input_folder>/:/media hariszaf/prep_microbetag
+
+(interactactive)
+docker run --entrypoint /usr/bin/bash  \
+            --rm -it -v /<users_input_folder>/:/media hariszaf/prep_microbetag
+"""
 
 class Config:
     def __init__(self, io_path, conf):
@@ -10,17 +35,22 @@ class Config:
         self.abundance_table = os.path.join(io_path, conf["abundance_table_file"]["path"])
         self.build_network = conf["build_network"]["value"]
         self.annotate = conf["16s_gtdb_taxonomy_assign"]["value"]
+
         # User's group and user id
-        self.user_id = int(os.getenv('USER_ID'))
-        self.group_id = int(os.getenv('HOST_GID'))
+        file_info = os.stat(config_file)
+        self.user_id = file_info.st_uid
+        self.group_id = file_info.st_gid
+
         # Output dir
         self.output_dir = os.path.join(self.io_path, conf["output_directory"]["path"])
+
         # Metadata file for FlashWeave
         if conf["metadata_file"]["path"]:
             self.metadata = "true"
             self.metadata_file = os.path.join(io_path, conf["metadata_file"]["path"])
         else:
             self.metadata = "false"
+
         # Flashweave arguments
         if conf["flashweave_sensitive"]["value"]:
             self.sensitive = "true"
@@ -46,19 +76,28 @@ config_file = os.path.join(io_path, "config.yml")
 with open(config_file, 'r') as yaml_file:
     config = Config(io_path, yaml.safe_load(yaml_file))
 
+def read_abundance_table(file):
+    try:
+        abundance_table_data = pd.read_csv(file, sep=None,  engine='python')
+        return abundance_table_data
+    except pd.errors.ParserError:
+        print("The abundance table provided cannot be loaded. Check its format.")
+
+
+
 try:
     os.mkdir(config.output_dir)
 except FileExistsError as e:
-    warning_message = f"Warning: The output directory '{config.output_dir}' already exists. Its content will be overwritten with the new - {e}"
+    warning_message = f"""
+        Warning: The output directory '{config.output_dir}' already exists. I
+        ts content will be overwritten with the new - {e}
+    """
     print(warning_message)
 
 if config.annotate:
 
     """get taxonomy assignments using DECIPHER and 16S GTDB ref seqs"""
-    try:
-        abundance_table_data = pd.read_csv(config.abundance_table, sep=None,  engine='python')
-    except pd.errors.ParserError:
-        print("The abundance table provided cannot be loaded. Check its format.")
+    abundance_table_data = read_abundance_table(config.abundance_table)
     column_names = list(abundance_table_data.columns)
     seqid = column_names[0]
     seq = column_names[-1]
@@ -71,8 +110,10 @@ if config.annotate:
     # fix Rscript path 
     classify_command = " ".join([rscript_path, classify_Rscript])
     if os.system(classify_command) != 0:
-        raise SystemError("Taxonomy assignment using IDTAXA of the DECIPHER package and the 16S GTDB sequences as reference failed.\
-                          Please check R dependencies are ok and that you have the trained gtdb_16S.RData file.")
+        raise SystemError(
+            """Taxonomy assignment using IDTAXA of the DECIPHER package and the 16S GTDB sequences as reference failed.
+            Please check R dependencies are ok and that you have the trained gtdb_16S.RData file."""
+        )
 
     assignments = pd.read_csv(tax_assignmets_file, sep="\t")
     merged_df = pd.merge(abundance_table_data, assignments, left_on=seqid, right_on='seqid', how='left')
@@ -89,12 +130,15 @@ if config.build_network:
 
     """check if abundance table there and a sequence column included"""
     if config.abundance_table is None:
-        raise ValueError("You need to provide an abundance table including a column with the ASV/OTU sequence.")
-    try:
-        abundance_table_data = pd.read_csv(config.abundance_table, sep=None,  engine='python')
-    except pd.errors.ParserError:
-        print("The abundance table provided cannot be loaded. Check its format.")
+        raise ValueError(
+            """You need to provide an abundance table including a column with the ASV/OTU sequence."""
+        )
 
+    abundance_table_data = read_abundance_table(config.abundance_table)
+
+    column_names = list(abundance_table_data.columns)
+    seqid = column_names[0]
+    seq = column_names[-1]
 
     flashweave_table = abundance_table_data.drop(seq, axis = 1)
     float_col        = flashweave_table.select_dtypes(include=['float64']) 
@@ -109,16 +153,21 @@ if config.build_network:
 
     if config.metadata == "true":
         flashweave_params = [
-            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata, config.metadata_file
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, 
+            config.heterogeneous, config.metadata, config.metadata_file
         ]
     else:
         flashweave_params = [
-            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, config.heterogeneous, config.metadata
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, 
+            config.heterogeneous, config.metadata
         ]
     flashweave_command = " ".join(flashweave_params)
 
     if os.system(flashweave_command) != 0:
-        raise SystemError("FlashWeave failed. Check if Julia and FlashWeave is there. If yes, check the abundance table you provide.")
+        raise SystemError(
+            """FlashWeave failed. Check if Julia and FlashWeave is there.
+            If yes, check the abundance table you provide."""
+        )
 
 # Change ownership to output folder and its contents
 os.chown(config.output_dir, config.user_id, config.group_id)

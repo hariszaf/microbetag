@@ -28,7 +28,7 @@ map_users_taxonomy_to_microbetags:
   type: bool
 
 build_network:
-  value: True
+  value: False
   description: ""
   type: bool
 
