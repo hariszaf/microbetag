@@ -154,15 +154,6 @@ Then you need to also download the<a href="https://github.com/hariszaf/microbeta
 The `cofing.yml` file and the input files to be used, need to be in the directory to be mounted (see Docker and Singularity commands below).
 
 
-To have ownership and permissions to use the data products of the container, you need to provide your 
-user and host ids. To do so, run:
-
-```bash
-HOST_USER_ID=$(id -u)
-HOST_GROUP_ID=$(id -g)
-```
-
-
 ### I/O folder 
 
 The folder to be mounted needs two mandatory files:
@@ -200,7 +191,7 @@ The mandatory abundance table file can be provided as a `.tsv` or a `.csv` file 
 To run directly 
 
 ```bash
-docker run --rm -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   hariszaf/prep_microbetag
+docker run --rm -v ./test/:/media hariszaf/prep_microbetag
 ```
 
 in this case it is the `./test/` local directory you mount in the `/media` folder on the container.
@@ -209,7 +200,7 @@ in this case it is the `./test/` local directory you mount in the `/media` folde
 If you would like to initiate an interactive container you may run: 
 
 ```bash
-docker run --rm -it --entrypoint /bin/bash -v ./test/:/media -e USER_ID=$HOST_USER_ID  -e HOST_GID=$HOST_GROUP_ID   prep_microbetag
+docker run --rm -it --entrypoint /bin/bash -v ./test/:/media prep_microbetag
 ```
 this would initiate a console from within the container with you as a root user:
 
@@ -238,8 +229,9 @@ vim flashweave.jl
 The equivalent commands in Singularity would be :
 
 To run the preprocess directly:
+<!-- --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID -->
 ```bash
-singularity run -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID prep_microbetag_latest.sif 
+singularity run -B ~/prep_test/:/media prep_microbetag_latest.sif 
 ```
 
 where again, you mount (`-B`) the `~/prep_test/` local directory to the `/media` folder on the container.
@@ -247,7 +239,7 @@ where again, you mount (`-B`) the `~/prep_test/` local directory to the `/media`
 Likewise, to open a console:
 
 ```bash
-singularity exec -B ~/prep_test/:/media --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID prep_microbetag_latest.sif bash
+singularity exec -B ~/prep_test/:/media prep_microbetag_latest.sif bash
 cd /pre_microbetag/
 ```
 
