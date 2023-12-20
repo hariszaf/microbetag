@@ -24,6 +24,9 @@ Please, make sure in case you provide your abundance table as a `.tsv` or `.csv`
 For input file examples, please have a look [here](https://github.com/hariszaf/microbetag/tree/develop/tests).
 
 
+{: .warning } Do not use numeric characters only for labeling your samples and/or the sequences mentioned in your abundance table. For example, `324` as a sample id will lead microbetag to fail. 
+
+
 ### Case 1: all you have is your abundance table and your taxonomies 
 
 For up to a few thousands of sequences entries, microbetag can be a one-stop-shop application performing both taxonomy annotation, network generation and annotation. 
