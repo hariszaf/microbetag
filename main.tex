@@ -104,7 +104,10 @@
 
 \title[Article Title]{
     Genomic, metabolic and literature oriented annotation of microbial co-occurrence networks 
-    enhances associations confidence level and hypothesis generation
+    enhances 
+    network interpretation
+    % associations confidence level 
+    and hypothesis generation
     % microbetag: a microbial co-occurrence networks annotator
 }
 
@@ -163,7 +166,7 @@
             % and 
             % integrating 
             % genomic data 
-            
+            Figure built on \href{https://excalidraw.com}{excalidraw} 
         }
     \end{figure}
     
@@ -232,19 +235,24 @@
 \section{Implementation}~\footnote{This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed.}
     \label{sec:implementation}
 
-    \subsection*{Genomes included}
+    \subsection*{ Genomes retrieval and annotation }
         \label{subsec:genomes}
 
-        Using the GTDB v202 \href{https://data.gtdb.ecogenomic.org/releases/release202/202.0/}{metadata files}, we retrieved the NCBI genome accessions of the representative genomes of high quality, i.e. completeness $\geq 95\%$  and contamination $\leq 5\%$.
+        Using the GTDB v202 \href{https://data.gtdb.ecogenomic.org/releases/release202/202.0/}{metadata files}, 
+        all \textit{representative} genomes were retrieved ($47,894$) and filtered requiring for high quality, i.e. completeness $\geq 95\%$  and contamination $\leq 5\%$.
+        % we retrieved the NCBI genome accessions of
         That resulted a set of $26,778$ covering $22,009$ unique NCBI Taxonomy Ids.
-        Using these accession numbers, we were able to download their corresponding \texttt{.faa} files when available (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/gtdb_ncbi/get_gtdb_faa.py}{\texttt{get\_gtdb\_faa.py}}) leading to a set of $16,900$ amino acid sequence files.
+        Using their NCBI accession numbers, their corresponding \texttt{.faa} files were also retrieved when available 
+        (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/gtdb_ncbi/get_gtdb_faa.py}{\texttt{get\_gtdb\_faa.py}}) 
+        leading to a set of $16,900$ amino acid sequence files.
+        \textit{kofamscan}~\cite{aramaki2020kofamkoala} was performed to annotate these high quality genomes with KEGG ORTHOLOGY terms (KOs)~\cite{kanehisa2012kegg}.
+
         % | genomes category | # of genomes|
         % |:-----:|:-------:|
         % |All GTDB  | 258,407 | 
         % | Representatives | 47,894 |
         % | High quality represntative | 26,778* | 
         % | HQ representative with `.faa` | 16,900** |
-
 
     \subsection*{Taxonomy schemes}
         \label{subsec:taxonomies}
@@ -272,13 +280,14 @@
     \subsection*{ Network inference }
         \label{subsec:net-infer}
 
-        FlashWeave~\cite{flashweave_cite}
+        microbetag builds a co-occurrence network on the fly using FlashWeave~\cite{flashweave_cite} in case one is not provided by the user.
+        The user may set most of its arguments through the microbetag interface or for total control of the software they can edit the corresponding script throught the microbetag preprocessing Docker image.
+        In case a network is already available, the user may use it by either loading it through the CytoscapeApp (all networks formats supported) or through the CLI (\texttt{.cyjson} format supported).
 
-        a computational approach based on a flexible Probabilistic Graphical Model framework that integrates metadata and predicts direct microbial interactions from heterogeneous microbial abundance data sets with hundreds of thousands of samples. 
-
-        A flexible Probabilistic Graphical Model framework is used in a computational approach that 
-        incorporates metadata and predicts direct microbial interactions. 
-        This is done using heterogeneous microbial abundance datasets consisting of hundreds of thousands of samples.
+        % a computational approach based on a flexible Probabilistic Graphical Model framework that integrates metadata and predicts direct microbial interactions from heterogeneous microbial abundance data sets with hundreds of thousands of samples. 
+        % A flexible Probabilistic Graphical Model framework is used in a computational approach that 
+        % incorporates metadata and predicts direct microbial interactions. 
+        % This is done using heterogeneous microbial abundance datasets consisting of hundreds of thousands of samples.
 
         %     •    heterogeneous - enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)
         %     •    sensitive - enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F
@@ -334,9 +343,7 @@
     \subsection*{ Pathway complementarity }
         \label{subsec:path-compl}
 
-        For the subset of the 16,900 high quality GTDB representative genomes that a \texttt{.faa} was available, 
-        \textit{kofamscan}~\cite{aramaki2020kofamkoala} was performed to annotate them with KEGG ORTHOLOGY terms (KOs)~\cite{kanehisa2012kegg}. 
-        Their KOs were then mapped to their corresponding KEGG modules. 
+        Their KOs were then mapped to their corresponding KEGG modules.
         A KEGG module is defined as a functional unit within the KEGG framework, that represents a set of enzymes and reactions involved in a specific biological process or pathway~\cite{muto2013modular}.
         A module's definition is a logical expression and consists of KOs and the following symbols:
         a. the space, representing a connection in the pathway
@@ -349,7 +356,7 @@
 
         \begin{figure}[h!]
             \label{fig:path-compl}
-            \includegraphics*[width=0.8\columnwidth]{figs/path_complem.png}
+            \includegraphics*[width=0.9\columnwidth]{figs/path_complem.png}
             \caption{
                 Pathway complementarity approach. 
                 The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms.
@@ -363,7 +370,7 @@
         \end{figure}
 
 
-        We define a genome as having a "complete" module if and only if all of the KOs present in any of the module's alternatives are also found among the annotated KOs of the genome.
+        We define a genome as having a \textit{complete} module if and only if all of the KOs present in any of the module's alternatives are also found among the annotated KOs of the genome.
         All modules definitions were retrieved using the KEGG API and parsed 
         (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/parse_module_definitions.py}{\texttt{parse\_module\_definitions.py}}).
         A dictionary was built with all the alternatives, i.e. alternative sets of KOs, for a module to be complete 
@@ -506,7 +513,7 @@
                 33 phenotypic traits were predicted using~\texttt{phenotrex}~\cite{feldbauer2015prediction}.
                 To this end, models were re-trained to sync with recent version of eggNOG~\cite{huerta2019eggnog}.
             }
-            \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
+            \includegraphics[width=\columnwidth]{figs/microbetag-wf-precalc2.png}
         \end{figure}
 
 

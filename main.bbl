@@ -240,6 +240,42 @@ Msystems,
 \endbibitem
 
 %%% 13
+\bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
+\begin{barticle}
+\bauthor{\bsnm{Aramaki}, \binits{T.}},
+\bauthor{\bsnm{Blanc-Mathieu}, \binits{R.}},
+\bauthor{\bsnm{Endo}, \binits{H.}},
+\bauthor{\bsnm{Ohkubo}, \binits{K.}},
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Ogata}, \binits{H.}}:
+\batitle{Kofamkoala: Kegg ortholog assignment based on profile hmm and adaptive
+  score threshold}.
+\bjtitle{Bioinformatics}
+\bvolume{36}(\bissue{7}),
+\bfpage{2251}--\blpage{2252}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 14
+\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}},
+\bauthor{\bsnm{Furumichi}, \binits{M.}},
+\bauthor{\bsnm{Tanabe}, \binits{M.}}:
+\batitle{Kegg for integration and interpretation of large-scale molecular data
+  sets}.
+\bjtitle{Nucleic acids research}
+\bvolume{40}(\bissue{D1}),
+\bfpage{109}--\blpage{114}
+(\byear{2012})
+\end{barticle}
+\endbibitem
+
+%%% 15
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -258,7 +294,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 16
 \bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
 \begin{barticle}
 \bauthor{\bsnm{Quast}, \binits{C.}},
@@ -278,7 +314,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 15
+%%% 17
 \bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
 \begin{barticle}
 \bauthor{\bsnm{Schoch}, \binits{C.L.}},
@@ -300,7 +336,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 16
+%%% 18
 \bibitem[\protect\citeauthoryear{Cole et~al.}{2014}]{cole2014ribosomal}
 \begin{barticle}
 \bauthor{\bsnm{Cole}, \binits{J.R.}},
@@ -322,7 +358,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 17
+%%% 19
 \bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
 \begin{botherref}
 \oauthor{\bsnm{Alishum}, \binits{A.}}:
@@ -332,7 +368,7 @@ Msystems,
 \end{botherref}
 \endbibitem
 
-%%% 18
+%%% 20
 \bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
 \begin{barticle}
 \bauthor{\bsnm{Murali}, \binits{A.}},
@@ -347,7 +383,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 19
+%%% 21
 \bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
 \begin{barticle}
 \bauthor{\bsnm{Sunagawa}, \binits{S.}},
@@ -368,7 +404,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 20
+%%% 22
 \bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
 \begin{barticle}
 \bauthor{\bsnm{Louca}, \binits{S.}},
@@ -382,7 +418,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 21
+%%% 23
 \bibitem[\protect\citeauthoryear{Feldbauer
   et~al.}{2015}]{feldbauer2015prediction}
 \begin{barticle}
@@ -395,42 +431,6 @@ Msystems,
 \bvolume{16}(\bissue{14}),
 \bfpage{1}--\blpage{8}
 (\byear{2015})
-\end{barticle}
-\endbibitem
-
-%%% 22
-\bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
-\begin{barticle}
-\bauthor{\bsnm{Aramaki}, \binits{T.}},
-\bauthor{\bsnm{Blanc-Mathieu}, \binits{R.}},
-\bauthor{\bsnm{Endo}, \binits{H.}},
-\bauthor{\bsnm{Ohkubo}, \binits{K.}},
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Ogata}, \binits{H.}}:
-\batitle{Kofamkoala: Kegg ortholog assignment based on profile hmm and adaptive
-  score threshold}.
-\bjtitle{Bioinformatics}
-\bvolume{36}(\bissue{7}),
-\bfpage{2251}--\blpage{2252}
-(\byear{2020})
-\end{barticle}
-\endbibitem
-
-%%% 23
-\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
-\begin{barticle}
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Sato}, \binits{Y.}},
-\bauthor{\bsnm{Furumichi}, \binits{M.}},
-\bauthor{\bsnm{Tanabe}, \binits{M.}}:
-\batitle{Kegg for integration and interpretation of large-scale molecular data
-  sets}.
-\bjtitle{Nucleic acids research}
-\bvolume{40}(\bissue{D1}),
-\bfpage{109}--\blpage{114}
-(\byear{2012})
 \end{barticle}
 \endbibitem
 

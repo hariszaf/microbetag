@@ -29,9 +29,11 @@
 \citation{zelezniak2015metabolic}
 \citation{levy2013metabolic}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 203}}{2}{\abstractname }{figure.caption.2}{}}
+\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 206}}{2}{\abstractname }{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
 \newlabel{sec1}{{1}{2}{Introduction}{section.1}{}}
+\citation{aramaki2020kofamkoala}
+\citation{kanehisa2012kegg}
 \citation{parks2022gtdb}
 \citation{quast2012silva}
 \citation{schoch2020ncbi}
@@ -44,18 +46,16 @@
 \citation{louca2016decoupling}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Implementation}{3}{section.2}\protected@file@percent }
 \newlabel{sec:implementation}{{2}{3}{Implementation}{section.2}{}}
-\newlabel{subsec:genomes}{{2}{3}{Genomes included}{section*.3}{}}
+\newlabel{subsec:genomes}{{2}{3}{Genomes retrieval and annotation}{section*.3}{}}
 \newlabel{subsec:taxonomies}{{2}{3}{Taxonomy schemes}{section*.4}{}}
 \newlabel{subsec:net-infer}{{2}{3}{Network inference}{section*.5}{}}
+\newlabel{subsec:fapro}{{2}{3}{Literature oriented node annotation}{section*.6}{}}
 \citation{feldbauer2015prediction}
-\citation{aramaki2020kofamkoala}
-\citation{kanehisa2012kegg}
 \citation{muto2013modular}
-\newlabel{subsec:fapro}{{2}{4}{Literature oriented node annotation}{section*.6}{}}
+\citation{kanehisa2020kegg,kanehisa2022kegg}
 \newlabel{subsec:phen}{{2}{4}{Genomic oriented node annotation}{section*.7}{}}
 \newlabel{subsec:path-compl}{{2}{4}{Pathway complementarity}{section*.8}{}}
-\citation{kanehisa2020kegg,kanehisa2022kegg}
-\newlabel{fig:path-compl}{{\caption@xref {fig:path-compl}{ on input line 351}}{5}{Pathway complementarity}{figure.caption.9}{}}
+\newlabel{fig:path-compl}{{\caption@xref {fig:path-compl}{ on input line 358}}{5}{Pathway complementarity}{figure.caption.9}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{5}{figure.caption.9}\protected@file@percent }
 \citation{borenstein2008large}
 \citation{phylomint_ms}
@@ -66,23 +66,23 @@
 \citation{henry2010high}
 \citation{rottjers2020manta}
 \citation{blank2016micro}
+\citation{choudhary2021scnetviz}
 \newlabel{subsec:seeds}{{2}{6}{Seed scores using genome scale metabolic reconstructions}{section*.10}{}}
 \newlabel{subsec:mant}{{2}{6}{Clustering network}{section*.11}{}}
-\citation{choudhary2021scnetviz}
+\newlabel{groups}{{2}{6}{Groups of annotations}{section*.12}{}}
 \citation{merkel2014docker}
 \citation{nginx}
 \citation{feldbauer2015prediction}
 \citation{huerta2019eggnog}
 \citation{feldbauer2015prediction}
 \citation{huerta2019eggnog}
-\newlabel{groups}{{2}{7}{Groups of annotations}{section*.12}{}}
 \newlabel{subsec:build-cytoapp}{{2}{7}{Building the CytoscapeApp}{section*.13}{}}
 \newlabel{subsec:webserver}{{2}{7}{Dependencies, Web server and API}{section*.14}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Running large datasets}{7}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}Results}{7}{section.3}\protected@file@percent }
 \newlabel{sec:results}{{3}{7}{Results}{section.3}{}}
 \newlabel{subsec:microbetagdb}{{3}{8}{microbetag and microbetagDB}{section*.15}{}}
-\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 502}}{8}{microbetag and microbetagDB}{figure.caption.16}{}}
+\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 509}}{8}{microbetag and microbetagDB}{figure.caption.16}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Diagram of the microbetag pre - calculations and the on the fly workflow. GTDB v207 representative genomes were filtered and for those of high-quality 33 phenotypic traits were predicted using\nobreakspace  {}\texttt  {phenotrex}\nobreakspace  {}\cite  {feldbauer2015prediction}. To this end, models were re-trained to sync with recent version of eggNOG\nobreakspace  {}\cite  {huerta2019eggnog}. }}{8}{figure.caption.16}\protected@file@percent }
 \citation{murali2018idtaxa}
 \citation{wright2016using}
@@ -120,17 +120,17 @@
 \bibcite{karaoz2022microtrait}{{10}{2022}{{Karaoz and Brodie}}{{}}}
 \bibcite{zelezniak2015metabolic}{{11}{2015}{{Zelezniak et~al.}}{{}}}
 \bibcite{levy2013metabolic}{{12}{2013}{{Levy and Borenstein}}{{}}}
-\bibcite{parks2022gtdb}{{13}{2022}{{Parks et~al.}}{{}}}
-\bibcite{quast2012silva}{{14}{2012}{{Quast et~al.}}{{}}}
-\bibcite{schoch2020ncbi}{{15}{2020}{{Schoch et~al.}}{{}}}
-\bibcite{cole2014ribosomal}{{16}{2014}{{Cole et~al.}}{{}}}
-\bibcite{ali_alishum_2022_6655692}{{17}{2022}{{Alishum}}{{}}}
-\bibcite{murali2018idtaxa}{{18}{2018}{{Murali et~al.}}{{}}}
-\bibcite{sunagawa2015structure}{{19}{2015}{{Sunagawa et~al.}}{{}}}
-\bibcite{louca2016decoupling}{{20}{2016}{{Louca et~al.}}{{}}}
-\bibcite{feldbauer2015prediction}{{21}{2015}{{Feldbauer et~al.}}{{}}}
-\bibcite{aramaki2020kofamkoala}{{22}{2020}{{Aramaki et~al.}}{{}}}
-\bibcite{kanehisa2012kegg}{{23}{2012}{{Kanehisa et~al.}}{{}}}
+\bibcite{aramaki2020kofamkoala}{{13}{2020}{{Aramaki et~al.}}{{}}}
+\bibcite{kanehisa2012kegg}{{14}{2012}{{Kanehisa et~al.}}{{}}}
+\bibcite{parks2022gtdb}{{15}{2022}{{Parks et~al.}}{{}}}
+\bibcite{quast2012silva}{{16}{2012}{{Quast et~al.}}{{}}}
+\bibcite{schoch2020ncbi}{{17}{2020}{{Schoch et~al.}}{{}}}
+\bibcite{cole2014ribosomal}{{18}{2014}{{Cole et~al.}}{{}}}
+\bibcite{ali_alishum_2022_6655692}{{19}{2022}{{Alishum}}{{}}}
+\bibcite{murali2018idtaxa}{{20}{2018}{{Murali et~al.}}{{}}}
+\bibcite{sunagawa2015structure}{{21}{2015}{{Sunagawa et~al.}}{{}}}
+\bibcite{louca2016decoupling}{{22}{2016}{{Louca et~al.}}{{}}}
+\bibcite{feldbauer2015prediction}{{23}{2015}{{Feldbauer et~al.}}{{}}}
 \bibcite{muto2013modular}{{24}{2013}{{Muto et~al.}}{{}}}
 \bibcite{kanehisa2020kegg}{{25}{2020}{{Kanehisa and Sato}}{{}}}
 \bibcite{kanehisa2022kegg}{{26}{2022}{{Kanehisa et~al.}}{{}}}
