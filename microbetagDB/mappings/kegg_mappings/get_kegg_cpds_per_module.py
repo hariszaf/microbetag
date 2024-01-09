@@ -226,9 +226,10 @@ patricId_to_seeds_of_interest = {}
 patricId_to_non_seeds_of_interest = {}
 
 mean_non_seedset_length = 0 ; mean_non_seedset_of_interest = 0
-non_seedset_files = [file for file in os.listdir(".") if file.endswith("_NonSeedsDic.json")]  ## nonSeedSetDic
+dics_path  = "/home/luna.kuleuven.be/u0156635/Documents/projects/microbetag/dics/updated/"
+non_seedset_files = [file for file in os.listdir(dics_path) if file.endswith("_NonSeedsDic.json")]  ## nonSeedSetDic
 for sfile in non_seedset_files:
-    non_seedset_file = json.load(open(sfile,"r"))
+    non_seedset_file = json.load(open(dics_path + sfile,"r"))
     model_names = list(non_seedset_file.keys())
     for smodel_name in model_names:
         non_seedset = set( [x[2:] for x in non_seedset_file[smodel_name]] )
@@ -247,12 +248,12 @@ for sfile in non_seedset_files:
         mean_non_seedset_of_interest += len(non_seeds_of_interest_tmp)
         """
 
-seedset_files = [file for file in os.listdir(".") if file.endswith("_SeedsDic.json")]  # ConfDic.json
+seedset_files = [file for file in os.listdir(dics_path) if file.endswith("_SeedsDic.json")]  # ConfDic.json
 mean_seedset_length = 0
 mean_seedset_of_interest = 0
 
 for sfile in seedset_files:
-    seedset_file = json.load(open(sfile,"r"))
+    seedset_file = json.load(open(dics_path + sfile,"r"))
     model_names = list(seedset_file.keys())
     for model_name in model_names:
         number_of_models += 1
@@ -293,31 +294,128 @@ tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.ite
 df1 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'SeedSet'])
 df1['PATRIC'] = df1['PATRIC'].str.replace('.PATRIC', '')
 df1.set_index('PATRIC', inplace=True)
-with open("seedsets_of_interest.pckl","wb") as f:
-    # tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
-    # df1 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'SeedSet'])
+
+with open("updated_seedsets_of_interest.pckl","wb") as f:
     pickle.dump(df1, f)
 
 tmp_dict = {key: list(value) for key, value in patricId_to_non_seeds_of_interest.items()}
 df2 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'NonSeedSet'])
 df2['PATRIC'] = df2['PATRIC'].str.replace('.PATRIC', '')
 df2.set_index('PATRIC', inplace=True)
-with open("non_seedsets_of_interest.pckl","wb") as f:
-    # tmp_dict = {key: list(value) for key, value in patricId_to_non_seeds_of_interest.items()}
-    # df2 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'NonSeedSet'])
+
+with open("updated_non_seedsets_of_interest.pckl","wb") as f:
     pickle.dump(df2, f)
 
 
-"""
+"""l
 PART E:
     for each species and their seed sets
     get their oversection with each other species' nonSeedSets
     (thus, the latter will provide a seed node to the beneficiary )
 """
 
+import pandas as pd
+from joblib import Parallel, delayed
+from tqdm import tqdm
+import pickle
+
+
+# df1_subset = df1.head(2000)
+# df2_subset = df1.iloc[2000:4000]
+# df3_subset = df1.iloc[4000:6000]
+# df4_subset = df1.iloc[8000:10000]
+# df5_subset = df1.iloc[10000:12000]
+# df6_subset = df1.iloc[12000:18000]
+# df9_subset = df1.iloc[18000:20000]
+# df10_subset = df1.iloc[20000:22000]
+# df11_subset = df1.iloc[22000:24000]
+# df12_subset = df1.iloc[24000:26000]
+# df13_subset = df1.iloc[26000:28000]
+# df14_subset = df1.iloc[28000:]
+
+
+# Function to calculate overlap
+def calculate_overlap(seed_set, non_seed_set):
+    return list(set(seed_set) & set(non_seed_set))
+
+# Parallelized function to calculate overlap for one row in df1 with all rows in df2
+def calculate_overlap_parallel(row1, df2):
+    return [calculate_overlap(row1['SeedSet'], row2['NonSeedSet']) for _, row2 in df2.iterrows()]
+
+# Create a new DataFrame for overlaps - 
+# NOTE: iterate over the subsets !!!!!!!!!
+overlaps_df_14 = pd.DataFrame(index=df14_subset.index, columns=df2.index)
+
+
+# Parallelize the overlap calculation using joblib with tqdm for progress tracking
+num_cores = -1  # Use all available cores
+results = Parallel(n_jobs=num_cores)(delayed(calculate_overlap_parallel)(row1, df2) for _, row1 in tqdm(df14_subset.iterrows(), total=len(df14_subset)))
+
+
+# Fill in the overlaps DataFrame with calculated values
+for i, row in enumerate(results):
+    overlaps_df_14.iloc[i] = row
+
+with open("overlaps_14.pckl","wb") as f:
+    pickle.dump(overlaps_df_14, f)
+
+
+
+
+del results
+
+
+# overlaps_df = pd.concat([overlaps_df_1, overlaps_df_2], ignore_index=True)
+# print(overlaps_df)
+
+
+
+import pickle 
+import pandas as pd
+
+
+
+with open("overlaps_6.pckl","rb") as f:
+    df = pickle.load(f)
+
+df = df.rename_axis(index={'PATRIC': 'PATRIC_beneficary'})
+df = df.rename_axis(columns={'PATRIC': 'PATRIC_donor'})
+
+stacked_df = df.stack()
+result_df = stacked_df.reset_index()
+result_df = result_df[['PATRIC_beneficary', 'PATRIC_donor']]
+# ATTENTION: Replave 1 with where we have left
+result_df['auto_increasing_number'] = range(307550001 + 1 , 246040001 + 1 + len(result_df))
+
+
+existing_csv_path = "seed_complements_map.tsv"
+result_df.to_csv(existing_csv_path, mode='a', sep="\t", header=False, index=False)
+
+
+
+
+# to get the 3-cols .tsv with the seeds
+output_file = "overlaps_14.tsv"
+df = df.rename_axis(index={'PATRIC': 'PATRIC_beneficary'})
+df = df.rename_axis(columns={'PATRIC': 'PATRIC_donor'})
+stacked_df = df.stack()
+result_df = stacked_df.reset_index()
+result_df.columns = ["PATRIC_beneficary", "PATRIC_donor", "seed_complement"]
+result_df.to_csv(output_file, sep='\t', index=False)
 
 
 
 
 
+f = open("seed_complements_map.tsv", "w")
+f.write("PATRIC_beneficary\tPATRIC_donor\tseedComplementId\n")
+all_ids = list(df.columns)
+counter = 0
+for i in all_ids:
+    for j in all_ids:
+        counter += 1
+        f.write(i + "\t" + j + "\t" + str(counter) + "\n")
+        
 
+
+# awk 'BEGIN {OFS="\t"} {print $1, $2, ++count}' a.tsv > output.tsv
