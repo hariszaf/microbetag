@@ -30,7 +30,7 @@ bin-release/
 kegg_genomes/
 mgnify_catalogues/
 gtdb_kofam_scan_per_module/
-
+seed_complements/
 gtdb_genomes/
 *.keg
 
@@ -72,6 +72,8 @@ tests/output_dev*
 dada2familiesNcbiIds
 *.nans
 *.ini
+*.pckl
+
 
 elos_bins.tsv
 kos_on_modules_graph.tsv
@@ -81,5 +83,8 @@ microbetag_env
 
 # Ignore .json files under the scripts folder udner the microbetagDB
 microbetagDB/scripts/*.json 
+
+
+
 
 
