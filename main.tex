@@ -1,6 +1,3 @@
-%Version 2.1 April 2023
-% See section 11 of the User Manual for version history
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                                                 %%
 %% Please do not use \input{...} to include other tex files.       %%
@@ -11,37 +8,10 @@
 %%                                                                 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
-
-%%=======================================================%%
-%% to print line numbers in the margin use lineno option %%
-%%=======================================================%%
-
-%%\documentclass[lineno,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-%%======================================================%%
-%% to compile with pdflatex/xelatex use pdflatex option %%
-%%======================================================%%
-
-%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-
-%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove �Numbered� in the optional parenthesis. 
-%%The option is available for: sn-basic.bst, sn-vancouver.bst, sn-chicago.bst, sn-mathphys.bst. %  
- 
-%%\documentclass[sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
-%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-\documentclass[sn-mathphys,Numbered]{sn-jnl}% Math and Physical Sciences Reference Style
-%%\documentclass[sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
-%%\documentclass[sn-vancouver,Numbered]{sn-jnl}% Vancouver Reference Style
-%%\documentclass[sn-apa]{sn-jnl}% APA Reference Style 
-%%\documentclass[sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
-%%\documentclass[default]{sn-jnl}% Default
-%%\documentclass[default,iicol]{sn-jnl}% Default with double column layout
+\documentclass[sn-mathphys,Numbered, lineno]{sn-jnl}  % I added lineo to have linenumbers
 
 %%%% Standard Packages
 %%<additional latex packages if required can be included here>
-
 \usepackage{graphicx}%
 \usepackage{multirow}%
 \usepackage{amsmath,amssymb,amsfonts}%
@@ -56,29 +26,14 @@
 \usepackage{algorithmicx}%
 \usepackage{algpseudocode}%
 \usepackage{listings}%
-%%%%
 
+%%%%
 % REMOVE THOSE IN THE END
 \usepackage{todonotes}
 \usepackage{caption}
 \usepackage{tabularx}
 \usepackage{adjustbox}  % for the adjustwidth
-% \usepackage{changepage} % for the adjustwidth
 
-
-
-%%%%%=============================================================================%%%%
-%%%%  Remarks: This template is provided to aid authors with the preparation
-%%%%  of original research articles intended for submission to journals published 
-%%%%  by Springer Nature. The guidance has been prepared in partnership with 
-%%%%  production teams to conform to Springer Nature technical requirements. 
-%%%%  Editorial and presentation requirements differ among journal portfolios and 
-%%%%  research disciplines. You may find sections in this template are irrelevant 
-%%%%  to your work and are empowered to omit any such section if allowed by the 
-%%%%  journal you intend to submit to. The submission guidelines and policies 
-%%%%  of the journal take precedence. A detailed User Manual is available in the 
-%%%%  template package for technical guidance.
-%%%%%=============================================================================%%%%
 
 %\jyear{2021}%
 
@@ -105,20 +60,8 @@
 \title[Article Title]{
     Genomic, metabolic and literature oriented annotation of microbial co-occurrence networks 
     enhances associations confidence level and hypothesis generation
-    % microbetag: a microbial co-occurrence networks annotator
 }
 
-%%=============================================================%%
-%% Prefix	-> \pfx{Dr}
-%% GivenName	-> \fnm{Joergen W.}
-%% Particle	-> \spfx{van der} -> surname prefix
-%% FamilyName	-> \sur{Ploeg}
-%% Suffix	-> \sfx{IV}
-%% NatureName	-> \tanm{Poet Laureate} -> Title after name
-%% Degrees	-> \dgr{MSc, PhD}
-%% \author*[1,2]{\pfx{Dr} \fnm{Joergen W.} \spfx{van der} \sur{Ploeg} \sfx{IV} \tanm{Poet Laureate} 
-%%                 \dgr{MSc, PhD}}\email{iauthor@gmail.com}
-%%=============================================================%%
 
 \author[1]{\fnm{Haris} \sur{Zafeiropoulos}}\email{haris.zafeiropoulos@kuleuven.be}
 \author[1]{\fnm{Ermis Ioannis} \sur{Michail Delopoulos}}\email{ermisioannis.michaildelopoulos@student.kuleuven.be}
@@ -130,15 +73,34 @@
 \author*[1]{\fnm{Karoline} \sur{Faust}}\email{karoline.faust@kuleuven.be}
 
 
-\affil*[1]{\orgdiv{Department of Microbiology, Immunology and Transplantation, Rega Institute for Medical Research}, \orgname{KU Leuven}, \orgaddress{\street{Herestraat}, \city{Leuven}, \postcode{3000}, \state{}, \country{Belgium}}}
-\affil[2]{\orgdiv{Institute of Food, Nutrition and Health}, \orgname{ETH Zurich}, \orgaddress{\street{Street}, \city{Zurich}, \postcode{8092}, \state{}, \country{Switzerland}}}
-\affil[3]{\orgdiv{Department of Pharmaceutical Chemistry}, \orgname{University of California San Francisco}, \orgaddress{\street{Street}, \city{San Francisco}, \postcode{94143}, \state{California}, \country{USA}}}
+\affil*[1]{
+    \orgdiv{
+        Department of Microbiology, Immunology and Transplantation, Rega Institute for Medical Research
+    }, 
+    \orgname{KU Leuven}, 
+    \orgaddress{
+        \street{Herestraat}, \city{Leuven}, \postcode{3000}, \state{}, \country{Belgium}
+    }
+}
+\affil[2]{
+    \orgdiv{Institute of Food, Nutrition and Health}, 
+    \orgname{ETH Zurich}, 
+    \orgaddress{
+        \street{Street}, \city{Zurich}, \postcode{8092}, \state{}, \country{Switzerland}
+    }
+}
+\affil[3]{
+    \orgdiv{Department of Pharmaceutical Chemistry}, 
+    \orgname{University of California San Francisco}, 
+    \orgaddress{
+        \street{Street}, \city{San Francisco}, \postcode{94143}, \state{California}, \country{USA}
+    }
+}
 
 
 %%==================================%%
-%% sample for unstructured abstract %%
+%% unstructured abstract %%
 %%==================================%%
-
 \abstract{
 
     Up to 350 words.
@@ -169,19 +131,9 @@
     
 
 }
-
-%%================================%%
-%% Sample for structured abstract %%
-%%================================%%
-
-% \abstract{\textbf{Purpose:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Methods:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Results:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
-
+%%==================================%%
+%% keywords                         %%
+%%==================================%%
 \keywords{
     microbial associations, 
     enrichemnt analysis, 
@@ -192,21 +144,85 @@
 
 
 
-
-
-
-%%\pacs[JEL Classification]{D8, H51}
-
-%%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
-
 \maketitle
 
 
+%%==================================%%
+%% MAIN BODY                        %%
+%%==================================%%
+
 \section{Introduction}
 \label{sec1}
-\footnote{We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow 
-\href{https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}}
-\footnote{The introduction should not include subheadings.}
+
+    \footnote{
+        We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow
+        ~\href{https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}
+    }
+    \footnote{The introduction should not include subheadings.}
+
+    % SKELETON FOR THE Introduction
+    \hrulefill
+    \begin{itemize}
+        \item Role of microbial associations in the study of microbial communities
+        \item HTP sequencing 
+        \item cooccurrence networks to analyse HTP data
+        \item challenges of cooccurrence networks / refs:
+            ~\cite{berry2014deciphering}: microbial network inference as a tool for interaction prediction has highlighted this tool’s low accuracy and the biological implications of network properties are unclear /
+            \cite{ma2020earth} :  modules in microbial co-occurrence networks may be indicative of ecological processes governing community structure, such as niche filtering and habitat preference
+        
+        \item current approaches to deal with those challenges
+        \item our contribution 
+    \end{itemize}
+
+    \hrulefill
+
+    It is well known that most microbial species live not in isolation but in communities~\cite{rottjers2018hairballs}.
+    Such communities play a crucial role in ecosystem functioning in almost any ecosystem type~\cite{raes2008molecular, faust2012microbialReviewInteractions}.
+    High-throughput sequencing (HTP) has provided great insight into the diversity and composition of microbial communities~\cite{elixir_microbiome}. % get more refs
+    Uncultivated species can now be detected and their featues can be inferred through their genomic information~\cite{hug2016new}.
+
+    NGS facilitates culture-independent sampling of the microorganisms in an area with the potential for both taxonomic and functional annotation;
+
+
+    NGS not only provides information about the taxonomic composition of the microbial community but also enables the annotation of their functional capabilities. 
+    This combination of taxonomic and functional annotation provides a more detailed and holistic view of the role and activities of microorganisms.
+
+
+
+
+    
+
+
+
+    Understanding the structure, composition, and dynamics of microbial communities is crucial for unraveling the intricate web of interactions that shape ecosystems. 
+    To come up with a comprehensive understanding of these interactions, we need to comprehend the relationships between microorganisms and thus their own interactions.
+
+    The notion of an interaction varies including cooperation, competition, parasitism, commensalism and ammensalism~\cite{faust2012microbialReviewInteractions}.
+
+
+
+    Microbial interactions play a crucial role in shaping ecosystems and influencing various biological processes. 
+
+    
+    These interactions contribute to the overall stability and functioning of ecosystems by influencing nutrient cycling, disease dynamics, and the overall diversity and composition of microbial communities. 
+    For example, some microorganisms can produce and release certain compounds that benefit neighboring microbes or inhibit the growth of competing species. 
+    Other interactions involve symbiotic relationships, where different microbes rely on each other for survival and perform complementary functions. 
+    Understanding and studying microbial interactions is vital for unraveling the complexity of microbial communities and their impact on human health, agriculture, and environmental processes.
+
+
+    Physical Interactions: Microorganisms can interact physically by forming biofilms, which are communities of microorganisms attached to surfaces and enclosed in a matrix of extracellular substances. Biofilms provide protection and promote cooperation among the microorganisms within them.
+
+    Quorum Sensing: Many bacteria use quorum sensing to communicate with each other and coordinate their behavior. They release and detect signaling molecules called autoinducers, which allow them to sense the local population density. This mechanism enables bacteria to coordinate processes like biofilm formation, virulence factor expression, and nutrient acquisition.
+    
+    Antibiosis: Antibiosis refers to the production of antimicrobial substances by microorganisms that inhibit the growth or survival of other microorganisms. This can be a competitive strategy to gain an advantage in a particular environment.
+    
+    metabolic interactions specifically, microorganisms often engage in metabolic exchanges during their interactions. For instance, one microbe may produce metabolites that serve as nutrients or signaling molecules for another microbe. These metabolic interactions can involve the transfer of essential nutrients, the breakdown of complex compounds, or the production of secondary metabolites with antimicrobial properties.
+    Overall, understanding the different types of microbial interactions, including metabolic interactions, provides insights into the complexity and dynamics of microbial communities and their impact on various processes in nature.
+
+
+
+
+
 
     A widely used approach is the creation of co-occurrence networks based on community data. To build such networks, there is a great number of approaches: Spearman and Pearson correlations, CoNet~\cite{faust2012microbial} SparCC~\cite{friedman2012inferring} SpiecEasi~\cite{kurtz2015sparse}, MAGMA~\cite{cougoul2019magma} and FlashWeave~\cite{flashweave_cite} are just a few of them.
     However, the outcome is usually tool-dependent~\cite{kishore2023inferring, weiss2016correlation, rottjers2018hairballs}. 
@@ -228,11 +244,13 @@
 
 
 
-\section{Implementation}~\footnote{This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed.}
-    \label{sec:implementation}
+\section{Implementation}
+\label{sec:implementation}
+
+    \footnote{This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed.}
 
     \subsection*{Genomes included}
-        \label{subsec:genomes}
+    \label{subsec:genomes}
 
         Using the GTDB v202 \href{https://data.gtdb.ecogenomic.org/releases/release202/202.0/}{metadata files}, we retrieved the NCBI genome accessions of the representative genomes of high quality, i.e. completeness $\geq 95\%$  and contamination $\leq 5\%$.
         That resulted a set of $26,778$ covering $22,009$ unique NCBI Taxonomy Ids.
@@ -246,7 +264,7 @@
 
 
     \subsection*{Taxonomy schemes}
-        \label{subsec:taxonomies}
+    \label{subsec:taxonomies}
 
         microbetag maps the taxonomy of each entry in the abundance table to its corresponding NCBI Taxonomy id and if available its closest GTDB representative genome(s).
         Two well established taxonomy schemes are supported.
@@ -269,7 +287,7 @@
 
 
     \subsection*{ Network inference }
-        \label{subsec:net-infer}
+    \label{subsec:net-infer}
 
         FlashWeave~\cite{flashweave_cite}
 
@@ -288,7 +306,7 @@
 
 
     \subsection*{ Literature oriented node annotation }
-        \label{subsec:fapro}
+    \label{subsec:fapro}
 
         Using a set of Tara Oceans samples~\cite{sunagawa2015structure} FAPROTAX~\cite{louca2016decoupling} estimates the functional potential of the bacterial and archaeal communities, by classifying each taxonomic unit into functional group(s) based on current literature,
         announcements of cultured representatives and/or manuals of systematic microbiology. 
@@ -304,7 +322,7 @@
 
 
     \subsection*{ Genomic oriented node annotation }
-        \label{subsec:phen}
+    \label{subsec:phen}
 
         phenDB~\cite{feldbauer2015prediction} is a publicly available resource that supports the analysis of bacterial (meta)genomes to identify 47 distinct functional traits. 
         It relies on support vector machines (SVM) trained with manually curated datasets based on gene presence/absence patterns for trait prediction.
@@ -331,7 +349,7 @@
 
 
     \subsection*{ Pathway complementarity }
-        \label{subsec:path-compl}
+    \label{subsec:path-compl}
 
         For the subset of the 16,900 high quality GTDB representative genomes that a \texttt{.faa} was available, 
         \textit{kofamscan}~\cite{aramaki2020kofamkoala} was performed to annotate them with KEGG ORTHOLOGY terms (KOs)~\cite{kanehisa2012kegg}. 
@@ -344,23 +362,18 @@
         d. minus sign, designates an optional item in the complex.
         Both (a) and (b) cases should be considered as "AND" logical operators, while (c) would be the "OR".
 
-
-
         \begin{figure}[h!]
-            \label{fig:path-compl}
-            \includegraphics*[width=0.8\columnwidth]{figs/path_complem.png}
-            \caption{
-                Pathway complementarity approach. 
-                The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms.
-                The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species
-                could "fill" a beneficiary's non-complete module were calculated. 
-                In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. 
-                However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition.
-                A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to 
-                produce serine.
-            }
+        \label{fig:path-compl}
+        \includegraphics*[width=0.8\columnwidth]{figs/path_complem.png}
+        \caption{
+            Pathway complementarity approach. 
+            The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms.
+            The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated.
+            In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required.
+            However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition.
+            A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine.
+        }
         \end{figure}
-
 
         We define a genome as having a "complete" module if and only if all of the KOs present in any of the module's alternatives are also found among the annotated KOs of the genome.
         All modules definitions were retrieved using the KEGG API and parsed 
@@ -382,7 +395,7 @@
 
 
     \subsection*{ Seed scores using genome scale metabolic reconstructions }
-        \label{subsec:seeds}
+    \label{subsec:seeds}
 
         A metabolic network’s "seed set" is the set of compounds that, based on the network topology, need to be acquired exogenously~\cite{borenstein2008large}.
         Such nodes might be independent, i.e. they cannot be activated by any other node in the network, or they can be interdependent forming groups of seed nodes.
@@ -407,12 +420,8 @@
 
 
 
-
-
-
-
     \subsection*{ Clustering network  }
-        \label{subsec:mant}
+    \label{subsec:mant}
 
         manta is a heuristic network clustering algorithm that clusters nodes within weighted networks effectively, leveraging the presence of negative edges and discerning between weak and 
         microbetag invokes manta~\cite{rottjers2020manta} to infer clusters from the microbial network.
@@ -427,16 +436,17 @@
 
 
     \subsection*{ Groups of annotations }
-        \label{groups}
+    \label{groups}
 
-    Biologically meaningful groups were built using the micrO ontology~\cite{blank2016micro}.
+        Biologically meaningful groups were built using the micrO ontology~\cite{blank2016micro}.
 
 
 
 
 
     \subsection*{ Building the CytoscapeApp }
-        \label{subsec:build-cytoapp}
+    \label{subsec:build-cytoapp}
+
         The microbetag CytoscapeApp was build based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
         Java 
         @Ermis to add 
@@ -450,7 +460,7 @@
 
 
     \subsection*{ Dependencies, Web server and API }
-        \label{subsec:webserver}
+    \label{subsec:webserver}
 
         The microbetag web service is container - based and consists of three Docker~\cite{merkel2014docker} (v24.0.2) images: 
         a. the~\href{https://www.mysql.com}{MySQL} database 
@@ -479,6 +489,8 @@
 
 
     \subsection{Running large datasets}
+    \label{subsec:large-datasets}
+
 
 
 
@@ -486,7 +498,8 @@
 
 
 \section{Results}
-    \label{sec:results}
+\label{sec:results}
+
     \footnote{
         Significant advance over previously published software (usually demonstrated by direct comparison with available related software)
         This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. 
@@ -494,18 +507,18 @@
     }
 
     \subsection*{microbetag and microbetagDB}
-        \label{subsec:microbetagdb}
+    \label{subsec:microbetagdb}
 
 
         \begin{figure}[H]
             \label{fig:wf}
+            \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
             \caption{
                 Diagram of the microbetag pre - calculations and the on the fly workflow. 
                 GTDB v207 representative genomes were filtered and for those of high-quality
                 33 phenotypic traits were predicted using~\texttt{phenotrex}~\cite{feldbauer2015prediction}.
                 To this end, models were re-trained to sync with recent version of eggNOG~\cite{huerta2019eggnog}.
             }
-            \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
         \end{figure}
 
 
@@ -526,125 +539,121 @@
         
 
     \subsection*{microbetag CytoscapeApp}
-        \label{subsec:cytoapp}
+    \label{subsec:cytoapp}
 
-    Overall comment, the CytoscapeApp returns averages and s.d. for example in seed scores. 
-    If you want the exact values, go through the API. 
-
-
+        Overall comment, the CytoscapeApp returns averages and s.d. for example in seed scores. 
+        If you want the exact values, go through the API. 
 
 
 
+        \begin{table}[ht]
 
+            \centering
 
-    \begin{table}[ht]
+            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
 
-        \centering
+            \begin{tabular}{c|c}
 
-        \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
+                \begin{tabular}{ccc}
 
-        \begin{tabular}{c|c}
+                    \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
+                    \toprule
+                    Step &  Time(sec) & Notes \\
+                    \toprule
 
-            \begin{tabular}{ccc}
+                    Taxonomy mapping & Cell 1,2 & on the fly \\
 
-                \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
-                \toprule
-                Step &  Time(sec) & Notes \\
-                \toprule
+                    Network inference & Cell 2,2 & on the fly  \\
 
-                Taxonomy mapping & Cell 1,2 & on the fly \\
+                    microbetag annotations & Cell 3,2 & on the fly \\
 
-                Network inference & Cell 2,2 & on the fly  \\
+                    manta clustering & Cell 4,2 & on the fly \\
 
-                microbetag annotations & Cell 3,2 & on the fly \\
+                \end{tabular} &
 
-                manta clustering & Cell 4,2 & on the fly \\
+                \begin{tabular}{ccc}
 
-            \end{tabular} &
+                    \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
+                    \toprule
+                    Step &  Time(sec) & Notes \\
+                    \toprule
 
-            \begin{tabular}{ccc}
+                    Taxonomy assignment &  & Docker image on HP\protect\footnotemark \\
 
-                \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
-                \toprule
-                Step &  Time(sec) & Notes \\
-                \toprule
+                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
 
-                Taxonomy assignment &  & Docker image on HP\protect\footnotemark \\
+                    Network inference & Cell 2,2 & Cell 2,3 \\
 
-                Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
+                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
 
-                Network inference & Cell 2,2 & Cell 2,3 \\
+                    manta clustering & Cell 4,2 & Cell 4,3 \\
 
-                microbetag annotations & Cell 3,2 & Cell 3,3 \\
+                \end{tabular} \\
+                \\
+                \hline
+                \\
+                \begin{tabular}{ccc}
 
-                manta clustering & Cell 4,2 & Cell 4,3 \\
+                    \multicolumn{3}{c}{C. Silva: } \\
+                    \toprule
+                    Step &  Time(sec) & Notes \\
+                    \toprule
 
-            \end{tabular} \\
-            \\
-            \hline
-            \\
-            \begin{tabular}{ccc}
+                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
 
-                \multicolumn{3}{c}{C. Silva: } \\
-                \toprule
-                Step &  Time(sec) & Notes \\
-                \toprule
+                    Network inference & Cell 2,2 & Cell 2,3 \\
 
-                Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
+                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
 
-                Network inference & Cell 2,2 & Cell 2,3 \\
+                    manta clustering & Cell 4,2 & Cell 4,3 \\
 
-                microbetag annotations & Cell 3,2 & Cell 3,3 \\
+                \end{tabular} &
 
-                manta clustering & Cell 4,2 & Cell 4,3 \\
+                \begin{tabular}{ccc}
 
-            \end{tabular} &
+                    \multicolumn{3}{c}{D. fuzzywuzzy: } \\
+                    \toprule
+                    Step &  Time(sec) & Notes \\
+                    \toprule
 
-            \begin{tabular}{ccc}
+                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
 
-                \multicolumn{3}{c}{D. fuzzywuzzy: } \\
-                \toprule
-                Step &  Time(sec) & Notes \\
-                \toprule
+                    Network inference & Cell 2,2 & Cell 2,3 \\
 
-                Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
+                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
 
-                Network inference & Cell 2,2 & Cell 2,3 \\
+                    manta clustering & Cell 4,2 & Cell 4,3 \\
 
-                microbetag annotations & Cell 3,2 & Cell 3,3 \\
+                \end{tabular} \\
 
-                manta clustering & Cell 4,2 & Cell 4,3 \\
+            \end{tabular}
 
-            \end{tabular} \\
+            \end{adjustbox}
 
-        \end{tabular}
-
-        \end{adjustbox}
-
-        \caption{
-            Computating times per step using an abundance table of 400 taxa with taxonomy: 
-            A. taxonomy scheme 
-            B. 
-            C.
-            D. 
-            \protect\footnotemark[\value{footnote}] specs of the laptop used.
-        }
-        
-        \label{tab:grid}
-    \end{table}
+            \caption{
+                Computating times per step using an abundance table of 400 taxa with taxonomy: 
+                A. taxonomy scheme 
+                B. 
+                C.
+                D. 
+                \protect\footnotemark[\value{footnote}] specs of the laptop used.
+            }
+            
+            \label{tab:grid}
+        \end{table}
 
 
 
 
     \subsection*{Validation of microbetag potential}
-        \label{subsec:validation}
+    \label{subsec:validation}
 
 
         vitamin dataset~\cite{hessler2023vitamin}
 
 
     \subsection*{Interpetating a real-world network with microbetag}
-        \label{subsec:usecase}
+    \label{subsec:usecase}
 
 
         Annelies' dataset. 
@@ -659,7 +668,8 @@
 
 
 \section{Discussion}
-    \label{sec:discussion}
+\label{sec:discussion}
+
     \footnote{
         The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, 
         together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
@@ -671,12 +681,15 @@
 
 
 \section{Conclusions}
-    \label{sec:conclusions}
+\label{sec:conclusions}
+
     \footnote{
         This should state clearly the main conclusions and provide an explanation of the importance and relevance of the case, data, opinion, database or software reported.
     }
 
     Data integration 
+
+
 
 
 \backmatter
@@ -694,32 +707,33 @@
 
 
 
-
-
+% ====================================================
+% Declarations
+% ====================================================
 \section*{Declarations}
 
 
     \begin{itemize}
 
-        \item Availability of data and materials
+        \item \textbf{Availability of data and materials}
 
-        \begin{itemize}
-            \item Raw sequences for the use case: 
-            \item Raw data for the validations case:
-        \end{itemize}
+            \begin{itemize}
+                \item Raw sequences for the use case: 
+                \item Raw data for the validations case:
+            \end{itemize}
 
-
-        \item Funding
+        \item \textbf{Funding}
         
             This work was initiated thanks to an EMBO Scientific Exchange Grant to HZ. 
             It was then supported by the 3D’omics Horizon project (101000309). 
             We would also like to thank the National Resource for Network Biology (NRNB) and the Google Summer of Code 2023 for the support of E.I.M.D.
 
-        \item Conflict of interest/Competing interests 
+        \item \textbf{Conflict of interest/Competing interests} 
 
             The authors declare that they have no other competing interests.
 
-        \item Authors' contributions\footnote{Based on the \href{https://www-elsevier-com.kuleuven.e-bronnen.be/researcher/author/policies-and-guidelines/credit-author-statement}{CRediT system}. Current list is indicative.}
+        \item \textbf{Authors' contributions}
+            \footnote{Based on the \href{https://www-elsevier-com.kuleuven.e-bronnen.be/researcher/author/policies-and-guidelines/credit-author-statement}{CRediT system}. Current list is indicative.}
 
             Conceptualization: K.F.
             Methodology: K.F. and H.Z.
@@ -734,45 +748,42 @@
             Visualization: H.Z.
             Supervision: K.F., H.Z. and S.M.
             Project administration: K.F.
-            Funding acquisition: K.F.
+            Funding acquisition: K.F., A.E.
 
 
-
-        \item Acknowledgements
+        \item \textbf{Acknowledgements}
 
             We would like to thank Dr Christina Pavloudi and ++ for the insight on how to organise the trait groups.
 
 
-        \item Ethics approval 
+        \item \textbf{Ethics approval}
 
             Not applicable
 
-        \item Consent to participate
+        \item \textbf{Consent to participate}
         
             Not applicable.
 
-        \item Code availability: 
-        \begin{itemize}
-            \item microbetagDB related scripts: \href{https://github.com/hariszaf/microbetag}{https://github.com/hariszaf/microbetag}
-            \item microbetagApp and webserver: \href{https://github.com/msysbio/microbetagApp}{https://github.com/msysbio/microbetagApp}.
-            \item CytoscapeApp: \href{https://github.com/ermismd/MGG/}{https://github.com/ermismd/MGG/}
-            \item Validation and use case: <think of having that under the 3D'omics organization> 
-            \item Documentation web-site: \href{https://hariszaf.github.io/microbetag/}{https://hariszaf.github.io/microbetag/}
-        \end{itemize}
+        \item \textbf{Code availability: }
 
-        
+            \begin{itemize}
+                \item microbetagDB related scripts: \href{https://github.com/hariszaf/microbetag}{https://github.com/hariszaf/microbetag}
+                \item microbetagApp and webserver: \href{https://github.com/msysbio/microbetagApp}{https://github.com/msysbio/microbetagApp}.
+                \item CytoscapeApp: \href{https://github.com/ermismd/MGG/}{https://github.com/ermismd/MGG/}
+                \item Validation and use case: <think of having that under the 3D'omics organization> 
+                \item Documentation web-site: \href{https://hariszaf.github.io/microbetag/}{https://hariszaf.github.io/microbetag/}
+            \end{itemize}
 
     \end{itemize}
 
 
-
-
-
+% ====================================================
+% Appendices
+% ====================================================
 \begin{appendices}
 
-    \section{Background on seed scores}
+    \section{Background on seed scores and complementarities}
     \label{secA1}
-
 
         \subsection{Background on seed scores}
 
@@ -802,8 +813,6 @@
             \end{equation}
 
 
-
-
         \subsection{Background on pathway complementarity}
 
             For example, the definition of the D-Galacturonate degradation in Bacteria (\href{https://www.genome.jp/dbget-bin/www_bget?M00631}{M00631}) is: \vspace{0.35cm}
@@ -824,36 +833,28 @@
 
             K01812 K00041 K16849+K16850 K00874 K17463\vspace{0.5cm}
 
-%%=============================================%%
-%% For submissions to Nature Portfolio Journals %%
-%% please use the heading ``Extended Data''.   %%
-%%=============================================%%
 
-%%=============================================================%%
-%% Sample for another appendix section			       %%
-%%=============================================================%%
+        \subsection{Complementarities}
+            
+            KEGG compound 
+            ModelSEED compounds
+            ModelSEED compounds mapped to KEGG compounds and kept only those related to KEGG modules. 
 
-%% \section{Example of another appendix section}\label{secA2}%
-%% Appendices may be used for helpful, supporting or essential material that would otherwise 
-%% clutter, break up or be distracting to the text. Appendices can consist of sections, figures, 
-%% tables and equations etc.
 
 \end{appendices}
 
-%%===========================================================================================%%
-%% If you are submitting to one of the Nature Portfolio journals, using the eJP submission   %%
-%% system, please include the references within the manuscript file itself. You may do this  %%
-%% by copying the reference list from your .bbl file, paste it into the main manuscript .tex %%
-%% file, and delete the associated \verb+\bibliography+ commands.                            %%
-%%===========================================================================================%%
 
-\bibliography{sn-bibliography}% common bib file
-%% if required, the content of .bbl file can be included here once bbl is generated
-% \input sn-article.bbl
+% ======================
+% Bibliography
+% ======================
+\bibliography{sn-bibliography}
 
 
 
 \end{document}
+
+
+
 
 
 
@@ -996,9 +997,6 @@
 
 % ----------------  ALGORITHSM ------------------------
 
-
-% \section{Algorithms, Program codes and Listings}\label{sec7}
-
 % Packages \verb+algorithm+, \verb+algorithmicx+ and \verb+algpseudocode+ are used for setting algorithms in \LaTeX\ using the format:
 
 % %%=============================================%%
@@ -1070,100 +1068,6 @@
 % \end{algorithmic}
 % \end{algorithm}
 
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-% \bigskip
-% \begin{minipage}{\hsize}%
-% \lstset{frame=single,framexleftmargin=-1pt,framexrightmargin=-17pt,framesep=12pt,linewidth=0.98\textwidth,language=pascal}% Set your language (you can change the language for each code-block optionally)
-% %%% Start your code-block
-% \begin{lstlisting}
-% for i:=maxint to 0 do
-% begin
-% { do nothing }
-% end;
-% Write('Case insensitive ');
-% Write('Pascal keywords.');
-% \end{lstlisting}
-% \end{minipage}
-
-%  ----------------   THEOREMS ---------------------------
-
-% % \section{Examples for theorem like environments}\label{sec10}
-
-% % For theorem like environments, we require \verb+amsthm+ package. There are three types of predefined theorem styles exists---\verb+thmstyleone+, \verb+thmstyletwo+ and \verb+thmstylethree+ 
-
-% % %%=============================================%%
-% % %% For presentation purpose, we have included  %%
-% % %% \bigskip command. please ignore this.       %%
-% % %%=============================================%%
-% % \bigskip
-% % \begin{tabular}{|l|p{19pc}|}
-% % \hline
-% % \verb+thmstyleone+ & Numbered, theorem head in bold font and theorem text in italic style \\\hline
-% % \verb+thmstyletwo+ & Numbered, theorem head in roman font and theorem text in italic style \\\hline
-% % \verb+thmstylethree+ & Numbered, theorem head in bold font and theorem text in roman style \\\hline
-% % \end{tabular}
-% % \bigskip
-% % %%=============================================%%
-% % %% For presentation purpose, we have included  %%
-% % %% \bigskip command. please ignore this.       %%
-% % %%=============================================%%
-
-% % For mathematics journals, theorem styles can be included as shown in the following examples:
-
-% \begin{theorem}[Theorem subhead]\label{thm1}
-%     Example theorem text. 
-%     \end{theorem}
-    
-%     Sample body text. 
-    
-    
-%     \begin{proposition}
-%     Example proposition text. 
-%     \end{proposition}
-    
-%     Sample body text.
-    
-    
-%     \begin{example}
-%     Phasellus adipiscing semper elit. 
-%     \end{example}
-    
-%     Sample body text. 
-    
-%     \begin{remark}
-%     Phasellus adipiscing semper elit. 
-%     \end{remark}
-    
-%     Sample body text.
-    
-%     \begin{definition}[Definition sub head]
-%     Example definition text. 
-%     \end{definition}
-    
-%     \newline
-    
-%     Additionally a predefined ``proof'' environment is available: \verb+\begin{proof}+ \verb+...+ \verb+\end{proof}+. This prints a ``Proof'' head in italic font style and the ``body text'' in roman font style with an open square at the end of each proof environment. 
-    
-%     \begin{proof}
-%     Example for proof text. 
-%     \end{proof}
-    
-%     Sample body text. 
-    
-%     \begin{proof}[Proof of Theorem~{\upshape\ref{thm1}}]
-%     Example for proof text. 
-%     \end{proof}
-    
-%     \noindent
-%     For a quote environment, use \verb+\begin{quote}...\end{quote}+
-%     \begin{quote}
-%     Quoted text example. 
-%     \end{quote}
-    
-%     Sample body text. Sample body text. Sample body text. Sample body text. Sample body text (refer Figure~\ref{fig1}). Sample body text. Sample body text. Sample body text (refer Table~\ref{tab3}). 
 
 
 % ----------------- EQUATIONS --------------------

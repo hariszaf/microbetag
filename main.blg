@@ -1,32 +1,30 @@
-This is BibTeX, Version 0.99d
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
-Reallocating 'name_of_file' (item size: 1) to 12 items.
 The style file: sn-mathphys.bst
-Reallocating 'name_of_file' (item size: 1) to 16 items.
-Reallocating 'glb_str_end' (item size: 4) to 20 items.
-Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
-Reallocating 'global_strs' (item size: 1) to 4000000 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'wiz_functions' (item size: 4) to 6000 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: sn-bibliography.bib
 Warning--entry type for "ali_alishum_2022_6655692" isn't style-file defined
---line 340 of file sn-bibliography.bib
-Reallocating 'wiz_functions' (item size: 4) to 9000 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
+--line 413 of file sn-bibliography.bib
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
 while executing--line 2870 of file sn-mathphys.bst
 Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
@@ -39,47 +37,47 @@ Warning--"archaea}" isn't a brace-balanced string for entry ali_alishum_2022_665
 while executing--line 2870 of file sn-mathphys.bst
 Warning--"ARCHAEA}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
 while executing--line 2870 of file sn-mathphys.bst
-Reallocating 'singl_function' (item size: 4) to 100 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 38 entries,
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 44 entries,
             7480 wiz_defined-function locations,
-            1408 strings with 18346 characters,
-and the built_in function-call counts, 253178 in all, are:
-= -- 36604
-> -- 1689
-< -- 680
-+ -- 14296
-- -- 432
-* -- 13834
-:= -- 47617
-add.period$ -- 39
-call.type$ -- 38
-change.case$ -- 232
-chr.to.int$ -- 1883
-cite$ -- 38
-duplicate$ -- 2186
-empty$ -- 11993
-format.name$ -- 1350
-if$ -- 60446
+            1438 strings with 19942 characters,
+and the built_in function-call counts, 288267 in all, are:
+= -- 40684
+> -- 2021
+< -- 764
++ -- 14893
+- -- 547
+* -- 16701
+:= -- 54719
+add.period$ -- 45
+call.type$ -- 44
+change.case$ -- 265
+chr.to.int$ -- 2105
+cite$ -- 44
+duplicate$ -- 2597
+empty$ -- 14580
+format.name$ -- 1707
+if$ -- 68150
 int.to.chr$ -- 1
-int.to.str$ -- 57
+int.to.str$ -- 66
 missing$ -- 0
-newline$ -- 644
-num.names$ -- 190
-pop$ -- 1096
+newline$ -- 761
+num.names$ -- 220
+pop$ -- 1325
 preamble$ -- 1
-purify$ -- 169
+purify$ -- 196
 quote$ -- 0
-skip$ -- 20789
+skip$ -- 22672
 stack$ -- 0
-substring$ -- 31431
-swap$ -- 1248
-text.length$ -- 412
+substring$ -- 36753
+swap$ -- 1464
+text.length$ -- 478
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 1601
+type$ -- 1852
 warning$ -- 0
-while$ -- 1306
+while$ -- 1581
 width$ -- 0
-write$ -- 876
+write$ -- 1031
 (There were 7 warnings)
