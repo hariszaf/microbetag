@@ -73,7 +73,7 @@ dada2familiesNcbiIds
 *.nans
 *.ini
 *.pckl
-
+*.contigs.fa
 
 elos_bins.tsv
 kos_on_modules_graph.tsv
