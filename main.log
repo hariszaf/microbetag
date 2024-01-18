@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.11.22)  15 JAN 2024 13:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.11.22)  18 JAN 2024 02:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -959,10 +959,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5]
-<figs/path_complem.png, id=164, 2768.3425pt x 1698.345pt>
+<figs/path_complem.png, id=166, 2768.3425pt x 1698.345pt>
 File: figs/path_complem.png Graphic file (type png)
 <use figs/path_complem.png>
-Package pdftex.def Info: figs/path_complem.png  used on input line 369.
+Package pdftex.def Info: figs/path_complem.png  used on input line 370.
 (pdftex.def)             Requested size: 297.60114pt x 182.56853pt.
 
 
@@ -978,10 +978,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8]
-<figs/microbetag-wf.png, id=233, 3956.7825pt x 5491.51625pt>
+<figs/microbetag-wf.png, id=235, 3956.7825pt x 5491.51625pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
-Package pdftex.def Info: figs/microbetag-wf.png  used on input line 517.
+Package pdftex.def Info: figs/microbetag-wf.png  used on input line 518.
 (pdftex.def)             Requested size: 334.79773pt x 464.63597pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -993,23 +993,23 @@ Overfull \vbox (3.70448pt too high) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10 <./figs/microbetag-wf.png>]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 558.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 559.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 558.
+(Font)              size <5> substituted on input line 559.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 558.
+(Font)              size <5> substituted on input line 559.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 558.
+(Font)              size <5> substituted on input line 559.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 558.
+(Font)              size <5> substituted on input line 559.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1017,7 +1017,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [11]
 
 Package hyperref Warning: Difference (4) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 706.
+(hyperref)                than one, level fixed on input line 707.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1046,10 +1046,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 16357B5410AEAE1A0B59A57864C0B4BB;1726.
  ) 
 Here is how much of TeX's memory you used:
- 27518 strings out of 476340
- 506300 string characters out of 5795049
- 1871388 words of memory out of 5000000
- 47327 multiletter control sequences out of 15000+600000
+ 27522 strings out of 476340
+ 506381 string characters out of 5795049
+ 1870388 words of memory out of 5000000
+ 47330 multiletter control sequences out of 15000+600000
  530885 words of font info for 109 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
  99i,23n,117p,877b,680s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1057,9 +1057,9 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.5} has been referenced but does not exist, replaced by a fixed one
 
  </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (17 pages, 5018917 bytes).
+Output written on main.pdf (17 pages, 5019561 bytes).
 PDF statistics:
- 426 PDF objects out of 1000 (max. 8388607)
- 108 named destinations out of 1000 (max. 500000)
+ 430 PDF objects out of 1000 (max. 8388607)
+ 109 named destinations out of 1000 (max. 500000)
  122 words of extra memory for PDF output out of 10000 (max. 10000000)
 
