@@ -23,7 +23,7 @@ Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Database file #1: sn-bibliography.bib
 Warning--entry type for "ali_alishum_2022_6655692" isn't style-file defined
---line 450 of file sn-bibliography.bib
+--line 472 of file sn-bibliography.bib
 Reallocating 'wiz_functions' (item size: 4) to 9000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
@@ -41,45 +41,45 @@ Warning--"ARCHAEA}" isn't a brace-balanced string for entry ali_alishum_2022_665
 while executing--line 2870 of file sn-mathphys.bst
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 45 entries,
+You've used 47 entries,
             7480 wiz_defined-function locations,
-            1444 strings with 20061 characters,
-and the built_in function-call counts, 290785 in all, are:
-= -- 40987
-> -- 2056
-< -- 790
-+ -- 14968
-- -- 550
-* -- 16822
-:= -- 55190
-add.period$ -- 46
-call.type$ -- 45
-change.case$ -- 270
-chr.to.int$ -- 2178
-cite$ -- 45
-duplicate$ -- 2647
-empty$ -- 14710
-format.name$ -- 1717
-if$ -- 68793
+            1457 strings with 20561 characters,
+and the built_in function-call counts, 299861 in all, are:
+= -- 42022
+> -- 2154
+< -- 840
++ -- 15130
+- -- 568
+* -- 17485
+:= -- 56955
+add.period$ -- 48
+call.type$ -- 47
+change.case$ -- 280
+chr.to.int$ -- 2324
+cite$ -- 47
+duplicate$ -- 2775
+empty$ -- 15329
+format.name$ -- 1779
+if$ -- 70886
 int.to.chr$ -- 1
-int.to.str$ -- 67
+int.to.str$ -- 69
 missing$ -- 0
-newline$ -- 773
-num.names$ -- 225
-pop$ -- 1337
+newline$ -- 804
+num.names$ -- 235
+pop$ -- 1393
 preamble$ -- 1
-purify$ -- 200
+purify$ -- 208
 quote$ -- 0
-skip$ -- 22887
+skip$ -- 23450
 stack$ -- 0
-substring$ -- 36944
-swap$ -- 1498
-text.length$ -- 488
+substring$ -- 38193
+swap$ -- 1580
+text.length$ -- 508
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 1897
+type$ -- 1987
 warning$ -- 0
-while$ -- 1604
+while$ -- 1671
 width$ -- 0
-write$ -- 1049
+write$ -- 1092
 (There were 7 warnings)

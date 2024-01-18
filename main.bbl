@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{45}
+\begin{thebibliography}{47}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -805,6 +805,39 @@ R Journal
 \bvolume{14}(\bissue{1}),
 \bfpage{4768}
 (\byear{2023})
+\end{barticle}
+\endbibitem
+
+%%% 46
+\bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
+\begin{barticle}
+\bauthor{\bsnm{Chklovski}, \binits{A.}},
+\bauthor{\bsnm{Parks}, \binits{D.H.}},
+\bauthor{\bsnm{Woodcroft}, \binits{B.J.}},
+\bauthor{\bsnm{Tyson}, \binits{G.W.}}:
+\batitle{Checkm2: a rapid, scalable and accurate tool for assessing microbial
+  genome quality using machine learning}.
+\bjtitle{Nature Methods}
+\bvolume{20}(\bissue{8}),
+\bfpage{1203}--\blpage{1212}
+(\byear{2023})
+\end{barticle}
+\endbibitem
+
+%%% 47
+\bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
+\begin{barticle}
+\bauthor{\bsnm{Parks}, \binits{D.H.}},
+\bauthor{\bsnm{Imelfort}, \binits{M.}},
+\bauthor{\bsnm{Skennerton}, \binits{C.T.}},
+\bauthor{\bsnm{Hugenholtz}, \binits{P.}},
+\bauthor{\bsnm{Tyson}, \binits{G.W.}}:
+\batitle{Checkm: assessing the quality of microbial genomes recovered from
+  isolates, single cells, and metagenomes}.
+\bjtitle{Genome research}
+\bvolume{25}(\bissue{7}),
+\bfpage{1043}--\blpage{1055}
+(\byear{2015})
 \end{barticle}
 \endbibitem
 

@@ -661,6 +661,18 @@
         The network is overlaid with metagenomic information about functional capacities to generate testable hypotheses.
 
 
+
+
+\section{Discussion}
+\label{sec:discussion}
+
+    \footnote{
+        The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
+        A case study of the use of the software may be presented. 
+        The planned future development of new features, if any, should be mentioned.
+    }
+    
+
     \subsection*{Interpetating a real-world network with microbetag}
     \label{subsec:usecase}
 
@@ -669,19 +681,12 @@
 
 
 
+    \subsection*{Limitations}
+    \label{subsec:limitations}
 
 
-
-
-\section{Discussion}
-\label{sec:discussion}
-
-    \footnote{
-        The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, 
-        together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
-        A case study of the use of the software may be presented. The planned future development of new features, if any, should be mentioned.
-    }
-    
+        As shown in~\cite{chklovski2023checkm2} (see Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness \~65\%.
+        microbetag inherits this in the filtering process for getting only high quality genomes and thus, only few representatives from these taxonomic groups are present on microbetagDB.
 
 
 
