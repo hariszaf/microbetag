@@ -228,6 +228,9 @@
     Such nodes might be independent, i.e. they cannot be activated by any other node in the network, or they can be interdependent forming groups of seed nodes.
     Seeds have been proven themeselves a successful proxy for the habitat of the organism and an essential tool in the frameowrk of reverse ecology~\cite{parter2007environmental,borenstein2008large}.
     Based on the seed concept, several graph theory-based metrics (indices) have been described to predict species interactions directly from their networks' topologies~\cite{levy2015netcooperate, kreimer2012netcmpt, zelezniak2015metabolic, belcour2020metage2metabo}.
+    Over the last years, the seed apprach has been implemented at the Genome-scale metabolic network reconstructions (GENREs) level.
+    GENREs encapsulate mathematical representations capturing the biochemical reactions that could take place within an organism~\cite{thiele2010protocol, durot2008genome, communityGemMicrobiomeModel2023}.
+
     Metabolic complementarity among species, serving as a reflection of potential cooperation within communities, assesses the capacity for collaboration; cross-feeding or syntrophy interactions are typical examples of such a collaboration. 
     Contary, metabolic competition refers to the metabolic overlap between two species leading to exploitative competition, e.g. for nutrient resources.
     Seed and non-seed sets can be used to compute such indices. 
@@ -242,9 +245,10 @@
     A Graphical User Interface (GUI) is supported as a CytoscapeApp providing a user-friendly environment to investigate annotations in a straightforward way.
     All annotations present on microbetagDB are also available though an Application Programming Interface (API).
     \microbetag's source code is under a GNU GPL v3 license and available on GitHub. 
+    Documentation and further support on how to use \microbetag is available at \href{https://hariszaf.github.io/microbetag/}{documentation web-site}.
     To the best of our knowledge there is not a software with which \microbetag could be compared with directly. 
     To validate our annotations we used a recently published network with partially known interactions between some pairs of species found associated~\cite{hessler2023vitamin} (see Results section, paragraph~\ref{subsec:validation}).    
-    To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case(~see Discussion section, paragraph~\ref{subsec:usecase}).
+    To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
 
 
     % \hrulefill
@@ -288,7 +292,9 @@
         Using the Genome Taxonomy Database (GTDB) v207 \href{https://data.gtdb.ecogenomic.org/releases/release207/207.0/}{metadata files}, we retrieved the NCBI genome accessions of the high quality representative genomes, i.e. completeness $\geq 95\%$  and contamination $\leq 5\%$.
         % That resulted a set of $26,778$ covering $22,009$ unique NCBI Taxonomy Ids.
         A set of $26,778$ genomes was obtained, representing $22,009$ unique NCBI Taxonomy Ids.
-        Using these accession numbers, we were able to download their corresponding \texttt{.faa} files when available (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/gtdb_ncbi/get_gtdb_faa.py}{\texttt{get\_gtdb\_faa.py}}) leading to a set of $16,900$ amino acid sequence files.
+        Using these accession numbers, we were able to download their corresponding \texttt{.faa} files when available 
+        % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/gtdb_ncbi/get_gtdb_faa.py}{\texttt{get\_gtdb\_faa.py}}) 
+        leading to a set of $16,900$ amino acid sequence files.
         The latter were annotated and used to obtain potential pathway complementarities beween pairs of genomes (see paragraph~\ref{subsec:path-compl}).
         Last, when available, their corresponding annotations on PATRIC database~\cite{wattam2017improvements} were retrieved to reconstruct GENREs~(see paragraph~\ref{subsec:seeds}).
 
