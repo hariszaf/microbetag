@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{47}
+\begin{thebibliography}{66}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -44,42 +44,55 @@
 \csname PreBibitemsHook\endcsname
 
 %%% 1
-\bibitem[\protect\citeauthoryear{Berry and Widder}{2014}]{berry2014deciphering}
+\bibitem[\protect\citeauthoryear{Yuan et~al.}{2021}]{yuan2021climate}
 \begin{barticle}
-\bauthor{\bsnm{Berry}, \binits{D.}},
-\bauthor{\bsnm{Widder}, \binits{S.}}:
-\batitle{Deciphering microbial interactions and detecting keystone species with
-  co-occurrence networks}.
-\bjtitle{Frontiers in microbiology}
-\bvolume{5},
-\bfpage{219}
-(\byear{2014})
+\bauthor{\bsnm{Yuan}, \binits{M.M.}},
+\bauthor{\bsnm{Guo}, \binits{X.}},
+\bauthor{\bsnm{Wu}, \binits{L.}},
+\bauthor{\bsnm{Zhang}, \binits{Y.}},
+\bauthor{\bsnm{Xiao}, \binits{N.}},
+\bauthor{\bsnm{Ning}, \binits{D.}},
+\bauthor{\bsnm{Shi}, \binits{Z.}},
+\bauthor{\bsnm{Zhou}, \binits{X.}},
+\bauthor{\bsnm{Wu}, \binits{L.}},
+\bauthor{\bsnm{Yang}, \binits{Y.}}, \betal:
+\batitle{Climate warming enhances microbial network complexity and stability}.
+\bjtitle{Nature Climate Change}
+\bvolume{11}(\bissue{4}),
+\bfpage{343}--\blpage{348}
+(\byear{2021})
 \end{barticle}
 \endbibitem
 
 %%% 2
-\bibitem[\protect\citeauthoryear{Ma et~al.}{2020}]{ma2020earth}
+\bibitem[\protect\citeauthoryear{Raes and Bork}{2008}]{raes2008molecular}
 \begin{barticle}
-\bauthor{\bsnm{Ma}, \binits{B.}},
-\bauthor{\bsnm{Wang}, \binits{Y.}},
-\bauthor{\bsnm{Ye}, \binits{S.}},
-\bauthor{\bsnm{Liu}, \binits{S.}},
-\bauthor{\bsnm{Stirling}, \binits{E.}},
-\bauthor{\bsnm{Gilbert}, \binits{J.A.}},
-\bauthor{\bsnm{Faust}, \binits{K.}},
-\bauthor{\bsnm{Knight}, \binits{R.}},
-\bauthor{\bsnm{Jansson}, \binits{J.K.}},
-\bauthor{\bsnm{Cardona}, \binits{C.}}, \betal:
-\batitle{Earth microbial co-occurrence network reveals interconnection pattern
-  across microbiomes}.
-\bjtitle{Microbiome}
-\bvolume{8},
-\bfpage{1}--\blpage{12}
-(\byear{2020})
+\bauthor{\bsnm{Raes}, \binits{J.}},
+\bauthor{\bsnm{Bork}, \binits{P.}}:
+\batitle{Molecular eco-systems biology: towards an understanding of community
+  function}.
+\bjtitle{Nature Reviews Microbiology}
+\bvolume{6}(\bissue{9}),
+\bfpage{693}--\blpage{699}
+(\byear{2008})
 \end{barticle}
 \endbibitem
 
 %%% 3
+\bibitem[\protect\citeauthoryear{Faust and
+  Raes}{2012}]{faust2012microbialReviewInteractions}
+\begin{barticle}
+\bauthor{\bsnm{Faust}, \binits{K.}},
+\bauthor{\bsnm{Raes}, \binits{J.}}:
+\batitle{Microbial interactions: from networks to models}.
+\bjtitle{Nature Reviews Microbiology}
+\bvolume{10}(\bissue{8}),
+\bfpage{538}--\blpage{550}
+(\byear{2012})
+\end{barticle}
+\endbibitem
+
+%%% 4
 \bibitem[\protect\citeauthoryear{R{\"o}ttjers and
   Faust}{2018}]{rottjers2018hairballs}
 \begin{barticle}
@@ -94,35 +107,124 @@
 \end{barticle}
 \endbibitem
 
-%%% 4
-\bibitem[\protect\citeauthoryear{Raes and Bork}{2008}]{raes2008molecular}
-\begin{barticle}
-\bauthor{\bsnm{Raes}, \binits{J.}},
-\bauthor{\bsnm{Bork}, \binits{P.}}:
-\batitle{Molecular eco-systems biology: towards an understanding of community
-  function}.
-\bjtitle{Nature Reviews Microbiology}
-\bvolume{6}(\bissue{9}),
-\bfpage{693}--\blpage{699}
-(\byear{2008})
-\end{barticle}
-\endbibitem
-
 %%% 5
-\bibitem[\protect\citeauthoryear{Faust and
-  Raes}{2012}]{faust2012microbialReviewInteractions}
+\bibitem[\protect\citeauthoryear{B{\'a}lint et~al.}{2016}]{balint2016millions}
 \begin{barticle}
+\bauthor{\bsnm{B{\'a}lint}, \binits{M.}},
+\bauthor{\bsnm{Bahram}, \binits{M.}},
+\bauthor{\bsnm{Eren}, \binits{A.M.}},
 \bauthor{\bsnm{Faust}, \binits{K.}},
-\bauthor{\bsnm{Raes}, \binits{J.}}:
-\batitle{Microbial interactions: from networks to models}.
-\bjtitle{Nature Reviews Microbiology}
-\bvolume{10}(\bissue{8}),
-\bfpage{538}--\blpage{550}
-(\byear{2012})
+\bauthor{\bsnm{Fuhrman}, \binits{J.A.}},
+\bauthor{\bsnm{Lindahl}, \binits{B.}},
+\bauthor{\bsnm{O'Hara}, \binits{R.B.}},
+\bauthor{\bsnm{{\"O}pik}, \binits{M.}},
+\bauthor{\bsnm{Sogin}, \binits{M.L.}},
+\bauthor{\bsnm{Unterseher}, \binits{M.}}, \betal:
+\batitle{Millions of reads, thousands of taxa: microbial community structure
+  and associations analyzed via marker genes}.
+\bjtitle{FEMS microbiology reviews}
+\bvolume{40}(\bissue{5}),
+\bfpage{686}--\blpage{700}
+(\byear{2016})
 \end{barticle}
 \endbibitem
 
 %%% 6
+\bibitem[\protect\citeauthoryear{Robinson et~al.}{2010}]{robinson2010structure}
+\begin{barticle}
+\bauthor{\bsnm{Robinson}, \binits{C.J.}},
+\bauthor{\bsnm{Bohannan}, \binits{B.J.}},
+\bauthor{\bsnm{Young}, \binits{V.B.}}:
+\batitle{From structure to function: the ecology of host-associated microbial
+  communities}.
+\bjtitle{Microbiology and Molecular Biology Reviews}
+\bvolume{74}(\bissue{3}),
+\bfpage{453}--\blpage{476}
+(\byear{2010})
+\end{barticle}
+\endbibitem
+
+%%% 7
+\bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016high}
+\begin{barticle}
+\bauthor{\bsnm{Louca}, \binits{S.}},
+\bauthor{\bsnm{Jacques}, \binits{S.M.}},
+\bauthor{\bsnm{Pires}, \binits{A.P.}},
+\bauthor{\bsnm{Leal}, \binits{J.S.}},
+\bauthor{\bsnm{Srivastava}, \binits{D.S.}},
+\bauthor{\bsnm{Parfrey}, \binits{L.W.}},
+\bauthor{\bsnm{Farjalla}, \binits{V.F.}},
+\bauthor{\bsnm{Doebeli}, \binits{M.}}:
+\batitle{High taxonomic variability despite stable functional structure across
+  microbial communities}.
+\bjtitle{Nature ecology \& evolution}
+\bvolume{1}(\bissue{1}),
+\bfpage{0015}
+(\byear{2016})
+\end{barticle}
+\endbibitem
+
+%%% 8
+\bibitem[\protect\citeauthoryear{Kost et~al.}{2023}]{kost2023metabolic}
+\begin{botherref}
+\oauthor{\bsnm{Kost}, \binits{C.}},
+\oauthor{\bsnm{Patil}, \binits{K.R.}},
+\oauthor{\bsnm{Friedman}, \binits{J.}},
+\oauthor{\bsnm{Garcia}, \binits{S.L.}},
+\oauthor{\bsnm{Ralser}, \binits{M.}}:
+Metabolic exchanges are ubiquitous in natural microbial communities.
+Nature Microbiology,
+1--9
+(2023)
+\end{botherref}
+\endbibitem
+
+%%% 9
+\bibitem[\protect\citeauthoryear{Arnaouteli
+  et~al.}{2021}]{arnaouteli2021bacillus}
+\begin{barticle}
+\bauthor{\bsnm{Arnaouteli}, \binits{S.}},
+\bauthor{\bsnm{Bamford}, \binits{N.C.}},
+\bauthor{\bsnm{Stanley-Wall}, \binits{N.R.}},
+\bauthor{\bsnm{Kov{\'a}cs}, \binits{{\'A}.T.}}:
+\batitle{Bacillus subtilis biofilm formation and social interactions}.
+\bjtitle{Nature Reviews Microbiology}
+\bvolume{19}(\bissue{9}),
+\bfpage{600}--\blpage{614}
+(\byear{2021})
+\end{barticle}
+\endbibitem
+
+%%% 10
+\bibitem[\protect\citeauthoryear{de~Sousa et~al.}{2023}]{de2023horizontal}
+\begin{barticle}
+\bauthor{\bsnm{Sousa}, \binits{J.M.}},
+\bauthor{\bsnm{Louren{\c{c}}o}, \binits{M.}},
+\bauthor{\bsnm{Gordo}, \binits{I.}}:
+\batitle{Horizontal gene transfer among host-associated microbes}.
+\bjtitle{Cell Host \& Microbe}
+\bvolume{31}(\bissue{4}),
+\bfpage{513}--\blpage{527}
+(\byear{2023})
+\end{barticle}
+\endbibitem
+
+%%% 11
+\bibitem[\protect\citeauthoryear{Keller and
+  Surette}{2006}]{keller2006communication}
+\begin{barticle}
+\bauthor{\bsnm{Keller}, \binits{L.}},
+\bauthor{\bsnm{Surette}, \binits{M.G.}}:
+\batitle{Communication in bacteria: an ecological and evolutionary
+  perspective}.
+\bjtitle{Nature Reviews Microbiology}
+\bvolume{4}(\bissue{4}),
+\bfpage{249}--\blpage{258}
+(\byear{2006})
+\end{barticle}
+\endbibitem
+
+%%% 12
 \bibitem[\protect\citeauthoryear{Finn et~al.}{2024}]{elixir_microbiome}
 \begin{botherref}
 \oauthor{\bsnm{Finn}, \binits{R.}},
@@ -159,7 +261,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 7
+%%% 13
 \bibitem[\protect\citeauthoryear{Hug et~al.}{2016}]{hug2016new}
 \begin{barticle}
 \bauthor{\bsnm{Hug}, \binits{L.A.}},
@@ -180,7 +282,26 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 8
+%%% 14
+\bibitem[\protect\citeauthoryear{Matchado et~al.}{2021}]{matchado2021network}
+\begin{barticle}
+\bauthor{\bsnm{Matchado}, \binits{M.S.}},
+\bauthor{\bsnm{Lauber}, \binits{M.}},
+\bauthor{\bsnm{Reitmeier}, \binits{S.}},
+\bauthor{\bsnm{Kacprowski}, \binits{T.}},
+\bauthor{\bsnm{Baumbach}, \binits{J.}},
+\bauthor{\bsnm{Haller}, \binits{D.}},
+\bauthor{\bsnm{List}, \binits{M.}}:
+\batitle{Network analysis methods for studying microbial communities: A mini
+  review}.
+\bjtitle{Computational and structural biotechnology journal}
+\bvolume{19},
+\bfpage{2687}--\blpage{2698}
+(\byear{2021})
+\end{barticle}
+\endbibitem
+
+%%% 15
 \bibitem[\protect\citeauthoryear{Faust et~al.}{2012}]{faust2012microbial}
 \begin{barticle}
 \bauthor{\bsnm{Faust}, \binits{K.}},
@@ -198,7 +319,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 9
+%%% 16
 \bibitem[\protect\citeauthoryear{Friedman and
   Alm}{2012}]{friedman2012inferring}
 \begin{barticle}
@@ -212,7 +333,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 10
+%%% 17
 \bibitem[\protect\citeauthoryear{Kurtz et~al.}{2015}]{kurtz2015sparse}
 \begin{barticle}
 \bauthor{\bsnm{Kurtz}, \binits{Z.D.}},
@@ -230,20 +351,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 11
-\bibitem[\protect\citeauthoryear{Cougoul et~al.}{2019}]{cougoul2019magma}
-\begin{botherref}
-\oauthor{\bsnm{Cougoul}, \binits{A.}},
-\oauthor{\bsnm{Bailly}, \binits{X.}},
-\oauthor{\bsnm{Wit}, \binits{E.C.}}:
-Magma: inference of sparse microbial association networks.
-BioRxiv,
-538579
-(2019)
-\end{botherref}
-\endbibitem
-
-%%% 12
+%%% 18
 \bibitem[\protect\citeauthoryear{Tackmann et~al.}{2019}]{flashweave_cite}
 \begin{barticle}
 \bauthor{\bsnm{Tackmann}, \binits{J.}},
@@ -258,7 +366,7 @@ BioRxiv,
 \end{barticle}
 \endbibitem
 
-%%% 13
+%%% 19
 \bibitem[\protect\citeauthoryear{Faust}{2021}]{faust2021open}
 \begin{barticle}
 \bauthor{\bsnm{Faust}, \binits{K.}}:
@@ -270,7 +378,7 @@ BioRxiv,
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 20
 \bibitem[\protect\citeauthoryear{Kishore et~al.}{2023}]{kishore2023inferring}
 \begin{botherref}
 \oauthor{\bsnm{Kishore}, \binits{D.}},
@@ -287,7 +395,7 @@ Msystems,
 \end{botherref}
 \endbibitem
 
-%%% 15
+%%% 21
 \bibitem[\protect\citeauthoryear{Weiss et~al.}{2016}]{weiss2016correlation}
 \begin{barticle}
 \bauthor{\bsnm{Weiss}, \binits{S.}},
@@ -309,278 +417,126 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 16
-\bibitem[\protect\citeauthoryear{Ruiz-Perez
-  et~al.}{2021}]{ruiz2021microbeannotator}
+%%% 22
+\bibitem[\protect\citeauthoryear{Berry and Widder}{2014}]{berry2014deciphering}
 \begin{barticle}
-\bauthor{\bsnm{Ruiz-Perez}, \binits{C.A.}},
-\bauthor{\bsnm{Conrad}, \binits{R.E.}},
-\bauthor{\bsnm{Konstantinidis}, \binits{K.T.}}:
-\batitle{Microbeannotator: a user-friendly, comprehensive functional annotation
-  pipeline for microbial genomes}.
-\bjtitle{BMC bioinformatics}
-\bvolume{22},
-\bfpage{1}--\blpage{16}
-(\byear{2021})
-\end{barticle}
-\endbibitem
-
-%%% 17
-\bibitem[\protect\citeauthoryear{Karaoz and
-  Brodie}{2022}]{karaoz2022microtrait}
-\begin{barticle}
-\bauthor{\bsnm{Karaoz}, \binits{U.}},
-\bauthor{\bsnm{Brodie}, \binits{E.L.}}:
-\batitle{microtrait: a toolset for a trait-based representation of microbial
-  genomes}.
-\bjtitle{Frontiers in Bioinformatics}
-\bvolume{2},
-\bfpage{918853}
-(\byear{2022})
-\end{barticle}
-\endbibitem
-
-%%% 18
-\bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
-\begin{barticle}
-\bauthor{\bsnm{Parks}, \binits{D.H.}},
-\bauthor{\bsnm{Chuvochina}, \binits{M.}},
-\bauthor{\bsnm{Rinke}, \binits{C.}},
-\bauthor{\bsnm{Mussig}, \binits{A.J.}},
-\bauthor{\bsnm{Chaumeil}, \binits{P.-A.}},
-\bauthor{\bsnm{Hugenholtz}, \binits{P.}}:
-\batitle{Gtdb: an ongoing census of bacterial and archaeal diversity through a
-  phylogenetically consistent, rank normalized and complete genome-based
-  taxonomy}.
-\bjtitle{Nucleic acids research}
-\bvolume{50}(\bissue{D1}),
-\bfpage{785}--\blpage{794}
-(\byear{2022})
-\end{barticle}
-\endbibitem
-
-%%% 19
-\bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
-\begin{barticle}
-\bauthor{\bsnm{Quast}, \binits{C.}},
-\bauthor{\bsnm{Pruesse}, \binits{E.}},
-\bauthor{\bsnm{Yilmaz}, \binits{P.}},
-\bauthor{\bsnm{Gerken}, \binits{J.}},
-\bauthor{\bsnm{Schweer}, \binits{T.}},
-\bauthor{\bsnm{Yarza}, \binits{P.}},
-\bauthor{\bsnm{Peplies}, \binits{J.}},
-\bauthor{\bsnm{Gl{\"o}ckner}, \binits{F.O.}}:
-\batitle{The silva ribosomal rna gene database project: improved data
-  processing and web-based tools}.
-\bjtitle{Nucleic acids research}
-\bvolume{41}(\bissue{D1}),
-\bfpage{590}--\blpage{596}
-(\byear{2012})
-\end{barticle}
-\endbibitem
-
-%%% 20
-\bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
-\begin{barticle}
-\bauthor{\bsnm{Schoch}, \binits{C.L.}},
-\bauthor{\bsnm{Ciufo}, \binits{S.}},
-\bauthor{\bsnm{Domrachev}, \binits{M.}},
-\bauthor{\bsnm{Hotton}, \binits{C.L.}},
-\bauthor{\bsnm{Kannan}, \binits{S.}},
-\bauthor{\bsnm{Khovanskaya}, \binits{R.}},
-\bauthor{\bsnm{Leipe}, \binits{D.}},
-\bauthor{\bsnm{Mcveigh}, \binits{R.}},
-\bauthor{\bsnm{O’Neill}, \binits{K.}},
-\bauthor{\bsnm{Robbertse}, \binits{B.}}, \betal:
-\batitle{Ncbi taxonomy: a comprehensive update on curation, resources and
-  tools}.
-\bjtitle{Database}
-\bvolume{2020},
-\bfpage{062}
-(\byear{2020})
-\end{barticle}
-\endbibitem
-
-%%% 21
-\bibitem[\protect\citeauthoryear{Cole et~al.}{2014}]{cole2014ribosomal}
-\begin{barticle}
-\bauthor{\bsnm{Cole}, \binits{J.R.}},
-\bauthor{\bsnm{Wang}, \binits{Q.}},
-\bauthor{\bsnm{Fish}, \binits{J.A.}},
-\bauthor{\bsnm{Chai}, \binits{B.}},
-\bauthor{\bsnm{McGarrell}, \binits{D.M.}},
-\bauthor{\bsnm{Sun}, \binits{Y.}},
-\bauthor{\bsnm{Brown}, \binits{C.T.}},
-\bauthor{\bsnm{Porras-Alfaro}, \binits{A.}},
-\bauthor{\bsnm{Kuske}, \binits{C.R.}},
-\bauthor{\bsnm{Tiedje}, \binits{J.M.}}:
-\batitle{Ribosomal database project: data and tools for high throughput rrna
-  analysis}.
-\bjtitle{Nucleic acids research}
-\bvolume{42}(\bissue{D1}),
-\bfpage{633}--\blpage{642}
+\bauthor{\bsnm{Berry}, \binits{D.}},
+\bauthor{\bsnm{Widder}, \binits{S.}}:
+\batitle{Deciphering microbial interactions and detecting keystone species with
+  co-occurrence networks}.
+\bjtitle{Frontiers in microbiology}
+\bvolume{5},
+\bfpage{219}
 (\byear{2014})
 \end{barticle}
 \endbibitem
 
-%%% 22
-\bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
-\begin{botherref}
-\oauthor{\bsnm{Alishum}, \binits{A.}}:
-{DADA2 Formatted 16S rRNA Gene Sequences for Both Bacteria \& Archaea}.
-\doiurl{10.5281/zenodo.6655692} .
-\url{https://doi.org/10.5281/zenodo.6655692}
-\end{botherref}
-\endbibitem
-
 %%% 23
-\bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
+\bibitem[\protect\citeauthoryear{Guo et~al.}{2022}]{guo2022microbial}
 \begin{barticle}
-\bauthor{\bsnm{Murali}, \binits{A.}},
-\bauthor{\bsnm{Bhargava}, \binits{A.}},
-\bauthor{\bsnm{Wright}, \binits{E.S.}}:
-\batitle{Idtaxa: a novel approach for accurate taxonomic classification of
-  microbiome sequences}.
-\bjtitle{Microbiome}
-\bvolume{6}(\bissue{1}),
-\bfpage{1}--\blpage{14}
-(\byear{2018})
+\bauthor{\bsnm{Guo}, \binits{B.}},
+\bauthor{\bsnm{Zhang}, \binits{L.}},
+\bauthor{\bsnm{Sun}, \binits{H.}},
+\bauthor{\bsnm{Gao}, \binits{M.}},
+\bauthor{\bsnm{Yu}, \binits{N.}},
+\bauthor{\bsnm{Zhang}, \binits{Q.}},
+\bauthor{\bsnm{Mou}, \binits{A.}},
+\bauthor{\bsnm{Liu}, \binits{Y.}}:
+\batitle{Microbial co-occurrence network topological properties link with
+  reactor parameters and reveal importance of low-abundance genera}.
+\bjtitle{npj Biofilms and Microbiomes}
+\bvolume{8}(\bissue{1}),
+\bfpage{3}
+(\byear{2022})
 \end{barticle}
 \endbibitem
 
 %%% 24
-\bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
+\bibitem[\protect\citeauthoryear{Ma et~al.}{2020}]{ma2020earth}
 \begin{barticle}
-\bauthor{\bsnm{Sunagawa}, \binits{S.}},
-\bauthor{\bsnm{Coelho}, \binits{L.P.}},
-\bauthor{\bsnm{Chaffron}, \binits{S.}},
-\bauthor{\bsnm{Kultima}, \binits{J.R.}},
-\bauthor{\bsnm{Labadie}, \binits{K.}},
-\bauthor{\bsnm{Salazar}, \binits{G.}},
-\bauthor{\bsnm{Djahanschiri}, \binits{B.}},
-\bauthor{\bsnm{Zeller}, \binits{G.}},
-\bauthor{\bsnm{Mende}, \binits{D.R.}},
-\bauthor{\bsnm{Alberti}, \binits{A.}}, \betal:
-\batitle{Structure and function of the global ocean microbiome}.
-\bjtitle{Science}
-\bvolume{348}(\bissue{6237}),
-\bfpage{1261359}
-(\byear{2015})
+\bauthor{\bsnm{Ma}, \binits{B.}},
+\bauthor{\bsnm{Wang}, \binits{Y.}},
+\bauthor{\bsnm{Ye}, \binits{S.}},
+\bauthor{\bsnm{Liu}, \binits{S.}},
+\bauthor{\bsnm{Stirling}, \binits{E.}},
+\bauthor{\bsnm{Gilbert}, \binits{J.A.}},
+\bauthor{\bsnm{Faust}, \binits{K.}},
+\bauthor{\bsnm{Knight}, \binits{R.}},
+\bauthor{\bsnm{Jansson}, \binits{J.K.}},
+\bauthor{\bsnm{Cardona}, \binits{C.}}, \betal:
+\batitle{Earth microbial co-occurrence network reveals interconnection pattern
+  across microbiomes}.
+\bjtitle{Microbiome}
+\bvolume{8},
+\bfpage{1}--\blpage{12}
+(\byear{2020})
 \end{barticle}
 \endbibitem
 
 %%% 25
-\bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
+\bibitem[\protect\citeauthoryear{Guidi et~al.}{2016}]{guidi2016plankton}
 \begin{barticle}
-\bauthor{\bsnm{Louca}, \binits{S.}},
-\bauthor{\bsnm{Parfrey}, \binits{L.W.}},
-\bauthor{\bsnm{Doebeli}, \binits{M.}}:
-\batitle{Decoupling function and taxonomy in the global ocean microbiome}.
-\bjtitle{Science}
-\bvolume{353}(\bissue{6305}),
-\bfpage{1272}--\blpage{1277}
+\bauthor{\bsnm{Guidi}, \binits{L.}},
+\bauthor{\bsnm{Chaffron}, \binits{S.}},
+\bauthor{\bsnm{Bittner}, \binits{L.}},
+\bauthor{\bsnm{Eveillard}, \binits{D.}},
+\bauthor{\bsnm{Larhlimi}, \binits{A.}},
+\bauthor{\bsnm{Roux}, \binits{S.}},
+\bauthor{\bsnm{Darzi}, \binits{Y.}},
+\bauthor{\bsnm{Audic}, \binits{S.}},
+\bauthor{\bsnm{Berline}, \binits{L.}},
+\bauthor{\bsnm{Brum}, \binits{J.R.}}, \betal:
+\batitle{Plankton networks driving carbon export in the oligotrophic ocean}.
+\bjtitle{Nature}
+\bvolume{532}(\bissue{7600}),
+\bfpage{465}--\blpage{470}
 (\byear{2016})
 \end{barticle}
 \endbibitem
 
 %%% 26
-\bibitem[\protect\citeauthoryear{Feldbauer
-  et~al.}{2015}]{feldbauer2015prediction}
+\bibitem[\protect\citeauthoryear{R{\"o}ttjers and
+  Faust}{2020}]{rottjers2020manta}
 \begin{barticle}
-\bauthor{\bsnm{Feldbauer}, \binits{R.}},
-\bauthor{\bsnm{Schulz}, \binits{F.}},
-\bauthor{\bsnm{Horn}, \binits{M.}},
-\bauthor{\bsnm{Rattei}, \binits{T.}}:
-\batitle{Prediction of microbial phenotypes based on comparative genomics}.
-\bjtitle{BMC bioinformatics}
-\bvolume{16}(\bissue{14}),
-\bfpage{1}--\blpage{8}
-(\byear{2015})
+\bauthor{\bsnm{R{\"o}ttjers}, \binits{L.}},
+\bauthor{\bsnm{Faust}, \binits{K.}}:
+\batitle{Manta: A clustering algorithm for weighted ecological networks}.
+\bjtitle{Msystems}
+\bvolume{5}(\bissue{1}),
+\bfpage{10}--\blpage{1128}
+(\byear{2020})
 \end{barticle}
 \endbibitem
 
 %%% 27
-\bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
-\begin{barticle}
-\bauthor{\bsnm{Aramaki}, \binits{T.}},
-\bauthor{\bsnm{Blanc-Mathieu}, \binits{R.}},
-\bauthor{\bsnm{Endo}, \binits{H.}},
-\bauthor{\bsnm{Ohkubo}, \binits{K.}},
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Ogata}, \binits{H.}}:
-\batitle{Kofamkoala: Kegg ortholog assignment based on profile hmm and adaptive
-  score threshold}.
-\bjtitle{Bioinformatics}
-\bvolume{36}(\bissue{7}),
-\bfpage{2251}--\blpage{2252}
-(\byear{2020})
-\end{barticle}
+\bibitem[\protect\citeauthoryear{Levy and Borenstein}{2012}]{levy2012reverse}
+\begin{bchapter}
+\bauthor{\bsnm{Levy}, \binits{R.}},
+\bauthor{\bsnm{Borenstein}, \binits{E.}}:
+\bctitle{Reverse ecology: from systems to environments and back}.
+In: \bbtitle{Evolutionary Systems Biology},
+pp. \bfpage{329}--\blpage{345}.
+\bpublisher{Springer}, \blocation{???}
+(\byear{2012})
+\end{bchapter}
 \endbibitem
 
 %%% 28
-\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
+\bibitem[\protect\citeauthoryear{Levy and
+  Borenstein}{2014}]{levy2014metagenomic}
 \begin{barticle}
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Sato}, \binits{Y.}},
-\bauthor{\bsnm{Furumichi}, \binits{M.}},
-\bauthor{\bsnm{Tanabe}, \binits{M.}}:
-\batitle{Kegg for integration and interpretation of large-scale molecular data
-  sets}.
-\bjtitle{Nucleic acids research}
-\bvolume{40}(\bissue{D1}),
-\bfpage{109}--\blpage{114}
-(\byear{2012})
+\bauthor{\bsnm{Levy}, \binits{R.}},
+\bauthor{\bsnm{Borenstein}, \binits{E.}}:
+\batitle{Metagenomic systems biology and metabolic modeling of the human
+  microbiome: From species composition to community assembly rules}.
+\bjtitle{Gut Microbes}
+\bvolume{5}(\bissue{2}),
+\bfpage{265}--\blpage{270}
+(\byear{2014})
 \end{barticle}
 \endbibitem
 
 %%% 29
-\bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
-\begin{barticle}
-\bauthor{\bsnm{Muto}, \binits{A.}},
-\bauthor{\bsnm{Kotera}, \binits{M.}},
-\bauthor{\bsnm{Tokimatsu}, \binits{T.}},
-\bauthor{\bsnm{Nakagawa}, \binits{Z.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Kanehisa}, \binits{M.}}:
-\batitle{Modular architecture of metabolic pathways revealed by conserved
-  sequences of reactions}.
-\bjtitle{Journal of chemical information and modeling}
-\bvolume{53}(\bissue{3}),
-\bfpage{613}--\blpage{622}
-(\byear{2013})
-\end{barticle}
-\endbibitem
-
-%%% 30
-\bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
-\begin{barticle}
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Sato}, \binits{Y.}}:
-\batitle{Kegg mapper for inferring cellular functions from protein sequences}.
-\bjtitle{Protein Science}
-\bvolume{29}(\bissue{1}),
-\bfpage{28}--\blpage{35}
-(\byear{2020})
-\end{barticle}
-\endbibitem
-
-%%% 31
-\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
-\begin{barticle}
-\bauthor{\bsnm{Kanehisa}, \binits{M.}},
-\bauthor{\bsnm{Sato}, \binits{Y.}},
-\bauthor{\bsnm{Kawashima}, \binits{M.}}:
-\batitle{Kegg mapping tools for uncovering hidden features in biological data}.
-\bjtitle{Protein Science}
-\bvolume{31}(\bissue{1}),
-\bfpage{47}--\blpage{53}
-(\byear{2022})
-\end{barticle}
-\endbibitem
-
-%%% 32
 \bibitem[\protect\citeauthoryear{Borenstein et~al.}{2008}]{borenstein2008large}
 \begin{barticle}
 \bauthor{\bsnm{Borenstein}, \binits{E.}},
@@ -596,23 +552,22 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 33
-\bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
+%%% 30
+\bibitem[\protect\citeauthoryear{Parter et~al.}{2007}]{parter2007environmental}
 \begin{barticle}
-\bauthor{\bsnm{Lam}, \binits{T.J.}},
-\bauthor{\bsnm{Stamboulian}, \binits{M.}},
-\bauthor{\bsnm{Han}, \binits{W.}},
-\bauthor{\bsnm{Ye}, \binits{Y.}}:
-\batitle{Model-based and phylogenetically adjusted quantification of metabolic
-  interaction between microbial species}.
-\bjtitle{PLoS computational biology}
-\bvolume{16}(\bissue{10}),
-\bfpage{1007951}
-(\byear{2020})
+\bauthor{\bsnm{Parter}, \binits{M.}},
+\bauthor{\bsnm{Kashtan}, \binits{N.}},
+\bauthor{\bsnm{Alon}, \binits{U.}}:
+\batitle{Environmental variability and modularity of bacterial metabolic
+  networks}.
+\bjtitle{BMC evolutionary biology}
+\bvolume{7},
+\bfpage{1}--\blpage{8}
+(\byear{2007})
 \end{barticle}
 \endbibitem
 
-%%% 34
+%%% 31
 \bibitem[\protect\citeauthoryear{Levy et~al.}{2015}]{levy2015netcooperate}
 \begin{barticle}
 \bauthor{\bsnm{Levy}, \binits{R.}},
@@ -629,7 +584,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 35
+%%% 32
 \bibitem[\protect\citeauthoryear{Kreimer et~al.}{2012}]{kreimer2012netcmpt}
 \begin{barticle}
 \bauthor{\bsnm{Kreimer}, \binits{A.}},
@@ -645,7 +600,109 @@ Msystems,
 \end{barticle}
 \endbibitem
 
+%%% 33
+\bibitem[\protect\citeauthoryear{Zelezniak
+  et~al.}{2015}]{zelezniak2015metabolic}
+\begin{barticle}
+\bauthor{\bsnm{Zelezniak}, \binits{A.}},
+\bauthor{\bsnm{Andrejev}, \binits{S.}},
+\bauthor{\bsnm{Ponomarova}, \binits{O.}},
+\bauthor{\bsnm{Mende}, \binits{D.R.}},
+\bauthor{\bsnm{Bork}, \binits{P.}},
+\bauthor{\bsnm{Patil}, \binits{K.R.}}:
+\batitle{Metabolic dependencies drive species co-occurrence in diverse
+  microbial communities}.
+\bjtitle{Proceedings of the National Academy of Sciences}
+\bvolume{112}(\bissue{20}),
+\bfpage{6449}--\blpage{6454}
+(\byear{2015})
+\end{barticle}
+\endbibitem
+
+%%% 34
+\bibitem[\protect\citeauthoryear{Belcour
+  et~al.}{2020}]{belcour2020metage2metabo}
+\begin{barticle}
+\bauthor{\bsnm{Belcour}, \binits{A.}},
+\bauthor{\bsnm{Frioux}, \binits{C.}},
+\bauthor{\bsnm{Aite}, \binits{M.}},
+\bauthor{\bsnm{Bretaudeau}, \binits{A.}},
+\bauthor{\bsnm{Hildebrand}, \binits{F.}},
+\bauthor{\bsnm{Siegel}, \binits{A.}}:
+\batitle{Metage2metabo, microbiota-scale metabolic complementarity for the
+  identification of key species}.
+\bjtitle{Elife}
+\bvolume{9},
+\bfpage{61968}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 35
+\bibitem[\protect\citeauthoryear{Mori et~al.}{2016}]{mori2016metabolic}
+\begin{barticle}
+\bauthor{\bsnm{Mori}, \binits{M.}},
+\bauthor{\bsnm{Ponce-de-Le{\'o}n}, \binits{M.}},
+\bauthor{\bsnm{Peret{\'o}}, \binits{J.}},
+\bauthor{\bsnm{Montero}, \binits{F.}}:
+\batitle{Metabolic complementation in bacterial communities: necessary
+  conditions and optimality}.
+\bjtitle{Frontiers in Microbiology}
+\bvolume{7},
+\bfpage{1553}
+(\byear{2016})
+\end{barticle}
+\endbibitem
+
 %%% 36
+\bibitem[\protect\citeauthoryear{Zientz et~al.}{2004}]{zientz2004metabolic}
+\begin{barticle}
+\bauthor{\bsnm{Zientz}, \binits{E.}},
+\bauthor{\bsnm{Dandekar}, \binits{T.}},
+\bauthor{\bsnm{Gross}, \binits{R.}}:
+\batitle{Metabolic interdependence of obligate intracellular bacteria and their
+  insect hosts}.
+\bjtitle{Microbiology and Molecular Biology Reviews}
+\bvolume{68}(\bissue{4}),
+\bfpage{745}--\blpage{770}
+(\byear{2004})
+\end{barticle}
+\endbibitem
+
+%%% 37
+\bibitem[\protect\citeauthoryear{Kallus et~al.}{2017}]{kallus2017paradoxes}
+\begin{barticle}
+\bauthor{\bsnm{Kallus}, \binits{Y.}},
+\bauthor{\bsnm{Miller}, \binits{J.H.}},
+\bauthor{\bsnm{Libby}, \binits{E.}}:
+\batitle{Paradoxes in leaky microbial trade}.
+\bjtitle{Nature communications}
+\bvolume{8}(\bissue{1}),
+\bfpage{1361}
+(\byear{2017})
+\end{barticle}
+\endbibitem
+
+%%% 38
+\bibitem[\protect\citeauthoryear{Hessler et~al.}{2023}]{hessler2023vitamin}
+\begin{barticle}
+\bauthor{\bsnm{Hessler}, \binits{T.}},
+\bauthor{\bsnm{Huddy}, \binits{R.J.}},
+\bauthor{\bsnm{Sachdeva}, \binits{R.}},
+\bauthor{\bsnm{Lei}, \binits{S.}},
+\bauthor{\bsnm{Harrison}, \binits{S.T.}},
+\bauthor{\bsnm{Diamond}, \binits{S.}},
+\bauthor{\bsnm{Banfield}, \binits{J.F.}}:
+\batitle{Vitamin interdependencies predicted by metagenomics-informed network
+  analyses and validated in microbial community microcosms}.
+\bjtitle{Nature Communications}
+\bvolume{14}(\bissue{1}),
+\bfpage{4768}
+(\byear{2023})
+\end{barticle}
+\endbibitem
+
+%%% 39
 \bibitem[\protect\citeauthoryear{Wattam et~al.}{2017}]{wattam2017improvements}
 \begin{barticle}
 \bauthor{\bsnm{Wattam}, \binits{A.R.}},
@@ -667,96 +724,163 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 37
-\bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
-\begin{barticle}
-\bauthor{\bsnm{Henry}, \binits{C.S.}},
-\bauthor{\bsnm{DeJongh}, \binits{M.}},
-\bauthor{\bsnm{Best}, \binits{A.A.}},
-\bauthor{\bsnm{Frybarger}, \binits{P.M.}},
-\bauthor{\bsnm{Linsay}, \binits{B.}},
-\bauthor{\bsnm{Stevens}, \binits{R.L.}}:
-\batitle{High-throughput generation, optimization and analysis of genome-scale
-  metabolic models}.
-\bjtitle{Nature biotechnology}
-\bvolume{28}(\bissue{9}),
-\bfpage{977}--\blpage{982}
-(\byear{2010})
-\end{barticle}
-\endbibitem
-
-%%% 38
-\bibitem[\protect\citeauthoryear{R{\"o}ttjers and
-  Faust}{2020}]{rottjers2020manta}
-\begin{barticle}
-\bauthor{\bsnm{R{\"o}ttjers}, \binits{L.}},
-\bauthor{\bsnm{Faust}, \binits{K.}}:
-\batitle{Manta: A clustering algorithm for weighted ecological networks}.
-\bjtitle{Msystems}
-\bvolume{5}(\bissue{1}),
-\bfpage{10}--\blpage{1128}
-(\byear{2020})
-\end{barticle}
-\endbibitem
-
-%%% 39
-\bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
-\begin{barticle}
-\bauthor{\bsnm{Blank}, \binits{C.E.}},
-\bauthor{\bsnm{Cui}, \binits{H.}},
-\bauthor{\bsnm{Moore}, \binits{L.R.}},
-\bauthor{\bsnm{Walls}, \binits{R.L.}}:
-\batitle{Micro: an ontology of phenotypic and metabolic characters, assays, and
-  culture media found in prokaryotic taxonomic descriptions}.
-\bjtitle{Journal of biomedical semantics}
-\bvolume{7}(\bissue{1}),
-\bfpage{1}--\blpage{10}
-(\byear{2016})
-\end{barticle}
-\endbibitem
-
 %%% 40
-\bibitem[\protect\citeauthoryear{Choudhary
-  et~al.}{2021}]{choudhary2021scnetviz}
-\begin{botherref}
-\oauthor{\bsnm{Choudhary}, \binits{K.}},
-\oauthor{\bsnm{Meng}, \binits{E.C.}},
-\oauthor{\bsnm{Diaz-Mejia}, \binits{J.J.}},
-\oauthor{\bsnm{Bader}, \binits{G.D.}},
-\oauthor{\bsnm{Pico}, \binits{A.R.}},
-\oauthor{\bsnm{Morris}, \binits{J.H.}}:
-scnetviz: from single cells to networks using cytoscape.
-F1000Research
-\textbf{10}
-(2021)
-\end{botherref}
+\bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
+\begin{barticle}
+\bauthor{\bsnm{Parks}, \binits{D.H.}},
+\bauthor{\bsnm{Chuvochina}, \binits{M.}},
+\bauthor{\bsnm{Rinke}, \binits{C.}},
+\bauthor{\bsnm{Mussig}, \binits{A.J.}},
+\bauthor{\bsnm{Chaumeil}, \binits{P.-A.}},
+\bauthor{\bsnm{Hugenholtz}, \binits{P.}}:
+\batitle{Gtdb: an ongoing census of bacterial and archaeal diversity through a
+  phylogenetically consistent, rank normalized and complete genome-based
+  taxonomy}.
+\bjtitle{Nucleic acids research}
+\bvolume{50}(\bissue{D1}),
+\bfpage{785}--\blpage{794}
+(\byear{2022})
+\end{barticle}
 \endbibitem
 
 %%% 41
-\bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
+\bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
 \begin{barticle}
-\bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
-\batitle{Docker: lightweight linux containers for consistent development and
-  deployment}.
-\bjtitle{Linux j}
-\bvolume{239}(\bissue{2}),
-\bfpage{2}
-(\byear{2014})
+\bauthor{\bsnm{Quast}, \binits{C.}},
+\bauthor{\bsnm{Pruesse}, \binits{E.}},
+\bauthor{\bsnm{Yilmaz}, \binits{P.}},
+\bauthor{\bsnm{Gerken}, \binits{J.}},
+\bauthor{\bsnm{Schweer}, \binits{T.}},
+\bauthor{\bsnm{Yarza}, \binits{P.}},
+\bauthor{\bsnm{Peplies}, \binits{J.}},
+\bauthor{\bsnm{Gl{\"o}ckner}, \binits{F.O.}}:
+\batitle{The silva ribosomal rna gene database project: improved data
+  processing and web-based tools}.
+\bjtitle{Nucleic acids research}
+\bvolume{41}(\bissue{D1}),
+\bfpage{590}--\blpage{596}
+(\byear{2012})
 \end{barticle}
 \endbibitem
 
 %%% 42
-\bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
-\begin{botherref}
-\oauthor{\bsnm{Reese}, \binits{W.}}:
-Nginx: The high-performance web server and reverse proxy.
-Linux J.
-\textbf{2008}(173)
-(2008)
-\end{botherref}
+\bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
+\begin{barticle}
+\bauthor{\bsnm{Schoch}, \binits{C.L.}},
+\bauthor{\bsnm{Ciufo}, \binits{S.}},
+\bauthor{\bsnm{Domrachev}, \binits{M.}},
+\bauthor{\bsnm{Hotton}, \binits{C.L.}},
+\bauthor{\bsnm{Kannan}, \binits{S.}},
+\bauthor{\bsnm{Khovanskaya}, \binits{R.}},
+\bauthor{\bsnm{Leipe}, \binits{D.}},
+\bauthor{\bsnm{Mcveigh}, \binits{R.}},
+\bauthor{\bsnm{O’Neill}, \binits{K.}},
+\bauthor{\bsnm{Robbertse}, \binits{B.}}, \betal:
+\batitle{Ncbi taxonomy: a comprehensive update on curation, resources and
+  tools}.
+\bjtitle{Database}
+\bvolume{2020},
+\bfpage{062}
+(\byear{2020})
+\end{barticle}
 \endbibitem
 
 %%% 43
+\bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
+\begin{botherref}
+\oauthor{\bsnm{Alishum}, \binits{A.}}:
+{DADA2 Formatted 16S rRNA Gene Sequences for Both Bacteria \& Archaea}.
+\doiurl{10.5281/zenodo.6655692} .
+\url{https://doi.org/10.5281/zenodo.6655692}
+\end{botherref}
+\endbibitem
+
+%%% 44
+\bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
+\begin{barticle}
+\bauthor{\bsnm{Murali}, \binits{A.}},
+\bauthor{\bsnm{Bhargava}, \binits{A.}},
+\bauthor{\bsnm{Wright}, \binits{E.S.}}:
+\batitle{Idtaxa: a novel approach for accurate taxonomic classification of
+  microbiome sequences}.
+\bjtitle{Microbiome}
+\bvolume{6}(\bissue{1}),
+\bfpage{1}--\blpage{14}
+(\byear{2018})
+\end{barticle}
+\endbibitem
+
+%%% 45
+\bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
+\begin{barticle}
+\bauthor{\bsnm{Sunagawa}, \binits{S.}},
+\bauthor{\bsnm{Coelho}, \binits{L.P.}},
+\bauthor{\bsnm{Chaffron}, \binits{S.}},
+\bauthor{\bsnm{Kultima}, \binits{J.R.}},
+\bauthor{\bsnm{Labadie}, \binits{K.}},
+\bauthor{\bsnm{Salazar}, \binits{G.}},
+\bauthor{\bsnm{Djahanschiri}, \binits{B.}},
+\bauthor{\bsnm{Zeller}, \binits{G.}},
+\bauthor{\bsnm{Mende}, \binits{D.R.}},
+\bauthor{\bsnm{Alberti}, \binits{A.}}, \betal:
+\batitle{Structure and function of the global ocean microbiome}.
+\bjtitle{Science}
+\bvolume{348}(\bissue{6237}),
+\bfpage{1261359}
+(\byear{2015})
+\end{barticle}
+\endbibitem
+
+%%% 46
+\bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
+\begin{barticle}
+\bauthor{\bsnm{Louca}, \binits{S.}},
+\bauthor{\bsnm{Parfrey}, \binits{L.W.}},
+\bauthor{\bsnm{Doebeli}, \binits{M.}}:
+\batitle{Decoupling function and taxonomy in the global ocean microbiome}.
+\bjtitle{Science}
+\bvolume{353}(\bissue{6305}),
+\bfpage{1272}--\blpage{1277}
+(\byear{2016})
+\end{barticle}
+\endbibitem
+
+%%% 47
+\bibitem[\protect\citeauthoryear{Douglas et~al.}{2020}]{douglas2020picrust2}
+\begin{barticle}
+\bauthor{\bsnm{Douglas}, \binits{G.M.}},
+\bauthor{\bsnm{Maffei}, \binits{V.J.}},
+\bauthor{\bsnm{Zaneveld}, \binits{J.R.}},
+\bauthor{\bsnm{Yurgel}, \binits{S.N.}},
+\bauthor{\bsnm{Brown}, \binits{J.R.}},
+\bauthor{\bsnm{Taylor}, \binits{C.M.}},
+\bauthor{\bsnm{Huttenhower}, \binits{C.}},
+\bauthor{\bsnm{Langille}, \binits{M.G.}}:
+\batitle{Picrust2 for prediction of metagenome functions}.
+\bjtitle{Nature biotechnology}
+\bvolume{38}(\bissue{6}),
+\bfpage{685}--\blpage{688}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 48
+\bibitem[\protect\citeauthoryear{Feldbauer
+  et~al.}{2015}]{feldbauer2015prediction}
+\begin{barticle}
+\bauthor{\bsnm{Feldbauer}, \binits{R.}},
+\bauthor{\bsnm{Schulz}, \binits{F.}},
+\bauthor{\bsnm{Horn}, \binits{M.}},
+\bauthor{\bsnm{Rattei}, \binits{T.}}:
+\batitle{Prediction of microbial phenotypes based on comparative genomics}.
+\bjtitle{BMC bioinformatics}
+\bvolume{16}(\bissue{14}),
+\bfpage{1}--\blpage{8}
+(\byear{2015})
+\end{barticle}
+\endbibitem
+
+%%% 49
 \bibitem[\protect\citeauthoryear{Huerta-Cepas et~al.}{2019}]{huerta2019eggnog}
 \begin{barticle}
 \bauthor{\bsnm{Huerta-Cepas}, \binits{J.}},
@@ -778,7 +902,179 @@ Linux J.
 \end{barticle}
 \endbibitem
 
-%%% 44
+%%% 50
+\bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
+\begin{barticle}
+\bauthor{\bsnm{Aramaki}, \binits{T.}},
+\bauthor{\bsnm{Blanc-Mathieu}, \binits{R.}},
+\bauthor{\bsnm{Endo}, \binits{H.}},
+\bauthor{\bsnm{Ohkubo}, \binits{K.}},
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Ogata}, \binits{H.}}:
+\batitle{Kofamkoala: Kegg ortholog assignment based on profile hmm and adaptive
+  score threshold}.
+\bjtitle{Bioinformatics}
+\bvolume{36}(\bissue{7}),
+\bfpage{2251}--\blpage{2252}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 51
+\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}},
+\bauthor{\bsnm{Furumichi}, \binits{M.}},
+\bauthor{\bsnm{Tanabe}, \binits{M.}}:
+\batitle{Kegg for integration and interpretation of large-scale molecular data
+  sets}.
+\bjtitle{Nucleic acids research}
+\bvolume{40}(\bissue{D1}),
+\bfpage{109}--\blpage{114}
+(\byear{2012})
+\end{barticle}
+\endbibitem
+
+%%% 52
+\bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
+\begin{barticle}
+\bauthor{\bsnm{Muto}, \binits{A.}},
+\bauthor{\bsnm{Kotera}, \binits{M.}},
+\bauthor{\bsnm{Tokimatsu}, \binits{T.}},
+\bauthor{\bsnm{Nakagawa}, \binits{Z.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Kanehisa}, \binits{M.}}:
+\batitle{Modular architecture of metabolic pathways revealed by conserved
+  sequences of reactions}.
+\bjtitle{Journal of chemical information and modeling}
+\bvolume{53}(\bissue{3}),
+\bfpage{613}--\blpage{622}
+(\byear{2013})
+\end{barticle}
+\endbibitem
+
+%%% 53
+\bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}}:
+\batitle{Kegg mapper for inferring cellular functions from protein sequences}.
+\bjtitle{Protein Science}
+\bvolume{29}(\bissue{1}),
+\bfpage{28}--\blpage{35}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 54
+\bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
+\begin{barticle}
+\bauthor{\bsnm{Kanehisa}, \binits{M.}},
+\bauthor{\bsnm{Sato}, \binits{Y.}},
+\bauthor{\bsnm{Kawashima}, \binits{M.}}:
+\batitle{Kegg mapping tools for uncovering hidden features in biological data}.
+\bjtitle{Protein Science}
+\bvolume{31}(\bissue{1}),
+\bfpage{47}--\blpage{53}
+(\byear{2022})
+\end{barticle}
+\endbibitem
+
+%%% 55
+\bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
+\begin{barticle}
+\bauthor{\bsnm{Lam}, \binits{T.J.}},
+\bauthor{\bsnm{Stamboulian}, \binits{M.}},
+\bauthor{\bsnm{Han}, \binits{W.}},
+\bauthor{\bsnm{Ye}, \binits{Y.}}:
+\batitle{Model-based and phylogenetically adjusted quantification of metabolic
+  interaction between microbial species}.
+\bjtitle{PLoS computational biology}
+\bvolume{16}(\bissue{10}),
+\bfpage{1007951}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 56
+\bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
+\begin{barticle}
+\bauthor{\bsnm{Henry}, \binits{C.S.}},
+\bauthor{\bsnm{DeJongh}, \binits{M.}},
+\bauthor{\bsnm{Best}, \binits{A.A.}},
+\bauthor{\bsnm{Frybarger}, \binits{P.M.}},
+\bauthor{\bsnm{Linsay}, \binits{B.}},
+\bauthor{\bsnm{Stevens}, \binits{R.L.}}:
+\batitle{High-throughput generation, optimization and analysis of genome-scale
+  metabolic models}.
+\bjtitle{Nature biotechnology}
+\bvolume{28}(\bissue{9}),
+\bfpage{977}--\blpage{982}
+(\byear{2010})
+\end{barticle}
+\endbibitem
+
+%%% 57
+\bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
+\begin{barticle}
+\bauthor{\bsnm{Blank}, \binits{C.E.}},
+\bauthor{\bsnm{Cui}, \binits{H.}},
+\bauthor{\bsnm{Moore}, \binits{L.R.}},
+\bauthor{\bsnm{Walls}, \binits{R.L.}}:
+\batitle{Micro: an ontology of phenotypic and metabolic characters, assays, and
+  culture media found in prokaryotic taxonomic descriptions}.
+\bjtitle{Journal of biomedical semantics}
+\bvolume{7}(\bissue{1}),
+\bfpage{1}--\blpage{10}
+(\byear{2016})
+\end{barticle}
+\endbibitem
+
+%%% 58
+\bibitem[\protect\citeauthoryear{Choudhary
+  et~al.}{2021}]{choudhary2021scnetviz}
+\begin{botherref}
+\oauthor{\bsnm{Choudhary}, \binits{K.}},
+\oauthor{\bsnm{Meng}, \binits{E.C.}},
+\oauthor{\bsnm{Diaz-Mejia}, \binits{J.J.}},
+\oauthor{\bsnm{Bader}, \binits{G.D.}},
+\oauthor{\bsnm{Pico}, \binits{A.R.}},
+\oauthor{\bsnm{Morris}, \binits{J.H.}}:
+scnetviz: from single cells to networks using cytoscape.
+F1000Research
+\textbf{10}
+(2021)
+\end{botherref}
+\endbibitem
+
+%%% 59
+\bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
+\begin{barticle}
+\bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
+\batitle{Docker: lightweight linux containers for consistent development and
+  deployment}.
+\bjtitle{Linux j}
+\bvolume{239}(\bissue{2}),
+\bfpage{2}
+(\byear{2014})
+\end{barticle}
+\endbibitem
+
+%%% 60
+\bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
+\begin{botherref}
+\oauthor{\bsnm{Reese}, \binits{W.}}:
+Nginx: The high-performance web server and reverse proxy.
+Linux J.
+\textbf{2008}(173)
+(2008)
+\end{botherref}
+\endbibitem
+
+%%% 61
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -789,26 +1085,45 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 45
-\bibitem[\protect\citeauthoryear{Hessler et~al.}{2023}]{hessler2023vitamin}
+%%% 62
+\bibitem[\protect\citeauthoryear{Llavero-Pasquina
+  et~al.}{2022}]{llavero2022thiamine}
 \begin{barticle}
-\bauthor{\bsnm{Hessler}, \binits{T.}},
-\bauthor{\bsnm{Huddy}, \binits{R.J.}},
-\bauthor{\bsnm{Sachdeva}, \binits{R.}},
-\bauthor{\bsnm{Lei}, \binits{S.}},
-\bauthor{\bsnm{Harrison}, \binits{S.T.}},
-\bauthor{\bsnm{Diamond}, \binits{S.}},
-\bauthor{\bsnm{Banfield}, \binits{J.F.}}:
-\batitle{Vitamin interdependencies predicted by metagenomics-informed network
-  analyses and validated in microbial community microcosms}.
-\bjtitle{Nature Communications}
-\bvolume{14}(\bissue{1}),
-\bfpage{4768}
-(\byear{2023})
+\bauthor{\bsnm{Llavero-Pasquina}, \binits{M.}},
+\bauthor{\bsnm{Geisler}, \binits{K.}},
+\bauthor{\bsnm{Holzer}, \binits{A.}},
+\bauthor{\bsnm{Mehrshahi}, \binits{P.}},
+\bauthor{\bsnm{Mendoza-Ochoa}, \binits{G.I.}},
+\bauthor{\bsnm{Newsad}, \binits{S.A.}},
+\bauthor{\bsnm{Davey}, \binits{M.P.}},
+\bauthor{\bsnm{Smith}, \binits{A.G.}}:
+\batitle{Thiamine metabolism genes in diatoms are not regulated by thiamine
+  despite the presence of predicted riboswitches}.
+\bjtitle{New Phytologist}
+\bvolume{235}(\bissue{5}),
+\bfpage{1853}--\blpage{1867}
+(\byear{2022})
 \end{barticle}
 \endbibitem
 
-%%% 46
+%%% 63
+\bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
+\begin{barticle}
+\bauthor{\bsnm{Romine}, \binits{M.F.}},
+\bauthor{\bsnm{Rodionov}, \binits{D.A.}},
+\bauthor{\bsnm{Maezato}, \binits{Y.}},
+\bauthor{\bsnm{Osterman}, \binits{A.L.}},
+\bauthor{\bsnm{Nelson}, \binits{W.C.}}:
+\batitle{Underlying mechanisms for syntrophic metabolism of essential enzyme
+  cofactors in microbial communities}.
+\bjtitle{The ISME journal}
+\bvolume{11}(\bissue{6}),
+\bfpage{1434}--\blpage{1446}
+(\byear{2017})
+\end{barticle}
+\endbibitem
+
+%%% 64
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -824,7 +1139,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 47
+%%% 65
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -839,6 +1154,25 @@ R Journal
 \bfpage{1043}--\blpage{1055}
 (\byear{2015})
 \end{barticle}
+\endbibitem
+
+%%% 66
+\bibitem[\protect\citeauthoryear{Agrawal et~al.}{1993}]{assocciationRuleMining}
+\begin{bchapter}
+\bauthor{\bsnm{Agrawal}, \binits{R.}},
+\bauthor{\bsnm{Imieli\'{n}ski}, \binits{T.}},
+\bauthor{\bsnm{Swami}, \binits{A.}}:
+\bctitle{Mining association rules between sets of items in large databases}.
+In: \bbtitle{Proceedings of the 1993 ACM SIGMOD International Conference on
+  Management of Data}.
+\bsertitle{SIGMOD '93},
+pp. \bfpage{207}--\blpage{216}.
+\bpublisher{Association for Computing Machinery},
+\blocation{New York, NY, USA}
+(\byear{1993}).
+\doiurl{10.1145/170035.170072} .
+\burl{https://doi-org.kuleuven.e-bronnen.be/10.1145/170035.170072}
+\end{bchapter}
 \endbibitem
 
 \end{thebibliography}
