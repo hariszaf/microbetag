@@ -85,7 +85,7 @@ microbetag_env
 # Ignore .json files under the scripts folder udner the microbetagDB
 microbetagDB/scripts/*.json 
 
-
+gtdb_16s.RData
 
 
 
