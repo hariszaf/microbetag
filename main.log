@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.11.22)  22 JAN 2024 23:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2023.11.22)  23 JAN 2024 19:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -972,7 +972,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12.045> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 337.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 357.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -983,7 +983,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figs/path_complem.png, id=224, 2768.3425pt x 1698.345pt>
 File: figs/path_complem.png Graphic file (type png)
 <use figs/path_complem.png>
-Package pdftex.def Info: figs/path_complem.png  used on input line 419.
+Package pdftex.def Info: figs/path_complem.png  used on input line 447.
 (pdftex.def)             Requested size: 297.60114pt x 182.56853pt.
 
 
@@ -996,14 +996,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./figs/path_complem.png>]
-Underfull \hbox (badness 1838) in paragraph at lines 514--517
+Underfull \hbox (badness 1838) in paragraph at lines 546--549
 \OT1/cmr/m/n/10 The \OT1/cmtt/m/n/10 microbetag \OT1/cmr/m/n/10 CytoscapeApp was build based on the [][]source code[][] of the
  []
 
 <figs/microbetag-wf.png, id=270, 3956.7825pt x 5491.51625pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
-Package pdftex.def Info: figs/microbetag-wf.png  used on input line 578.
+Package pdftex.def Info: figs/microbetag-wf.png  used on input line 610.
 (pdftex.def)             Requested size: 334.79773pt x 464.63597pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1015,32 +1015,32 @@ Overfull \vbox (77.97946pt too high) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10 <./figs/microbetag-wf.png>]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 619.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 652.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 619.
+(Font)              size <5> substituted on input line 652.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 619.
+(Font)              size <5> substituted on input line 652.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 619.
+(Font)              size <5> substituted on input line 652.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 619.
+(Font)              size <5> substituted on input line 652.
 
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 724.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 757.
 
-Overfull \hbox (2.10675pt too wide) in paragraph at lines 724--724
+Overfull \hbox (2.10675pt too wide) in paragraph at lines 757--757
 \OT1/cmr/m/n/10 under- 
  []
 
 
-Overfull \hbox (2.10675pt too wide) in paragraph at lines 724--724
+Overfull \hbox (2.10675pt too wide) in paragraph at lines 757--757
 \OT1/cmr/m/n/10 under- 
  []
 
@@ -1112,7 +1112,7 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{Hfootnote.5} has been referenced but does not exist, replaced by a fixed one
 
  </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (20 pages, 5066481 bytes).
+Output written on main.pdf (20 pages, 5065577 bytes).
 PDF statistics:
  531 PDF objects out of 1000 (max. 8388607)
  142 named destinations out of 1000 (max. 500000)

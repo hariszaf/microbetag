@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1705962951 "main.aux" "main.bbl" "main" 1705962956 0
-  "./sn-bibliography.bib" 1705959287 35283 2cce799708f37be80913f2a10ce716f1 ""
-  "./sn-mathphys.bst" 1705631236 64141 2560fd4f8e8321a304f732d035eb1b51 ""
-  "main.aux" 1705962956 15160 d79325822d49d41123f38c1df769417c "pdflatex"
+["bibtex main"] 1706036215 "main.aux" "main.bbl" "main" 1706036219 0
+  "./sn-bibliography.bib" 1706035199 35283 2cce799708f37be80913f2a10ce716f1 ""
+  "./sn-mathphys.bst" 1706035199 64141 2560fd4f8e8321a304f732d035eb1b51 ""
+  "main.aux" 1706036218 15159 bf56ac2bbff97812559cdf986289ce03 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1705962951 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1705962956 0
+["pdflatex"] 1706036215 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1706036219 0
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1705310473 86747 d5d3fc0534da88d542532be194910137 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk" 1705845194 7284 e74341cad9e1a3d52c5edf6478defb50 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk" 1705845193 8268 186cd7ac4660d89a304fa66d96ef384c ""
@@ -63,7 +63,7 @@
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty" 1700756999 10894 d359a13923460b2a73d4312d613554c8 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/vruler/vruler.sty" 1705310472 17457 95bf058fb4454370266f07170b5a158a ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty" 1700663095 26220 3701aebf80ccdef248c0c20dd062fea9 ""
-  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1705962946 67683 82c57e1ed30776ba49cacc4a6585144e ""
+  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1706036211 71445 51a8cd971a57ab8e2472936c6d23b453 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1679232417 1456 d21918d95ca20f07aa266303b9a0a14c ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0700.tfm" 1679232417 1452 97bdc98984cb373fbcd868e2fa55f5f2 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1679232417 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -245,14 +245,14 @@
   "/usr/local/share/miktex-texmf/tex/latex/url/url.sty" 1679232427 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/local/share/miktex-texmf/tex/latex/xcolor/xcolor.sty" 1679232427 56148 51a9a8571c07b9921892ae11063ae853 ""
   "/usr/local/share/miktex-texmf/tex/latex/xkeyval/xkeyval.sty" 1679232427 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "figs/figure_abstract.png" 1705631236 1338961 473af046918f4163f94ff4347e4aebfb ""
-  "figs/microbetag-wf.png" 1705631236 4504824 466192dd397faf1602745e2bb47f64d3 ""
-  "figs/path_complem.png" 1705631236 1158028 6cf6f5b73ba007285ed12aa2e7cf3e4f ""
-  "main.aux" 1705962956 15160 d79325822d49d41123f38c1df769417c "pdflatex"
-  "main.bbl" 1705962951 39490 671087bb2c0b9f22e6625b3e303e63fb "bibtex main"
-  "main.out" 1705962956 1148 f641055ded3685285dd4ac7d6d2377ca "pdflatex"
-  "main.tex" 1705962946 67683 82c57e1ed30776ba49cacc4a6585144e ""
-  "sn-jnl.cls" 1705631236 55955 38fcab50bf900ac0998e350ba2123285 ""
+  "figs/figure_abstract.png" 1706035199 1338961 473af046918f4163f94ff4347e4aebfb ""
+  "figs/microbetag-wf.png" 1706035199 4504824 466192dd397faf1602745e2bb47f64d3 ""
+  "figs/path_complem.png" 1706035199 1158028 6cf6f5b73ba007285ed12aa2e7cf3e4f ""
+  "main.aux" 1706036218 15159 bf56ac2bbff97812559cdf986289ce03 "pdflatex"
+  "main.bbl" 1706036215 39490 671087bb2c0b9f22e6625b3e303e63fb "bibtex main"
+  "main.out" 1706036218 1148 f641055ded3685285dd4ac7d6d2377ca "pdflatex"
+  "main.tex" 1706036211 71445 51a8cd971a57ab8e2472936c6d23b453 ""
+  "sn-jnl.cls" 1706035199 55955 38fcab50bf900ac0998e350ba2123285 ""
   (generated)
   "main.aux"
   "main.log"
