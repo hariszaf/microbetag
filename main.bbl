@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{69}
+\begin{thebibliography}{70}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -737,6 +737,27 @@ e14396 MICROBIO-2023-392.R1
 \endbibitem
 
 %%% 41
+\bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{keggmodulesdb}
+\begin{barticle}
+\bauthor{\bsnm{Muto}, \binits{A.}},
+\bauthor{\bsnm{Kotera}, \binits{M.}},
+\bauthor{\bsnm{Tokimatsu}, \binits{T.}},
+\bauthor{\bsnm{Nakagawa}, \binits{Z.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Kanehisa}, \binits{M.}}:
+\batitle{Modular architecture of metabolic pathways revealed by conserved
+  sequences of reactions}.
+\bjtitle{Journal of Chemical Information and Modeling}
+\bvolume{53}(\bissue{3}),
+\bfpage{613}--\blpage{622}
+(\byear{2013})
+\doiurl{10.1021/ci3005379}
+{\href{https://arxiv.org/abs/https://doi.org/10.1021/ci3005379}{{https://doi.org/10.1021/ci3005379}}}.
+\bcomment{PMID: 23384306}
+\end{barticle}
+\endbibitem
+
+%%% 42
 \bibitem[\protect\citeauthoryear{Hessler et~al.}{2023}]{hessler2023vitamin}
 \begin{barticle}
 \bauthor{\bsnm{Hessler}, \binits{T.}},
@@ -755,7 +776,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 42
+%%% 43
 \bibitem[\protect\citeauthoryear{Wattam et~al.}{2017}]{wattam2017improvements}
 \begin{barticle}
 \bauthor{\bsnm{Wattam}, \binits{A.R.}},
@@ -777,7 +798,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 43
+%%% 44
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -796,7 +817,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 44
+%%% 45
 \bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
 \begin{barticle}
 \bauthor{\bsnm{Quast}, \binits{C.}},
@@ -816,7 +837,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 45
+%%% 46
 \bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
 \begin{barticle}
 \bauthor{\bsnm{Schoch}, \binits{C.L.}},
@@ -838,7 +859,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 46
+%%% 47
 \bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
 \begin{botherref}
 \oauthor{\bsnm{Alishum}, \binits{A.}}:
@@ -848,7 +869,7 @@ e14396 MICROBIO-2023-392.R1
 \end{botherref}
 \endbibitem
 
-%%% 47
+%%% 48
 \bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
 \begin{barticle}
 \bauthor{\bsnm{Murali}, \binits{A.}},
@@ -863,7 +884,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 48
+%%% 49
 \bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
 \begin{barticle}
 \bauthor{\bsnm{Sunagawa}, \binits{S.}},
@@ -884,7 +905,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 49
+%%% 50
 \bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
 \begin{barticle}
 \bauthor{\bsnm{Louca}, \binits{S.}},
@@ -898,7 +919,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 50
+%%% 51
 \bibitem[\protect\citeauthoryear{Douglas et~al.}{2020}]{douglas2020picrust2}
 \begin{barticle}
 \bauthor{\bsnm{Douglas}, \binits{G.M.}},
@@ -917,7 +938,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 51
+%%% 52
 \bibitem[\protect\citeauthoryear{Feldbauer
   et~al.}{2015}]{feldbauer2015prediction}
 \begin{barticle}
@@ -933,7 +954,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 52
+%%% 53
 \bibitem[\protect\citeauthoryear{Huerta-Cepas et~al.}{2019}]{huerta2019eggnog}
 \begin{barticle}
 \bauthor{\bsnm{Huerta-Cepas}, \binits{J.}},
@@ -955,7 +976,25 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 53
+%%% 54
+\bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
+\begin{barticle}
+\bauthor{\bsnm{Muto}, \binits{A.}},
+\bauthor{\bsnm{Kotera}, \binits{M.}},
+\bauthor{\bsnm{Tokimatsu}, \binits{T.}},
+\bauthor{\bsnm{Nakagawa}, \binits{Z.}},
+\bauthor{\bsnm{Goto}, \binits{S.}},
+\bauthor{\bsnm{Kanehisa}, \binits{M.}}:
+\batitle{Modular architecture of metabolic pathways revealed by conserved
+  sequences of reactions}.
+\bjtitle{Journal of chemical information and modeling}
+\bvolume{53}(\bissue{3}),
+\bfpage{613}--\blpage{622}
+(\byear{2013})
+\end{barticle}
+\endbibitem
+
+%%% 55
 \bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
 \begin{barticle}
 \bauthor{\bsnm{Aramaki}, \binits{T.}},
@@ -974,7 +1013,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 54
+%%% 56
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -991,25 +1030,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 55
-\bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
-\begin{barticle}
-\bauthor{\bsnm{Muto}, \binits{A.}},
-\bauthor{\bsnm{Kotera}, \binits{M.}},
-\bauthor{\bsnm{Tokimatsu}, \binits{T.}},
-\bauthor{\bsnm{Nakagawa}, \binits{Z.}},
-\bauthor{\bsnm{Goto}, \binits{S.}},
-\bauthor{\bsnm{Kanehisa}, \binits{M.}}:
-\batitle{Modular architecture of metabolic pathways revealed by conserved
-  sequences of reactions}.
-\bjtitle{Journal of chemical information and modeling}
-\bvolume{53}(\bissue{3}),
-\bfpage{613}--\blpage{622}
-(\byear{2013})
-\end{barticle}
-\endbibitem
-
-%%% 56
+%%% 57
 \bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -1022,7 +1043,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 57
+%%% 58
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -1036,7 +1057,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 58
+%%% 59
 \bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
 \begin{barticle}
 \bauthor{\bsnm{Lam}, \binits{T.J.}},
@@ -1052,7 +1073,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 59
+%%% 60
 \bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
 \begin{barticle}
 \bauthor{\bsnm{Henry}, \binits{C.S.}},
@@ -1070,7 +1091,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 60
+%%% 61
 \bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
 \begin{barticle}
 \bauthor{\bsnm{Blank}, \binits{C.E.}},
@@ -1086,7 +1107,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 61
+%%% 62
 \bibitem[\protect\citeauthoryear{Choudhary
   et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
@@ -1103,7 +1124,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 62
+%%% 63
 \bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
 \begin{barticle}
 \bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
@@ -1116,7 +1137,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 63
+%%% 64
 \bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
 \begin{botherref}
 \oauthor{\bsnm{Reese}, \binits{W.}}:
@@ -1127,7 +1148,7 @@ Linux J.
 \end{botherref}
 \endbibitem
 
-%%% 64
+%%% 65
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -1138,7 +1159,7 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 65
+%%% 66
 \bibitem[\protect\citeauthoryear{Llavero-Pasquina
   et~al.}{2022}]{llavero2022thiamine}
 \begin{barticle}
@@ -1159,7 +1180,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 66
+%%% 67
 \bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
 \begin{barticle}
 \bauthor{\bsnm{Romine}, \binits{M.F.}},
@@ -1176,7 +1197,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 68
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -1192,7 +1213,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 68
+%%% 69
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -1209,7 +1230,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 69
+%%% 70
 \bibitem[\protect\citeauthoryear{Agrawal et~al.}{1993}]{assocciationRuleMining}
 \begin{bchapter}
 \bauthor{\bsnm{Agrawal}, \binits{R.}},

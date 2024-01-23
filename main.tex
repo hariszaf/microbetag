@@ -239,7 +239,7 @@
     Considering complementarity as a range of alternatives and paired-wise microbial interactions in the context of the community as a whole, microbial species may also exchange metabolic compounds that may be not seeds at a certain time but may allow them to perform functions that currently are not capable of~\cite{mori2016metabolic,zientz2004metabolic}.
     Such by-products may be even metabolites not even necessary for themeselves but for the community as a whole~\cite{kallus2017paradoxes}.
     To explore the potenial of a species metabolism given they benefit from a partner of theirs, genome annotations combined with collections of functional units to highlight can provide a valid proxy.
-    We present here a naive approach exporting all possible complements between a pair of species based on their KEGG ORTHOLOGY annotations and the KEGG MODULES database.
+    We present here a naive approach exporting all possible complements between a pair of species based on their KEGG ORTHOLOGY (KOs) annotations and the KEGG MODULES database~\cite{keggmodulesdb}.
 
     \microbetag integrates user's co-occurrence network integrating phenotypic traits on the taxa present on the network (nodes) and potential metabolic interactions to their suggested associations (edges).
     A Graphical User Interface (GUI) is supported as a CytoscapeApp providing a user-friendly environment to investigate annotations in a straightforward way.
@@ -251,11 +251,9 @@
     To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
 
 
-    % \hrulefill
-
+    % ===================            to be used         =====================
     % From~\cite{louca2016high}
     % Ecological communities are governed by an interplay of deterministic processes associated with species interactions with their environment (environmental filtering) and each other (limiting similarity)1,2.
-
 
     % the metabolic functional potential of microbial communities in the global ocean or in soil is closely related to environmental conditions, while the taxonomic variation within individual functional groups is only poorly explained by environmental condition
 
@@ -263,7 +261,6 @@
 
     % According to this paradigm, \textbf{similar environments should promote similar microbial community function, while allowing for taxonomic variation within individual functional groups}.
 
-    
     % These interactions contribute to the overall stability and functioning of ecosystems by influencing nutrient cycling, disease dynamics, and the overall diversity and composition of microbial communities. 
     % For example, some microorganisms can produce and release certain compounds that benefit neighboring microbes or inhibit the growth of competing species. 
     % Other interactions involve symbiotic relationships, where different microbes rely on each other for survival and perform complementary functions. 
@@ -344,9 +341,6 @@
         Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory. Again, in order to faciliate the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave. 
 
 
-
-
-
     \subsection*{Literature based nodes annotation }
     \label{subsec:fapro}
 
@@ -393,20 +387,33 @@
 
 
 
-    \subsection*{ Pathway complementarity }
+    \subsection*{Pathway complementarity }
     \label{subsec:path-compl}
 
-        For the subset of the $16,900$ high quality GTDB representative genomes that a \texttt{.faa} was available,~\textit{kofamscan}~\cite{aramaki2020kofamkoala} was performed to annotate them with KEGG ORTHOLOGY terms (KOs)~\cite{kanehisa2012kegg}. 
-        Their KOs were then mapped to their corresponding KEGG modules; a KO may map to more than one modules ($1:n$).
+        To infer potential pathway complementarities we consider the modules described in KEGG MODULES database~\cite{keggmodulesdb}.
+        % as functional units to highlight can provide a valid proxy.
         A KEGG module is defined as a functional unit within the KEGG framework, that represents a set of enzymes and reactions involved in a specific biological process or pathway~\cite{muto2013modular}.
-        A module's definition is a logical expression and consists of KOs and the following symbols:
-            a. the space, representing a connection in the pathway
-            b. plus sign, representing a molecular complex,  
-            c. comma, representing alternatives and
-            d. minus sign, designates an optional item in the complex.
-        Both (a) and (b) cases should be considered as "AND" logical operators, while (c) would be the "OR" 
-        (Figure~\ref{fig:pathcompl}).
-        We define a genome as having a "complete" module if and only if all of the KOs present in any of the module's alternatives are also found among the annotated KOs of the genome.
+        Such a unit consists of several~\textit{steps}, each of which may have more than one molecular ways to occur (Figure~\ref{fig:pathcompl}).
+        A module's definition is a logical expression and consists of KOs 
+        % and the following symbols:
+        that may be coupled with one another as:
+            % a. the space, representing a connection in the pathway
+            a. connected steps of the pathway
+            % b. plus sign, representing a molecular complex,
+            b. parts of a molecular complex, 
+            % c. comma, representing alternatives and
+            c. alternatives of the same step, and 
+            % d. minus sign, designates an optional item in the complex.
+            d. optional entities of a complex.
+        Both (a) and (b) cases should be considered as the~\texttt{AND} logical operator, while (c) would be the~\texttt{OR} (Figure~\ref{fig:pathcompl}).
+        Given a module's definition, we will consider as an~\textit{alternative} any subset of the KO terms mentioned in the definition, 
+        that has exactly one way to perform each step, provided that all the steps of the module are covered.
+        % and support the functioning of all the steps of the module.
+        We define a genome as having a~\textit{complete} module, if and only if all of the KOs of at least one alternative are present on the genome.
+
+        Within this framework,~\texttt{kofamscan}~\cite{aramaki2020kofamkoala} was used to annotate with KEGG ORTHOLOGY terms (KOs) the $16,900$ high quality GTDB representative genomes for which a~\texttt{.faa} was available~\cite{kanehisa2012kegg}.
+        The KOs of each genome were then mapped to their corresponding KEGG modules; a KO may map to more than one modules ($1:n$).
+        % , see Appendix~\ref{secA1}).
 
         \begin{figure}[h!]
             \includegraphics*[width=0.8\columnwidth]{figs/path_complem.png}
@@ -422,15 +429,18 @@
         \end{figure}
 
 
-        All modules definitions were retrieved using the KEGG API and parsed 
-        (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/parse_module_definitions.py}{\texttt{parse\_module\_definitions.py}}).
-        A dictionary was built with all the alternatives, i.e. alternative sets of KOs, for a module to be complete 
-        (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/module_definition_map.json}{module\_definition\_map.json}).
+        All modules definitions were retrieved using the KEGG API and parsed.
+        % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/parse_module_definitions.py}{\texttt{parse\_module\_definitions.py}}).
+        A dictionary was built with all the alternatives of each module. 
+        %, i.e. alternative sets of KOs, for a module to be complete.
+        % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/module_definition_map.json}{module\_definition\_map.json})
         Each pair of the KEGG annotated genomes was then investigated for potential pathway complementarities, 
         i.e. whether a genome lacking a number of KOs ($genome_A$) to have a complete module ($module_x$) could benefit from another's species genome(s) ($genome_B$).
         In that case, $genome_B$ does not necessarily have a complete alternative of $module_x$; as long as it has the missing KOs that $genome_A$ needs to complete an alternative of it, $genome_B$ potentially complements $genome_A$ with respect to $module_x$.
-        In total, $341,568$ unique complementarities were exported (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/scripts/pathway_complementarity.py}{\texttt{pathway\_complementarity.py}}).
-        Thanks to the graphical user interface (GUI) of the ~\href{https://www.kegg.jp/kegg/docs/color_gui.html}{KEGG pathway map viewer}~\cite{kanehisa2020kegg,kanehisa2022kegg}, 
+        In total, $341,568$ unique complementarities were exported.
+        % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/scripts/pathway_complementarity.py}{\texttt{pathway\_complementarity.py}})
+
+        Thanks to the graphical user interface (GUI) of the~\href{https://www.kegg.jp/kegg/docs/color_gui.html}{KEGG pathway map viewer}~\cite{kanehisa2020kegg,kanehisa2022kegg}, 
         each complementarity can be visualised as part of the closest KEGG metabolic map; 
         where the KOs coming from the donor are shown with a blue-green colour, while those from the beneficiary's genome itself with rose.
 
@@ -442,10 +452,11 @@
         one considering $species_A$ as the potential beneficiary ans $species_B$ as the potenial donor species, and one vice-versa. 
 
 
-    \subsection*{ Seed scores using genome scale metabolic reconstructions }
+    \subsection*{Seed scores using genome scale metabolic reconstructions }
     \label{subsec:seeds}
 
         
+
         The Metabolic Complementarity Index ($MI_{Complementarity}$) measures the degree to which two microbial species can mutually assist each other by complementing each other's biosynthetic capabilities.
         As described in~\cite{phylomint_ms}, it is defined as the proportion of seed compounds of a species that can be synthesized by the metabolic network of another, but are not included in the seed set of the latter. 
         $MI_{Complementarity}$ offers an upper bound assessment of the potential for syntrophic interactions between two species.
@@ -454,10 +465,9 @@
         Those indices have been thoroughly described and implemented in the NetCooperate~\cite{levy2015netcooperate} and NetCompt~\cite{kreimer2012netcmpt} tools correspondingly.
         We will be referring to those two indices as "seed scores".
 
+        Most recently, the~\texttt{PhyloMint}tool~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
 
-        Most recently, the PhyloMint Python package~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
-
-        In the framework of microbetag, seed scores were computed using PhyloMint and draft GENREs for all pair-wised combinations of GTDB representative genomes that have been RAST annotated in the framework of the PATRIC database~\cite{wattam2017improvements}.
+        In the framework of microbetag, seed scores were computed using \texttt{PhyloMint} and draft GENREs for all pair-wised combinations of GTDB representative genomes that have been RAST annotated in the framework of the PATRIC database~\cite{wattam2017improvements}.
         GENREs were reconstructed using the Model SEED pipeline~\cite{henry2010high} through its Python interface \href{https://modelseedpy.readthedocs.io/en/latest/index.html}{ModelSEEDpy}.
 
         
@@ -474,7 +484,7 @@
 
 
 
-    \subsection*{ Clustering network  }
+    \subsection*{Clustering network  }
     \label{subsec:mant}
 
         manta is a heuristic network clustering algorithm that clusters nodes within weighted networks effectively, leveraging the presence of negative edges and discerning between weak and 
@@ -489,7 +499,7 @@
 
 
 
-    \subsection*{ Groups of annotations }
+    \subsection*{Groups of annotations }
     \label{groups}
 
         Biologically meaningful groups were built using the micrO ontology~\cite{blank2016micro}.
@@ -498,7 +508,7 @@
 
 
 
-    \subsection*{ Building the CytoscapeApp }
+    \subsection*{Building the CytoscapeApp }
     \label{subsec:build-cytoapp}
 
         The \microbetag CytoscapeApp was build based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
@@ -513,7 +523,7 @@
 
 
 
-    \subsection*{ Dependencies, Web server and API }
+    \subsection*{Dependencies, Web server and API }
     \label{subsec:webserver}
 
         The \microbetag web service is container - based and consists of three Docker~\cite{merkel2014docker} (v24.0.2) images: 
