@@ -1149,6 +1149,7 @@ INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/
 INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty
 INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty
 INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty
+INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/threeparttable/threeparttable.sty
 INPUT /usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
@@ -1395,6 +1396,8 @@ INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb
+INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb

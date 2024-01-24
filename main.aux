@@ -24,14 +24,10 @@
 \citation{balint2016millions}
 \citation{robinson2010structure}
 \citation{louca2016high}
-\citation{louca2016high}
-\citation{kost2023metabolic}
-\citation{arnaouteli2021bacillus}
-\citation{de2023horizontal}
-\citation{keller2006communication}
+\citation{faust2012microbialReviewInteractions}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 151}}{2}{\abstractname }{figure.caption.2}{}}
-\newlabel{sec1}{{3}{2}{Background \footnote { We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow ~\href {https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules} } \footnote { The introduction should not include subheadings. The Background section should explain the relevant context and the specific issue that the software described is intended to address. }}{section*.3}{}}
+\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 156}}{2}{\abstractname }{figure.caption.2}{}}
+\newlabel{sec:background}{{3}{2}{Background \footnote { We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow ~\href {https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules} } \footnote { The introduction should not include subheadings. The Background section should explain the relevant context and the specific issue that the software described is intended to address. }}{section*.3}{}}
 \citation{elixir_microbiome}
 \citation{hug2016new}
 \citation{matchado2021network}
@@ -69,29 +65,29 @@
 \newlabel{subsec:genomes}{{3}{5}{Genomes included}{section*.5}{}}
 \newlabel{subsec:taxonomies}{{3}{5}{Taxonomy schemes}{section*.6}{}}
 \newlabel{subsec:net-infer}{{3}{5}{Network inference}{section*.7}{}}
+\newlabel{subsec:preprocess}{{3}{5}{\microbetag pre-processing}{section*.8}{}}
 \citation{sunagawa2015structure}
 \citation{louca2016decoupling}
 \citation{douglas2020picrust2}
 \citation{feldbauer2015prediction}
 \citation{huerta2019eggnog}
 \citation{feldbauer2015prediction}
-\newlabel{subsec:preprocess}{{3}{6}{\microbetag pre-processing}{section*.8}{}}
-\newlabel{subsec:fapro}{{3}{6}{Literature based nodes annotation}{section*.9}{}}
-\newlabel{subsec:phen}{{3}{6}{Genomic based nodes annotation}{section*.10}{}}
 \citation{keggmodulesdb}
 \citation{muto2013modular}
+\newlabel{subsec:fapro}{{3}{6}{Literature based nodes annotation}{section*.9}{}}
+\newlabel{subsec:phen}{{3}{6}{Genomic based nodes annotation}{section*.10}{}}
+\newlabel{subsec:path-compl}{{3}{6}{Pathway complementarity}{section*.11}{}}
 \citation{aramaki2020kofamkoala}
 \citation{kanehisa2012kegg}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{7}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:pathcompl}{{1}{7}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.12}{}}
 \citation{kanehisa2020kegg,kanehisa2022kegg}
 \citation{phylomint_ms}
 \citation{levy2015netcooperate}
 \citation{kreimer2012netcmpt}
-\newlabel{subsec:path-compl}{{3}{7}{Pathway complementarity}{section*.11}{}}
 \citation{phylomint_ms}
 \citation{wattam2017improvements}
 \citation{henry2010high}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{8}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:pathcompl}{{1}{8}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.12}{}}
 \newlabel{subsec:seeds}{{3}{8}{Seed scores using genome scale metabolic reconstructions}{section*.13}{}}
 \citation{rottjers2020manta}
 \citation{blank2016micro}
@@ -104,21 +100,18 @@
 \newlabel{subsec:webserver}{{3}{9}{Dependencies, Web server and API}{section*.17}{}}
 \newlabel{sec:results}{{3}{10}{Results \footnote { Significant advance over previously published software (usually demonstrated by direct comparison with available related software) This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. This section may be combined with the Discussion section for Software articles. }}{section*.18}{}}
 \newlabel{subsec:microbetagdb}{{3}{10}{\microbetag and microbetagDB}{section*.19}{}}
-\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 609}}{10}{\microbetag and microbetagDB}{figure.caption.20}{}}
+\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 581}}{10}{\microbetag and microbetagDB}{figure.caption.20}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Diagram of the \texttt  {microbetag }pre - calculations and the on the fly workflow. GTDB v207 representative genomes were filtered and for those of high-quality 33 phenotypic traits were predicted using\nobreakspace  {}\texttt  {phenotrex}. To this end, models were re-trained to sync with recent version of eggNOG. }}{10}{figure.caption.20}\protected@file@percent }
 \citation{murali2018idtaxa}
 \citation{wright2016using}
 \citation{flashweave_cite}
 \citation{hessler2023vitamin}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of Data}}{11}{table.caption.22}\protected@file@percent }
+\newlabel{subsec:cytoapp}{{3}{11}{\microbetag CytoscapeApp}{section*.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  Computating times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. \footnotemark [\c@footnote ] specs of the laptop used. }}{11}{table.caption.25}\protected@file@percent }
+\newlabel{tab:grid}{{2}{11}{Computating times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. \protect \footnotemark [\value {footnote}] specs of the laptop used}{table.caption.25}{}}
+\newlabel{subsec:validation}{{3}{11}{Validation of \microbetag potential}{section*.26}{}}
 \citation{llavero2022thiamine,romine2017underlying}
-\newlabel{subsec:cytoapp}{{3}{11}{\microbetag CytoscapeApp}{section*.21}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces  Computating times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. \footnotemark [\c@footnote ] specs of the laptop used. }}{11}{table.caption.23}\protected@file@percent }
-\newlabel{tab:grid}{{1}{11}{Computating times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. \protect \footnotemark [\value {footnote}] specs of the laptop used}{table.caption.23}{}}
-\newlabel{subsec:validation}{{3}{11}{Validation of \microbetag potential}{section*.24}{}}
-\@writefile{tdo}{\contentsline {todo}{Study those 2 to understand our findings}{11}{section*.25}\protected@file@percent }
-\pgfsyspdfmark {pgfid1}{18708841}{14804548}
-\pgfsyspdfmark {pgfid2}{4515306}{14816836}
-\pgfsyspdfmark {pgfid3}{5617729}{14592922}
 \citation{chklovski2023checkm2}
 \citation{parks2015checkm}
 \citation{zelezniak2015metabolic}
@@ -126,20 +119,23 @@
 \citation{zelezniak2015metabolic}
 \citation{zelezniak2015metabolic}
 \citation{assocciationRuleMining}
-\newlabel{sec:discussion}{{3}{12}{Discussion \footnote { The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. A case study of the use of the software may be presented. The planned future development of new features, if any, should be mentioned. }}{section*.26}{}}
-\newlabel{subsec:usecase}{{3}{12}{Interpreting a real-world network with \microbetag }{section*.27}{}}
-\newlabel{subsec:resource}{{3}{12}{\microbetag as a resource}{section*.28}{}}
-\newlabel{subsec:limitations}{{3}{12}{Limitations}{section*.29}{}}
-\newlabel{subsec:future}{{3}{12}{Future work}{section*.30}{}}
-\newlabel{sec:conclusions}{{3}{12}{Conclusions}{section*.31}{}}
-\newlabel{supplementary-files}{{3}{13}{Supplementary information}{section*.32}{}}
-\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{13}{section*.32}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A}Mappings}{13}{appendix.a.A}\protected@file@percent }
-\newlabel{secA1}{{A}{13}{Mappings}{appendix.a.A}{}}
+\@writefile{tdo}{\contentsline {todo}{Study those 2 to understand our findings}{12}{section*.27}\protected@file@percent }
+\pgfsyspdfmark {pgfid1}{20322051}{46931565}
+\pgfsyspdfmark {pgfid4}{34610201}{46943853}
+\pgfsyspdfmark {pgfid5}{35712624}{46719939}
+\newlabel{sec:discussion}{{3}{12}{Discussion \footnote { The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. A case study of the use of the software may be presented. The planned future development of new features, if any, should be mentioned. }}{section*.28}{}}
+\newlabel{subsec:usecase}{{3}{12}{Interpreting a real-world network with \microbetag }{section*.29}{}}
+\newlabel{subsec:resource}{{3}{12}{\microbetag as a resource}{section*.30}{}}
+\newlabel{subsec:limitations}{{3}{12}{Limitations}{section*.31}{}}
+\newlabel{subsec:future}{{3}{12}{Future work}{section*.32}{}}
+\newlabel{sec:conclusions}{{3}{13}{Conclusions}{section*.33}{}}
+\newlabel{supplementary-files}{{3}{13}{Supplementary information}{section*.34}{}}
+\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{13}{section*.34}\protected@file@percent }
 \citation{phylomint_ms}
 \bibdata{sn-bibliography}
 \bibcite{yuan2021climate}{{1}{2021}{{Yuan et~al.}}{{}}}
-\bibcite{raes2008molecular}{{2}{2008}{{Raes and Bork}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Mappings}{14}{appendix.a.A}\protected@file@percent }
+\newlabel{secA1}{{A}{14}{Mappings}{appendix.a.A}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {B}Background on seed scores and complementarities}{14}{appendix.a.B}\protected@file@percent }
 \newlabel{secA2}{{B}{14}{Background on seed scores and complementarities}{appendix.a.B}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Background on seed scores}{14}{subsection.a.B.1}\protected@file@percent }
@@ -148,72 +144,69 @@
 \newlabel{eq:mi_competition}{{B3}{14}{Background on seed scores}{equation.a.B.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Background on pathway complementarity}{14}{subsection.a.B.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Complementarities}{14}{subsection.a.B.3}\protected@file@percent }
+\bibcite{raes2008molecular}{{2}{2008}{{Raes and Bork}}{{}}}
 \bibcite{faust2012microbialReviewInteractions}{{3}{2012}{{Faust and Raes}}{{}}}
 \bibcite{rottjers2018hairballs}{{4}{2018}{{R{\"o}ttjers and Faust}}{{}}}
 \bibcite{balint2016millions}{{5}{2016}{{B{\'a}lint et~al.}}{{}}}
 \bibcite{robinson2010structure}{{6}{2010}{{Robinson et~al.}}{{}}}
 \bibcite{louca2016high}{{7}{2016}{{Louca et~al.}}{{}}}
-\bibcite{kost2023metabolic}{{8}{2023}{{Kost et~al.}}{{}}}
-\bibcite{arnaouteli2021bacillus}{{9}{2021}{{Arnaouteli et~al.}}{{}}}
-\bibcite{de2023horizontal}{{10}{2023}{{de~Sousa et~al.}}{{}}}
-\bibcite{keller2006communication}{{11}{2006}{{Keller and Surette}}{{}}}
-\bibcite{elixir_microbiome}{{12}{2024}{{Finn et~al.}}{{}}}
-\bibcite{hug2016new}{{13}{2016}{{Hug et~al.}}{{}}}
-\bibcite{matchado2021network}{{14}{2021}{{Matchado et~al.}}{{}}}
-\bibcite{faust2012microbial}{{15}{2012}{{Faust et~al.}}{{}}}
-\bibcite{friedman2012inferring}{{16}{2012}{{Friedman and Alm}}{{}}}
-\bibcite{kurtz2015sparse}{{17}{2015}{{Kurtz et~al.}}{{}}}
-\bibcite{flashweave_cite}{{18}{2019}{{Tackmann et~al.}}{{}}}
-\bibcite{faust2021open}{{19}{2021}{{Faust}}{{}}}
-\bibcite{kishore2023inferring}{{20}{2023}{{Kishore et~al.}}{{}}}
-\bibcite{weiss2016correlation}{{21}{2016}{{Weiss et~al.}}{{}}}
-\bibcite{berry2014deciphering}{{22}{2014}{{Berry and Widder}}{{}}}
-\bibcite{guo2022microbial}{{23}{2022}{{Guo et~al.}}{{}}}
-\bibcite{ma2020earth}{{24}{2020}{{Ma et~al.}}{{}}}
-\bibcite{guidi2016plankton}{{25}{2016}{{Guidi et~al.}}{{}}}
-\bibcite{rottjers2020manta}{{26}{2020}{{R{\"o}ttjers and Faust}}{{}}}
-\bibcite{levy2012reverse}{{27}{2012}{{Levy and Borenstein}}{{}}}
-\bibcite{levy2014metagenomic}{{28}{2014}{{Levy and Borenstein}}{{}}}
-\bibcite{borenstein2008large}{{29}{2008}{{Borenstein et~al.}}{{}}}
-\bibcite{parter2007environmental}{{30}{2007}{{Parter et~al.}}{{}}}
-\bibcite{levy2015netcooperate}{{31}{2015}{{Levy et~al.}}{{}}}
-\bibcite{kreimer2012netcmpt}{{32}{2012}{{Kreimer et~al.}}{{}}}
-\bibcite{zelezniak2015metabolic}{{33}{2015}{{Zelezniak et~al.}}{{}}}
-\bibcite{belcour2020metage2metabo}{{34}{2020}{{Belcour et~al.}}{{}}}
-\bibcite{thiele2010protocol}{{35}{2010}{{Thiele and Palsson}}{{}}}
-\bibcite{durot2008genome}{{36}{2008}{{Durot et~al.}}{{}}}
-\bibcite{communityGemMicrobiomeModel2023}{{37}{}{{Cerk et~al.}}{{}}}
-\bibcite{mori2016metabolic}{{38}{2016}{{Mori et~al.}}{{}}}
-\bibcite{zientz2004metabolic}{{39}{2004}{{Zientz et~al.}}{{}}}
-\bibcite{kallus2017paradoxes}{{40}{2017}{{Kallus et~al.}}{{}}}
-\bibcite{keggmodulesdb}{{41}{2013}{{Muto et~al.}}{{}}}
-\bibcite{hessler2023vitamin}{{42}{2023}{{Hessler et~al.}}{{}}}
-\bibcite{wattam2017improvements}{{43}{2017}{{Wattam et~al.}}{{}}}
-\bibcite{parks2022gtdb}{{44}{2022}{{Parks et~al.}}{{}}}
-\bibcite{quast2012silva}{{45}{2012}{{Quast et~al.}}{{}}}
-\bibcite{schoch2020ncbi}{{46}{2020}{{Schoch et~al.}}{{}}}
-\bibcite{ali_alishum_2022_6655692}{{47}{2022}{{Alishum}}{{}}}
-\bibcite{murali2018idtaxa}{{48}{2018}{{Murali et~al.}}{{}}}
-\bibcite{sunagawa2015structure}{{49}{2015}{{Sunagawa et~al.}}{{}}}
-\bibcite{louca2016decoupling}{{50}{2016}{{Louca et~al.}}{{}}}
-\bibcite{douglas2020picrust2}{{51}{2020}{{Douglas et~al.}}{{}}}
-\bibcite{feldbauer2015prediction}{{52}{2015}{{Feldbauer et~al.}}{{}}}
-\bibcite{huerta2019eggnog}{{53}{2019}{{Huerta-Cepas et~al.}}{{}}}
-\bibcite{muto2013modular}{{54}{2013}{{Muto et~al.}}{{}}}
-\bibcite{aramaki2020kofamkoala}{{55}{2020}{{Aramaki et~al.}}{{}}}
-\bibcite{kanehisa2012kegg}{{56}{2012}{{Kanehisa et~al.}}{{}}}
-\bibcite{kanehisa2020kegg}{{57}{2020}{{Kanehisa and Sato}}{{}}}
-\bibcite{kanehisa2022kegg}{{58}{2022}{{Kanehisa et~al.}}{{}}}
-\bibcite{phylomint_ms}{{59}{2020}{{Lam et~al.}}{{}}}
-\bibcite{henry2010high}{{60}{2010}{{Henry et~al.}}{{}}}
-\bibcite{blank2016micro}{{61}{2016}{{Blank et~al.}}{{}}}
-\bibcite{choudhary2021scnetviz}{{62}{2021}{{Choudhary et~al.}}{{}}}
-\bibcite{merkel2014docker}{{63}{2014}{{Merkel et~al.}}{{}}}
-\bibcite{nginx}{{64}{2008}{{Reese}}{{}}}
-\bibcite{wright2016using}{{65}{2016}{{Wright}}{{}}}
-\bibcite{llavero2022thiamine}{{66}{2022}{{Llavero-Pasquina et~al.}}{{}}}
-\bibcite{romine2017underlying}{{67}{2017}{{Romine et~al.}}{{}}}
-\bibcite{chklovski2023checkm2}{{68}{2023}{{Chklovski et~al.}}{{}}}
-\bibcite{parks2015checkm}{{69}{2015}{{Parks et~al.}}{{}}}
-\bibcite{assocciationRuleMining}{{70}{1993}{{Agrawal et~al.}}{{}}}
+\bibcite{elixir_microbiome}{{8}{2024}{{Finn et~al.}}{{}}}
+\bibcite{hug2016new}{{9}{2016}{{Hug et~al.}}{{}}}
+\bibcite{matchado2021network}{{10}{2021}{{Matchado et~al.}}{{}}}
+\bibcite{faust2012microbial}{{11}{2012}{{Faust et~al.}}{{}}}
+\bibcite{friedman2012inferring}{{12}{2012}{{Friedman and Alm}}{{}}}
+\bibcite{kurtz2015sparse}{{13}{2015}{{Kurtz et~al.}}{{}}}
+\bibcite{flashweave_cite}{{14}{2019}{{Tackmann et~al.}}{{}}}
+\bibcite{faust2021open}{{15}{2021}{{Faust}}{{}}}
+\bibcite{kishore2023inferring}{{16}{2023}{{Kishore et~al.}}{{}}}
+\bibcite{weiss2016correlation}{{17}{2016}{{Weiss et~al.}}{{}}}
+\bibcite{berry2014deciphering}{{18}{2014}{{Berry and Widder}}{{}}}
+\bibcite{guo2022microbial}{{19}{2022}{{Guo et~al.}}{{}}}
+\bibcite{ma2020earth}{{20}{2020}{{Ma et~al.}}{{}}}
+\bibcite{guidi2016plankton}{{21}{2016}{{Guidi et~al.}}{{}}}
+\bibcite{rottjers2020manta}{{22}{2020}{{R{\"o}ttjers and Faust}}{{}}}
+\bibcite{levy2012reverse}{{23}{2012}{{Levy and Borenstein}}{{}}}
+\bibcite{levy2014metagenomic}{{24}{2014}{{Levy and Borenstein}}{{}}}
+\bibcite{borenstein2008large}{{25}{2008}{{Borenstein et~al.}}{{}}}
+\bibcite{parter2007environmental}{{26}{2007}{{Parter et~al.}}{{}}}
+\bibcite{levy2015netcooperate}{{27}{2015}{{Levy et~al.}}{{}}}
+\bibcite{kreimer2012netcmpt}{{28}{2012}{{Kreimer et~al.}}{{}}}
+\bibcite{zelezniak2015metabolic}{{29}{2015}{{Zelezniak et~al.}}{{}}}
+\bibcite{belcour2020metage2metabo}{{30}{2020}{{Belcour et~al.}}{{}}}
+\bibcite{thiele2010protocol}{{31}{2010}{{Thiele and Palsson}}{{}}}
+\bibcite{durot2008genome}{{32}{2008}{{Durot et~al.}}{{}}}
+\bibcite{communityGemMicrobiomeModel2023}{{33}{}{{Cerk et~al.}}{{}}}
+\bibcite{mori2016metabolic}{{34}{2016}{{Mori et~al.}}{{}}}
+\bibcite{zientz2004metabolic}{{35}{2004}{{Zientz et~al.}}{{}}}
+\bibcite{kallus2017paradoxes}{{36}{2017}{{Kallus et~al.}}{{}}}
+\bibcite{keggmodulesdb}{{37}{2013}{{Muto et~al.}}{{}}}
+\bibcite{hessler2023vitamin}{{38}{2023}{{Hessler et~al.}}{{}}}
+\bibcite{wattam2017improvements}{{39}{2017}{{Wattam et~al.}}{{}}}
+\bibcite{parks2022gtdb}{{40}{2022}{{Parks et~al.}}{{}}}
+\bibcite{quast2012silva}{{41}{2012}{{Quast et~al.}}{{}}}
+\bibcite{schoch2020ncbi}{{42}{2020}{{Schoch et~al.}}{{}}}
+\bibcite{ali_alishum_2022_6655692}{{43}{2022}{{Alishum}}{{}}}
+\bibcite{murali2018idtaxa}{{44}{2018}{{Murali et~al.}}{{}}}
+\bibcite{sunagawa2015structure}{{45}{2015}{{Sunagawa et~al.}}{{}}}
+\bibcite{louca2016decoupling}{{46}{2016}{{Louca et~al.}}{{}}}
+\bibcite{douglas2020picrust2}{{47}{2020}{{Douglas et~al.}}{{}}}
+\bibcite{feldbauer2015prediction}{{48}{2015}{{Feldbauer et~al.}}{{}}}
+\bibcite{huerta2019eggnog}{{49}{2019}{{Huerta-Cepas et~al.}}{{}}}
+\bibcite{muto2013modular}{{50}{2013}{{Muto et~al.}}{{}}}
+\bibcite{aramaki2020kofamkoala}{{51}{2020}{{Aramaki et~al.}}{{}}}
+\bibcite{kanehisa2012kegg}{{52}{2012}{{Kanehisa et~al.}}{{}}}
+\bibcite{kanehisa2020kegg}{{53}{2020}{{Kanehisa and Sato}}{{}}}
+\bibcite{kanehisa2022kegg}{{54}{2022}{{Kanehisa et~al.}}{{}}}
+\bibcite{phylomint_ms}{{55}{2020}{{Lam et~al.}}{{}}}
+\bibcite{henry2010high}{{56}{2010}{{Henry et~al.}}{{}}}
+\bibcite{blank2016micro}{{57}{2016}{{Blank et~al.}}{{}}}
+\bibcite{choudhary2021scnetviz}{{58}{2021}{{Choudhary et~al.}}{{}}}
+\bibcite{merkel2014docker}{{59}{2014}{{Merkel et~al.}}{{}}}
+\bibcite{nginx}{{60}{2008}{{Reese}}{{}}}
+\bibcite{wright2016using}{{61}{2016}{{Wright}}{{}}}
+\bibcite{llavero2022thiamine}{{62}{2022}{{Llavero-Pasquina et~al.}}{{}}}
+\bibcite{romine2017underlying}{{63}{2017}{{Romine et~al.}}{{}}}
+\bibcite{chklovski2023checkm2}{{64}{2023}{{Chklovski et~al.}}{{}}}
+\bibcite{parks2015checkm}{{65}{2015}{{Parks et~al.}}{{}}}
+\bibcite{assocciationRuleMining}{{66}{1993}{{Agrawal et~al.}}{{}}}
 \gdef \@abspage@last{20}

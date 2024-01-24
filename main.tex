@@ -35,6 +35,11 @@
 \usepackage{adjustbox}  % for the adjustwidth
 
 
+
+\usepackage{threeparttable}  % to support notes within a table
+
+
+
 %\jyear{2021}%
 
 \theoremstyle{thmstyleone}%
@@ -159,8 +164,7 @@
 % Background
 % ====================================================
 % REMEMBER: To have a footnote in the \section{}, you need to have NO empty lines; otherwise latex will not compile
-\section*{
-    Background
+\section*{Background
     \footnote{
         We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow
         ~\href{https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}
@@ -170,49 +174,47 @@
         The Background section should explain the relevant context and the specific issue that the software described is intended to address.
         }
 }
-\label{sec1}
-
-
-
+\label{sec:background}
 
     Microbial ecology plays a fundamental role in the stability and resilience of ecosystems and their processes; from soils, aquatic environments and biogeochemical cycles~\cite{yuan2021climate} to host-associated environments and the human health~\cite{raes2008molecular, faust2012microbialReviewInteractions}.
     Most microbial species live only in communities~\cite{rottjers2018hairballs} and most natural microbial communities consist of hundreds or even thousands of species~\cite{balint2016millions}.
-    % KF: unique repertoire of metabolites - I would rather talk about a repertoire of metabolic reactions; the metabolites are a consequence of that
-    % KF: showcases adaptability -> adapts to; across various metabolic niches -> to various niche
-    Each species exhibits a unique repertoire of metabolites and showcases adaptability across various metabolic niches, each with specific nutrient and environmental requirements.
+    Each species exhibits a unique repertoire of reactions and adapts to various niches, each with specific nutrient and environmental requirements.
     % KF: "To unravel microbial ecology involves disentangling the principles that dictate the organization of a community"... sounds rather pompous, can you tone it down a bit? we don't really look at the principles of community organisation in this work.
-    To unravel microbial ecology involves disentangling the principles that dictate the organization of a community, encompassing both its composition and metabolic activities. This, in turn, entails understanding the dynamics governing interactions among microbial species and their relationships with the surrounding environment~\cite{robinson2010structure}.
+    % HZ: What about now ?
+    Understanding the dynamics governing interactions among microbial species and their relationships with the surrounding environment would sheld light in several aspects microbial ecology~\cite{robinson2010structure}.
     % references if we'd like to talk about microb com as ~\textit{complex systems}: ~\cite{godfray1990complex, amor2017spatial},
 
     % KF: Sentence below is quite complex; is there an easier way to say this? Also, what are metabolic niche effects? Be careful with big words like "paradigm" - is this word appropriate here?
-    In recent years, there has been a compelling suggestion proposing an elegant paradigm for microbial ecology: 
-    the correlation between community functional and taxonomic composition hinges on the relative importance of metabolic niche effects relative to the processes inducing variability within functional groups~\cite{louca2016high}.
+    % HZ: What about now ? 
+    % In recent years, there has been a compelling suggestion proposing an elegant paradigm for microbial ecology: 
+    Metabolic conditions within an environment influence the composition and distribution of its functions (metabolic niche effect).
+    At the same time, processes like genetic diversity and stochastic events, induce variability within different functional groups of the community.
+    Recent studies suggest that the relative importance of those two processes drive the extent to which functional and taxonomic composition at the community level are correlated~\cite{louca2016high}.
     %the correlation between community functional and taxonomic composition depends on the relative importance of metabolic niche effects 
     %% (influence of specific metabolic conditions and requirements within an environment on the composition and distribution of microbial functions)
     %compared to processes causing variation within functional groups 
     %% (genetic diversity, regulatory mechanisms, environmental influences, and stochastic events affecting individual members of the functional group)
     % KF: what is the link of all this to microbetag? I suggest to strongly reduce this part and write instead more about interaction mechanisms and why it is so difficult to infer interactions from abundance data
-    Comparable environments should foster similar microbial community functions, even though there may be taxonomic variations within individual functional groups, 
-    % Species with similar trophic or other ecological properties are able to occupy the same niche within an ecosystem, and the particular species that occupies a particular space is then determined by stochastic recruitment~\cite{burke2011bacterial}. 
-    % This means that within a group of species with similar ecologies, the “lottery” for space is won by whoever gets there first
-    while in more heterogeneous environments functional $\beta$ diversity would be strongly correlated with taxonomic $\beta$ diversity.
-    In the latter, the decoupling between community composition and metabolic functioning is concealed by robust metabolic niche effect~\cite{louca2016high}.
-    % The metabolic function of a community undergoes substantial influence from energetic and stoichiometric constraints~\cite{george2023functional}.
-    Thus, an interaction between two taxa may vary in different environments.
-    % The notion of an interaction varies including cooperation, competition, parasitism, commensalism and ammensalism~\cite{faust2012microbialReviewInteractions}.
-    Microbial interactions can be the result of multiple phenomena, such as exchange of metabolic products~\cite{kost2023metabolic}, biofilm formation~\cite{arnaouteli2021bacillus}, gene transfering~\cite{de2023horizontal} and signaling~\cite{keller2006communication}.
+    +++++++++
+    The notion of an interaction varies including cooperation, competition, parasitism, commensalism and ammensalism~\cite{faust2012microbialReviewInteractions}.
+
+    % % ----------   Taxonomy - functional composiiton relationship ---------------
+    % In this case, comparable environments should foster similar microbial community functions, even though there may be taxonomic variations within individual functional groups, 
+    % while in more heterogeneous environments functional $\beta$ diversity would be strongly correlated with taxonomic $\beta$ diversity.
+    % In the latter, the decoupling between community composition and metabolic functioning is concealed by robust metabolic niche effect~\cite{louca2016high}.
+    % Thus, an interaction between two taxa may vary in different environments.
+    % Microbial interactions can be the result of multiple phenomena, such as exchange of metabolic products~\cite{kost2023metabolic}, biofilm formation~\cite{arnaouteli2021bacillus}, gene transfering~\cite{de2023horizontal} and signaling~\cite{keller2006communication}.
+    % % The metabolic function of a community undergoes substantial influence from energetic and stoichiometric constraints~\cite{george2023functional}.
 
     High-throughput sequencing (HTS) has provided great insight into the diversity and composition of microbial communities~\cite{elixir_microbiome}. % get more refs
     Uncultivated species can now be detected and their featues can be inferred through their genomic information~\cite{hug2016new}.
     Moreover, the composition of thousands of microbiome samples is now accessible allowing for the inference of patterns among sets of samples.
     A widely used approach to extraxt such patterns, is the creation of co-occurrence networks based on metagenomic read data (amplicon and/or shotgun)~\cite{matchado2021network}. 
-    % KF: spelling: available
-    A great number of approaches is avaialble for co-occurrence network inference based on a range of statistical concepts such as: correlation (e.g., CoNet~\cite{faust2012microbial}, SparCC~\cite{friedman2012inferring}), linear regression (e.g., SpiecEasi~\cite{kurtz2015sparse}) and causal inference (FlashWeave~\cite{flashweave_cite}).
+    A great number of approaches is available for co-occurrence network inference based on a range of statistical concepts such as: correlation (e.g., CoNet~\cite{faust2012microbial}, SparCC~\cite{friedman2012inferring}), linear regression (e.g., SpiecEasi~\cite{kurtz2015sparse}) and causal inference (FlashWeave~\cite{flashweave_cite}).
     Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open}, encompassing issues associated with data analysis and network construction, leading to tool-dependent analysis~\cite{kishore2023inferring, weiss2016correlation, rottjers2018hairballs}.
     % KF: verb missing in the sentence below
     But also, challenges regarding the interpretation of the networks.
-    % KF: Such enhancers (well-articulated, interesting, essential etc) are routinely removed by editors in good journals. Please don't use them, they don't add useful info.
-    Addressing the well-articulated question of~\textit{What can we learn from the hairballs} posed by R{\"o}ttjers et \textit{al.}~\cite{rottjers2018hairballs} could provide essential insight on the mechanisms of the interactions.
+    Addressing the question of~\textit{What can we learn from the hairballs} posed by R{\"o}ttjers et \textit{al.}~\cite{rottjers2018hairballs} could provide essential insight on the mechanisms of the interactions.
 
     % KF: why has the use of network inference for interaction prediction underscored its limited accuracy? Imprecise expression: the use itself did not underscore the low accuracy - evaluations did. This needs to be rephrased.
     The use of microbial network inference as a means for predicting interactions has underscored its limited accuracy, and the fact that the biological implications of network properties remain unclear~\cite{berry2014deciphering}.
@@ -221,56 +223,49 @@
     Data integration and clustering have been suggested to address this challenge~\cite{faust2021open}.
     Clusters identified in microbial association networks have demonstrated their ability to mirror key drivers of community composition~\cite{guidi2016plankton} and sevaral algorithms and implementations are available~\cite{rottjers2020manta}.
     However, data integration approaches in microbial co-occurrence networks are so-far limited.
-    % KF: suggested by, not on; paired interactions -> taxon pair
-    Here, we present \microbetag, a microbial co-occurrence network annotator that exploits several channels of information to enhance/diminish the confidence of the associations suggested on the network and generate hypotheseses for further investigation both at the paired-interaction and the community level
+    Here, we present \microbetag, a microbial co-occurrence network annotator that exploits several channels of information to enhance/diminish the confidence of the associations suggested by the network and generate hypotheseses for further investigation both at the taxon pair and the community level.
 
-    % KF: consolidates -> provides ("consolidates" makes no sense to me here)
-    \microbetag serves as a comprehensive platform that consolidates information on taxa along with their potential metabolic interactions from multiple channels 
+    \microbetag serves as a comprehensive platform that provides information on taxa along with their potential metabolic interactions from multiple channels 
     (see Implementation~\ref{sec:implementation}).
     % literature-based classification of OTUs and their corresponding taxonomies to functional groups, 
     % prediction of microbial phenotypes via comparative genomics
-    % KF: "Key concept on the presented approach is the exploitation of the reverse ecology approach" -> The key concept here is the reverse ecology approach
-    Key concept on the presented approach is the exploitation of the~\textit{reverse ecology} approach~\cite{levy2012reverse}.
+    The key concept here is the reverse ecology approach~\textit{reverse ecology}~\cite{levy2012reverse}.
     Reverse ecology leverages genomics to explore community ecology with no \textit{a priori} assumptions about the taxa involved.
     Making the most of advancements in systems biology and genomic metabolic modeling, as well as system-level analysis of intricate biological networks, the reverse ecology framework enables the prediction of ecological traits for less-understood microorganisms, their interactions with others, and the overall ecology of microbial communities~\cite{levy2014metagenomic}.
     % KF: what was major about the seed set analysis? Did we learn anything useful from it so far? I don't think so, so please tone it down.
-    In this context, seed set analysis has been a major contribution in the study of both the species and the community ecology based on their genetic information.
+    % HZ: I suggest we just remove this. 
+    % In this context, seed set analysis has been a major contribution in the study of both the species and the community ecology based on their genetic information.
 
     A metabolic network's "seed set" is the set of compounds that, based on the network topology, need to be acquired exogenously~\cite{borenstein2008large}~(see Figure~\ref{fig:pathcompl}).
     Such nodes might be independent, i.e. they cannot be activated by any other node in the network, or they can be interdependent forming groups of seed nodes.
-    % KF: I contest "successful proxy" because there is no data on that, so no proof. You can write "Seeds are a useful proxy" instead
-    Seeds have been proven themeselves a successful proxy for the habitat of the organism and an essential tool in the frameowrk of reverse ecology~\cite{parter2007environmental,borenstein2008large}.
+    Seeds are a useful proxy for the habitat of the organism and an essential tool in the frameowrk of reverse ecology~\cite{parter2007environmental,borenstein2008large}.
     Based on the seed concept, several graph theory-based metrics (indices) have been described to predict species interactions directly from their networks' topologies~\cite{levy2015netcooperate, kreimer2012netcmpt, zelezniak2015metabolic, belcour2020metage2metabo}.
     Over the last years, the seed apprach has been implemented at the Genome-scale metabolic network reconstructions (GENREs) level.
     GENREs encapsulate mathematical representations capturing the biochemical reactions that could take place within an organism~\cite{thiele2010protocol, durot2008genome, communityGemMicrobiomeModel2023}.
 
     Metabolic complementarity among species, serving as a reflection of potential cooperation within communities, assesses the capacity for collaboration; cross-feeding or syntrophy interactions are typical examples of such a collaboration. 
-    % KF: "Contrary" not correctly spelled (and I think it should be an adverb). I propose: In contrast
-    Contary, metabolic competition refers to the metabolic overlap between two species leading to exploitative competition, e.g. for nutrient resources.
+    In contrast, metabolic competition refers to the metabolic overlap between two species leading to exploitative competition, e.g. for nutrient resources.
     Seed and non-seed sets can be used to compute such indices. 
     Thorough examination of such complements can reveal metabolic interactions leading to patterns observed on the co-occurrence network.
     
-    % KF: "paired-wise" doesn't exist in English - do you mean pairwise?; that currently not capable of -> that they are currently not capable of
     % KF: In addition, I don't get the meaning of the first part of this sentence
-    Considering complementarity as a range of alternatives and paired-wise microbial interactions in the context of the community as a whole, microbial species may also exchange metabolic compounds that may be not seeds at a certain time but may allow them to perform functions that currently are not capable of~\cite{mori2016metabolic,zientz2004metabolic}.
+    % HZ: 
+    Considering complementarity as a range of alternatives and pairwise microbial interactions in the context of the community as a whole, microbial species may also exchange metabolic compounds that may be not seeds at a certain time but may allow them to perform functions that they are currently not capable of~\cite{mori2016metabolic,zientz2004metabolic}.
     Such by-products may be even metabolites not even necessary for themeselves but for the community as a whole~\cite{kallus2017paradoxes}.
     To explore the potenial of a species metabolism given they benefit from a partner of theirs, genome annotations combined with collections of functional units to highlight can provide a valid proxy.
     We present here a naive approach exporting all possible complements between a pair of species based on their KEGG ORTHOLOGY (KOs) annotations and the KEGG MODULES database~\cite{keggmodulesdb}.
 
-    % KF: integrates user's -> integrates a user's; 2 x integrate in that sentence, perhaps you can replace the first with "augments" and for the second write: by integrating
-    \microbetag integrates user's co-occurrence network integrating phenotypic traits on the taxa present on the network (nodes) and potential metabolic interactions to their suggested associations (edges).
+    \microbetag annotates a user's co-occurrence network by integrating phenotypic traits on the taxa present on the network (nodes) and potential metabolic interactions to their suggested associations (edges).
     A Graphical User Interface (GUI) is supported as a CytoscapeApp providing a user-friendly environment to investigate annotations in a straightforward way.
-    % KF: present on -> present in; though -> through
-    All annotations present on microbetagDB are also available though an Application Programming Interface (API).
-    % KF: under -> distributed under
-    \microbetag's source code is under a GNU GPL v3 license and available on GitHub. 
+    All annotations present in microbetagDB are also available through an Application Programming Interface (API).
+    \microbetag's source code is distributed under a GNU GPL v3 license and available on GitHub. 
     Documentation and further support on how to use \microbetag is available at \href{https://hariszaf.github.io/microbetag/}{documentation web-site}.
     To the best of our knowledge there is not a software with which \microbetag could be compared with directly. 
     To validate our annotations we used a recently published network with partially known interactions between some pairs of species found associated~\cite{hessler2023vitamin} (see Results section, paragraph~\ref{subsec:validation}).    
     To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
 
 
-    % ===================            to be used         =====================
+    % ===================           consider to be use if necessary         =====================
     % From~\cite{louca2016high}
     % Ecological communities are governed by an interplay of deterministic processes associated with species interactions with their environment (environmental filtering) and each other (limiting similarity)1,2.
 
@@ -294,8 +289,7 @@
 % ====================================================
 % Implementation
 % ====================================================
-\section*{
-    Implementation
+\section*{Implementation
     \footnote{
         This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed.
     }
@@ -322,8 +316,7 @@
         Two well established taxonomy schemes are supported: the GTDB~\cite{parks2022gtdb} that is being broadly used for bins and/or MAGs taxonomical classification and the Silva database~\cite{quast2012silva} that is widely used in amplicon studies. Both taxonomy schemes link their taxonomies to NCBI Taxonomy Ids~\cite{schoch2020ncbi}.
         In case none of those two taxonomies was used and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. %However, this is done only for abundance tables containing less the 1,000 taxa. 
         To this end, \microbetag makes use of the~\href{https://github.com/seatgeek/thefuzz}{\texttt{fuzzywuzzy}} library that implements the Levenshtein Distance Metric to get the closest NCBI taxon name and thus its corresponding NCBI Taxonomy Id; a relatively high similarity score is used (90) to avoid false positives. 
-        % KF: children taxa -> child taxa (see plural of compound nouns in English)
-        Also, using the nodes dump file of NCBI Taxonomy, \microbetag may retrieve the children taxa of a taxon in user's data, along with their corresponding NCBI Taxonomy Ids, if requested by the user.
+        Also, using the nodes dump file of NCBI Taxonomy, \microbetag may retrieve the child taxa of a taxon in user's data, along with their corresponding NCBI Taxonomy Ids, if requested by the user.
         % Thus, \microbetag maps a network taxon to their corresponding NCBI Taxonomy Id and if available their corresponding GTDB genomes.
         If the user provides their abundance table with taxonomies already mapped to the GTDB taxonomy, \microbetag will report the best possible annotations in a time efficient manner. 
         % as it is both time efficient and, mainly, it allows for the best annotations \microbetag could report, it is strongly suggested that both amplicon and shotgun-oriented data to be mapped to GTDB taxonomies.
@@ -358,32 +351,28 @@
     \label{subsec:preprocess}
 
         In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to trained the TAXID classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
-        % KF: in order to faciliate the user -> to help the user
-        Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory. Again, in order to faciliate the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave. 
+        Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory. Again, to help the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave. 
 
 
     \subsection*{Literature based nodes annotation }
     \label{subsec:fapro}
 
-        % KF: Tara Oceans samples -> Tara Ocean samples; "announcements of cultured representatives"? do you mean descriptions of cultured representatives?
-        Using a set of Tara Oceans samples~\cite{sunagawa2015structure} FAPROTAX~\cite{louca2016decoupling} estimates the functional potential of the bacterial and archaeal communities, by classifying each taxonomic unit into functional group(s) based on current literature, announcements of cultured representatives and/or manuals of systematic microbiology. 
+        Using a set of Tara Ocean samples~\cite{sunagawa2015structure} FAPROTAX~\cite{louca2016decoupling} estimates the functional potential of the bacterial and archaeal communities, by classifying each taxonomic unit into functional group(s) based on current literature, descriptions of cultured representatives and/or manuals of systematic microbiology. 
         In this manually curated approach, a taxon is associated with a function if and only if all the cultured species within the taxon have been shown to exhibit that function. 
         % Apparently, FAPROTAX does not support the annotation of clades with no cultured representatives that have been rising thanks to high throughput sequencing technologies.
         % Further, a taxon could be annotated with more than one functions while functional groups could be nested.
         In its current version, FAPROTAX includes more than 80 functions based on ~7600 functional annotations and covering more than 4600 taxa.
         Contrary to gene content based approaches, e.g. PICRUSt2~\cite{douglas2020picrust2}, FAPROTAX  estimates metabolic phenotypes based on experimental evidence. 
 
-        % KF: present on -> present in
         \microbetag invokes the accompanying script of FAPROTAX and converts the taxonomic microbial community profile of the samples included in the user's abundance table or of the taxa present in the provided network, into putative functional profiles.
-        Then, it parses FAPROTAX's subtables to annotate each taxonomic unit present on the user's data with all the functions for which they had a hit. 
+        Then, it parses FAPROTAX's subtables to annotate each taxonomic unit present in the user's data with all the functions for which they had a hit. 
         FAPROTAX annotations are not part of the microbetagDB but are computed on the fly.
 
 
     \subsection*{Genomic based nodes annotation }
     \label{subsec:phen}
 
-        % KF: "it has" -> has
-        phenDB~\cite{feldbauer2015prediction} is a publicly available resource that supports the analysis of bacterial (meta)genomes to identify 47 distinct functional traits, e.g. whether a species is producing butanol or it has an halophilic lifestyle. 
+        phenDB~\cite{feldbauer2015prediction} is a publicly available resource that supports the analysis of bacterial (meta)genomes to identify 47 distinct functional traits, e.g. whether a species is producing butanol or has an halophilic lifestyle. 
         It relies on support vector machines (SVM) trained with manually curated datasets based on gene presence/absence patterns for trait prediction.
         More specifically, the model for a particular trait is trained using a collection of EggNOG annotated genomes where the knowledge of whether that trait is present or absent among its members is available.
         These models (classifiers) are used to predict presence/absence of their corresponding traits in non-studied species. 
@@ -398,16 +387,14 @@
         % 	"contamination": 0.7,
         % 	"completeness": 1.0
         % },
-        % KF: misspelled framework
-        In the frameowrk of microbetagDB, %phenotrex 
+        In the framework of microbetagDB, %phenotrex 
         classifiers were re-trained using the genomes provided by phenDB for each trait to sync with the latest version of eggNOG~\cite{huerta2019eggnog} and the~\texttt{phenotrex}~\cite{feldbauer2015prediction} software tool.
         Genomes were downloaded from NCBI using the \href{https://www.ncbi.nlm.nih.gov/sites/batchentrez}{Batch Entrez} program.
         % as there was a conflict between the eggNOG version phenotrex uses at the prediction step and the one during the training of the classes as provided in the PhenDB site.
         % For example, for the acetic acid production case, the corresponding webpage of phenDB pointed to the set of genomes that had been originally used. 
         Then, \textit{genotype} files were produced for all the high quality GTDB representative genomes.
         Each model was then used against all the GTDB \textit{genotype} files to annotate each with the presence or the absence of the trait. 
-        % KF: present in
-        A list of all the phenotypic traits available for the genomes present on microbetagDB is available on \microbetag's \href{https://hariszaf.github.io/microbetag/docs/modules/phen-traits/}{documentation site}.
+        A list of all the phenotypic traits available for the genomes present in microbetagDB is available on \microbetag's \href{https://hariszaf.github.io/microbetag/docs/modules/phen-traits/}{documentation site}.
         The updated models are also available
 
 
@@ -419,8 +406,7 @@
 
         To infer potential pathway complementarities we consider the modules described in KEGG MODULES database~\cite{keggmodulesdb}.
         % as functional units to highlight can provide a valid proxy.
-        % KF: English grammar: that is never preceded by a comma (which is)
-        A KEGG module is defined as a functional unit within the KEGG framework, that represents a set of enzymes and reactions involved in a specific biological process or pathway~\cite{muto2013modular}.
+        A KEGG module is defined as a functional unit within the KEGG framework that represents a set of enzymes and reactions involved in a specific biological process or pathway~\cite{muto2013modular}.
         Such a unit consists of several~\textit{steps}, each of which may have more than one molecular ways to occur (Figure~\ref{fig:pathcompl}).
         A module's definition is a logical expression and consists of KOs 
         % and the following symbols:
@@ -456,10 +442,9 @@
             \label{fig:pathcompl}
         \end{figure}
 
-        % KF: modules definitions -> module definitions (please check those plural rules in English)
-        All modules definitions were retrieved using the KEGG API and parsed.
+        All module definitions were retrieved using the KEGG API and parsed to enumerate their alternatives.
         % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/parse_module_definitions.py}{\texttt{parse\_module\_definitions.py}}).
-        A dictionary was built with all the alternatives of each module. 
+        % A dictionary was built with all the alternatives of each module. 
         %, i.e. alternative sets of KOs, for a module to be complete.
         % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/module_definition_map.json}{module\_definition\_map.json})
         Each pair of the KEGG annotated genomes was then investigated for potential pathway complementarities, 
@@ -470,23 +455,18 @@
 
         Thanks to the graphical user interface (GUI) of the~\href{https://www.kegg.jp/kegg/docs/color_gui.html}{KEGG pathway map viewer}~\cite{kanehisa2020kegg,kanehisa2022kegg}, 
         each complementarity can be visualised as part of the closest KEGG metabolic map; 
-        % KF: where KOs contributed by the donor are shown in blue-green whereas those coming from the beneficiary genome are coloured in rose.
-        where the KOs coming from the donor are shown with a blue-green colour, while those from the beneficiary's genome itself with rose.
+        where the KOs contributed by the donor are shown in blue-green whereas those coming from the beneficiary genome are coloured in rose.
 
-        % KF: isolating -> identifying
-        \microbetag annotates the edges of a co-occurrence network by isolating pairs where both taxa map to an annotated genome present on microbetagDB.
+        \microbetag annotates the edges of a co-occurrence network by identifying pairs where both taxa map to an annotated genome present on microbetagDB.
         % Each taxon on the network has been mapped to a NCBI Taxonomy Id and their related GTDB genomes.
         Since co-occurrence networks are undirected, both nodes of a suggested association are considered as potential donors and beneficiary species. 
-        % KF: more than one [...] genome, not more than one [...] genomes; genomes' combinations -> genome combinations
-        When more than one GTDB representative genomes map to the same NCBI Taxonomy Id all the possible genomes' combinations are considered.
+        When more than one GTDB representative genome map to the same NCBI Taxonomy Id all the possible genome combinations are considered.
         Finally, two edges are added in such pairs of taxa in the annotated network: 
         one considering $species_A$ as the potential beneficiary and $species_B$ as the potenial donor species, and one vice-versa. 
 
 
     \subsection*{Seed scores using genome scale metabolic reconstructions }
     \label{subsec:seeds}
-
-        
 
         The Metabolic Complementarity Index ($MI_{Complementarity}$) measures the degree to which two microbial species can mutually assist each other by complementing each other's biosynthetic capabilities.
         As described in~\cite{phylomint_ms}, it is defined as the proportion of seed compounds of a species that can be synthesized by the metabolic network of another, but are not included in the seed set of the latter. 
@@ -501,17 +481,10 @@
         In the framework of microbetag, seed scores were computed using \texttt{PhyloMint} and draft GENREs for all pairwise combinations of GTDB representative genomes that have been RAST annotated in the framework of the PATRIC database~\cite{wattam2017improvements}.
         GENREs were reconstructed using the Model SEED pipeline~\cite{henry2010high} through its Python interface \href{https://modelseedpy.readthedocs.io/en/latest/index.html}{ModelSEEDpy}.
 
-        
 
-
-
-        % KF: get their overlap -> compute their overlap; pair-wised -> pairwise
-        Moreover, the computed seed and the non-seed (i.e., set of metabolic compounds a genome can build on its own) sets of each genome were used to get their overlap among all the pair-wised combinations of those genomes.
+        Moreover, the computed seed and the non-seed (i.e., set of metabolic compounds a genome can build on its own) sets of each genome were used to compute their overlap among all the pairwise combinations of those genomes.
         More specifically, the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
         \microbetag then annotates again the edges of the co-occurrence network where both taxa have been mapped to a at least one GTDB genome, mentioning all the KEGG maps for which there is at least one seed compound of the potentially beneficiary species 
-
-
-
 
 
 
@@ -589,8 +562,7 @@
 % ====================================================
 % Results
 % ====================================================
-\section*{
-    Results
+\section*{Results
     \footnote{
         Significant advance over previously published software (usually demonstrated by direct comparison with available related software)
         This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. 
@@ -617,14 +589,48 @@
         \end{figure}
 
 
-        % KF: could be represented in a table
-        \microbetag in numbers:
-        $34,608$ GTDB representative genomes
-        $32$ phen-model-oriented metabolic functions 
-        $92$ FAPROTAX functions
-        $341,568$ unique complements involved in $>184$ million beneficiary - donor pairs' complementarities
-        $30,755$ GENREs leading to $~1$ billion competition and complementarity scores
-        
+
+        \begin{table}[ht]
+            \centering
+            % \caption{microbetagDB in numbers}
+            \caption[Summary of Data]{Summary of Data\footnote{s involved in $>184$ million beneficiary - donor pairs' complementarities }}
+            \begin{tabular}{l r}
+                \toprule
+                Description & Entries \\
+                \midrule
+                GTDB representative genomes & 34,608 \\
+                Phen-model-oriented metabolic functions & 32 \\
+                FAPROTAX functions & 92 \\
+                Unique complement* & 341,568 \\
+                GENREs leading to $\sim1$ billion competition and complementarity scores & 30,755 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+        % \begin{table}[ht]
+        %     \centering
+        %     \begin{threeparttable}
+        %         \caption[Summary of Data]{Summary of Data\tnote{a}}
+        %         \label{tab:data_summary}
+        %         \begin{tabular}{l r}
+        %             \toprule
+        %             Description & Value \\
+        %             \midrule
+        %             GTDB representative genomes & 34,608 \\
+        %             Phen-model-oriented metabolic functions & 32 \\
+        %             FAPROTAX functions & 92 \\
+        %             Unique complements involved in $>184$ million beneficiary - donor pairs' complementarities & 341,568 \\
+        %             GENREs leading to $\sim1$ billion competition and complementarity scores & 30,755 \\
+        %             \bottomrule
+        %         \end{tabular}
+        %         \begin{tablenotes}
+        %             \item[a] Note: This is a sample note for the table.
+        %         \end{tablenotes}
+        %     \end{threeparttable}
+        % \end{table}
+
+
+
         annotated network returned in \texttt{.cyjs} format
 
 
@@ -761,8 +767,7 @@
 % ====================================================
 % Discussion
 % ====================================================
-\section*{
-    Discussion
+\section*{Discussion
     \footnote{
         The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
         A case study of the use of the software may be presented. 
