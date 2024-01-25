@@ -291,50 +291,46 @@ elif sys.argv[1] == "complements":
 
 
 elif sys.argv[1] == "format":
-
     """
     PART D:
 
     """
     import pickle
     import pandas as pd
+    import os
 
-    with open("overlaps_6.pckl","rb") as f:
-        df = pickle.load(f)
+    try:
+        pickle_file = os.path.expanduser(sys.argv[2])
+        with open(pickle_file,"rb") as f:
+            df = pickle.load(f)
+    except:
+        print("Please provide a pickle file.")
+        sys.exit(0)
 
     df = df.rename_axis(index={'PATRIC': 'PATRIC_beneficary'})
     df = df.rename_axis(columns={'PATRIC': 'PATRIC_donor'})
 
+    # The stack() function will transport my n*n matrix to the following format
+    # PATRIC_beneficary  PATRIC_donor
+    # 373.172            1862385.4       [cpd00837, cpd00239, cpd00235, cpd00293, cpd02...
+    #                    1879010.6857    [cpd00837, cpd00239, cpd00235, cpd00293, cpd00...
     stacked_df = df.stack()
+
+    # And the reset_index() will make it a 3-column df, like:
+    #            PATRIC_beneficary  PATRIC_donor                                             0
+    # 0                373.172     1862385.4  [cpd00837, cpd00239, cpd00235, cpd00293, cpd02...
+    # 1                373.172  1879010.6857  [cpd00837, cpd00239, cpd00235, cpd00293, cpd00...
     result_df = stacked_df.reset_index()
     result_df = result_df[['PATRIC_beneficary', 'PATRIC_donor']]
-    # ATTENTION: Replace 1 with where we have left
-    result_df['auto_increasing_number'] = range(307550001 + 1 , 246040001 + 1 + len(result_df))
-
-
-    existing_csv_path = "seed_complements_map.tsv"
-    result_df.to_csv(existing_csv_path, mode='a', sep="\t", header=False, index=False)
-
 
     # to get the 3-cols .tsv with the seeds
-    output_file = "overlaps_14.tsv"
+    csv_path = pickle_file.rsplit(".", 1)[0] + ".tsv"
     df = df.rename_axis(index={'PATRIC': 'PATRIC_beneficary'})
     df = df.rename_axis(columns={'PATRIC': 'PATRIC_donor'})
     stacked_df = df.stack()
     result_df = stacked_df.reset_index()
     result_df.columns = ["PATRIC_beneficary", "PATRIC_donor", "seed_complement"]
-    result_df.to_csv(output_file, sep='\t', index=False)
-
-
-
-    f = open("seed_complements_map.tsv", "w")
-    f.write("PATRIC_beneficary\tPATRIC_donor\tseedComplementId\n")
-    all_ids = list(df.columns)
-    counter = 0
-    for i in all_ids:
-        for j in all_ids:
-            counter += 1
-            f.write(i + "\t" + j + "\t" + str(counter) + "\n")
+    result_df.to_csv(csv_path, sep='\t', index=False)
 
 else:
     print(mhelp)
