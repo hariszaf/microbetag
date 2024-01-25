@@ -181,45 +181,38 @@
     Each species exhibits a unique repertoire of reactions and adapts to various niches, each with specific nutrient and environmental requirements.
     % KF: "To unravel microbial ecology involves disentangling the principles that dictate the organization of a community"... sounds rather pompous, can you tone it down a bit? we don't really look at the principles of community organisation in this work.
     % HZ: What about now ?
-    Understanding the dynamics governing interactions among microbial species and their relationships with the surrounding environment would sheld light in several aspects microbial ecology~\cite{robinson2010structure}.
+    Understanding the dynamics governing interactions among microbial species and their relationships with the surrounding environment would shed light in several aspects microbial ecology~\cite{robinson2010structure}.
     % references if we'd like to talk about microb com as ~\textit{complex systems}: ~\cite{godfray1990complex, amor2017spatial},
 
-    % KF: Sentence below is quite complex; is there an easier way to say this? Also, what are metabolic niche effects? Be careful with big words like "paradigm" - is this word appropriate here?
-    % HZ: What about now ? 
-    % In recent years, there has been a compelling suggestion proposing an elegant paradigm for microbial ecology: 
-    Metabolic conditions within an environment influence the composition and distribution of its functions (metabolic niche effect).
-    At the same time, processes like genetic diversity and stochastic events, induce variability within different functional groups of the community.
-    Recent studies suggest that the relative importance of those two processes drive the extent to which functional and taxonomic composition at the community level are correlated~\cite{louca2016high}.
-    %the correlation between community functional and taxonomic composition depends on the relative importance of metabolic niche effects 
-    %% (influence of specific metabolic conditions and requirements within an environment on the composition and distribution of microbial functions)
-    %compared to processes causing variation within functional groups 
-    %% (genetic diversity, regulatory mechanisms, environmental influences, and stochastic events affecting individual members of the functional group)
-    % KF: what is the link of all this to microbetag? I suggest to strongly reduce this part and write instead more about interaction mechanisms and why it is so difficult to infer interactions from abundance data
-    +++++++++
-    The notion of an interaction varies including cooperation, competition, parasitism, commensalism and ammensalism~\cite{faust2012microbialReviewInteractions}.
+    % KF: what is the link of all this to microbetag? I suggest to strongly reduce this part
+    % HZ: I remove the paragraph regarding the taxonomic vs functional variability; I had an idea on that but it would get too long to get there.. 
+    %       For the paper we were discussing reg. an analysis on microbetagDB data this might be a nice question to ask! :)    
+    % KF: and write instead more about:
+    %        interaction mechanisms and 
+    %        why it is so difficult to infer interactions from abundance data
+    Based on the net fitness effects that result for the taxa involved, the notion of an interaction varies including cooperation, competition, parasitism, commensalism and ammensalism~\cite{faust2012microbialReviewInteractions}.
+    Metabolic interactions can be established through a range of contact-independent- and contact-dependent mechanisms leading to both positive and negative interactions. 
+    These interactions can involve either one-way (unidirectional) or two-way (bidirectional) exchanges of metabolites.
+    Depending on the biosynthetic cost borne by the interacting partners, two types of metabolite exchanges occur: by-product cross-feeding, where metabolites result from a selfish act of the producer, and cooperative cross-feeding, where one partner actively invests resources to produce metabolites benefiting the interaction partner~\cite{d2018ecology}.
 
-    % % ----------   Taxonomy - functional composiiton relationship ---------------
-    % In this case, comparable environments should foster similar microbial community functions, even though there may be taxonomic variations within individual functional groups, 
-    % while in more heterogeneous environments functional $\beta$ diversity would be strongly correlated with taxonomic $\beta$ diversity.
-    % In the latter, the decoupling between community composition and metabolic functioning is concealed by robust metabolic niche effect~\cite{louca2016high}.
-    % Thus, an interaction between two taxa may vary in different environments.
-    % Microbial interactions can be the result of multiple phenomena, such as exchange of metabolic products~\cite{kost2023metabolic}, biofilm formation~\cite{arnaouteli2021bacillus}, gene transfering~\cite{de2023horizontal} and signaling~\cite{keller2006communication}.
-    % % The metabolic function of a community undergoes substantial influence from energetic and stoichiometric constraints~\cite{george2023functional}.
 
     High-throughput sequencing (HTS) has provided great insight into the diversity and composition of microbial communities~\cite{elixir_microbiome}. % get more refs
     Uncultivated species can now be detected and their featues can be inferred through their genomic information~\cite{hug2016new}.
     Moreover, the composition of thousands of microbiome samples is now accessible allowing for the inference of patterns among sets of samples.
     A widely used approach to extraxt such patterns, is the creation of co-occurrence networks based on metagenomic read data (amplicon and/or shotgun)~\cite{matchado2021network}. 
     A great number of approaches is available for co-occurrence network inference based on a range of statistical concepts such as: correlation (e.g., CoNet~\cite{faust2012microbial}, SparCC~\cite{friedman2012inferring}), linear regression (e.g., SpiecEasi~\cite{kurtz2015sparse}) and causal inference (FlashWeave~\cite{flashweave_cite}).
-    Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open}, encompassing issues associated with data analysis and network construction, leading to tool-dependent analysis~\cite{kishore2023inferring, weiss2016correlation, rottjers2018hairballs}.
-    % KF: verb missing in the sentence below
-    But also, challenges regarding the interpretation of the networks.
+    Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open}.
+    Their inference inherits the challenges of metagenomic data analysis (e.g., compsitionality, parameters inference)~\cite{cao2017inferring}.
+    As a result, network construction remains a tool-dependent analysis~\cite{kishore2023inferring, weiss2016correlation}.
+    Moreover, more often than not, the returned network looks like a "hairball" of densely interconnected taxa.
+    Thus, additional analysis is necessary to generate testable hypotheses~\cite{faust2021open}.
     Addressing the question of~\textit{What can we learn from the hairballs} posed by R{\"o}ttjers et \textit{al.}~\cite{rottjers2018hairballs} could provide essential insight on the mechanisms of the interactions.
 
     % KF: why has the use of network inference for interaction prediction underscored its limited accuracy? Imprecise expression: the use itself did not underscore the low accuracy - evaluations did. This needs to be rephrased.
-    The use of microbial network inference as a means for predicting interactions has underscored its limited accuracy, and the fact that the biological implications of network properties remain unclear~\cite{berry2014deciphering}.
+    % HZ: How about now ?
+    The assessment of interaction predictions derived from microbial co-occurrence networks has underscored their limitations in accuracy for this task~\cite{berry2014deciphering}.
     Theoretical principles derived from network studies might provide indications of emergent biological characteristics~\cite{rottjers2018hairballs, guo2022microbial}. 
-    For example, modules (highly interconnected nodes) within microbial co-occurrence networks could serve as indicators of ecological processes that govern community structure, including niche filtering and habitat preference\cite{ma2020earth}.
+    For example, modules (highly interconnected nodes) within microbial co-occurrence networks could serve as indicators of ecological processes that govern community structure, including niche filtering and habitat preference~\cite{ma2020earth}.
     Data integration and clustering have been suggested to address this challenge~\cite{faust2021open}.
     Clusters identified in microbial association networks have demonstrated their ability to mirror key drivers of community composition~\cite{guidi2016plankton} and sevaral algorithms and implementations are available~\cite{rottjers2020manta}.
     However, data integration approaches in microbial co-occurrence networks are so-far limited.
@@ -249,9 +242,10 @@
     Thorough examination of such complements can reveal metabolic interactions leading to patterns observed on the co-occurrence network.
     
     % KF: In addition, I don't get the meaning of the first part of this sentence
-    % HZ: 
-    Considering complementarity as a range of alternatives and pairwise microbial interactions in the context of the community as a whole, microbial species may also exchange metabolic compounds that may be not seeds at a certain time but may allow them to perform functions that they are currently not capable of~\cite{mori2016metabolic,zientz2004metabolic}.
-    Such by-products may be even metabolites not even necessary for themeselves but for the community as a whole~\cite{kallus2017paradoxes}.
+    % HZ: How about now ?
+    However, Bacteria may complement each other not only for getting what is absolutely necessary for them to survive (seeds).
+    For example, microbial species are recognized to exchange metabolites in order to provide support for other advantageous services, such as detoxifying harmful metabolites or offering protection against predators~\cite{little2008rules, zientz2004metabolic}.
+    They can additionally contribute to the production of metabolites essential for the entire community, even if the species itself does not require them~\cite{kallus2017paradoxes}.
     To explore the potenial of a species metabolism given they benefit from a partner of theirs, genome annotations combined with collections of functional units to highlight can provide a valid proxy.
     We present here a naive approach exporting all possible complements between a pair of species based on their KEGG ORTHOLOGY (KOs) annotations and the KEGG MODULES database~\cite{keggmodulesdb}.
 
@@ -265,7 +259,29 @@
     To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
 
 
-    % ===================           consider to be use if necessary         =====================
+    % ===================           for easy access to some nice parts         =====================
+
+    % ~~~~~~~~~~~~~~~~~~
+    % In recent years, there has been a compelling suggestion proposing an elegant paradigm for microbial ecology: 
+    %the correlation between community functional and taxonomic composition depends on the relative importance of metabolic niche effects 
+    %% (influence of specific metabolic conditions and requirements within an environment on the composition and distribution of microbial functions)
+    %compared to processes causing variation within functional groups 
+    %% (genetic diversity, regulatory mechanisms, environmental influences, and stochastic events affecting individual members of the functional group)
+
+    % (rephrased)
+    % Metabolic conditions within an environment influence the composition and distribution of its functions (metabolic niche effect).
+    % At the same time, processes like genetic diversity and stochastic events, induce variability within different functional groups of the community.
+    % Recent studies suggest that the relative importance of those two processes drive the extent to which functional and taxonomic composition at the community level are correlated~\cite{louca2016high}.
+    % ~~~~~~~~~~~~~~~~~~
+
+    % % ----------   Taxonomy - functional composiiton relationship ---------------
+    % In this case, comparable environments should foster similar microbial community functions, even though there may be taxonomic variations within individual functional groups, 
+    % while in more heterogeneous environments functional $\beta$ diversity would be strongly correlated with taxonomic $\beta$ diversity.
+    % In the latter, the decoupling between community composition and metabolic functioning is concealed by robust metabolic niche effect~\cite{louca2016high}.
+    % Thus, an interaction between two taxa may vary in different environments.
+    % Microbial interactions can be the result of multiple phenomena, such as exchange of metabolic products~\cite{kost2023metabolic}, biofilm formation~\cite{arnaouteli2021bacillus}, gene transfering~\cite{de2023horizontal} and signaling~\cite{keller2006communication}.
+    % % The metabolic function of a community undergoes substantial influence from energetic and stoichiometric constraints~\cite{george2023functional}.
+
     % From~\cite{louca2016high}
     % Ecological communities are governed by an interplay of deterministic processes associated with species interactions with their environment (environmental filtering) and each other (limiting similarity)1,2.
 

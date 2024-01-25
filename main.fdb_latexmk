@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1706063796.69975 "main.aux" "main.bbl" "main" 1706063803.34787 0
-  "./sn-bibliography.bib" 1706035199.58089 35283 2cce799708f37be80913f2a10ce716f1 ""
-  "./sn-mathphys.bst" 1706035199.58089 64141 2560fd4f8e8321a304f732d035eb1b51 ""
-  "main.aux" 1706063802.59334 14939 02f140b9178a8c77e102f60cbfe9a07e "pdflatex"
+["bibtex main"] 1706147482.98836 "main.aux" "main.bbl" "main" 1706147490.71414 0
+  "./sn-bibliography.bib" 1706142200.86164 36350 2fa4e7d06c1ac3a1839fb36fb130cc10 ""
+  "./sn-mathphys.bst" 1706131113.58883 64141 2560fd4f8e8321a304f732d035eb1b51 ""
+  "main.aux" 1706147490.23742 15025 e8eb52d51ec3e2c4baae2ee22b385583 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1706063797.00727 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1706063803.34808 0
+["pdflatex"] 1706147483.18425 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1706147490.71427 0
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1706047470.82896 86747 d5d3fc0534da88d542532be194910137 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk" 1705845194.10204 7284 e74341cad9e1a3d52c5edf6478defb50 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk" 1705845193.38605 8268 186cd7ac4660d89a304fa66d96ef384c ""
@@ -63,7 +63,7 @@
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty" 1700756999.95134 10894 d359a13923460b2a73d4312d613554c8 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/vruler/vruler.sty" 1705310472.97319 17457 95bf058fb4454370266f07170b5a158a ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty" 1700663095.60704 26220 3701aebf80ccdef248c0c20dd062fea9 ""
-  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1706063782.93337 70350 bef35cc048ed24a10eef47c06671f0ee ""
+  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1706147475.0334 71461 4cfbc59c4c14637009d78efa13edcb3b ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1679232417.27654 1456 d21918d95ca20f07aa266303b9a0a14c ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0700.tfm" 1679232417.27654 1452 97bdc98984cb373fbcd868e2fa55f5f2 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1679232417.27654 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -246,14 +246,14 @@
   "/usr/local/share/miktex-texmf/tex/latex/url/url.sty" 1679232427.23252 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/local/share/miktex-texmf/tex/latex/xcolor/xcolor.sty" 1679232427.27652 56148 51a9a8571c07b9921892ae11063ae853 ""
   "/usr/local/share/miktex-texmf/tex/latex/xkeyval/xkeyval.sty" 1679232427.36052 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "figs/figure_abstract.png" 1706035199.50889 1338961 473af046918f4163f94ff4347e4aebfb ""
-  "figs/microbetag-wf.png" 1706035199.55289 4504824 466192dd397faf1602745e2bb47f64d3 ""
-  "figs/path_complem.png" 1706035199.56089 1158028 6cf6f5b73ba007285ed12aa2e7cf3e4f ""
-  "main.aux" 1706063802.59334 14939 02f140b9178a8c77e102f60cbfe9a07e "pdflatex"
-  "main.bbl" 1706063796.94535 37757 63ed0b54a2c68e34bcd827320be0c625 "bibtex main"
-  "main.out" 1706063802.59734 1148 2b83d14218473cc6ff520d1112da888a "pdflatex"
-  "main.tex" 1706063782.93337 70350 bef35cc048ed24a10eef47c06671f0ee ""
-  "sn-jnl.cls" 1706035199.58089 55955 38fcab50bf900ac0998e350ba2123285 ""
+  "figs/figure_abstract.png" 1706131113.50483 1338961 473af046918f4163f94ff4347e4aebfb ""
+  "figs/microbetag-wf.png" 1706128221.57805 9261761 645127a96ae63d24d1aef59751f0d7c6 ""
+  "figs/path_complem.png" 1706131501.21651 2416531 92f04c6bb5323adba51f29270f74cdae ""
+  "main.aux" 1706147490.23742 15025 e8eb52d51ec3e2c4baae2ee22b385583 "pdflatex"
+  "main.bbl" 1706147483.13341 38161 b58af8c93a6ce7eccbaee610125fed46 "bibtex main"
+  "main.out" 1706147490.23742 1148 2b83d14218473cc6ff520d1112da888a "pdflatex"
+  "main.tex" 1706147475.0334 71461 4cfbc59c4c14637009d78efa13edcb3b ""
+  "sn-jnl.cls" 1706131113.58883 55955 38fcab50bf900ac0998e350ba2123285 ""
   (generated)
   "main.aux"
   "main.log"

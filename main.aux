@@ -23,8 +23,8 @@
 \citation{rottjers2018hairballs}
 \citation{balint2016millions}
 \citation{robinson2010structure}
-\citation{louca2016high}
 \citation{faust2012microbialReviewInteractions}
+\citation{d2018ecology}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 156}}{2}{\abstractname }{figure.caption.2}{}}
 \newlabel{sec:background}{{3}{2}{Background \footnote { We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow ~\href {https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules} } \footnote { The introduction should not include subheadings. The Background section should explain the relevant context and the specific issue that the software described is intended to address. }}{section*.3}{}}
@@ -36,7 +36,9 @@
 \citation{kurtz2015sparse}
 \citation{flashweave_cite}
 \citation{faust2021open}
-\citation{kishore2023inferring,weiss2016correlation,rottjers2018hairballs}
+\citation{cao2017inferring}
+\citation{kishore2023inferring,weiss2016correlation}
+\citation{faust2021open}
 \citation{rottjers2018hairballs}
 \citation{berry2014deciphering}
 \citation{rottjers2018hairballs,guo2022microbial}
@@ -50,7 +52,7 @@
 \citation{parter2007environmental,borenstein2008large}
 \citation{levy2015netcooperate,kreimer2012netcmpt,zelezniak2015metabolic,belcour2020metage2metabo}
 \citation{thiele2010protocol,durot2008genome,communityGemMicrobiomeModel2023}
-\citation{mori2016metabolic,zientz2004metabolic}
+\citation{little2008rules,zientz2004metabolic}
 \citation{kallus2017paradoxes}
 \citation{keggmodulesdb}
 \citation{hessler2023vitamin}
@@ -79,16 +81,16 @@
 \newlabel{subsec:path-compl}{{3}{6}{Pathway complementarity}{section*.11}{}}
 \citation{aramaki2020kofamkoala}
 \citation{kanehisa2012kegg}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{7}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:pathcompl}{{1}{7}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.12}{}}
 \citation{kanehisa2020kegg,kanehisa2022kegg}
 \citation{phylomint_ms}
 \citation{levy2015netcooperate}
 \citation{kreimer2012netcmpt}
+\newlabel{subsec:seeds}{{3}{7}{Seed scores using genome scale metabolic reconstructions}{section*.13}{}}
 \citation{phylomint_ms}
 \citation{wattam2017improvements}
 \citation{henry2010high}
-\newlabel{subsec:seeds}{{3}{8}{Seed scores using genome scale metabolic reconstructions}{section*.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{8}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:pathcompl}{{1}{8}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.12}{}}
 \citation{rottjers2020manta}
 \citation{blank2016micro}
 \citation{choudhary2021scnetviz}
@@ -100,7 +102,7 @@
 \newlabel{subsec:webserver}{{3}{9}{Dependencies, Web server and API}{section*.17}{}}
 \newlabel{sec:results}{{3}{10}{Results \footnote { Significant advance over previously published software (usually demonstrated by direct comparison with available related software) This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. This section may be combined with the Discussion section for Software articles. }}{section*.18}{}}
 \newlabel{subsec:microbetagdb}{{3}{10}{\microbetag and microbetagDB}{section*.19}{}}
-\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 581}}{10}{\microbetag and microbetagDB}{figure.caption.20}{}}
+\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 597}}{10}{\microbetag and microbetagDB}{figure.caption.20}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Diagram of the \texttt  {microbetag }pre - calculations and the on the fly workflow. GTDB v207 representative genomes were filtered and for those of high-quality 33 phenotypic traits were predicted using\nobreakspace  {}\texttt  {phenotrex}. To this end, models were re-trained to sync with recent version of eggNOG. }}{10}{figure.caption.20}\protected@file@percent }
 \citation{murali2018idtaxa}
 \citation{wright2016using}
@@ -149,7 +151,7 @@
 \bibcite{rottjers2018hairballs}{{4}{2018}{{R{\"o}ttjers and Faust}}{{}}}
 \bibcite{balint2016millions}{{5}{2016}{{B{\'a}lint et~al.}}{{}}}
 \bibcite{robinson2010structure}{{6}{2010}{{Robinson et~al.}}{{}}}
-\bibcite{louca2016high}{{7}{2016}{{Louca et~al.}}{{}}}
+\bibcite{d2018ecology}{{7}{2018}{{D'Souza et~al.}}{{}}}
 \bibcite{elixir_microbiome}{{8}{2024}{{Finn et~al.}}{{}}}
 \bibcite{hug2016new}{{9}{2016}{{Hug et~al.}}{{}}}
 \bibcite{matchado2021network}{{10}{2021}{{Matchado et~al.}}{{}}}
@@ -158,55 +160,56 @@
 \bibcite{kurtz2015sparse}{{13}{2015}{{Kurtz et~al.}}{{}}}
 \bibcite{flashweave_cite}{{14}{2019}{{Tackmann et~al.}}{{}}}
 \bibcite{faust2021open}{{15}{2021}{{Faust}}{{}}}
-\bibcite{kishore2023inferring}{{16}{2023}{{Kishore et~al.}}{{}}}
-\bibcite{weiss2016correlation}{{17}{2016}{{Weiss et~al.}}{{}}}
-\bibcite{berry2014deciphering}{{18}{2014}{{Berry and Widder}}{{}}}
-\bibcite{guo2022microbial}{{19}{2022}{{Guo et~al.}}{{}}}
-\bibcite{ma2020earth}{{20}{2020}{{Ma et~al.}}{{}}}
-\bibcite{guidi2016plankton}{{21}{2016}{{Guidi et~al.}}{{}}}
-\bibcite{rottjers2020manta}{{22}{2020}{{R{\"o}ttjers and Faust}}{{}}}
-\bibcite{levy2012reverse}{{23}{2012}{{Levy and Borenstein}}{{}}}
-\bibcite{levy2014metagenomic}{{24}{2014}{{Levy and Borenstein}}{{}}}
-\bibcite{borenstein2008large}{{25}{2008}{{Borenstein et~al.}}{{}}}
-\bibcite{parter2007environmental}{{26}{2007}{{Parter et~al.}}{{}}}
-\bibcite{levy2015netcooperate}{{27}{2015}{{Levy et~al.}}{{}}}
-\bibcite{kreimer2012netcmpt}{{28}{2012}{{Kreimer et~al.}}{{}}}
-\bibcite{zelezniak2015metabolic}{{29}{2015}{{Zelezniak et~al.}}{{}}}
-\bibcite{belcour2020metage2metabo}{{30}{2020}{{Belcour et~al.}}{{}}}
-\bibcite{thiele2010protocol}{{31}{2010}{{Thiele and Palsson}}{{}}}
-\bibcite{durot2008genome}{{32}{2008}{{Durot et~al.}}{{}}}
-\bibcite{communityGemMicrobiomeModel2023}{{33}{}{{Cerk et~al.}}{{}}}
-\bibcite{mori2016metabolic}{{34}{2016}{{Mori et~al.}}{{}}}
-\bibcite{zientz2004metabolic}{{35}{2004}{{Zientz et~al.}}{{}}}
-\bibcite{kallus2017paradoxes}{{36}{2017}{{Kallus et~al.}}{{}}}
-\bibcite{keggmodulesdb}{{37}{2013}{{Muto et~al.}}{{}}}
-\bibcite{hessler2023vitamin}{{38}{2023}{{Hessler et~al.}}{{}}}
-\bibcite{wattam2017improvements}{{39}{2017}{{Wattam et~al.}}{{}}}
-\bibcite{parks2022gtdb}{{40}{2022}{{Parks et~al.}}{{}}}
-\bibcite{quast2012silva}{{41}{2012}{{Quast et~al.}}{{}}}
-\bibcite{schoch2020ncbi}{{42}{2020}{{Schoch et~al.}}{{}}}
-\bibcite{ali_alishum_2022_6655692}{{43}{2022}{{Alishum}}{{}}}
-\bibcite{murali2018idtaxa}{{44}{2018}{{Murali et~al.}}{{}}}
-\bibcite{sunagawa2015structure}{{45}{2015}{{Sunagawa et~al.}}{{}}}
-\bibcite{louca2016decoupling}{{46}{2016}{{Louca et~al.}}{{}}}
-\bibcite{douglas2020picrust2}{{47}{2020}{{Douglas et~al.}}{{}}}
-\bibcite{feldbauer2015prediction}{{48}{2015}{{Feldbauer et~al.}}{{}}}
-\bibcite{huerta2019eggnog}{{49}{2019}{{Huerta-Cepas et~al.}}{{}}}
-\bibcite{muto2013modular}{{50}{2013}{{Muto et~al.}}{{}}}
-\bibcite{aramaki2020kofamkoala}{{51}{2020}{{Aramaki et~al.}}{{}}}
-\bibcite{kanehisa2012kegg}{{52}{2012}{{Kanehisa et~al.}}{{}}}
-\bibcite{kanehisa2020kegg}{{53}{2020}{{Kanehisa and Sato}}{{}}}
-\bibcite{kanehisa2022kegg}{{54}{2022}{{Kanehisa et~al.}}{{}}}
-\bibcite{phylomint_ms}{{55}{2020}{{Lam et~al.}}{{}}}
-\bibcite{henry2010high}{{56}{2010}{{Henry et~al.}}{{}}}
-\bibcite{blank2016micro}{{57}{2016}{{Blank et~al.}}{{}}}
-\bibcite{choudhary2021scnetviz}{{58}{2021}{{Choudhary et~al.}}{{}}}
-\bibcite{merkel2014docker}{{59}{2014}{{Merkel et~al.}}{{}}}
-\bibcite{nginx}{{60}{2008}{{Reese}}{{}}}
-\bibcite{wright2016using}{{61}{2016}{{Wright}}{{}}}
-\bibcite{llavero2022thiamine}{{62}{2022}{{Llavero-Pasquina et~al.}}{{}}}
-\bibcite{romine2017underlying}{{63}{2017}{{Romine et~al.}}{{}}}
-\bibcite{chklovski2023checkm2}{{64}{2023}{{Chklovski et~al.}}{{}}}
-\bibcite{parks2015checkm}{{65}{2015}{{Parks et~al.}}{{}}}
-\bibcite{assocciationRuleMining}{{66}{1993}{{Agrawal et~al.}}{{}}}
+\bibcite{cao2017inferring}{{16}{2017}{{Cao et~al.}}{{}}}
+\bibcite{kishore2023inferring}{{17}{2023}{{Kishore et~al.}}{{}}}
+\bibcite{weiss2016correlation}{{18}{2016}{{Weiss et~al.}}{{}}}
+\bibcite{berry2014deciphering}{{19}{2014}{{Berry and Widder}}{{}}}
+\bibcite{guo2022microbial}{{20}{2022}{{Guo et~al.}}{{}}}
+\bibcite{ma2020earth}{{21}{2020}{{Ma et~al.}}{{}}}
+\bibcite{guidi2016plankton}{{22}{2016}{{Guidi et~al.}}{{}}}
+\bibcite{rottjers2020manta}{{23}{2020}{{R{\"o}ttjers and Faust}}{{}}}
+\bibcite{levy2012reverse}{{24}{2012}{{Levy and Borenstein}}{{}}}
+\bibcite{levy2014metagenomic}{{25}{2014}{{Levy and Borenstein}}{{}}}
+\bibcite{borenstein2008large}{{26}{2008}{{Borenstein et~al.}}{{}}}
+\bibcite{parter2007environmental}{{27}{2007}{{Parter et~al.}}{{}}}
+\bibcite{levy2015netcooperate}{{28}{2015}{{Levy et~al.}}{{}}}
+\bibcite{kreimer2012netcmpt}{{29}{2012}{{Kreimer et~al.}}{{}}}
+\bibcite{zelezniak2015metabolic}{{30}{2015}{{Zelezniak et~al.}}{{}}}
+\bibcite{belcour2020metage2metabo}{{31}{2020}{{Belcour et~al.}}{{}}}
+\bibcite{thiele2010protocol}{{32}{2010}{{Thiele and Palsson}}{{}}}
+\bibcite{durot2008genome}{{33}{2008}{{Durot et~al.}}{{}}}
+\bibcite{communityGemMicrobiomeModel2023}{{34}{}{{Cerk et~al.}}{{}}}
+\bibcite{little2008rules}{{35}{2008}{{Little et~al.}}{{}}}
+\bibcite{zientz2004metabolic}{{36}{2004}{{Zientz et~al.}}{{}}}
+\bibcite{kallus2017paradoxes}{{37}{2017}{{Kallus et~al.}}{{}}}
+\bibcite{keggmodulesdb}{{38}{2013}{{Muto et~al.}}{{}}}
+\bibcite{hessler2023vitamin}{{39}{2023}{{Hessler et~al.}}{{}}}
+\bibcite{wattam2017improvements}{{40}{2017}{{Wattam et~al.}}{{}}}
+\bibcite{parks2022gtdb}{{41}{2022}{{Parks et~al.}}{{}}}
+\bibcite{quast2012silva}{{42}{2012}{{Quast et~al.}}{{}}}
+\bibcite{schoch2020ncbi}{{43}{2020}{{Schoch et~al.}}{{}}}
+\bibcite{ali_alishum_2022_6655692}{{44}{2022}{{Alishum}}{{}}}
+\bibcite{murali2018idtaxa}{{45}{2018}{{Murali et~al.}}{{}}}
+\bibcite{sunagawa2015structure}{{46}{2015}{{Sunagawa et~al.}}{{}}}
+\bibcite{louca2016decoupling}{{47}{2016}{{Louca et~al.}}{{}}}
+\bibcite{douglas2020picrust2}{{48}{2020}{{Douglas et~al.}}{{}}}
+\bibcite{feldbauer2015prediction}{{49}{2015}{{Feldbauer et~al.}}{{}}}
+\bibcite{huerta2019eggnog}{{50}{2019}{{Huerta-Cepas et~al.}}{{}}}
+\bibcite{muto2013modular}{{51}{2013}{{Muto et~al.}}{{}}}
+\bibcite{aramaki2020kofamkoala}{{52}{2020}{{Aramaki et~al.}}{{}}}
+\bibcite{kanehisa2012kegg}{{53}{2012}{{Kanehisa et~al.}}{{}}}
+\bibcite{kanehisa2020kegg}{{54}{2020}{{Kanehisa and Sato}}{{}}}
+\bibcite{kanehisa2022kegg}{{55}{2022}{{Kanehisa et~al.}}{{}}}
+\bibcite{phylomint_ms}{{56}{2020}{{Lam et~al.}}{{}}}
+\bibcite{henry2010high}{{57}{2010}{{Henry et~al.}}{{}}}
+\bibcite{blank2016micro}{{58}{2016}{{Blank et~al.}}{{}}}
+\bibcite{choudhary2021scnetviz}{{59}{2021}{{Choudhary et~al.}}{{}}}
+\bibcite{merkel2014docker}{{60}{2014}{{Merkel et~al.}}{{}}}
+\bibcite{nginx}{{61}{2008}{{Reese}}{{}}}
+\bibcite{wright2016using}{{62}{2016}{{Wright}}{{}}}
+\bibcite{llavero2022thiamine}{{63}{2022}{{Llavero-Pasquina et~al.}}{{}}}
+\bibcite{romine2017underlying}{{64}{2017}{{Romine et~al.}}{{}}}
+\bibcite{chklovski2023checkm2}{{65}{2023}{{Chklovski et~al.}}{{}}}
+\bibcite{parks2015checkm}{{66}{2015}{{Parks et~al.}}{{}}}
+\bibcite{assocciationRuleMining}{{67}{1993}{{Agrawal et~al.}}{{}}}
 \gdef \@abspage@last{20}
