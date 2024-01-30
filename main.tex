@@ -414,8 +414,6 @@
         The updated models are also available
 
 
-
-
     \subsection*{Pathway complementarity }
     \label{subsec:path-compl}
 
@@ -493,10 +491,11 @@
         We will be referring to those two indices as "seed scores".
 
         Recently, the~\texttt{PhyloMint}tool~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
-
-        In the framework of microbetag, seed scores were computed using \texttt{PhyloMint} and draft GENREs for all pairwise combinations of GTDB representative genomes that have been RAST annotated in the framework of the PATRIC database~\cite{wattam2017improvements}.
+        In the framework of \microbetag, seed scores were computed using GENREs derived from the high quality GTDB representative genomes and the~\texttt{PhyloMint} tool.
         GENREs were reconstructed using the Model SEED pipeline~\cite{henry2010high} through its Python interface \href{https://modelseedpy.readthedocs.io/en/latest/index.html}{ModelSEEDpy}.
-
+        The latter requires RAST annotated genomes~\cite{overbeek2014seed}; 
+        if available through the PATRIC database~\cite{wattam2017improvements}, annotations were retrieved.
+        For the rest of the genomes, RAST annotation was performed through RASTtk~\cite{brettin2015rasttk}.
 
         Moreover, the computed seed and the non-seed (i.e., set of metabolic compounds a genome can build on its own) sets of each genome were used to compute their overlap among all the pairwise combinations of those genomes.
         More specifically, the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
@@ -569,8 +568,6 @@
         text processing using awk 
 
         KEGG API
-
-
 
 
 

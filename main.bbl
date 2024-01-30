@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{67}
+\begin{thebibliography}{69}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -1047,6 +1047,50 @@ e14396 MICROBIO-2023-392.R1
 \endbibitem
 
 %%% 58
+\bibitem[\protect\citeauthoryear{Overbeek et~al.}{2014}]{overbeek2014seed}
+\begin{barticle}
+\bauthor{\bsnm{Overbeek}, \binits{R.}},
+\bauthor{\bsnm{Olson}, \binits{R.}},
+\bauthor{\bsnm{Pusch}, \binits{G.D.}},
+\bauthor{\bsnm{Olsen}, \binits{G.J.}},
+\bauthor{\bsnm{Davis}, \binits{J.J.}},
+\bauthor{\bsnm{Disz}, \binits{T.}},
+\bauthor{\bsnm{Edwards}, \binits{R.A.}},
+\bauthor{\bsnm{Gerdes}, \binits{S.}},
+\bauthor{\bsnm{Parrello}, \binits{B.}},
+\bauthor{\bsnm{Shukla}, \binits{M.}}, \betal:
+\batitle{The seed and the rapid annotation of microbial genomes using
+  subsystems technology (rast)}.
+\bjtitle{Nucleic acids research}
+\bvolume{42}(\bissue{D1}),
+\bfpage{206}--\blpage{214}
+(\byear{2014})
+\end{barticle}
+\endbibitem
+
+%%% 59
+\bibitem[\protect\citeauthoryear{Brettin et~al.}{2015}]{brettin2015rasttk}
+\begin{barticle}
+\bauthor{\bsnm{Brettin}, \binits{T.}},
+\bauthor{\bsnm{Davis}, \binits{J.J.}},
+\bauthor{\bsnm{Disz}, \binits{T.}},
+\bauthor{\bsnm{Edwards}, \binits{R.A.}},
+\bauthor{\bsnm{Gerdes}, \binits{S.}},
+\bauthor{\bsnm{Olsen}, \binits{G.J.}},
+\bauthor{\bsnm{Olson}, \binits{R.}},
+\bauthor{\bsnm{Overbeek}, \binits{R.}},
+\bauthor{\bsnm{Parrello}, \binits{B.}},
+\bauthor{\bsnm{Pusch}, \binits{G.D.}}, \betal:
+\batitle{Rasttk: a modular and extensible implementation of the rast algorithm
+  for building custom annotation pipelines and annotating batches of genomes}.
+\bjtitle{Scientific reports}
+\bvolume{5}(\bissue{1}),
+\bfpage{1}--\blpage{6}
+(\byear{2015})
+\end{barticle}
+\endbibitem
+
+%%% 60
 \bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
 \begin{barticle}
 \bauthor{\bsnm{Blank}, \binits{C.E.}},
@@ -1062,7 +1106,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 59
+%%% 61
 \bibitem[\protect\citeauthoryear{Choudhary
   et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
@@ -1079,7 +1123,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 60
+%%% 62
 \bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
 \begin{barticle}
 \bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
@@ -1092,7 +1136,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 61
+%%% 63
 \bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
 \begin{botherref}
 \oauthor{\bsnm{Reese}, \binits{W.}}:
@@ -1103,7 +1147,7 @@ Linux J.
 \end{botherref}
 \endbibitem
 
-%%% 62
+%%% 64
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -1114,7 +1158,7 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 63
+%%% 65
 \bibitem[\protect\citeauthoryear{Llavero-Pasquina
   et~al.}{2022}]{llavero2022thiamine}
 \begin{barticle}
@@ -1135,7 +1179,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 64
+%%% 66
 \bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
 \begin{barticle}
 \bauthor{\bsnm{Romine}, \binits{M.F.}},
@@ -1152,7 +1196,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 65
+%%% 67
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -1168,7 +1212,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 66
+%%% 68
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -1185,7 +1229,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 69
 \bibitem[\protect\citeauthoryear{Agrawal et~al.}{1993}]{assocciationRuleMining}
 \begin{bchapter}
 \bauthor{\bsnm{Agrawal}, \binits{R.}},
