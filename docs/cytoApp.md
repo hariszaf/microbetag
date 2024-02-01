@@ -140,10 +140,10 @@ Once an annotated network is returned (or loaded), you have all Cytoscape featur
 
 Color-coding of the nodes (taxa) denoted the taxonomic level that a certain sequence was able to be mapped on *microbetag*.
 
-- <code style="color : Green">green</code>: node was mapped to a genome (i.e. species/strain) and annotations are available for it 
-- *pink:* node was mapped to the genus level; annotations limited to literature-oriented (FAPROTAX) 
-- *purple:* node was mapped to the family level; likewise, only FAPROTAX annotations occasionaly
-- *red:* node was mapped to higher taxonomic level and no annotations were returned
+- <p style="color : Green">green</p>: node was mapped to a genome (i.e. species/strain) and annotations are available for it 
+- <p style="color : Magenta">pink</p>: node was mapped to the genus level; annotations limited to literature-oriented (FAPROTAX) 
+- <p style="color : Purple">purple</p>: node was mapped to the family level; likewise, only FAPROTAX annotations occasionaly
+- <p style="color : Red">red</p>: node was mapped to higher taxonomic level and no annotations were returned
 
 
 By clicking on the *Show Species* button, all nodes that were not mapped to a genome will be masked. 
@@ -169,11 +169,11 @@ For example, I was curios about the Nitrite-oxidizing bacteria (NOB) on my netwo
 
 Likewise, you may go through the annotations on the edges of the network.
 
-
+<!-- <p style="color: rgb(135,206,235)">Welcome to freeCodeCamp!</p> -->
 Edges are either
- - <code style="color : Green">green</code>
- - <code style="color : Red">red</code>
-- black 
+ - <p style="color : Green">green</p>: mentioning co-occurrences
+ - <p style="color : Red">red</p>: suggesting mutual exclusion of the two taxa
+ - black: representing ***directed*** potential metabolic interactions. 
 
 
  green-000	
