@@ -132,7 +132,16 @@ Once you are sure of these requirements, you can import your network through the
 
 ![import_network](../assets/images/app/loadNetworkFromFile.png)
 
-and then import it to MGG though its main menu on the `Apps` tab:
+
+Cytoscape will display your network and on the bottom of your screen you will have the core tables of a Cytoscape network. 
+As your network may have several edges, you need to make clear which edge attribute you would like `microbetag` to use; this is essential in cases network clustering will be performed. 
+To do so, you need to move on the *Edge table* by clicking on the arrow next to the *Node table* that is displayed by default, and then **remame** the column of your choice to `microbetag::weight`. 
+
+![rename](../assets/images/app/renameWeight.png)
+
+
+
+Now you are ready to import your network to MGG though its main menu on the `Apps` tab:
 
 ![import_network](../assets/images/app/importNetwork.png)
 
@@ -219,24 +228,26 @@ In the fourth column, called *"Complement"* the KO that need to be provided to t
 
 ![pathway_compl](../assets/images/app/pathwayCompl.png)
 
-Last but not least, in the final column a link to a related KEGG map is provided where KO available in the beneficiary species are colored with pink and those provided by the donor in the scenario of the potential metabolic interaction with green.
-In the following screenshot the map of the highlighted complementarity regarding the biosynthesis of Methionine is shown.
+In the final column a link to a related KEGG map is provided where KO available in the beneficiary species are colored with pink and those provided by the donor in the scenario of the potential metabolic interaction with green.
+The screenshot below illustrates the highlighted complementarity in the biosynthesis of methionine.
 
 ![methionine_kegg_map](../assets/images/app/keggMap.png)
 
 
-Likewise, for the seed complementarities, a new panel is displayed when such are present in an edge.
+
+Moerover, *microbetag* may also return seed complements. 
+Like in the case of the patwhay complementarities, a new panel is displayed when seed complements are available for an edge.
 Here is an example:
 
 ![kegg_seed_map](../assets/images/app/seedComplPanel.png)
 
 
-Please, look out for the [*seed scores*](./modules/modules.md#seed-scores-based-on-genome-scale-draft-reconstructions-gems) that are usually also shown there. 
+[*Seed scores*](./modules/modules.md#seed-scores-based-on-genome-scale-draft-reconstructions-gems) between the two genomes are also shown here. 
+Remebmer that like the edge under study, seed scores have also *directionality*; seed score for competiotion  between $genome_A$ and $genome_B$ is not necessarily the same with the one between $genome_B$ and $genome_A$.
 Those scores are only indicative and they should not be considered as fact of observed cooperation/competition. 
-
-
-This time it is KEGG COMPOUNDS that are highlighted in the maps and it is not certain that a specific KEGG MODULE is added in those the beneficiary species can go for. 
-
+Seed complements are then recorded in the same way as pathway complementarities.
+However, there is no *Complement* column as this time it is not a specific KEGG MODULE that is supported, rather a potential range of functions that can be viewer through the colored url. 
+Also, a new column provides the ModelSEED compound id that was actually found as a complement and was then mapped to their KEGG corresponding one. 
 
 ![kegg_seed_map](../assets/images/app/seedKeggMap.png)
 
