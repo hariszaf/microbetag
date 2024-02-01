@@ -9,6 +9,12 @@ description: "an example case of how microbetag can be of help"
 ## Using microbetag: a real-world scenario
 
 
+[Download ][1] dataset used for this example.
+
+[1]:{{ site.url }}/microbetag/download/dada2_use_case.tsv
+
+
+
 Dataset:
 
 
