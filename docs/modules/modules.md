@@ -122,7 +122,7 @@ microbetag annotates all **edges** where both nodes represent species/strain lev
 
 
 
-## Seed scores based on genome-scale draft reconstructions (GEMs)
+## Seed scores and complements based on genome-scale draft reconstructions (GEMs)
 
 Based on Borenstein *et al.* (2008) [5] a metabolic network's “seed set” is the set of compounds that, based on the network topology, are exogenously acquired".
 Here is an example (based on the [Borensteil lab webpage](http://borensteinlab.com/software_netseed_examples.html)):
@@ -175,10 +175,9 @@ Thus, the $$MI_{Competition}$$ between metabolic network A and B is $$(1/3) / 2 
 The $$1/3$$ term represents the confidence level of the seed group node. 
 
 Among SeedSetA, metabolites A and F are found within the metabolic network B but only metabolite A is within non-SeedSetB, thus the MIComplementarity index between metabolic network A and metabolic network B is 0.5.
-
-
 These indexes can be used in various types of metabolic networks. 
-In the framework of microbetag, all GTDB representative genomes were used to come up 
+
+In the framework of `microbetag`, all GTDB representative genomes were used to come up 
 with draft genome-scale reconstructions using [`modelseedpy`](https://github.com/ModelSEED/ModelSEEDpy)
 with its default gapfilling algorithm and a complete medium. 
 Then, all GEMs pair-wised combinations were considered and using [`PhyloMInt`](https://github.com/mgtools/PhyloMint)
@@ -186,10 +185,10 @@ their $$ MI_{Complementarity} $$ and $$ MI_{Competition} $$ scores were calculat
 microbetag annotates all **edges** between species/strain level taxonomically assigned nodes with such scores, 
 considering all the representative GTDB genomes mapping to the corresponding NCBI Taxonomy ids of the nodes.
 
-
-
 `microbetag` makes use of the seed and the non-seed (i.e., compounds a genome can produce on its own) sets of each genome and gets the overlap of the seed set of $genome_A$ with the non-seed set of $genome_B$. 
 This way, it exports how $species_B$ could benefit $species_A$ and vice-versa.
+Seed and non-seed sets were first exported as sets of ModelSEED compounds, since GEMs were constructed using ModelSEED.
+Then, compounds were mapped to KO terms and only those participating in KEGG modules were considered for the overlap analysis.
 The effect of such a metabolic interaction for $species_A$ can be visualized through KEGG maps that visualize relative pathways. 
 For example, in the following map we see that O-Acetyl-L-serine can be provided and support an alternative way to the beneficiary species for producing L-cysteine.
 ![seedCompl](../../assets/images/app/seedKeggMap.png)
