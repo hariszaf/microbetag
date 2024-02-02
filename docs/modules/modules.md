@@ -187,6 +187,17 @@ microbetag annotates all **edges** between species/strain level taxonomically as
 considering all the representative GTDB genomes mapping to the corresponding NCBI Taxonomy ids of the nodes.
 
 
+
+`microbetag` makes use of the seed and the non-seed (i.e., compounds a genome can produce on its own) sets of each genome and gets the overlap of the seed set of $genome_A$ with the non-seed set of $genome_B$. 
+This way, it exports how $species_B$ could benefit $species_A$ and vice-versa.
+The effect of such a metabolic interaction for $species_A$ can be visualized through KEGG maps that visualize relative pathways. 
+For example, in the following map we see that O-Acetyl-L-serine can be provided and support an alternative way to the beneficiary species for producing L-cysteine.
+![seedCompl](../../assets/images/app/seedKeggMap.png)
+
+
+
+
+
 <!-- ![netcooperate seed example](../../assets/images/seed_network_example.png)
 
 In this example, we have a pair of simple networks. The top network has two seed groups, one of size one and the other size three (circled with a double line). The bottom network has three seed groups, two singletons, and one two-node seed group (circled with a double line). Seeds of one network present in the other are circled (solid lines: present, but not a seed of, the second network; dashed lines: present as a seed of the second network). The Biosynthetic Support Score of the top network on the bottom (i.e. treating the top as a parasite of the bottom) is 1.0. Note that all seed groups (but not all seeds) are present in the bottom network, and that node F is a seed of both networks. The Metabolic Complementarity Index of the top network on the bottom (i.e. treating both networks as co-occurring microbes) is 0.5. Because node F is a seed of the bottom network, it is not complementary to the top network’s seed set. -->
