@@ -124,8 +124,15 @@ then, the corresponding abundance table would have, among other records, to have
 
 | sequenceIdentifier | sample_1 | sample_2| sample_3| taxonomy | 
 |:------------------:|:--------:|:-------:|:-------:|:-------:|
-| bin_1|  234 | 42 | 43| g__Devosia;s__Devosia sp001899045
-|bin_2 | 324| 54 | 43 | 
+|bin_1|  234 | 42 | 43| g__Devosia;s__Devosia sp001899045
+|bin_2 | 324| 54 | 43 | g__Pseudonocardia;s__Pseudonocardia sp001899645
+
+{: .note}
+> Taxonomy here is only partial. 
+> Make sure you always have a 7-level taxonomy, e.g. 
+> d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Devosiaceae;g__Devosia_A;s__Devosia_A sp001899075
+
+
 
 
 Once you are sure of these requirements, you can import your network through the main `File` tab of Cytoscape:
