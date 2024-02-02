@@ -8,7 +8,9 @@ description: "an example case of how microbetag can be of help"
 # From an abundance table to an annotated co-occurrence network
 
 
-In this tutorial, we have used the findings of a 16S rRNA analysis with [DADA2](https://benjjneb.github.io/dada2/) that we have expoted in a `.tsv` file. 
+In this tutorial, we use the findings of a 16S rRNA analysis with [DADA2](https://benjjneb.github.io/dada2/) that we have exported in a `.tsv` file. 
+We show how to get a *microbetag-*annotated co-occurrence network with this matrix as your only input. 
+More complex scenaria can be the case, however they are all based on the principles described here. 
 
 
 {: .important-title}
@@ -22,15 +24,16 @@ In this tutorial, we have used the findings of a 16S rRNA analysis with [DADA2](
 
 
 
-After [downloading][1] the data set and a quick look at it, you will notice that it consists of 1,004 ASVs; just few more than the capacity that `microbetag` can handle on the fly.
-However, most often than not, this number can be up to several hundreds of ASVs or OTUs for amplicon analyses.
-Thus, the preprocessing step is required.
-Moreover, you will notice that in this abundance table, in the last column there is not a taxonomy but the corresponding ASV. 
+First, let us [download][1] the data set we will use.
+After a quick look at it, you will notice that it consists of 1,004 ASVs; just 4 more than `microbetag`'s up limit to build a network on the fly.
+However, most often than not, this number can range up to several hundreds of ASVs or OTUs for amplicon analyses.
+In both cases, the preprocessing step is required.
+Moreover, you will notice that in this abundance table, in the last column there is not a taxonomy but the corresponding ASV instead.
 That is because we want to use the GTDB taxonomy based on the 16S rRNA gene so we map our ASVs to their closest GTDB genomes. 
 
 For the preparation, we will use the [`microbetag_prep` Docker image](https://hub.docker.com/r/hariszaf/microbetag_prep). 
-If you do not have the `microbetag_prep` image on your computer system yet, plase followi the instructions you may find in the [Preparation](./input.md#the-preparation) paragraph. 
-If [Docker](https://www.docker.com) is not available either, you will have to install it as described [here](https://docs.docker.com/get-docker/). 
+If you do not have the `microbetag_prep` image on your computer system yet, please follow the instructions you may find in the [Preparation](./input.md#the-preparation) paragraph. 
+If [Docker](https://www.docker.com) is not available either, you will have to [install it](https://docs.docker.com/get-docker/). 
 
 Once both Docker and the `microbetag_prep` image are installed, you should be able to run
 
@@ -40,7 +43,7 @@ REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
 hariszaf/microbetag_prep   latest    1500f6f7a0aa   7 weeks ago     3.92GB
 ```
 
-Now we need need to follow the instructions of the Preparation section and build our [I/O folder](./input.md#io-folder).
+Now we need need to follow the instructions of the [*Preparation*](./input.md#io-folder)  section and build your input/output folder.
 
 Open a terminal and create a new folder (e.g. `my_microbetag_prep`)
 
@@ -141,6 +144,8 @@ finally, you need to always set the column that `microbetag` will consider as yo
 Thus you need to click on the corresponding column header and set it as `microbetag::weight`.
 Now `microbetag` is able to recognize which column to handle as the *weight* of your network.
 By clicking `OK` your network will be shown on Cytoscape's main panel. 
+
+![weight](../assets/images/app/weight.png)
 
 Now you are ready to import your abundance table. 
 Go to `Apps > MGG > Import Data > Import Abundance Data` and browse to the `GTDB_tax_assigned_abundance_table.tsv` file returned from the `microbetag_prep` running.
