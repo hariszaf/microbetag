@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Use case
+title: Tutorial
 nav_order: 6
 description: "an example case of how microbetag can be of help"
 ---
 
+# From an abundance table to an annotated co-occurrence network
 
-## Using microbetag: a pseudo real-world scenario
 
 In this tutorial, we have used the findings of a 16S rRNA analysis with [DADA2](https://benjjneb.github.io/dada2/) that we have expoted in a `.tsv` file. 
 
@@ -83,7 +83,9 @@ No matter how you edit the file, you need to make sure the following:
 
 - provide the filename of your abundance table in the `abundance_table_file` parameter; in our case that would be `seq_ab_tab.tsv`
 
-{:. important-note}
+{: .important-title}
+> SEQUENCE OR TAXONOMY?
+>
 > Please, make sure you have not comment lines on top of your file
 > Your abundance table needs to start with a header, in the first column having the sequence identifier and in the **last one** either the **taxonomy** if only the network inference is to be performed or the **sequence** itself in case you need to perform the GTDB assignment as well.
 > Also, avoid numbers as sequence identifiers (e.g., 5434), instead use alpharithmetics (e.g., ASV_5434).
@@ -161,8 +163,7 @@ Then a *Sending data to the server* loading bar will appear.
 After a few moments, a new network will pop up on your Cytoscape main panel! 
 
 That's it! 
-You may now *"roam"* across your annotated network as 
-explained [here](./cytoApp.md#roaming-acrross-annotated-nodes-and-edges)
+You may now [*"roam"* across your annotated network](./cytoApp.md#roaming-acrross-annotated-nodes-and-edges).
 
 [1]:{{ site.url }}/microbetag/download/seq_ab_tab.tsv
 
