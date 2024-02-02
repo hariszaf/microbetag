@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import yaml 
+import yaml
 import os
 import pandas as pd
 
@@ -11,10 +11,10 @@ This script supports the preprocessing of an abundance table and the building of
 Usage through Docker:
 =====================
 users_input_folder should contain the following files:
-- an abundance table (.csv, .tsv). 
+- an abundance table (.csv, .tsv).
     in its first column it needs to have a sequence identifier, e.g. ASV_XX
     in case the user is about to perform a taxonomy classification the sequence needs to be provided in the last column of this file
-    otherwise, you 
+    otherwise, you
 - a metadata file (.csv, .tsv)
     make sure the sample names are the exact same in this and the abundance table files
     follow instructions for the metadata file here: http://tinyurl.com/35xxcnrm
@@ -107,7 +107,7 @@ if config.annotate:
             line_to_write = "".join([">", pair[seqid], "\n", pair[seq], "\n"])
             f.write(line_to_write)
 
-    # fix Rscript path 
+    # fix Rscript path
     classify_command = " ".join([rscript_path, classify_Rscript])
     if os.system(classify_command) != 0:
         raise SystemError(
@@ -141,8 +141,8 @@ if config.build_network:
     seq = column_names[-1]
 
     flashweave_table = abundance_table_data.drop(seq, axis = 1)
-    float_col        = flashweave_table.select_dtypes(include=['float64']) 
-   
+    float_col        = flashweave_table.select_dtypes(include=['float64'])
+
     for col in float_col.columns.values:
         flashweave_table[col] = flashweave_table[col].astype('int64')
 
@@ -153,12 +153,12 @@ if config.build_network:
 
     if config.metadata == "true":
         flashweave_params = [
-            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, 
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive,
             config.heterogeneous, config.metadata, config.metadata_file
         ]
     else:
         flashweave_params = [
-            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive, 
+            julia_path, flashweave_script, config.output_dir, flashweave_input_file, config.sensitive,
             config.heterogeneous, config.metadata
         ]
     flashweave_command = " ".join(flashweave_params)
@@ -168,6 +168,12 @@ if config.build_network:
             """FlashWeave failed. Check if Julia and FlashWeave is there.
             If yes, check the abundance table you provide."""
         )
+    edit_network_file_command = [
+        "sed", "-i", "'1,2d'", os.path.join(config.output_dir, "network_output.edgelist")
+    ]
+    sed_command = " ".join(edit_network_file_command)
+    os.system(sed_command)
+
 
 # Change ownership to output folder and its contents
 os.chown(config.output_dir, config.user_id, config.group_id)
