@@ -187,7 +187,7 @@ singularity pull docker://hariszaf/prep_microbetag
 ```
 
 
-Then you need to also download the<a href="https://github.com/hariszaf/microbetag/raw/preprocess/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
+Then you need to also download the<a href="https://raw.githubusercontent.com/hariszaf/microbetag/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
 
 
 {: .important}
