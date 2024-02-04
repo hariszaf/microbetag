@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{69}
+\begin{thebibliography}{68}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -1091,22 +1091,6 @@ e14396 MICROBIO-2023-392.R1
 \endbibitem
 
 %%% 60
-\bibitem[\protect\citeauthoryear{Blank et~al.}{2016}]{blank2016micro}
-\begin{barticle}
-\bauthor{\bsnm{Blank}, \binits{C.E.}},
-\bauthor{\bsnm{Cui}, \binits{H.}},
-\bauthor{\bsnm{Moore}, \binits{L.R.}},
-\bauthor{\bsnm{Walls}, \binits{R.L.}}:
-\batitle{Micro: an ontology of phenotypic and metabolic characters, assays, and
-  culture media found in prokaryotic taxonomic descriptions}.
-\bjtitle{Journal of biomedical semantics}
-\bvolume{7}(\bissue{1}),
-\bfpage{1}--\blpage{10}
-(\byear{2016})
-\end{barticle}
-\endbibitem
-
-%%% 61
 \bibitem[\protect\citeauthoryear{Choudhary
   et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
@@ -1123,7 +1107,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 62
+%%% 61
 \bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
 \begin{barticle}
 \bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
@@ -1136,7 +1120,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 63
+%%% 62
 \bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
 \begin{botherref}
 \oauthor{\bsnm{Reese}, \binits{W.}}:
@@ -1147,7 +1131,7 @@ Linux J.
 \end{botherref}
 \endbibitem
 
-%%% 64
+%%% 63
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -1158,7 +1142,7 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 65
+%%% 64
 \bibitem[\protect\citeauthoryear{Llavero-Pasquina
   et~al.}{2022}]{llavero2022thiamine}
 \begin{barticle}
@@ -1179,7 +1163,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 66
+%%% 65
 \bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
 \begin{barticle}
 \bauthor{\bsnm{Romine}, \binits{M.F.}},
@@ -1196,7 +1180,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 66
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -1212,7 +1196,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 68
+%%% 67
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -1229,7 +1213,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 69
+%%% 68
 \bibitem[\protect\citeauthoryear{Agrawal et~al.}{1993}]{assocciationRuleMining}
 \begin{bchapter}
 \bauthor{\bsnm{Agrawal}, \binits{R.}},

@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex main"] 1706576047.30955 "main.aux" "main.bbl" "main" 1706576058.20797 0
-  "./sn-bibliography.bib" 1706575949.13869 37361 9f26675701027ed6e6cd0ece6e0ed3dd ""
-  "./sn-mathphys.bst" 1706575053.56777 64141 2560fd4f8e8321a304f732d035eb1b51 ""
-  "main.aux" 1706576057.64656 15206 3b4dbadc21ee44b2acc5bf51b74e7654 "pdflatex"
+["bibtex main"] 1707082650.28915 "main.aux" "main.bbl" "main" 1707085393.8948 0
+  "./sn-bibliography.bib" 1706885820.17972 37361 9f26675701027ed6e6cd0ece6e0ed3dd ""
+  "./sn-mathphys.bst" 1706885820.17972 64141 2560fd4f8e8321a304f732d035eb1b51 ""
+  "main.aux" 1707085393.26112 15384 dae3f99ee7d97ecb7a545840f5c27964 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1706576047.54858 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1706576058.20816 0
-  "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1706047470.82896 86747 d5d3fc0534da88d542532be194910137 ""
+["pdflatex"] 1707085390.61107 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1707085393.89513 2
+  "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1706886257.68375 86747 d5d3fc0534da88d542532be194910137 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk" 1705845194.10204 7284 e74341cad9e1a3d52c5edf6478defb50 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk" 1705845193.38605 8268 186cd7ac4660d89a304fa66d96ef384c ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1700663130.22705 11548 5d734332472b8906fb72d5e4e94e4fed ""
@@ -63,7 +63,7 @@
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty" 1700756999.95134 10894 d359a13923460b2a73d4312d613554c8 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/vruler/vruler.sty" 1705310472.97319 17457 95bf058fb4454370266f07170b5a158a ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty" 1700663095.60704 26220 3701aebf80ccdef248c0c20dd062fea9 ""
-  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1706576035.37859 71649 43432f93ec3b02291f4b7f74a7453fa4 ""
+  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1707085385.82514 73098 7f0b7bf46205ba6be6faa90754691d6a ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1679232417.27654 1456 d21918d95ca20f07aa266303b9a0a14c ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0700.tfm" 1679232417.27654 1452 97bdc98984cb373fbcd868e2fa55f5f2 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1679232417.27654 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -246,14 +246,15 @@
   "/usr/local/share/miktex-texmf/tex/latex/url/url.sty" 1679232427.23252 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/local/share/miktex-texmf/tex/latex/xcolor/xcolor.sty" 1679232427.27652 56148 51a9a8571c07b9921892ae11063ae853 ""
   "/usr/local/share/miktex-texmf/tex/latex/xkeyval/xkeyval.sty" 1679232427.36052 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "figs/figure_abstract.png" 1706575053.42777 1338961 473af046918f4163f94ff4347e4aebfb ""
-  "figs/microbetag-wf.png" 1706575053.48777 9261761 645127a96ae63d24d1aef59751f0d7c6 ""
-  "figs/path_complem.png" 1706575053.50377 2416531 92f04c6bb5323adba51f29270f74cdae ""
-  "main.aux" 1706576057.64656 15206 3b4dbadc21ee44b2acc5bf51b74e7654 "pdflatex"
-  "main.bbl" 1706576047.48657 39661 d2d2cbd468d3cbc9d3d85175485ce53f "bibtex main"
-  "main.out" 1706576057.65056 1148 2b83d14218473cc6ff520d1112da888a "pdflatex"
-  "main.tex" 1706576035.37859 71649 43432f93ec3b02291f4b7f74a7453fa4 ""
-  "sn-jnl.cls" 1706575053.56777 55955 38fcab50bf900ac0998e350ba2123285 ""
+  "figs/figure_abstract.png" 1706885820.10772 1338961 473af046918f4163f94ff4347e4aebfb ""
+  "figs/microbetag-wf.png" 1707078434.1145 1298756 83736288eeb40cb8857a7b95e5e594b8 ""
+  "figs/panels.png" 0 -1 0 ""
+  "figs/path_complem.png" 1707077268.3692 438344 2d73d53d8f9c05287f30be41a313213c ""
+  "main.aux" 1707085393.26112 15384 dae3f99ee7d97ecb7a545840f5c27964 "pdflatex"
+  "main.bbl" 1707082650.51566 39139 0e016c3a831c9a7843afcec60e055364 "bibtex main"
+  "main.out" 1707085393.26512 1148 d5ebe04c3bae409f4ccb28836bdc7781 "pdflatex"
+  "main.tex" 1707085385.82514 73098 7f0b7bf46205ba6be6faa90754691d6a ""
+  "sn-jnl.cls" 1706885820.17972 55955 38fcab50bf900ac0998e350ba2123285 ""
   (generated)
   "main.aux"
   "main.log"

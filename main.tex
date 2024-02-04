@@ -34,10 +34,7 @@
 \usepackage{tabularx}
 \usepackage{adjustbox}  % for the adjustwidth
 
-
-
 \usepackage{threeparttable}  % to support notes within a table
-
 
 
 %\jyear{2021}%
@@ -86,6 +83,7 @@
         \street{Herestraat}, \city{Leuven}, \postcode{3000}, \state{}, \country{Belgium}
     }
 }
+
 \affil[2]{
     \orgdiv{Institute of Food, Nutrition and Health}, 
     \orgname{ETH Zurich}, 
@@ -93,6 +91,7 @@
         \street{Street}, \city{Zurich}, \postcode{8092}, \state{}, \country{Switzerland}
     }
 }
+
 \affil[3]{
     \orgdiv{Department of Pharmaceutical Chemistry}, 
     \orgname{University of California San Francisco}, 
@@ -100,7 +99,6 @@
         \street{Street}, \city{San Francisco}, \postcode{94143}, \state{California}, \country{USA}
     }
 }
-
 
 %%==================================%%
 %% unstructured abstract %%
@@ -479,7 +477,7 @@
         one considering $species_A$ as the potential beneficiary and $species_B$ as the potenial donor species, and one vice-versa. 
 
 
-    \subsection*{Seed scores using genome scale metabolic reconstructions }
+    \subsection*{Seed scores and complements using genome scale metabolic reconstructions }
     \label{subsec:seeds}
 
         The Metabolic Complementarity Index ($MI_{Complementarity}$) measures the degree to which two microbial species can mutually assist each other by complementing each other's biosynthetic capabilities.
@@ -489,8 +487,8 @@
         This index establishes an upper limit on the level of competition that one species may face from another.
         Those indices have been thoroughly described and implemented in the NetCooperate~\cite{levy2015netcooperate} and NetCompt~\cite{kreimer2012netcmpt} tools correspondingly.
         We will be referring to those two indices as "seed scores".
-
         Recently, the~\texttt{PhyloMint}tool~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
+
         In the framework of \microbetag, seed scores were computed using GENREs derived from the high quality GTDB representative genomes and the~\texttt{PhyloMint} tool.
         GENREs were reconstructed using the Model SEED pipeline~\cite{henry2010high} through its Python interface \href{https://modelseedpy.readthedocs.io/en/latest/index.html}{ModelSEEDpy}.
         The latter requires RAST annotated genomes~\cite{overbeek2014seed}; 
@@ -498,7 +496,8 @@
         For the rest of the genomes, RAST annotation was performed through RASTtk~\cite{brettin2015rasttk}.
 
         Moreover, the computed seed and the non-seed (i.e., set of metabolic compounds a genome can build on its own) sets of each genome were used to compute their overlap among all the pairwise combinations of those genomes.
-        More specifically, the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
+        More specifically, seed and non-seed compounds of each genome were mapped to their corresponding KO terms and those related to any KEGG MODULE were considered.
+        The latter were then used for the calculation of the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
         \microbetag then annotates again the edges of the co-occurrence network where both taxa have been mapped to a at least one GTDB genome, mentioning all the KEGG maps for which there is at least one seed compound of the potentially beneficiary species 
 
 
@@ -507,40 +506,34 @@
     \label{subsec:mant}
 
         % KF: sentence not complete
-        manta is a heuristic network clustering algorithm that clusters nodes within weighted networks effectively, leveraging the presence of negative edges and discerning between weak and 
-        microbetag invokes manta~\cite{rottjers2020manta} to infer clusters from the microbial network.
-        A taxonomically-informed layout is 
-
-        strong cluster assignments.
-        ++ taxonomy layout 
-        
-
-        % https://ramellose.github.io/manta/demo_manta.html
-
+        \texttt{manta} is a heuristic network clustering algorithm that clusters nodes within weighted networks effectively, leveraging the presence of negative edges and discerning between weak and strong cluster assignments.
+        \microbetag invokes manta~\cite{rottjers2020manta} to infer clusters from the microbial network.
+        In case \texttt{manta} is performed, the annotated network inherits the layout that \texttt{manta} returns.
 
 
     \subsection*{Groups of annotations }
     \label{groups}
 
-        Biologically meaningful groups were built using the micrO ontology~\cite{blank2016micro}.
+        Biologically meaningful groups were described to group phenotypic traits returned from FAPROTAX and phenDB-like annotation steps.
+        The main groups supported are related to: 
+        1. the lifestyle of a species, for example being halophilic or thermophyllic etc.,
+        2. the biogeochemical processes a species metabolic potenial has been found related to, for example Nitrite-oxidizing bacteria (NOB) bacteria and 
+        3. important metabolites a species is suggested to produce, e.g. butanol.
+        Aim of these groups are to facilitate filtering of the taxa present.
+        Enrichemnt analysis for members of such groups 
+        (e.g., based on the finfings of a clustering algorithm like \texttt{manta}) 
+        can be performed through the CytoscapeApp.
 
 
-
-
-
-    \subsection*{Building the CytoscapeApp }
+    \subsection*{The \texttt{MGG} CytoscapeApp }
     \label{subsec:build-cytoapp}
 
-        The \microbetag CytoscapeApp was build based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
-        Java 
-        @Ermis to add 
-        
-
-        Enrichment analysis is supported. 
-        Hypergeometric distribution
-        FDR +++
-
-
+        \microbetag is accessible as a CytoscapeApp. 
+        The \microbetag CytoscapeApp (called \texttt{MGG}) was built based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
+        A visual style was developed to facilitate the distinguish of nodes and edges annotated. 
+        \texttt{MGG} 
+        allows the user to import their data, retrieve an annotated network and investigate the annotations through a series of CyPanels both for node and edge annotations.
+        Figure~\ref{fig:panels} shows an example of the edges CyPanel. 
 
 
     \subsection*{Dependencies, Web server and API }
@@ -552,22 +545,21 @@
         c. the app itself. 
         The latter uses~\href{https://gunicorn.org}{Gunicorn} (20.1.0) to build an application server which communicates with the web server using the Web Server Gateway Interface (WSGI) protocol and handles incoming HTTP requests.
         % Nginx acts as a reverse proxy server that sits in front of Gunicorn and forwards client requests to Gunicorn for processing. It serves as an intermediary between clients and your application server.
-        \microbetag is implemented as a~\href{https://flask.palletsprojects.com/en/3.0.x/}{Flask} application (v2.3.2); Flask is 
-        a micro web framework for developing Python web applications and RESTful APIs. 
+        \microbetag is implemented as a~\href{https://flask.palletsprojects.com/en/3.0.x/}{Flask} application (v2.3.2); 
+        Flask is a micro web framework for developing Python web applications and RESTful APIs. 
         % REST stands for Representational State Transfer 
         A thorough description of \microbetag's API is available at the \href{https://hariszaf.github.io/microbetag/docs/api/}{ReadTheDocs web site}. 
         The source code of the \microbetag web service is available on~\href{https://github.com/msysbio/microbetagApp/}{GitHub}.
 
-        python 3.11 slim docker image 
-        julia 1.7.1 for flashweave 
-        mysql.connector 8.0.27 python library
-        pandas 2.1.1.
-        numpy 1.26.0
-        multiprocessing
 
-        text processing using awk 
-
-        KEGG API
+        % python 3.11 slim docker image 
+        % julia 1.7.1 for flashweave 
+        % mysql.connector 8.0.27 python library
+        % pandas 2.1.1.
+        % numpy 1.26.0
+        % multiprocessing
+        % text processing using awk 
+        % KEGG API
 
 
 
@@ -774,6 +766,18 @@
 
 
         Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}~\todo{Study those 2 to understand our findings}
+
+
+
+        \begin{figure}[h!]
+            \includegraphics*[width=0.8\columnwidth]{figs/panels.png}
+            \centering
+            \caption{
+                CyPanels of the MGG CytoscapeApp. 
+            }
+            \label{fig:panels}
+        \end{figure}
+
 
 
 
