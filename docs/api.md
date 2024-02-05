@@ -203,7 +203,8 @@ curl -X GET https://msysbio.gbiomed.kuleuven.be/complements/1281578/146891
 
 
 
-## Get seed scores
+## Get seed scores and seed complements
+
 
 ### Get competition and complementarity score between a pair of GEMs
 
@@ -214,9 +215,6 @@ one may use the `genome-complements` route
 ```bash
 curl -X GET https://msysbio.gbiomed.kuleuven.be/seed-scores/1379686/883079
 ```
-
-
-
 
 
 ### Get competition and complementarity score between a pair of NCBI Ids
@@ -260,6 +258,29 @@ The function returns pairs of seed scores,
  the first genome provided is considered as genome A for the seed metrics (see ["microbetag Modules"](modules/modules.md#seed-scores-based-on-genome-scale-draft-reconstructions-gems) for more) and the second one as genome B.
 
 
+
+### Get seed complements between a pair of NCBI Taxonomy, NCBI Genome or PATRIC ids
+
+
+Seed complements can be retrieved for pairs of 3 different categories of ids: 
+- NCBI Taxonomy ids (`type_of_ids: ncbiTaxonomyIds`)
+- NCBI Genome accession ids (`type_of_ids: ncbiGenomeIds`) and
+- PATRIC ids (`type_of_ids: patricGenomeIds`)
+
+The main route of this feature is 
+```bash
+https://msysbio.gbiomed.kuleuven.be/seed-complements/<beneficiary_id>/<donor_id>/<type_of_ids>
+```
+
+For example, one might get seed complements for a pair of NCBI Taxonomy ids like this:
+
+```bash
+curl -X GET https://msysbio.gbiomed.kuleuven.be/seed-complements/1379686/883079/ncbiTaxonomyIds
+```
+
+
+{: note}
+> This route has no default for your id type! If not provided by the user, the API will fail.
 
 
 
