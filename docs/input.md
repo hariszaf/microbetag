@@ -132,7 +132,7 @@ Otherwise, please make sure you provide the network as an edge file, for instanc
 
 ### Case 3: you like things the microbetag way
 
-To get the optimal annotations in the more robust way, we **strongly suggest** you first prepare your data using the `prep_microbetag` Docker/Singularity image.
+To get the optimal annotations in the more robust way, we **strongly suggest** you first prepare your data using the `microbetag_prep` Docker/Singularity image.
 That will be almost always the case when you have large datasets with more than a few thousands of sequences and no network for them. 
 Yet, even if you have a network, it is still **strongly suggested** to run the *taxonomy assignment* step, so microbetag can map more efficiently the taxa present to their corresponding GTDB genomes. 
 
@@ -173,17 +173,17 @@ To this end, a Docker/Singularity image is available supporting the taxonomy ass
 
 
 [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html) needs to be installed. 
-Then donwload the `prep_microbetag` image either by running: 
+Then donwload the `microbetag_prep` image either by running: 
 
 
 ```bash
-docker pull hariszaf/prep_microbetag
+docker pull hariszaf/microbetag_prep
 ```
 
 
 or 
 ```bash
-singularity pull docker://hariszaf/prep_microbetag
+singularity pull docker://hariszaf/microbetag_prep
 ```
 
 
@@ -231,7 +231,7 @@ The mandatory abundance table file can be provided as a `.tsv` or a `.csv` file 
 To run directly 
 
 ```bash
-docker run --rm -v ./test/:/media hariszaf/prep_microbetag
+docker run --rm -v ./test/:/media hariszaf/microbetag_prep
 ```
 
 in this case it is the `./test/` local directory you mount in the `/media` folder on the container.
@@ -240,7 +240,7 @@ in this case it is the `./test/` local directory you mount in the `/media` folde
 If you would like to initiate an interactive container you may run: 
 
 ```bash
-docker run --rm -it --entrypoint /bin/bash -v ./test/:/media prep_microbetag
+docker run --rm -it --entrypoint /bin/bash -v ./test/:/media microbetag_prep
 ```
 this would initiate a console from within the container with you as a root user:
 
@@ -271,7 +271,7 @@ The equivalent commands in Singularity would be :
 To run the preprocess directly:
 <!-- --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID -->
 ```bash
-singularity run -B ~/prep_test/:/media prep_microbetag_latest.sif 
+singularity run -B ~/prep_test/:/media microbetag_prep_latest.sif 
 ```
 
 where again, you mount (`-B`) the `~/prep_test/` local directory to the `/media` folder on the container.
@@ -279,7 +279,7 @@ where again, you mount (`-B`) the `~/prep_test/` local directory to the `/media`
 Likewise, to open a console:
 
 ```bash
-singularity exec -B ~/prep_test/:/media prep_microbetag_latest.sif bash
+singularity exec -B ~/prep_test/:/media microbetag_prep_latest.sif bash
 cd /pre_microbetag/
 ```
 
