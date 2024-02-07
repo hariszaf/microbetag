@@ -8,7 +8,7 @@
 %%                                                                 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[sn-mathphys,Numbered, lineno]{sn-jnl}  % I added lineo to have linenumbers
+\documentclass[sn-mathphys,Numbered]{sn-jnl}  % If you add `lineo` to have linenumbers here, you cannot skip linenumbering in tables
 
 %%%% Standard Packages
 %%<additional latex packages if required can be included here>
@@ -37,6 +37,11 @@
 \usepackage{threeparttable}  % to support notes within a table
 
 
+\usepackage{makecell}  % For \makecell command
+\renewcommand\theadfont{\bfseries}
+
+
+
 %\jyear{2021}%
 
 \theoremstyle{thmstyleone}%
@@ -52,8 +57,23 @@
 
 \newcommand{\microbetag}{\texttt{microbetag }}
 
+\usepackage{lineno}
+\newenvironment{mytable}
+{
+    \nolinenumbers
+    \begin{table}[ht]
+    \centering
+}
+{
+    \end{table}
+    \linenumbers
+}
+
+
 
 \begin{document}
+
+\linenumbers
 
 \title[Article Title]{
     % Genomic, metabolic and literature oriented annotation of microbial co-occurrence networks enhances associations confidence level and hypothesis generation
@@ -134,21 +154,18 @@
             
         }
     \end{figure}
-    
 
 }
 %%==================================%%
 %% keywords                         %%
 %%==================================%%
 \keywords{
-    microbial associations, 
-    enrichemnt analysis, 
+    microbial associations,
+    enrichemnt analysis,
     data integration,
     pathway complementarity,
     seed set
 }
-
-
 
 \maketitle
 
@@ -328,7 +345,8 @@
 
         \microbetag maps the taxonomy of each entry in the abundance table to their corresponding NCBI Taxonomy Id and, if available, their closest GTDB representative genome(s), since several GTDB representative genomes may map to the same NCBI Taxonomy Id.
         Two well established taxonomy schemes are supported: the GTDB~\cite{parks2022gtdb} that is being broadly used for bins and/or MAGs taxonomical classification and the Silva database~\cite{quast2012silva} that is widely used in amplicon studies. Both taxonomy schemes link their taxonomies to NCBI Taxonomy Ids~\cite{schoch2020ncbi}.
-        In case none of those two taxonomies was used and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. %However, this is done only for abundance tables containing less the 1,000 taxa. 
+        In case none of those two taxonomies was used and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. 
+        %However, this is done only for abundance tables containing less the 1,000 taxa. 
         To this end, \microbetag makes use of the~\href{https://github.com/seatgeek/thefuzz}{\texttt{fuzzywuzzy}} library that implements the Levenshtein Distance Metric to get the closest NCBI taxon name and thus its corresponding NCBI Taxonomy Id; a relatively high similarity score is used (90) to avoid false positives. 
         Also, using the nodes dump file of NCBI Taxonomy, \microbetag may retrieve the child taxa of a taxon in user's data, along with their corresponding NCBI Taxonomy Ids, if requested by the user.
         % Thus, \microbetag maps a network taxon to their corresponding NCBI Taxonomy Id and if available their corresponding GTDB genomes.
@@ -359,13 +377,12 @@
         %     •    FDR - perform False Discovery Rate correction (Benjamini-Hochberg method) on pairwise associations
         %     •    n_obs_min - don't compute associations between variables having less reliable samples (i.e. non-zero if heterogeneous=true) than this number. -1: automatically choose a threshold.
 
-
-
     \subsection*{\microbetag pre-processing }
     \label{subsec:preprocess}
 
-        In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to trained the TAXID classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
-        Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory. Again, to help the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave. 
+        In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to trained the TAXID classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{https:/hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
+        Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory.
+        Again, to help the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave.
 
 
     \subsection*{Literature based nodes annotation }
@@ -503,7 +520,7 @@
 
 
     \subsection*{Clustering network  }
-    \label{subsec:mant}
+    \label{subsec:manta}
 
         % KF: sentence not complete
         \texttt{manta} is a heuristic network clustering algorithm that clusters nodes within weighted networks effectively, leveraging the presence of negative edges and discerning between weak and strong cluster assignments.
@@ -512,7 +529,7 @@
 
 
     \subsection*{Groups of annotations }
-    \label{groups}
+    \label{subsec:groups}
 
         Biologically meaningful groups were described to group phenotypic traits returned from FAPROTAX and phenDB-like annotation steps.
         The main groups supported are related to: 
@@ -577,16 +594,18 @@
 \label{sec:results}
 
 
-
     \subsection*{\microbetag and microbetagDB}
     \label{subsec:microbetagdb}
 
+        \microbetag is 
 
-        \begin{figure}[H]
+
+
+        \begin{figure}[h!]
             \label{fig:wf}
             \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
             \caption{
-                Diagram of the \microbetag pre - calculations and the on the fly workflow. 
+                Diagram of the \microbetag pre - calculations (top panel) and the on the fly workflow (bottom panel). 
                 GTDB v207 representative genomes were filtered and for those of high-quality
                 33 phenotypic traits were predicted using~\texttt{phenotrex}.
                 To this end, models were re-trained to sync with recent version of eggNOG.
@@ -595,44 +614,29 @@
 
 
 
-        \begin{table}[ht]
-            \centering
-            % \caption{microbetagDB in numbers}
-            \caption[Summary of Data]{Summary of Data\footnote{s involved in $>184$ million beneficiary - donor pairs' complementarities }}
-            \begin{tabular}{l r}
+
+        \begin{table}[h!]
+            \caption[Summary of Data]{
+                Summary of the data in microbetagDB
+            }
+            \label{tab:db}
+            \begin{tabular}{lr}
                 \toprule
                 Description & Entries \\
                 \midrule
                 GTDB representative genomes & 34,608 \\
                 Phen-model-oriented metabolic functions & 32 \\
                 FAPROTAX functions & 92 \\
-                Unique complement* & 341,568 \\
-                GENREs leading to $\sim1$ billion competition and complementarity scores & 30,755 \\
+                Unique pathway complements & 341,568 \\
+                Pairwise pathway complementarities & 184,184,548\\
+                GENREs leading  & 33,755 \\
+                Seed complements & 1,139,400,025\\
+                Seed scores & 1,105,250,048 \\
                 \bottomrule
             \end{tabular}
         \end{table}
 
-        % \begin{table}[ht]
-        %     \centering
-        %     \begin{threeparttable}
-        %         \caption[Summary of Data]{Summary of Data\tnote{a}}
-        %         \label{tab:data_summary}
-        %         \begin{tabular}{l r}
-        %             \toprule
-        %             Description & Value \\
-        %             \midrule
-        %             GTDB representative genomes & 34,608 \\
-        %             Phen-model-oriented metabolic functions & 32 \\
-        %             FAPROTAX functions & 92 \\
-        %             Unique complements involved in $>184$ million beneficiary - donor pairs' complementarities & 341,568 \\
-        %             GENREs leading to $\sim1$ billion competition and complementarity scores & 30,755 \\
-        %             \bottomrule
-        %         \end{tabular}
-        %         \begin{tablenotes}
-        %             \item[a] Note: This is a sample note for the table.
-        %         \end{tablenotes}
-        %     \end{threeparttable}
-        % \end{table}
+
 
 
 
@@ -655,100 +659,72 @@
         % stats table
         % -----------
         \begin{table}[ht]
-
-            \centering
-
+            % \centeringe
             \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
 
-            \begin{tabular}{c|c}
-
-                \begin{tabular}{ccc}
-
-                    \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
-                    \toprule
-                    Step &  Time(sec) & Notes \\
-                    \toprule
-
-                    Taxonomy mapping & Cell 1,2 & on the fly \\
-
-                    Network inference & Cell 2,2 & on the fly  \\
-
-                    microbetag annotations & Cell 3,2 & on the fly \\
-
-                    manta clustering & Cell 4,2 & on the fly \\
-
-                \end{tabular} &
-
-                \begin{tabular}{ccc}
-
-                    \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
-                    \toprule
-                    Step &  Time(sec) & Notes \\
-                    \toprule
-
-                    Taxonomy assignment &  & Docker image on HP\protect\footnotemark \\
-
-                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
-
-                    Network inference & Cell 2,2 & Cell 2,3 \\
-
-                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
-
-                    manta clustering & Cell 4,2 & Cell 4,3 \\
-
-                \end{tabular} \\
-                \\
-                \hline
-                \\
-                \begin{tabular}{ccc}
-
-                    \multicolumn{3}{c}{C. Silva: } \\
-                    \toprule
-                    Step &  Time(sec) & Notes \\
-                    \toprule
-
-                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
-
-                    Network inference & Cell 2,2 & Cell 2,3 \\
-
-                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
-
-                    manta clustering & Cell 4,2 & Cell 4,3 \\
-
-                \end{tabular} &
-
-                \begin{tabular}{ccc}
-
-                    \multicolumn{3}{c}{D. fuzzywuzzy: } \\
-                    \toprule
-                    Step &  Time(sec) & Notes \\
-                    \toprule
-
-                    Taxonomy mapping & Cell 1,2 & Cell 1,3 \\
-
-                    Network inference & Cell 2,2 & Cell 2,3 \\
-
-                    microbetag annotations & Cell 3,2 & Cell 3,3 \\
-
-                    manta clustering & Cell 4,2 & Cell 4,3 \\
-
-                \end{tabular} \\
-
-            \end{tabular}
-
+                \begin{tabular}{c|c}
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
+                        \toprule
+                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+                        \toprule
+                        % \makecell[tl]
+                        {Taxonomy } & Cell 1,2 & on the fly\\
+                        {Network } & Cell 2,2 & on the fly\\
+                        {microbetag} & Cell 3,2 & on the fly\\
+                        {manta clustering} & Cell 4,2 & \\
+                    \end{tabular} &
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
+                        \toprule
+                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+                        \toprule
+                        {Taxonomy assignment*} & & \\
+                        {Taxonomy mapping}  & & \\
+                        {Network inference} & & \\
+                        {microbetag annotations} & & \\
+                        {manta clustering} & & \\
+                    \end{tabular} \\
+                    \\
+                    \hline
+                    \\
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{C. Silva: } \\
+                        \toprule
+                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+                        \toprule
+                        {Taxonomy mapping} & & \\
+                        {Network inference} & & \\
+                        {microbetag annotations} & & \\
+                        {manta clustering} & & \\
+                    \end{tabular} &
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{D. fuzzywuzzy: } \\
+                        \toprule
+                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+                        \toprule
+                        {Taxonomy mapping } & & \\
+                        {Network inference} & & \\
+                        {microbetag annotations } & & \\
+                        {manta clustering } & & \\
+                    \end{tabular} \\
+                \end{tabular}
             \end{adjustbox}
-
+            \captionsetup{justification=centering} %
             \caption{
-                Computating times per step using an abundance table of 400 taxa with taxonomy: 
+                Computing times per step using an abundance table of 400 taxa with taxonomy: 
                 A. taxonomy scheme 
                 B. 
                 C.
                 D. 
-                \protect\footnotemark[\value{footnote}] specs of the laptop used.
+                *specs of the laptop used.
+                Docker image on HP*
             }
-            
-            \label{tab:grid}
+            \label{tab:grid}            
         \end{table}
+        
+
+
 
         The app was based on the StringApp and supported by the NRNB group.
 
@@ -758,6 +734,8 @@
 
 
         vitamin dataset~\cite{hessler2023vitamin}
+        supplementary file~\ref{suppl:valAnnotNet}
+
 
         Metagenomic or metabarcoding data are often used to predict microbial interactions in complex communities, but these predictions are rarely explored experimentally. 
         Here, we use an organism abundance correlation network to investigate factors that control community organization in mine tailings-derived laboratory microbial consortia grown under dozens of conditions.
@@ -765,18 +743,178 @@
         The network is overlaid with metagenomic information about functional capacities to generate testable hypotheses.
 
 
-        Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}~\todo{Study those 2 to understand our findings}
+        Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}~\footnote{to understand our findings}
+
+
+
+
+        % C01081: Thiamin monophosphate;
+        % \href{https://www.genome.jp/module/M00899+C01081}{Thiamine salvage pathway, HMP/HET => TMP}
+        % \href{https://www.genome.jp/module/M00898+C01081}{Thiamine biosynthesis, pyridoxal-5P => TMP/thiamine/TPP}
+        % \href{https://www.genome.jp/module/M00897+C01081}{Thiamine biosynthesis, plants, AIR (+ NAD+) => TMP/thiamine/TPP}
+        % \href{https://www.genome.jp/module/M00896+C01081}{Thiamine biosynthesis, archaea, AIR (+ NAD+) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00895+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00127+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
+
+
+        % C15809:
+        % \href{https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0079786.g005}{thiamine biosynthesis pathway with Iminoglycine }
+
+        % C04327: 4-Methyl-5-(2-phosphooxyethyl)thiazole;
+        % C01279: 4-Amino-5-hydroxymethyl-2-methylpyrimidine;
+        % \href{https://www.genome.jp/module/M00899+C04327}{thiamine salvage pathway}
+
+
+        % C20246: 2-[(2R,5Z)-2-Carboxy-4-methylthiazol-5(2H)-ylidene]ethyl phosphate;
+        % \href{https://www.genome.jp/module/M00127+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00895+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
+
+
+        % Table for Variovorax - thiamine and neighbors
+        \begin{table}[ht]
+        \begin{minipage}{\linewidth}
+            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
+                \begin{tabular}{c|c}
+                    \begin{tabular}{l l l r}
+                        \multicolumn{4}{c}{A. \textit{Variovorax} thiamine-related benefits to its neighbors} \\
+                        \toprule
+                        \thead{Neighboring taxon} & \thead{node id} & \thead{KEGG compounds} & \thead{url} \\
+                        \midrule
+        
+                        \textit{Kapabacteria thiocyanatum}  & bin\_59  &   C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+        
+                        \textit{Terrimonas ferruginea}      & bin\_100 &  C15809;C01081    & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/}{url}  \\
+        
+                        \textit{Tahibacter} sp001725155     & bin\_167 &  C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}  \\
+        
+                        \textit{Microbacterium} sp900156455 & bin\_28  &  C15809; C20246  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04327%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C20246%09%23ff0000/C15809%09%23ff0000/C20246%09%23ff0000/}{url}  \\
+        
+                        \textit{Sphingobium} sp001899715    & bin\_155 &   Iminoglycine C15809;    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+        
+                        \textit{Nitrosospira} sp001899235   & bin\_176 &  None  &  None \\
+        
+                        62-47 sp001899255*                  & bin\_233 &  None  &  None  \\
+        
+                        \textit{Bosea} sp001898115          & bin\_273 & C04327;C01279 & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01279%09%23ff0000/C04327%09%23ff0000/}{url}  \\
+        
+                        54-19 sp001898225**                 & bin\_41  &  C15809   & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}   \\
+        
+                        \textit{Rhodoglobus} sp001725325    & bin\_8   &  C15809  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+                        \bottomrule
+                    \end{tabular} &
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{B. Neighbors thiamine-related benefits among them } \\
+                        \toprule
+                        \thead{Beneficiary} & \thead{Donor} & \thead{potential complement} \\
+                        \toprule
+                        \textit{T. ferruginea} & Tahibacter & C01081 \\
+                        \textit{T. ferruginea} & Rhodoglobus & C01081 \\
+                        Nitrosospira & Bosea sp001898115 & C04327;C01279 \\
+                        Chloroflexi & Bosea sp001898115 & C15809 \\
+                        Chloroflexi & Xanthobacteraceae & C15809 \\
+                        Chloroflexi & Nitrosospira & C15809 \\
+                    \end{tabular} \\
+                \end{tabular} \\
+            \end{adjustbox}
+            \caption{
+                Computing times per step using an abundance table of 400 taxa with taxonomy: 
+                A. taxonomy scheme 
+                B. 
+            }
+            \label{tab:grid}
+
+        \end{minipage}
+    \end{table}
+
+
+
+        Regarding pantothenate, the Variovorax genome mapped from GTDB-tk \(GCA\_001899795.\)
+        brings two complete KEGG modules for that....
+
+        \>\>\> a["md:M00119"] \\
+        \{'0': 'K01918', '1': 'K00826', '2': 'K00077', '3': 'K00606'\} \\
+        \>\>\> a["md:M00913"] \\
+        \{'0': 'K01918', '1': 'K00077', '2': 'K00128', '3': 'K00606'\} \\
+
+        thus either some Variovorax species can actually produce that or this is a limitation of our method 
+        In fact, \textit{Variovorax} seems to be able to benefit some partners of their. 
 
 
 
         \begin{figure}[h!]
-            \includegraphics*[width=0.8\columnwidth]{figs/panels.png}
+            \includegraphics*[width=0.8\columnwidth]{figs/cyPanels.png}
             \centering
             \caption{
                 CyPanels of the MGG CytoscapeApp. 
             }
             \label{fig:panels}
         \end{figure}
+
+
+
+
+        From the hub species: 
+        % \begin{itemize}
+        %         node        taxonomy                                role 
+        %     \item bin\_54  d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Alphaproteobacteria;o\_\_Acetobacterales;f\_\_Acetobacteraceae;g\_\_70-18;s\_\_70-18 sp001899585
+        %     \item bin\__55 s__Variovorax sp001899795 serves thiamine 
+        %     \item bin\_116 Novosphingobium sp001898925
+        %     \item bin\_176 Nitrosospira sp001899235   
+        %     \item bin\_206 Mesorhizobium sp001899205
+        %     \item bin\_215 d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Gammaproteobacteria;o\_\_Xanthomonadales;f\_\_Rhodanobacteraceae;g\_\_66-474;s\_\_66-474 sp001899805
+        %     \item bin\_221 Chitinophagaceae;g\_\_Palsa-955;s\_\_     not a genome 
+        %     \item bin\_261 Comamonas C sp001725255         GTDB genome that would be assigned \href{https://gtdb.ecogenomic.org/genome?gid=GCA_001725255.1}{GCA_001725255.1} but has a completeness of 94.59\%
+
+        % \end{itemize}
+
+
+
+
+        % Please add the following required packages to your document preamble:
+        % \usepackage[table,xcdraw]{xcolor}
+        % Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+        \begin{table}[]
+            \begin{minipage}[t]{\columnwidth}
+                \centering
+                \caption{\textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}
+            \end{minipage}
+            \label{tab:Variovorax}
+            \begin{tabular}{rrr}
+            \thead{Genome}  & \thead{md:M00119} & \thead{md:M00913} \\
+            \toprule
+            GCA\_004210915.1 & incomplete             & complete               \\
+            GCA\_902506565.1 & incomplete             & incomplete             \\
+            GCF\_000184745.1 & complete               & complete               \\
+            GCF\_000282635.1 & complete               & complete               \\
+            GCF\_000463015.1 & complete               & complete               \\
+            GCF\_000834655.1 & complete               & complete               \\
+            GCF\_001424835.1 & complete               & complete               \\
+            GCF\_001425205.1 & complete               & complete               \\
+            GCF\_001426505.1 & complete               & complete               \\
+            GCF\_001577265.1 & incomplete             & incomplete             \\
+            GCF\_002157355.1 & complete               & complete               \\
+            GCF\_002754375.1 & complete               & complete               \\
+            GCF\_003019815.1 & incomplete             & complete               \\
+            GCF\_003852515.1 & complete               & complete               \\
+            GCF\_003951285.1 & complete               & complete               \\
+            GCF\_003952165.1 & complete               & complete               \\
+            GCF\_003952185.1 & complete               & complete               \\
+            GCF\_003984625.1 & complete               & complete               \\
+            GCF\_003984645.1 & complete               & complete               \\
+            GCF\_006438845.1 & complete               & complete               \\
+            GCF\_007828835.1 & complete               & complete               \\
+            GCF\_009498455.1 & complete               & complete               \\
+            GCF\_009755665.1 & complete               & complete               \\
+            GCF\_010499245.1 & complete               & complete               \\
+            GCF\_013376045.1 & complete               & complete               \\
+            GCF\_014170375.1 & complete               & complete               \\
+            GCF\_014302995.1 & complete               & complete               \\
+            GCF\_014303735.1 & incomplete             & incomplete             \\
+            GCF\_901827175.1 & complete               & complete               \\
+            GCF\_901827205.1 & complete               & complete              
+            \end{tabular}
+        \end{table}
+
 
 
 
@@ -793,7 +931,6 @@
 }
 \label{sec:discussion}
 
-
     \subsection*{Interpreting a real-world network with \microbetag}
     \label{subsec:usecase}
 
@@ -804,6 +941,8 @@
     \subsection*{\microbetag as a resource }
     \label{subsec:resource}
 
+        Eco-evolutionary studies 
+        Distribution of the complements among taxa // su
 
 
     \subsection*{Limitations}
