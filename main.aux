@@ -1,17 +1,6 @@
 \relax 
 \bibstyle{sn-mathphys}
 \providecommand\hyper@newdestlabel[2]{}
-\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
-\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
-\global\let\oldnewlabel\newlabel
-\gdef\newlabel#1#2{\newlabelxx{#1}#2}
-\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
-\AtEndDocument{\ifx\hyper@anchor\@undefined
-\let\newlabel\oldnewlabel
-\fi}
-\fi}
-\global\let\hyper@last\relax 
-\gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \providecommand \oddpage@label [2]{}
@@ -26,8 +15,8 @@
 \citation{faust2012microbialReviewInteractions}
 \citation{d2018ecology}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 171}}{2}{\abstractname }{figure.caption.2}{}}
-\newlabel{sec:background}{{3}{2}{Background \footnote { We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow ~\href {https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules} } \footnote { The introduction should not include subheadings. The Background section should explain the relevant context and the specific issue that the software described is intended to address. }}{section*.3}{}}
+\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 172}}{2}{\abstractname }{figure.caption.2}{}}
+\newlabel{sec:background}{{3}{2}{Background \footnote { We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow~\href {https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}. } \footnote { The Background section should explain the relevant context and the specific issue that the software described is intended to address. No subheadings. }}{section*.3}{}}
 \citation{elixir_microbiome}
 \citation{hug2016new}
 \citation{matchado2021network}
@@ -60,100 +49,116 @@
 \citation{parks2022gtdb}
 \citation{quast2012silva}
 \citation{schoch2020ncbi}
+\newlabel{sec:implementation}{{3}{5}{Implementation \footnote { This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed. }}{section*.4}{}}
+\newlabel{fig:precalc}{{\caption@xref {fig:precalc}{ on input line 335}}{5}{Implementation \footnote { This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed. }}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Diagram of the \texttt  {microbetag }pre - calculations (top panel) and the on the fly workflow (bottom panel). GTDB v207 representative genomes were filtered and for those of high-quality 33 phenotypic traits were predicted using~\texttt  {phenotrex}. To this end, models were re-trained to sync with recent version of eggNOG. }}{5}{figure.caption.5}\protected@file@percent }
+\newlabel{subsec:genomes}{{3}{5}{Genomes included}{section*.6}{}}
+\newlabel{subsec:taxonomies}{{3}{5}{Taxonomy schemes}{section*.7}{}}
 \citation{flashweave_cite}
 \citation{ali_alishum_2022_6655692}
 \citation{murali2018idtaxa}
-\newlabel{sec:implementation}{{3}{5}{Implementation \footnote { This should include a description of the overall architecture of the software implementation, along with details of any critical issues and how they were addressed. }}{section*.4}{}}
-\newlabel{subsec:genomes}{{3}{5}{Genomes included}{section*.5}{}}
-\newlabel{subsec:taxonomies}{{3}{5}{Taxonomy schemes}{section*.6}{}}
-\newlabel{subsec:net-infer}{{3}{5}{Network inference}{section*.7}{}}
-\newlabel{subsec:preprocess}{{3}{5}{\microbetag pre-processing}{section*.8}{}}
+\citation{murali2018idtaxa}
+\citation{wright2016using}
+\citation{flashweave_cite}
 \citation{sunagawa2015structure}
 \citation{louca2016decoupling}
 \citation{douglas2020picrust2}
+\newlabel{subsec:net-infer}{{3}{6}{Network inference}{section*.8}{}}
+\newlabel{subsec:preprocess}{{3}{6}{\microbetag pre-processing}{section*.9}{}}
+\newlabel{subsec:fapro}{{3}{6}{Literature based nodes annotation}{section*.10}{}}
 \citation{feldbauer2015prediction}
 \citation{huerta2019eggnog}
 \citation{feldbauer2015prediction}
 \citation{keggmodulesdb}
 \citation{muto2013modular}
-\newlabel{subsec:fapro}{{3}{6}{Literature based nodes annotation}{section*.9}{}}
-\newlabel{subsec:phen}{{3}{6}{Genomic based nodes annotation}{section*.10}{}}
-\newlabel{subsec:path-compl}{{3}{6}{Pathway complementarity}{section*.11}{}}
 \citation{aramaki2020kofamkoala}
 \citation{kanehisa2012kegg}
+\newlabel{subsec:phen}{{3}{7}{Genomic based nodes annotation}{section*.11}{}}
+\newlabel{subsec:path-compl}{{3}{7}{Pathway complementarity}{section*.12}{}}
 \citation{kanehisa2020kegg,kanehisa2022kegg}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{8}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:pathcompl}{{2}{8}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.13}{}}
 \citation{phylomint_ms}
 \citation{levy2015netcooperate}
 \citation{kreimer2012netcmpt}
 \citation{phylomint_ms}
-\newlabel{subsec:seeds}{{3}{7}{Seed scores and complements using genome scale metabolic reconstructions}{section*.13}{}}
 \citation{henry2010high}
 \citation{overbeek2014seed}
 \citation{wattam2017improvements}
 \citation{brettin2015rasttk}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine. }}{8}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:pathcompl}{{1}{8}{Pathway complementarity approach. The high quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of getting a KEGG module complete were enumerated and all the possible ways a donor species could "fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways for having the serine biosynthesis module complete; in all of them K00831 is required. However, it is missing from the beneficiary species that supports the 2 out of the 3 steps of the module's definition. A donor species having and potentially sharing the corresponding enzyme of K00831 may enable the beneficiary species to produce serine}{figure.caption.12}{}}
 \citation{rottjers2020manta}
-\citation{choudhary2021scnetviz}
+\newlabel{subsec:seeds}{{3}{9}{Seed scores and complements using genome scale metabolic reconstructions}{section*.14}{}}
+\citation{flashweave_cite}
+\citation{louca2016decoupling}
+\citation{feldbauer2015prediction}
 \citation{merkel2014docker}
 \citation{nginx}
-\newlabel{subsec:manta}{{3}{9}{Clustering network}{section*.14}{}}
-\newlabel{subsec:groups}{{3}{9}{Groups of annotations}{section*.15}{}}
-\newlabel{subsec:build-cytoapp}{{3}{9}{The \texttt {MGG} CytoscapeApp}{section*.16}{}}
-\newlabel{subsec:webserver}{{3}{9}{Dependencies, Web server and API}{section*.17}{}}
-\citation{murali2018idtaxa}
-\citation{wright2016using}
-\citation{flashweave_cite}
+\newlabel{subsec:manta}{{3}{10}{Clustering network}{section*.15}{}}
+\newlabel{subsec:app}{{3}{10}{The~\microbetag workflow}{section*.16}{}}
+\newlabel{subsec:groups}{{3}{10}{Groups of annotations}{section*.18}{}}
+\newlabel{subsec:webserver}{{3}{10}{Software architecture}{section*.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Diagram of \texttt  {microbetag }'s on-the-fly workflow. \texttt  {microbetag }expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned on the nodes. Literature-based annotation on the nodes are also using FAPROTAX. On the edges level then, \texttt  {microbetag }annotates them by assigning the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \texttt  {microbetag }supports optional network clustering with manta. The annotated network can then be parsed on Cytoscape using the MGG app. }}{11}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:wf}{{3}{11}{Diagram of \microbetag 's on-the-fly workflow. \microbetag expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned on the nodes. Literature-based annotation on the nodes are also using FAPROTAX. On the edges level then, \microbetag annotates them by assigning the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \microbetag supports optional network clustering with manta. The annotated network can then be parsed on Cytoscape using the MGG app}{figure.caption.17}{}}
+\citation{choudhary2021scnetviz}
+\newlabel{subsec:build-cytoapp}{{3}{12}{The \texttt {MGG} CytoscapeApp}{section*.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  CyPanels of the MGG CytoscapeApp. A. \textit  {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. PhenDB-like predicted attributes are shown along with their prediction score. B. \textit  {Edges} panel display the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a directed perspective on the graph. There are two cases of complementarities in the \texttt  {microbetag }framework. \textit  {Seed complementarities} shown here are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). In the URL provided, a colored KEGG map is provided. The same applies for the case of the *Pathway complementarities* only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit  {Seed complementarities}. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that the beneficiary taxon brings on its own are colored in cyan while the potential complement with red. }}{13}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:panels}{{4}{13}{CyPanels of the MGG CytoscapeApp. A. \textit {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. PhenDB-like predicted attributes are shown along with their prediction score. B. \textit {Edges} panel display the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a directed perspective on the graph. There are two cases of complementarities in the \microbetag framework. \textit {Seed complementarities} shown here are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). In the URL provided, a colored KEGG map is provided. The same applies for the case of the *Pathway complementarities* only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit {Seed complementarities}. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that the beneficiary taxon brings on its own are colored in cyan while the potential complement with red}{figure.caption.21}{}}
 \citation{hessler2023vitamin}
-\newlabel{sec:results}{{3}{10}{Results \footnote { Significant advance over previously published software (usually demonstrated by direct comparison with available related software) This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. This section may be combined with the Discussion section for Software articles. }}{section*.18}{}}
-\newlabel{subsec:microbetagdb}{{3}{10}{\microbetag and microbetagDB}{section*.19}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of Data}}{10}{table.caption.22}\protected@file@percent }
-\newlabel{tab:db}{{1}{10}{Summary of Data}{table.caption.22}{}}
-\newlabel{subsec:cytoapp}{{3}{10}{\microbetag CytoscapeApp}{section*.23}{}}
-\newlabel{subsec:validation}{{3}{10}{Validation of \microbetag potential}{section*.26}{}}
+\citation{chaumeil2020gtdb}
+\citation{aerobeVariovorax}
+\citation{lacticVariovorax}
+\citation{t6ssVariovorax}
+\newlabel{sec:results-and-discussion}{{3}{14}{Results and discussion \footnote { \textbf {Results-related: } Significant advance over previously published software (usually demonstrated by direct comparison with available related software) This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. This section may be combined with the Discussion section for Software articles. \textbf {Discussion-related:} The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. A case study of the use of the software may be presented. The planned future development of new features, if any, should be mentioned. }}{section*.22}{}}
+\newlabel{subsec:running-wf}{{3}{14}{Annotating microbial co-occurrence networks with \microbetag }{section*.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of Data}}{14}{table.caption.25}\protected@file@percent }
+\newlabel{tab:db}{{1}{14}{Summary of Data}{table.caption.25}{}}
+\newlabel{subsec:validation}{{3}{14}{Validation of \microbetag potential}{section*.26}{}}
 \citation{llavero2022thiamine,romine2017underlying}
-\newlabel{fig:wf}{{\caption@xref {fig:wf}{ on input line 605}}{11}{\microbetag and microbetagDB}{figure.caption.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Diagram of the \texttt  {microbetag }pre - calculations (top panel) and the on the fly workflow (bottom panel). GTDB v207 representative genomes were filtered and for those of high-quality 33 phenotypic traits were predicted using\nobreakspace  {}\texttt  {phenotrex}. To this end, models were re-trained to sync with recent version of eggNOG. }}{11}{figure.caption.20}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. *specs of the laptop used. Docker image on HP* }}{12}{table.caption.25}\protected@file@percent }
-\newlabel{tab:grid}{{2}{12}{Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. *specs of the laptop used. Docker image on HP*}{table.caption.25}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces  Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. }}{12}{table.caption.28}\protected@file@percent }
-\newlabel{tab:grid}{{3}{12}{Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B}{table.caption.28}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  CyPanels of the MGG CytoscapeApp. }}{13}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:panels}{{3}{13}{CyPanels of the MGG CytoscapeApp}{figure.caption.29}{}}
+\citation{hessler2023vitamin}
+\citation{hessler2023vitamin}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces  Thiamine biosynthesis related seed complements between \textit  {Variovorax} and its first closest neighbors on the network of Hessler \textit  {et al.}~\cite  {hessler2023vitamin} (A), and between pairs of the neighbors (B). Bin sequence files were mapped against GTDB using GTDB-tk. Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225 }}{15}{table.caption.28}\protected@file@percent }
+\newlabel{tab:Variovorax}{{2}{15}{Thiamine biosynthesis related seed complements between \textit {Variovorax} and its first closest neighbors on the network of Hessler \textit {et al.}~\cite {hessler2023vitamin} (A), and between pairs of the neighbors (B). Bin sequence files were mapped against GTDB using GTDB-tk. Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225}{table.caption.28}{}}
+\newlabel{subsec:usecase}{{3}{15}{Interpreting a real-world network with \microbetag }{section*.29}{}}
+\newlabel{subsec:pot-and-limits}{{3}{15}{Potential and limitations}{section*.30}{}}
 \citation{chklovski2023checkm2}
 \citation{parks2015checkm}
-\newlabel{tab:Variovorax}{{\caption@xref {tab:Variovorax}{ on input line 881}}{14}{Validation of \microbetag potential}{table.caption.31}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textit  {Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}}{14}{table.caption.31}\protected@file@percent }
-\newlabel{sec:discussion}{{3}{14}{Discussion \footnote { The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. A case study of the use of the software may be presented. The planned future development of new features, if any, should be mentioned. }}{section*.32}{}}
-\newlabel{subsec:usecase}{{3}{14}{Interpreting a real-world network with \microbetag }{section*.33}{}}
-\newlabel{subsec:resource}{{3}{14}{\microbetag as a resource}{section*.34}{}}
+\citation{mendoza2019systematic}
 \citation{zelezniak2015metabolic}
 \citation{faust2012microbialReviewInteractions}
-\citation{zelezniak2015metabolic}
-\citation{zelezniak2015metabolic}
-\citation{assocciationRuleMining}
-\newlabel{subsec:limitations}{{3}{15}{Limitations}{section*.35}{}}
-\newlabel{subsec:future}{{3}{15}{Future work}{section*.36}{}}
-\newlabel{sec:conclusions}{{3}{15}{Conclusions}{section*.37}{}}
-\newlabel{supplementary-files}{{3}{15}{Supplementary information}{section*.38}{}}
-\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{15}{section*.38}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A}Mappings}{16}{appendix.a.A}\protected@file@percent }
-\newlabel{secA1}{{A}{16}{Mappings}{appendix.a.A}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Background on seed scores and complementarities}{16}{appendix.a.B}\protected@file@percent }
-\newlabel{secA2}{{B}{16}{Background on seed scores and complementarities}{appendix.a.B}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Background on seed scores}{16}{subsection.a.B.1}\protected@file@percent }
-\newlabel{eq:confidence}{{B1}{16}{Background on seed scores}{equation.a.B.1}{}}
+\citation{dal2020short}
+\newlabel{subsec:future}{{3}{16}{Future work}{section*.31}{}}
+\citation{rottjers2018hairballs}
+\citation{faust2021open}
+\citation{kost2023metabolic}
+\newlabel{sec:conclusions}{{3}{17}{Conclusions \footnote { This should state clearly the main conclusions and provide an explanation of the importance and relevance of the case, data, opinion, database or software reported. }}{section*.32}{}}
+\@writefile{tdo}{\contentsline {todo}{use case}{17}{section*.33}\protected@file@percent }
+\pgfsyspdfmark {pgfid1}{11745979}{38187753}
+\pgfsyspdfmark {pgfid2}{4515306}{38200041}
+\pgfsyspdfmark {pgfid3}{5617729}{37976127}
+\newlabel{supplementary-files}{{3}{17}{Supplementary information}{section*.34}{}}
+\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{17}{section*.34}\protected@file@percent }
+\citation{hessler2023vitamin}
 \citation{phylomint_ms}
+\@writefile{toc}{\contentsline {section}{\numberline {A}}{18}{appendix.a.A}\protected@file@percent }
+\newlabel{app:seeds}{{A}{18}{Background on seed scores}{section*.36}{}}
+\newlabel{eq:confidence}{{A1}{18}{Background on seed scores}{equation.a.A.1}{}}
+\newlabel{eq:mi_complementarity}{{A2}{18}{Background on seed scores}{equation.a.A.2}{}}
+\newlabel{eq:mi_competition}{{A3}{18}{Background on seed scores}{equation.a.A.3}{}}
+\newlabel{app:pathcompl}{{A}{18}{Background on pathway complementarity}{section*.37}{}}
+\newlabel{app:val}{{A}{19}{Validation}{section*.38}{}}
+\newlabel{app:software}{{A}{19}{software development}{section*.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A1}{\ignorespaces  \texttt  {microbetag }software ecosystem. }}{19}{figure.caption.42}\protected@file@percent }
+\newlabel{fig:s1}{{A1}{19}{\microbetag software ecosystem}{figure.caption.42}{}}
+\newlabel{tab:VariovoraxGenomes}{{\caption@xref {tab:VariovoraxGenomes}{ on input line 1129}}{20}{Validation}{table.caption.40}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A1}{\ignorespaces \textit  {Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}}{20}{table.caption.40}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {A2}{\ignorespaces  Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. *specs of the laptop used. Docker image on HP* }}{21}{table.caption.44}\protected@file@percent }
+\newlabel{sup.tab:times}{{A2}{21}{Computing times per step using an abundance table of 400 taxa with taxonomy: A. taxonomy scheme B. C. D. *specs of the laptop used. Docker image on HP*}{table.caption.44}{}}
 \bibdata{sn-bibliography}
 \bibcite{yuan2021climate}{{1}{2021}{{Yuan et~al.}}{{}}}
 \bibcite{raes2008molecular}{{2}{2008}{{Raes and Bork}}{{}}}
 \bibcite{faust2012microbialReviewInteractions}{{3}{2012}{{Faust and Raes}}{{}}}
 \bibcite{rottjers2018hairballs}{{4}{2018}{{R{\"o}ttjers and Faust}}{{}}}
 \bibcite{balint2016millions}{{5}{2016}{{B{\'a}lint et~al.}}{{}}}
-\newlabel{eq:mi_complementarity}{{B2}{17}{Background on seed scores}{equation.a.B.2}{}}
-\newlabel{eq:mi_competition}{{B3}{17}{Background on seed scores}{equation.a.B.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Background on pathway complementarity}{17}{subsection.a.B.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Complementarities}{17}{subsection.a.B.3}\protected@file@percent }
 \bibcite{robinson2010structure}{{6}{2010}{{Robinson et~al.}}{{}}}
 \bibcite{d2018ecology}{{7}{2018}{{D'Souza et~al.}}{{}}}
 \bibcite{elixir_microbiome}{{8}{2024}{{Finn et~al.}}{{}}}
@@ -194,27 +199,33 @@
 \bibcite{schoch2020ncbi}{{43}{2020}{{Schoch et~al.}}{{}}}
 \bibcite{ali_alishum_2022_6655692}{{44}{2022}{{Alishum}}{{}}}
 \bibcite{murali2018idtaxa}{{45}{2018}{{Murali et~al.}}{{}}}
-\bibcite{sunagawa2015structure}{{46}{2015}{{Sunagawa et~al.}}{{}}}
-\bibcite{louca2016decoupling}{{47}{2016}{{Louca et~al.}}{{}}}
-\bibcite{douglas2020picrust2}{{48}{2020}{{Douglas et~al.}}{{}}}
-\bibcite{feldbauer2015prediction}{{49}{2015}{{Feldbauer et~al.}}{{}}}
-\bibcite{huerta2019eggnog}{{50}{2019}{{Huerta-Cepas et~al.}}{{}}}
-\bibcite{muto2013modular}{{51}{2013}{{Muto et~al.}}{{}}}
-\bibcite{aramaki2020kofamkoala}{{52}{2020}{{Aramaki et~al.}}{{}}}
-\bibcite{kanehisa2012kegg}{{53}{2012}{{Kanehisa et~al.}}{{}}}
-\bibcite{kanehisa2020kegg}{{54}{2020}{{Kanehisa and Sato}}{{}}}
-\bibcite{kanehisa2022kegg}{{55}{2022}{{Kanehisa et~al.}}{{}}}
-\bibcite{phylomint_ms}{{56}{2020}{{Lam et~al.}}{{}}}
-\bibcite{henry2010high}{{57}{2010}{{Henry et~al.}}{{}}}
-\bibcite{overbeek2014seed}{{58}{2014}{{Overbeek et~al.}}{{}}}
-\bibcite{brettin2015rasttk}{{59}{2015}{{Brettin et~al.}}{{}}}
-\bibcite{choudhary2021scnetviz}{{60}{2021}{{Choudhary et~al.}}{{}}}
+\bibcite{wright2016using}{{46}{2016}{{Wright}}{{}}}
+\bibcite{sunagawa2015structure}{{47}{2015}{{Sunagawa et~al.}}{{}}}
+\bibcite{louca2016decoupling}{{48}{2016}{{Louca et~al.}}{{}}}
+\bibcite{douglas2020picrust2}{{49}{2020}{{Douglas et~al.}}{{}}}
+\bibcite{feldbauer2015prediction}{{50}{2015}{{Feldbauer et~al.}}{{}}}
+\bibcite{huerta2019eggnog}{{51}{2019}{{Huerta-Cepas et~al.}}{{}}}
+\bibcite{muto2013modular}{{52}{2013}{{Muto et~al.}}{{}}}
+\bibcite{aramaki2020kofamkoala}{{53}{2020}{{Aramaki et~al.}}{{}}}
+\bibcite{kanehisa2012kegg}{{54}{2012}{{Kanehisa et~al.}}{{}}}
+\bibcite{kanehisa2020kegg}{{55}{2020}{{Kanehisa and Sato}}{{}}}
+\bibcite{kanehisa2022kegg}{{56}{2022}{{Kanehisa et~al.}}{{}}}
+\bibcite{phylomint_ms}{{57}{2020}{{Lam et~al.}}{{}}}
+\bibcite{henry2010high}{{58}{2010}{{Henry et~al.}}{{}}}
+\bibcite{overbeek2014seed}{{59}{2014}{{Overbeek et~al.}}{{}}}
+\bibcite{brettin2015rasttk}{{60}{2015}{{Brettin et~al.}}{{}}}
 \bibcite{merkel2014docker}{{61}{2014}{{Merkel et~al.}}{{}}}
 \bibcite{nginx}{{62}{2008}{{Reese}}{{}}}
-\bibcite{wright2016using}{{63}{2016}{{Wright}}{{}}}
-\bibcite{llavero2022thiamine}{{64}{2022}{{Llavero-Pasquina et~al.}}{{}}}
-\bibcite{romine2017underlying}{{65}{2017}{{Romine et~al.}}{{}}}
-\bibcite{chklovski2023checkm2}{{66}{2023}{{Chklovski et~al.}}{{}}}
-\bibcite{parks2015checkm}{{67}{2015}{{Parks et~al.}}{{}}}
-\bibcite{assocciationRuleMining}{{68}{1993}{{Agrawal et~al.}}{{}}}
-\gdef \@abspage@last{23}
+\bibcite{choudhary2021scnetviz}{{63}{2021}{{Choudhary et~al.}}{{}}}
+\bibcite{chaumeil2020gtdb}{{64}{2020}{{Chaumeil et~al.}}{{}}}
+\bibcite{aerobeVariovorax}{{65}{2011}{{Carbajal-Rodríguez et~al.}}{{}}}
+\bibcite{lacticVariovorax}{{66}{2014}{{Sun et~al.}}{{}}}
+\bibcite{t6ssVariovorax}{{67}{2022}{{Astafyeva et~al.}}{{}}}
+\bibcite{llavero2022thiamine}{{68}{2022}{{Llavero-Pasquina et~al.}}{{}}}
+\bibcite{romine2017underlying}{{69}{2017}{{Romine et~al.}}{{}}}
+\bibcite{chklovski2023checkm2}{{70}{2023}{{Chklovski et~al.}}{{}}}
+\bibcite{parks2015checkm}{{71}{2015}{{Parks et~al.}}{{}}}
+\bibcite{mendoza2019systematic}{{72}{2019}{{Mendoza et~al.}}{{}}}
+\bibcite{dal2020short}{{73}{2020}{{Dal~Co et~al.}}{{}}}
+\bibcite{kost2023metabolic}{{74}{2023}{{Kost et~al.}}{{}}}
+\gdef \@abspage@last{28}

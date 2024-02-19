@@ -1,15 +1,16 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.1.23)  6 FEB 2024 20:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  19 FEB 2024 18:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
 **/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex
 (/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-02-22> (sn-jnl.cls
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(sn-jnl.cls
 Document Class: sn-jnl 2019/11/18 v0.1: An authoring template for Springer Journal articles
 (/usr/local/share/miktex-texmf/tex/latex/base/article.cls
-Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (/usr/local/share/miktex-texmf/tex/latex/base/fleqn.clo
 File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
 \mathindent=\skip48
@@ -20,16 +21,16 @@ Applying: [2015/01/01] Make \] robust on input line 74.
 LaTeX Info: Redefining \] on input line 75.
 Already applied: [0000/00/00] Make \] robust on input line 83.
 ) (/usr/local/share/miktex-texmf/tex/latex/base/size10.clo
-File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
 )
-\c@part=\count185
-\c@section=\count186
-\c@subsection=\count187
-\c@subsubsection=\count188
-\c@paragraph=\count189
-\c@subparagraph=\count190
-\c@figure=\count191
-\c@table=\count192
+\c@part=\count187
+\c@section=\count188
+\c@subsection=\count189
+\c@subsubsection=\count190
+\c@paragraph=\count191
+\c@subparagraph=\count192
+\c@figure=\count193
+\c@table=\count194
 \abovecaptionskip=\skip49
 \belowcaptionskip=\skip50
 \bibindent=\dimen140
@@ -49,15 +50,15 @@ LaTeX Info: Redefining \textsubscript on input line 210.
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/usr/local/share/miktex-texmf/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
-\KV@toks@=\toks16
+\KV@toks@=\toks17
 ) (/usr/local/share/miktex-texmf/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
  (/usr/local/share/miktex-texmf/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ))
-\Gm@cnth=\count193
-\Gm@cntv=\count194
-\c@Gm@tempcnt=\count195
+\Gm@cnth=\count195
+\Gm@cntv=\count196
+\c@Gm@tempcnt=\count197
 \Gm@bindingoffset=\dimen141
 \Gm@wd@mp=\dimen142
 \Gm@odd@mp=\dimen143
@@ -66,24 +67,24 @@ Package: iftex 2022/02/03 v1.0f TeX engine tests
 \Gm@layoutheight=\dimen146
 \Gm@layouthoffset=\dimen147
 \Gm@layoutvoffset=\dimen148
-\Gm@dimlist=\toks17
+\Gm@dimlist=\toks18
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/geometry/geometry.cfg))
 \artcatbox=\box51
-\aucount=\count196
-\corraucount=\count197
-\punctcount=\count198
-\emailcnt=\count199
-\c@affn=\count266
-\addcount=\count267
-\PacsCount=\count268
-\PacsTmpCnt=\count269
+\aucount=\count198
+\corraucount=\count199
+\punctcount=\count266
+\emailcnt=\count267
+\c@affn=\count268
+\addcount=\count269
+\PacsCount=\count270
+\PacsTmpCnt=\count271
 \FMremarkdim=\dimen149
 \fmremarkbox=\box52
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/sttools/cuted.sty
 Package: cuted 2021/10/04 v2.0 Mixing onecolumn and twocolumn modes
-\At@ViperColsBreak=\toks18
-\preCutedStrip=\toks19
-\postCutedStrip=\toks20
+\At@ViperColsBreak=\toks19
+\preCutedStrip=\toks20
+\postCutedStrip=\toks21
 \cuted@@tempbox@a=\box53
 \cuted@@tempbox@c=\box54
 \cuted@@tempbox@var=\box55
@@ -98,7 +99,7 @@ Package: cuted 2021/10/04 v2.0 Mixing onecolumn and twocolumn modes
 \ht@viper=\dimen154
 \var@@pagediscards@ht=\dimen155
 \stripsep=\skip52
-\viper@penalty=\count270
+\viper@penalty=\count272
 )
 \firstpagehtcheck=\dimen156
 \labelwidthi=\dimen157
@@ -140,21 +141,27 @@ File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 ) (/usr/local/share/miktex-texmf/tex/latex/base/ifthen.sty
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 )
-\c@r@tfl@t=\count271
+\c@r@tfl@t=\count273
 \rotFPtop=\skip54
 \rotFPbot=\skip55
 \rot@float@box=\box66
-\rot@mess@toks=\toks21
+\rot@mess@toks=\toks22
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
 \@tempboxb=\box67
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/appendix/appendix.sty
 Package: appendix 2020/02/08 v1.2c extra appendix facilities
-\c@@pps=\count272
-\c@@ppsavesec=\count273
-\c@@ppsaveapp=\count274
+\c@@pps=\count274
+\c@@ppsavesec=\count275
+\c@@ppsaveapp=\count276
 ) (/usr/local/share/miktex-texmf/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2023-02-07 v7.00v Hypertext links for LaTeX
+Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
+ (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
 ) (/usr/local/share/miktex-texmf/tex/generic/pdftexcmds/pdftexcmds.sty
@@ -165,20 +172,12 @@ Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/kvsetkeys/kvsetkeys.sty
-Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/kvdefinekeys/kvdefinekeys.sty
-Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/pdfescape/pdfescape.sty
-Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/hycolor/hycolor.sty
+)) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/hycolor/hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/letltxmacro/letltxmacro.sty
-Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 ) (/usr/local/share/miktex-texmf/tex/latex/hyperref/nameref.sty
-Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/gettitlestring/gettitlestring.sty
@@ -186,72 +185,73 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count275
+\c@section@level=\count277
+) (/usr/local/share/miktex-texmf/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count278
 )
 \@linkdim=\dimen171
-\Hy@linkcounter=\count276
-\Hy@pagecounter=\count277
+\Hy@linkcounter=\count279
+\Hy@pagecounter=\count280
  (/usr/local/share/miktex-texmf/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2023-02-07 v7.00v Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
-) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/etexcmds/etexcmds.sty
-Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
-\Hy@SavedSpaceFactor=\count278
+\Hy@SavedSpaceFactor=\count281
  (/usr/local/share/miktex-texmf/tex/latex/hyperref/puenc.def
-File: puenc.def 2023-02-07 v7.00v Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Hyper figures OFF on input line 4177.
-Package hyperref Info: Link nesting OFF on input line 4182.
-Package hyperref Info: Hyper index ON on input line 4185.
-Package hyperref Info: Plain pages OFF on input line 4192.
-Package hyperref Info: Backreferencing OFF on input line 4197.
+Package hyperref Info: Hyper figures OFF on input line 4179.
+Package hyperref Info: Link nesting OFF on input line 4184.
+Package hyperref Info: Hyper index ON on input line 4187.
+Package hyperref Info: Plain pages OFF on input line 4194.
+Package hyperref Info: Backreferencing OFF on input line 4199.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4425.
-\c@Hy@tempcnt=\count279
+Package hyperref Info: Bookmarks ON on input line 4446.
+\c@Hy@tempcnt=\count282
  (/usr/local/share/miktex-texmf/tex/latex/url/url.sty
 \Urlmuskip=\muskip16
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4763.
+LaTeX Info: Redefining \url on input line 4784.
 \XeTeXLinkMargin=\dimen172
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
-\Fld@menulength=\count280
+\Fld@menulength=\count283
 \Field@Width=\dimen173
 \Fld@charsize=\dimen174
-Package hyperref Info: Hyper figures OFF on input line 6042.
-Package hyperref Info: Link nesting OFF on input line 6047.
-Package hyperref Info: Hyper index ON on input line 6050.
-Package hyperref Info: backreferencing OFF on input line 6057.
-Package hyperref Info: Link coloring OFF on input line 6062.
-Package hyperref Info: Link coloring with OCG OFF on input line 6067.
-Package hyperref Info: PDF/A mode OFF on input line 6072.
+Package hyperref Info: Hyper figures OFF on input line 6063.
+Package hyperref Info: Link nesting OFF on input line 6068.
+Package hyperref Info: Hyper index ON on input line 6071.
+Package hyperref Info: backreferencing OFF on input line 6078.
+Package hyperref Info: Link coloring OFF on input line 6083.
+Package hyperref Info: Link coloring with OCG OFF on input line 6088.
+Package hyperref Info: PDF/A mode OFF on input line 6093.
  (/usr/local/share/miktex-texmf/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
-\Hy@abspage=\count281
-\c@Item=\count282
-\c@Hfootnote=\count283
+\Hy@abspage=\count284
+\c@Item=\count285
+\c@Hfootnote=\count286
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
  (/usr/local/share/miktex-texmf/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2023-02-07 v7.00v Hyperref driver for pdfTeX
+File: hpdftex.def 2024-01-20 v7.01h Hyperref driver for pdfTeX
  (/usr/local/share/miktex-texmf/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
 )
-\Fld@listcount=\count284
-\c@bookmark@seq@number=\count285
+\Fld@listcount=\count287
+\c@bookmark@seq@number=\count288
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/generic/uniquecounter/uniquecounter.sty
@@ -265,10 +265,10 @@ Package: breakurl 2013/04/10 v1.40 Breakable hyperref URLs
  (/usr/local/share/miktex-texmf/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
  (/usr/local/share/miktex-texmf/tex/generic/xkeyval/xkeyval.tex (/usr/local/share/miktex-texmf/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks22
-\XKV@tempa@toks=\toks23
+\XKV@toks=\toks23
+\XKV@tempa@toks=\toks24
 )
-\XKV@depth=\count286
+\XKV@depth=\count289
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 )) (/usr/local/share/miktex-texmf/tex/generic/iftex/ifpdf.sty
 Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
@@ -287,12 +287,12 @@ Package hyperref Info: Option `bookmarksnumbered' set `false' on input line 1483
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty
 \wrapoverhang=\dimen175
 \WF@size=\dimen176
-\c@WF@wrappedlines=\count287
+\c@WF@wrappedlines=\count290
 \WF@box=\box68
-\WF@everypar=\toks24
+\WF@everypar=\toks25
 Package: wrapfig 2003/01/31  v 3.6
 )
-\wraplines=\count288
+\wraplines=\count291
 \@authorfigbox=\box69
 \@authorfigboxdim=\skip57
 \biofigadjskip=\skip58
@@ -301,15 +301,15 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip59
 \bibsep=\skip60
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count289
+\c@NAT@ctr=\count292
 )) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
 \multirow@colwidth=\skip61
-\multirow@cntb=\count290
+\multirow@cntb=\count293
 \multirow@dima=\skip62
 \bigstrutjot=\dimen177
 ) (/usr/local/share/miktex-texmf/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2022/04/08 v2.17n AMS math features
+Package: amsmath 2023/05/13 v2.17o AMS math features
 \@mathmargin=\skip63
 
 For additional information on amsmath, use the `?' option.
@@ -317,7 +317,7 @@ For additional information on amsmath, use the `?' option.
 Package: amstext 2021/08/26 v2.01 AMS text
  (/usr/local/share/miktex-texmf/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks25
+\@emptytoks=\toks26
 \ex@=\dimen178
 )) (/usr/local/share/miktex-texmf/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
@@ -325,14 +325,14 @@ Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 ) (/usr/local/share/miktex-texmf/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count291
+\inf@bad=\count294
 LaTeX Info: Redefining \frac on input line 234.
-\uproot@=\count292
-\leftroot@=\count293
+\uproot@=\count295
+\leftroot@=\count296
 LaTeX Info: Redefining \overline on input line 399.
 LaTeX Info: Redefining \colon on input line 410.
-\classnum@=\count294
-\DOTSCASE@=\count295
+\classnum@=\count297
+\DOTSCASE@=\count298
 LaTeX Info: Redefining \ldots on input line 496.
 LaTeX Info: Redefining \dots on input line 499.
 LaTeX Info: Redefining \cdots on input line 620.
@@ -345,31 +345,31 @@ LaTeX Info: Redefining \Bigg on input line 725.
 \big@size=\dimen180
 LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
-\macc@depth=\count296
+\macc@depth=\count299
 LaTeX Info: Redefining \bmod on input line 905.
 LaTeX Info: Redefining \pmod on input line 910.
 LaTeX Info: Redefining \smash on input line 940.
 LaTeX Info: Redefining \relbar on input line 970.
 LaTeX Info: Redefining \Relbar on input line 971.
-\c@MaxMatrixCols=\count297
+\c@MaxMatrixCols=\count300
 \dotsspace@=\muskip17
-\c@parentequation=\count298
-\dspbrk@lvl=\count299
-\tag@help=\toks26
-\row@=\count300
-\column@=\count301
-\maxfields@=\count302
-\andhelp@=\toks27
+\c@parentequation=\count301
+\dspbrk@lvl=\count302
+\tag@help=\toks27
+\row@=\count303
+\column@=\count304
+\maxfields@=\count305
+\andhelp@=\toks28
 \eqnshift@=\dimen181
 \alignsep@=\dimen182
 \tagshift@=\dimen183
 \tagwidth@=\dimen184
 \totwidth@=\dimen185
 \lineht@=\dimen186
-\@envbody=\toks28
+\@envbody=\toks29
 \multlinegap=\skip64
 \multlinetaggap=\skip65
-\mathdisplay@stack=\toks29
+\mathdisplay@stack=\toks30
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 ) (/usr/local/share/miktex-texmf/tex/latex/amsfonts/amssymb.sty
@@ -383,34 +383,34 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/amscls/amsthm.sty
 Package: amsthm 2020/05/29 v2.20.6
-\thm@style=\toks30
-\thm@bodyfont=\toks31
-\thm@headfont=\toks32
-\thm@notefont=\toks33
-\thm@headpunct=\toks34
+\thm@style=\toks31
+\thm@bodyfont=\toks32
+\thm@headfont=\toks33
+\thm@notefont=\toks34
+\thm@headpunct=\toks35
 \thm@preskip=\skip66
 \thm@postskip=\skip67
 \thm@headsep=\skip68
-\dth@everypar=\toks35
+\dth@everypar=\toks36
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/jknappen/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 \symrsfs=\mathgroup6
 ) (/usr/local/share/miktex-texmf/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
  (/usr/local/share/miktex-texmf/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package xcolor Info: Driver file: pdftex.def on input line 227.
+Package xcolor Info: Driver file: pdftex.def on input line 274.
  (/usr/local/share/miktex-texmf/tex/latex/graphics/mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
-Package xcolor Info: Model `RGB' extended on input line 1369.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
 ) (/usr/local/share/miktex-texmf/tex/latex/base/textcomp.sty
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/ncctools/manyfoot.sty
@@ -431,60 +431,60 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \cmidrulesep=\dimen195
 \cmidrulekern=\dimen196
 \defaultaddspace=\dimen197
-\@cmidla=\count303
-\@cmidlb=\count304
+\@cmidla=\count306
+\@cmidlb=\count307
 \@aboverulesep=\dimen198
 \@belowrulesep=\dimen199
-\@thisruleclass=\count305
-\@lastruleclass=\count306
+\@thisruleclass=\count308
+\@lastruleclass=\count309
 \@thisrulewidth=\dimen256
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/algorithms/algorithm.sty
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count307
-\float@exts=\toks36
+\c@float@type=\count310
+\float@exts=\toks37
 \float@box=\box72
-\@float@everytoks=\toks37
+\@float@everytoks=\toks38
 \@floatcapt=\box73
 )
-\@float@every@algorithm=\toks38
-\c@algorithm=\count308
+\@float@every@algorithm=\toks39
+\c@algorithm=\count311
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/algorithmicx/algorithmicx.sty
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count309
-\c@ALG@rem=\count310
-\c@ALG@nested=\count311
+\c@ALG@line=\count312
+\c@ALG@rem=\count313
+\c@ALG@nested=\count314
 \ALG@tlm=\skip69
 \ALG@thistlm=\skip70
-\c@ALG@Lnr=\count312
-\c@ALG@blocknr=\count313
-\c@ALG@storecount=\count314
-\c@ALG@tmpcounter=\count315
+\c@ALG@Lnr=\count315
+\c@ALG@blocknr=\count316
+\c@ALG@storecount=\count317
+\c@ALG@tmpcounter=\count318
 \ALG@tmplength=\skip71
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
 
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (/usr/local/share/miktex-texmf/tex/latex/listings/listings.sty
-\lst@mode=\count316
+\lst@mode=\count319
 \lst@gtempboxa=\box74
-\lst@token=\toks39
-\lst@length=\count317
+\lst@token=\toks40
+\lst@length=\count320
 \lst@currlwidth=\dimen257
-\lst@column=\count318
-\lst@pos=\count319
+\lst@column=\count321
+\lst@pos=\count322
 \lst@lostspace=\dimen258
 \lst@width=\dimen259
-\lst@newlines=\count320
-\lst@lineno=\count321
+\lst@newlines=\count323
+\lst@lineno=\count324
 \lst@maxwidth=\dimen260
  (/usr/local/share/miktex-texmf/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count322
-\lst@skipnumbers=\count323
+\c@lstnumber=\count325
+\lst@skipnumbers=\count326
 \lst@framebox=\box75
 ) (/usr/local/share/miktex-texmf/tex/latex/listings/listings.cfg
 File: listings.cfg 2023/02/27 1.9 listings configuration
@@ -494,7 +494,7 @@ Package: listings 2023/02/27 1.9 (Carsten Heinz)
 Package: todonotes 2024/01/05 v1.1.7 Todonotes source and documentation.
 Package: todonotes 2024/01/05
  (/usr/local/share/miktex-texmf/tex/latex/pgf/frontendlayer/tikz.sty (/usr/local/share/miktex-texmf/tex/latex/pgf/basiclayer/pgf.sty (/usr/local/share/miktex-texmf/tex/latex/pgf/utilities/pgfrcs.sty (/usr/local/share/miktex-texmf/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks40
+\pgfutil@everybye=\toks41
 \pgfutil@tempdima=\dimen261
 \pgfutil@tempdimb=\dimen262
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -506,10 +506,10 @@ Package: pgf 2023-01-15 v3.1.10 (3.1.10)
  (/usr/local/share/miktex-texmf/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/local/share/miktex-texmf/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/local/share/miktex-texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
 Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
  (/usr/local/share/miktex-texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks41
-\pgfkeys@temptoks=\toks42
+\pgfkeys@pathtoks=\toks42
+\pgfkeys@temptoks=\toks43
  (/usr/local/share/miktex-texmf/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
-\pgfkeys@tmptoks=\toks43
+\pgfkeys@tmptoks=\toks44
 ))
 \pgf@x=\dimen263
 \pgf@y=\dimen264
@@ -523,14 +523,14 @@ Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
 \pgf@yd=\dimen272
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count324
-\c@pgf@countb=\count325
-\c@pgf@countc=\count326
-\c@pgf@countd=\count327
-\t@pgf@toka=\toks44
-\t@pgf@tokb=\toks45
-\t@pgf@tokc=\toks46
-\pgf@sys@id@count=\count328
+\c@pgf@counta=\count327
+\c@pgf@countb=\count328
+\c@pgf@countc=\count329
+\c@pgf@countd=\count330
+\t@pgf@toka=\toks45
+\t@pgf@tokb=\toks46
+\t@pgf@tokc=\toks47
+\pgf@sys@id@count=\count331
  (/usr/local/share/miktex-texmf/tex/generic/pgf/systemlayer/pgf.cfg
 File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
 )
@@ -541,21 +541,21 @@ File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
 File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
 ))) (/usr/local/share/miktex-texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count329
-\pgfsyssoftpath@bigbuffer@items=\count330
+\pgfsyssoftpath@smallbuffer@items=\count332
+\pgfsyssoftpath@bigbuffer@items=\count333
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
 File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
  (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmath.code.tex (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen273
-\pgfmath@count=\count331
+\pgfmath@count=\count334
 \pgfmath@box=\box77
-\pgfmath@toks=\toks47
-\pgfmath@stack@operand=\toks48
-\pgfmath@stack@operation=\toks49
+\pgfmath@toks=\toks48
+\pgfmath@stack@operand=\toks49
+\pgfmath@stack@operation=\toks50
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count332
+\c@pgfmathroundto@lastzeros=\count335
 )) (/usr/local/share/miktex-texmf/tex/generic/pgf/math/pgfint.code.tex) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
 File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@picminx=\dimen274
@@ -585,7 +585,7 @@ File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgfpic=\box78
 \pgf@hbox=\box79
 \pgf@layerbox@main=\box80
-\pgf@picture@serial@count=\count333
+\pgf@picture@serial@count=\count336
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgflinewidth=\dimen292
@@ -606,8 +606,8 @@ File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@max=\dimen297
-\pgf@sys@shading@range@num=\count334
-\pgf@shadingcount=\count335
+\pgf@sys@shading@range@num=\count337
+\pgf@shadingcount=\count338
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ) (/usr/local/share/miktex-texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
@@ -636,13 +636,13 @@ Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
 \pgffor@iter=\dimen300
 \pgffor@skip=\dimen301
-\pgffor@stack=\toks50
-\pgffor@toks=\toks51
+\pgffor@stack=\toks51
+\pgffor@toks=\toks52
 )) (/usr/local/share/miktex-texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2023-01-15 v3.1.10 (3.1.10)
  (/usr/local/share/miktex-texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count336
+\pgf@plot@mark@count=\count339
 \pgfplotmarksize=\dimen302
 )
 \tikz@lastx=\dimen303
@@ -657,35 +657,35 @@ File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \tikz@figbox@bg=\box84
 \tikz@tempbox=\box85
 \tikz@tempbox@bg=\box86
-\tikztreelevel=\count337
-\tikznumberofchildren=\count338
-\tikznumberofcurrentchild=\count339
-\tikz@fig@count=\count340
+\tikztreelevel=\count340
+\tikznumberofchildren=\count341
+\tikznumberofcurrentchild=\count342
+\tikz@fig@count=\count343
  (/usr/local/share/miktex-texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count341
-\pgfmatrixcurrentcolumn=\count342
-\pgf@matrix@numberofcolumns=\count343
+\pgfmatrixcurrentrow=\count344
+\pgfmatrixcurrentcolumn=\count345
+\pgf@matrix@numberofcolumns=\count346
 )
-\tikz@expandcount=\count344
+\tikz@expandcount=\count347
  (/usr/local/share/miktex-texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ))) (/usr/local/share/miktex-texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ) (/usr/local/share/miktex-texmf/tex/latex/tools/calc.sty
-Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count345
-\calc@Bcount=\count346
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count348
+\calc@Bcount=\count349
 \calc@Adimen=\dimen311
 \calc@Bdimen=\dimen312
 \calc@Askip=\skip72
 \calc@Bskip=\skip73
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count347
+\calc@Ccount=\count350
 \calc@Cskip=\skip74
 )
-\c@@todonotes@numberoftodonotes=\count348
+\c@@todonotes@numberoftodonotes=\count351
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/caption/caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/caption/caption3.sty
@@ -707,8 +707,8 @@ Package caption Warning: Unknown document class (or package),
 (caption)                standard defaults will be used.
 See the caption package documentation for explanation.
 
-\c@caption@flags=\count349
-\c@continuedfloat=\count350
+\c@caption@flags=\count352
+\c@continuedfloat=\count353
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
@@ -716,13 +716,13 @@ Package caption Info: rotating package is loaded.
 Package caption Info: threeparttable package is loaded.
 Package caption Info: wrapfig package is loaded.
 ) (/usr/local/share/miktex-texmf/tex/latex/tools/tabularx.sty
-Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
  (/usr/local/share/miktex-texmf/tex/latex/tools/array.sty
-Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen321
 \ar@mcellbox=\box87
 \extrarowheight=\dimen322
-\NC@list=\toks52
+\NC@list=\toks53
 \extratabsurround=\skip75
 \backup@length=\skip76
 \ar@cellbox=\box88
@@ -732,8 +732,8 @@ Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 \TX@old@col=\dimen325
 \TX@target=\dimen326
 \TX@delta=\dimen327
-\TX@cols=\count351
-\TX@ftn=\toks53
+\TX@cols=\count354
+\TX@ftn=\toks54
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/adjustbox/adjustbox.sty
 Package: adjustbox 2022/10/17 v1.3a Adjusting TeX boxes (trim, clip, ...)
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/adjustbox/adjcalc.sty
@@ -762,85 +762,79 @@ File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 \adjbox@ptotalheight=\dimen339
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
-\c@checkoddpage=\count352
+\c@checkoddpage=\count355
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box90
-\sift@deathcycles=\count353
+\sift@deathcycles=\count356
 \@vwid@loff=\dimen340
 \@vwid@roff=\dimen341
 )) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \rotheadsize=\dimen342
-\c@nlinenum=\count354
-\TeXr@lab=\toks54
+\c@nlinenum=\count357
+\TeXr@lab=\toks55
+) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/capt-of/capt-of.sty
+Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 )
 
-Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 47.
+Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 48.
 
-\c@theorem=\count355
+\c@theorem=\count358
 
-Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 50.
+Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 51.
 
-\c@example=\count356
-\c@remark=\count357
+\c@example=\count359
+\c@remark=\count360
 
-Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 53.
+Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 54.
 
-\c@definition=\count358
+\c@definition=\count361
 (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/lineno/lineno.sty
 Package: lineno 2023/05/20 line numbers on paragraphs v5.3
- (/usr/local/share/miktex-texmf/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count359
-)
-\linenopenalty=\count360
-\output=\toks55
-\linenoprevgraf=\count361
+\linenopenalty=\count362
+\output=\toks56
+\linenoprevgraf=\count363
 \linenumbersep=\dimen343
 \linenumberwidth=\dimen344
-\c@linenumber=\count362
-\c@pagewiselinenumber=\count363
-\c@LN@truepage=\count364
-\c@internallinenumber=\count365
-\c@internallinenumbers=\count366
+\c@linenumber=\count364
+\c@pagewiselinenumber=\count365
+\c@LN@truepage=\count366
+\c@internallinenumber=\count367
+\c@internallinenumbers=\count368
 \quotelinenumbersep=\dimen345
 \bframerule=\dimen346
 \bframesep=\dimen347
 \bframebox=\box91
-\linenoamsmath@ams@eqpen=\count367
+\linenoamsmath@ams@eqpen=\count369
 LaTeX Info: Redefining \\ on input line 3180.
 ) (/usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count368
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count370
 \l__pdf_internal_box=\box92
-) (main.aux
-
-LaTeX Warning: Label `tab:grid' multiply defined.
-
-)
+) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 75.
+LaTeX Font Info:    ... okay on input line 75.
 \footinsA=\insert252
-\c@footnoteA=\count369
+\c@footnoteA=\count371
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -879,106 +873,106 @@ LaTeX Font Info:    ... okay on input line 74.
 
 (/usr/local/share/miktex-texmf/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count370
+\scratchcounter=\count372
 \scratchdimen=\dimen348
 \scratchbox=\box93
-\nofMPsegments=\count371
-\nofMParguments=\count372
-\everyMPshowfont=\toks56
-\MPscratchCnt=\count373
+\nofMPsegments=\count373
+\nofMParguments=\count374
+\everyMPshowfont=\toks57
+\MPscratchCnt=\count375
 \MPscratchDim=\dimen349
-\MPnumerator=\count374
-\makeMPintoPDFobject=\count375
-\everyMPtoPDFconversion=\toks57
+\MPnumerator=\count376
+\makeMPintoPDFobject=\count377
+\everyMPtoPDFconversion=\toks58
 ) (/usr/local/share/miktex-texmf/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/share/miktex-texmf/tex/latex/00miktex/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring ON on input line 74.
+Package hyperref Info: Link coloring ON on input line 75.
  (main.out) (main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-\c@lstlisting=\count376
+\c@lstlisting=\count378
 
 
-Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 74.
+Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 75.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 171.
+LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 172.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 171.
+(Font)              size <8> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <8.43146> not available
-(Font)              size <8> substituted on input line 171.
+(Font)              size <8> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 171.
+(Font)              size <8> substituted on input line 172.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 171.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 172.
 (/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 171.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 172.
  (/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 171.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 172.
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/jknappen/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 171.
+(Font)              size <8> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 171.
+(Font)              size <8> substituted on input line 172.
 
-LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 171.
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 172.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 171.
+(Font)              size <6> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <5.52061> not available
-(Font)              size <6> substituted on input line 171.
+(Font)              size <6> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 171.
+(Font)              size <6> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 171.
+(Font)              size <6> substituted on input line 172.
 
-LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 171.
+LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 172.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 171.
+(Font)              size <5> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <4.51686> not available
-(Font)              size <5> substituted on input line 171.
+(Font)              size <5> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 171.
+(Font)              size <5> substituted on input line 172.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 171.
+(Font)              size <5> substituted on input line 172.
 
-<figs/figure_abstract.png, id=31, 3997.93625pt x 2318.6625pt>
+<figs/figure_abstract.png, id=15, 3997.93625pt x 2318.6625pt>
 File: figs/figure_abstract.png Graphic file (type png)
 <use figs/figure_abstract.png>
-Package pdftex.def Info: figs/figure_abstract.png  used on input line 171.
+Package pdftex.def Info: figs/figure_abstract.png  used on input line 172.
 (pdftex.def)             Requested size: 372.0pt x 215.7466pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -986,7 +980,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [1
 
 {/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map}]
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 171.
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 172.
 LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 191.
 
 Overfull \vbox (2.35301pt too high) has occurred while \output is active []
@@ -1001,65 +995,44 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4]
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12.045> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 380.
+<figs/microbetag-precal.png, id=146, 1392.20125pt x 782.925pt>
+File: figs/microbetag-precal.png Graphic file (type png)
+<use figs/microbetag-precal.png>
+Package pdftex.def Info: figs/microbetag-precal.png  used on input line 336.
+(pdftex.def)             Requested size: 334.79773pt x 188.27617pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5]
+ [5 <./figs/microbetag-precal.png>]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12.045> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 396.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [6]
-<figs/path_complem.png, id=219, 1072.005pt x 856.19875pt>
-File: figs/path_complem.png Graphic file (type png)
-<use figs/path_complem.png>
-Package pdftex.def Info: figs/path_complem.png  used on input line 462.
-(pdftex.def)             Requested size: 297.60114pt x 237.68288pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
+<figs/path_complem.png, id=220, 1072.005pt x 856.19875pt>
+File: figs/path_complem.png Graphic file (type png)
+<use figs/path_complem.png>
+Package pdftex.def Info: figs/path_complem.png  used on input line 482.
+(pdftex.def)             Requested size: 297.60114pt x 237.68288pt.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./figs/path_complem.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-<figs/microbetag-wf.png, id=283, 1505.625pt x 2024.56375pt>
+<figs/microbetag-wf.png, id=257, 1304.875pt x 1221.56375pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
-Package pdftex.def Info: figs/microbetag-wf.png  used on input line 606.
-(pdftex.def)             Requested size: 334.79773pt x 450.19371pt.
+Package pdftex.def Info: figs/microbetag-wf.png  used on input line 557.
+(pdftex.def)             Requested size: 334.79773pt x 313.42383pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 623.
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 623.
-
-
-LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 623.
-
-
-LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 623.
-
-
-LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 623.
-
-
-LaTeX Warning: Reference `suppl:valAnnotNet' on page 10 undefined on input line 737.
-
-
-Overfull \vbox (1.79811pt too high) has occurred while \output is active []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1068,62 +1041,114 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [11 <./figs/microbetag-wf.png>]
-Underfull \hbox (badness 3312) in paragraph at lines 831--833
-[]\OT1/cmr/m/n/10 Regarding pan-tothen-ate, the Var-i-ovo-rax genome mapped from GTDB-tk
- []
-
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 835.
-(/usr/local/share/miktex-texmf/tex/latex/base/omscmr.fd
-File: omscmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.03749> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 835.
-
-Underfull \hbox (badness 10000) in paragraph at lines 834--838
-
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-<figs/cyPanels.png, id=328, 427.8384pt x 518.8986pt>
-File: figs/cyPanels.png Graphic file (type png)
-<use figs/cyPanels.png>
-Package pdftex.def Info: figs/cyPanels.png  used on input line 845.
-(pdftex.def)             Requested size: 297.60114pt x 360.96207pt.
+<figs/cyPanel.png, id=300, 427.8384pt x 653.8026pt>
+File: figs/cyPanel.png Graphic file (type png)
+<use figs/cyPanel.png>
+Package pdftex.def Info: figs/cyPanel.png  used on input line 643.
+(pdftex.def)             Requested size: 316.20227pt x 483.22772pt.
 
+Overfull \vbox (119.4579pt too high) has occurred while \output is active []
 
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 876.
-
-
-Underfull \hbox (badness 1881) in paragraph at lines 915--915
-[]\OT1/cmr/bx/n/10 Table 4\OT1/cmr/m/n/10 : |\OT1/cmr/m/it/10 Var-i-ovo-rax \OT1/cmr/m/n/10 genomes present on
+ [13 <./figs/cyPanel.png>]
+Underfull \hbox (badness 1642) in paragraph at lines 685--691
+\OT1/cmr/m/n/10 friendly invoke of the work-flow and inves-ti-ga-tion of the anno-tated net-work,
  []
 
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 711.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 711.
 
- [13 <./figs/cyPanels.png>]
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
+(Font)              size <5> substituted on input line 711.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 711.
+
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 711.
+
+
+LaTeX Warning: Reference `fig:val' on page 14 undefined on input line 746.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
+
+LaTeX Warning: Reference `app:valAnnotNet' on page 15 undefined on input line 755.
+
+
+Underfull \hbox (badness 1142) in paragraph at lines 849--855
+\OT1/cmr/m/n/10 two com-plete KEGG mod-ules for that, ( [][]M00119[][]: Pan-tothen-ate biosyn-the-sis,
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 849--855
+\OT1/cmr/m/n/10 valine/L-aspartate $\OMS/cmsy/m/n/10 )$ \OT1/cmr/m/n/10 pan-tothen-ate and [][]M00913[][]: Pan-tothen-ate biosyn-the-sis, 2-
+ []
+
+
+Package caption Warning: \label without proper reference on input line 1129.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `tab:VariovoraxGenomes' on page 15 undefined on input line 857.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16] (main.bbl
+ [16]
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 954.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [17]
+Overfull \vbox (2.09627pt too high) has occurred while \output is active []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<figs/architecture.png, id=417, 1506.62875pt x 1150.2975pt>
+File: figs/architecture.png Graphic file (type png)
+<use figs/architecture.png>
+Package pdftex.def Info: figs/architecture.png  used on input line 1173.
+(pdftex.def)             Requested size: 334.79773pt x 255.61128pt.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
+ [19 <./figs/architecture.png>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [20]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [21] (main.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [22
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23]
 Underfull \hbox (badness 10000) in paragraph at lines 628--647
 \OT1/cmr/m/n/10 Biotech-nol-ogy \OT1/cmr/bx/n/10 n/a\OT1/cmr/m/n/10 (n/a), 14396 [][]$https : / / doi . org / 10 . 1111 / 1751-[]7915 . 14396$[][]
  []
@@ -1134,6 +1159,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 628--647
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24]
 Underfull \hbox (badness 3861) in paragraph at lines 697--714
 [][]$\OT1/cmr/m/n/10 https : / / doi . org / 10 . 1021 / ci3005379$[][] [][]https://doi.org/10.1021/ci3005379[][]. PMID:
  []
@@ -1141,16 +1169,66 @@ Underfull \hbox (badness 3861) in paragraph at lines 697--714
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [20]
+ [25]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21]
+ [26]
+Underfull \hbox (badness 10000) in paragraph at lines 1162--1177
+[]\OT1/cmr/m/n/10 Carbajal-Rodr^^S^^Pguez, I., St^^?oveken, N., Satola, B., W^^?ubbeler, J.H.,
+ []
+
+
+Underfull \hbox (badness 1789) in paragraph at lines 1162--1177
+\OT1/cmr/m/n/10 Steinb^^?uchel, A.: Aer-o-bic degra-da-tion of mer-cap-to-suc-ci-nate by the gram-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1162--1177
+\OT1/cmr/m/n/10 negative bac-terium <i>variovorax para-doxus</i> strain b4. Jour-nal of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1162--1177
+\OT1/cmr/m/n/10 Bac-te-ri-ol-ogy \OT1/cmr/bx/n/10 193\OT1/cmr/m/n/10 (2), 527--539 (2011) [][]$https : / / doi . org / 10 . 1128 / jb . 00793-[]10$[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1200--1222
+[]\OT1/cmr/m/n/10 Astafyeva, Y., Gurschke, M., Qi, M., Bergmann, L., Inden-birken,
+ []
+
+
+Underfull \hbox (badness 3792) in paragraph at lines 1200--1222
+\OT1/cmr/m/n/10 D., Grahl, I., Kat-zow-itsch, E., Reumann, S., Hanelt, D., Alawi, M.,
+ []
+
+
+Underfull \hbox (badness 4846) in paragraph at lines 1200--1222
+\OT1/cmr/m/n/10 Streit, W.R., Krohn, I.: Microal-gae and bac-te-ria inter-ac-tion|evidence
+ []
+
+
+Underfull \hbox (badness 6445) in paragraph at lines 1200--1222
+\OT1/cmr/m/n/10 for divi-sion of dili-gence in the alga micro-biota. Micro-bi-ol-ogy Spec-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1200--1222
+\OT1/cmr/m/n/10 trum \OT1/cmr/bx/n/10 10\OT1/cmr/m/n/10 (4), 00633--22 (2022) [][]$https : / / doi . org / 10 . 1128 / spectrum . 00633-[]22$[][]
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22])
+ [27])
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23] (main.aux)
+ [28] (main.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.985pt have occurred.
@@ -1158,24 +1236,21 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E3E1A20512286882DD6369E6ADBBE575;1148.
+(rerunfilecheck)             Checksum: 3061870959DBBAA67982AB58C2976946;209.
  ) 
 Here is how much of TeX's memory you used:
- 28358 strings out of 476340
- 519809 string characters out of 5795050
- 1879388 words of memory out of 5000000
- 48100 multiletter control sequences out of 15000+600000
- 541155 words of font info for 150 fonts, out of 8000000 for 9000
+ 28279 strings out of 474543
+ 514589 string characters out of 5751482
+ 1946975 words of memory out of 5000000
+ 49825 multiletter control sequences out of 15000+600000
+ 586937 words of font info for 154 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 99i,28n,117p,1292b,754s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (23 pages, 3236582 bytes).
+ 99i,28n,117p,1416b,920s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on main.pdf (28 pages, 3911491 bytes).
 PDF statistics:
- 568 PDF objects out of 1000 (max. 8388607)
- 149 named destinations out of 1000 (max. 500000)
- 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 626 PDF objects out of 1000 (max. 8388607)
+ 160 named destinations out of 1000 (max. 500000)
+ 77 words of extra memory for PDF output out of 10000 (max. 10000000)
 

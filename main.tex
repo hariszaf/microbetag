@@ -33,11 +33,12 @@
 \usepackage{caption}
 \usepackage{tabularx}
 \usepackage{adjustbox}  % for the adjustwidth
-
 \usepackage{threeparttable}  % to support notes within a table
-
-
 \usepackage{makecell}  % For \makecell command
+
+\usepackage{capt-of}
+
+
 \renewcommand\theadfont{\bfseries}
 
 
@@ -180,14 +181,13 @@
 % ====================================================
 % REMEMBER: To have a footnote in the \section{}, you need to have NO empty lines; otherwise latex will not compile
 \section*{Background
-    \footnote{
-        We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow
-        ~\href{https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}
-    }
-    \footnote{
-        The introduction should not include subheadings.
-        The Background section should explain the relevant context and the specific issue that the software described is intended to address.
-        }
+\footnote{
+We are to submit in the Microbiome journal as a "Software" manuscript, thus we follow~\href{https://microbiomejournal.biomedcentral.com/submission-guidelines/preparing-your-manuscript/software-article}{these rules}.
+}
+\footnote{
+The Background section should explain the relevant context and the specific issue that the software described is intended to address.
+No subheadings.
+}
 }
 \label{sec:background}
 
@@ -212,12 +212,12 @@
 
 
     High-throughput sequencing (HTS) has provided great insight into the diversity and composition of microbial communities~\cite{elixir_microbiome}. % get more refs
-    Uncultivated species can now be detected and their featues can be inferred through their genomic information~\cite{hug2016new}.
+    Uncultivated species can now be detected, and their features can be inferred through their genomic information~\cite{hug2016new}.
     Moreover, the composition of thousands of microbiome samples is now accessible allowing for the inference of patterns among sets of samples.
-    A widely used approach to extraxt such patterns, is the creation of co-occurrence networks based on metagenomic read data (amplicon and/or shotgun)~\cite{matchado2021network}. 
+    A widely used approach to extract such patterns, is the creation of co-occurrence networks based on metagenomic read data (amplicon and/or shotgun)~\cite{matchado2021network}. 
     A great number of approaches is available for co-occurrence network inference based on a range of statistical concepts such as: correlation (e.g., CoNet~\cite{faust2012microbial}, SparCC~\cite{friedman2012inferring}), linear regression (e.g., SpiecEasi~\cite{kurtz2015sparse}) and causal inference (FlashWeave~\cite{flashweave_cite}).
     Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open}.
-    Their inference inherits the challenges of metagenomic data analysis (e.g., compsitionality, parameters inference)~\cite{cao2017inferring}.
+    Their inference inherits the challenges of metagenomic data analysis (e.g., compositionality, parameters inference)~\cite{cao2017inferring}.
     As a result, network construction remains a tool-dependent analysis~\cite{kishore2023inferring, weiss2016correlation}.
     Moreover, more often than not, the returned network looks like a "hairball" of densely interconnected taxa.
     Thus, additional analysis is necessary to generate testable hypotheses~\cite{faust2021open}.
@@ -229,9 +229,9 @@
     Theoretical principles derived from network studies might provide indications of emergent biological characteristics~\cite{rottjers2018hairballs, guo2022microbial}. 
     For example, modules (highly interconnected nodes) within microbial co-occurrence networks could serve as indicators of ecological processes that govern community structure, including niche filtering and habitat preference~\cite{ma2020earth}.
     Data integration and clustering have been suggested to address this challenge~\cite{faust2021open}.
-    Clusters identified in microbial association networks have demonstrated their ability to mirror key drivers of community composition~\cite{guidi2016plankton} and sevaral algorithms and implementations are available~\cite{rottjers2020manta}.
+    Clusters identified in microbial association networks have demonstrated their ability to mirror key drivers of community composition~\cite{guidi2016plankton} and several algorithms and implementations are available~\cite{rottjers2020manta}.
     However, data integration approaches in microbial co-occurrence networks are so-far limited.
-    Here, we present \microbetag, a microbial co-occurrence network annotator that exploits several channels of information to enhance/diminish the confidence of the associations suggested by the network and generate hypotheseses for further investigation both at the taxon pair and the community level.
+    Here, we present \microbetag, a microbial co-occurrence network annotator that exploits several channels of information to enhance/diminish the confidence of the associations suggested by the network and generate hypotheses for further investigation both at the taxon pair and the community level.
 
     \microbetag serves as a comprehensive platform that provides information on taxa along with their potential metabolic interactions from multiple channels 
     (see Implementation~\ref{sec:implementation}).
@@ -239,16 +239,16 @@
     % prediction of microbial phenotypes via comparative genomics
     The key concept here is the reverse ecology approach~\textit{reverse ecology}~\cite{levy2012reverse}.
     Reverse ecology leverages genomics to explore community ecology with no \textit{a priori} assumptions about the taxa involved.
-    Making the most of advancements in systems biology and genomic metabolic modeling, as well as system-level analysis of intricate biological networks, the reverse ecology framework enables the prediction of ecological traits for less-understood microorganisms, their interactions with others, and the overall ecology of microbial communities~\cite{levy2014metagenomic}.
+    Making the most of the advancements in systems biology and genomic metabolic modeling, as well as system-level analysis of intricate biological networks, the reverse ecology framework enables the prediction of ecological traits for less-understood microorganisms, their interactions with others, and the overall ecology of microbial communities~\cite{levy2014metagenomic}.
     % KF: what was major about the seed set analysis? Did we learn anything useful from it so far? I don't think so, so please tone it down.
     % HZ: I suggest we just remove this. 
     % In this context, seed set analysis has been a major contribution in the study of both the species and the community ecology based on their genetic information.
 
     A metabolic network's "seed set" is the set of compounds that, based on the network topology, need to be acquired exogenously~\cite{borenstein2008large}~(see Figure~\ref{fig:pathcompl}).
     Such nodes might be independent, i.e. they cannot be activated by any other node in the network, or they can be interdependent forming groups of seed nodes.
-    Seeds are a useful proxy for the habitat of the organism and an essential tool in the frameowrk of reverse ecology~\cite{parter2007environmental,borenstein2008large}.
+    Seeds are a useful proxy for the habitat of the organism and an essential tool in the framework of reverse ecology~\cite{parter2007environmental,borenstein2008large}.
     Based on the seed concept, several graph theory-based metrics (indices) have been described to predict species interactions directly from their networks' topologies~\cite{levy2015netcooperate, kreimer2012netcmpt, zelezniak2015metabolic, belcour2020metage2metabo}.
-    Over the last years, the seed apprach has been implemented at the Genome-scale metabolic network reconstructions (GENREs) level.
+    Over the last years, the seed approach has been implemented at the Genome-scale metabolic network reconstructions (GENREs) level.
     GENREs encapsulate mathematical representations capturing the biochemical reactions that could take place within an organism~\cite{thiele2010protocol, durot2008genome, communityGemMicrobiomeModel2023}.
 
     Metabolic complementarity among species, serving as a reflection of potential cooperation within communities, assesses the capacity for collaboration; cross-feeding or syntrophy interactions are typical examples of such a collaboration. 
@@ -261,7 +261,7 @@
     However, Bacteria may complement each other not only for getting what is absolutely necessary for them to survive (seeds).
     For example, microbial species are recognized to exchange metabolites in order to provide support for other advantageous services, such as detoxifying harmful metabolites or offering protection against predators~\cite{little2008rules, zientz2004metabolic}.
     They can additionally contribute to the production of metabolites essential for the entire community, even if the species itself does not require them~\cite{kallus2017paradoxes}.
-    To explore the potenial of a species metabolism given they benefit from a partner of theirs, genome annotations combined with collections of functional units to highlight can provide a valid proxy.
+    To explore the potential of a species metabolism given they benefit from a partner of theirs, genome annotations combined with collections of functional units to highlight can provide a valid proxy.
     We present here a naive approach exporting all possible complements between a pair of species based on their KEGG ORTHOLOGY (KOs) annotations and the KEGG MODULES database~\cite{keggmodulesdb}.
 
     \microbetag annotates a user's co-occurrence network by integrating phenotypic traits on the taxa present on the network (nodes) and potential metabolic interactions to their suggested associations (edges).
@@ -271,7 +271,7 @@
     Documentation and further support on how to use \microbetag is available at \href{https://hariszaf.github.io/microbetag/}{documentation web-site}.
     To the best of our knowledge there is not a software with which \microbetag could be compared with directly. 
     To validate our annotations we used a recently published network with partially known interactions between some pairs of species found associated~\cite{hessler2023vitamin} (see Results section, paragraph~\ref{subsec:validation}).    
-    To demonstrate \microbetag's potential, we present the main features of its interface and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
+    To demonstrate \microbetag's potential, we present the main features of its interface, and we discuss a real-world use-case (see Discussion section, paragraph~\ref{subsec:usecase}).
 
 
     % ===================           for easy access to some nice parts         =====================
@@ -327,6 +327,22 @@
 }
 \label{sec:implementation}
 
+
+    % ---------------------
+    % FIGURE for precalculations (fig:precalc)
+    % ---------------------
+    \begin{figure}[h!]
+        \label{fig:precalc}
+        \includegraphics[width=0.9\columnwidth]{figs/microbetag-precal.png}
+        \caption{
+            Diagram of the \microbetag pre - calculations (top panel) and the on the fly workflow (bottom panel). 
+            GTDB v207 representative genomes were filtered and for those of high-quality
+            33 phenotypic traits were predicted using~\texttt{phenotrex}.
+            To this end, models were re-trained to sync with recent version of eggNOG.
+        }
+    \end{figure}
+
+
     \subsection*{Genomes included}
     \label{subsec:genomes}
 
@@ -336,7 +352,7 @@
         Using these accession numbers, we were able to download their corresponding \texttt{.faa} files when available 
         % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/gtdb_ncbi/get_gtdb_faa.py}{\texttt{get\_gtdb\_faa.py}}) 
         leading to a set of $16,900$ amino acid sequence files.
-        The latter were annotated and used to obtain potential pathway complementarities beween pairs of genomes (see paragraph~\ref{subsec:path-compl}).
+        The latter were annotated and used to obtain potential pathway complementarities between pairs of genomes (see paragraph~\ref{subsec:path-compl}).
         Last, when available, their corresponding annotations on PATRIC database~\cite{wattam2017improvements} were retrieved to reconstruct GENREs~(see paragraph~\ref{subsec:seeds}).
 
 
@@ -344,8 +360,8 @@
     \label{subsec:taxonomies}
 
         \microbetag maps the taxonomy of each entry in the abundance table to their corresponding NCBI Taxonomy Id and, if available, their closest GTDB representative genome(s), since several GTDB representative genomes may map to the same NCBI Taxonomy Id.
-        Two well established taxonomy schemes are supported: the GTDB~\cite{parks2022gtdb} that is being broadly used for bins and/or MAGs taxonomical classification and the Silva database~\cite{quast2012silva} that is widely used in amplicon studies. Both taxonomy schemes link their taxonomies to NCBI Taxonomy Ids~\cite{schoch2020ncbi}.
-        In case none of those two taxonomies was used and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. 
+        Two well established taxonomy schemes are supported: the GTDB~\cite{parks2022gtdb} that is being broadly used for bins and/or MAGs taxonomic classification and the Silva database~\cite{quast2012silva} that is widely used in amplicon studies. Both taxonomy schemes link their taxonomies to NCBI Taxonomy Ids~\cite{schoch2020ncbi}.
+        In case none of those two taxonomies was used, and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. 
         %However, this is done only for abundance tables containing less the 1,000 taxa. 
         To this end, \microbetag makes use of the~\href{https://github.com/seatgeek/thefuzz}{\texttt{fuzzywuzzy}} library that implements the Levenshtein Distance Metric to get the closest NCBI taxon name and thus its corresponding NCBI Taxonomy Id; a relatively high similarity score is used (90) to avoid false positives. 
         Also, using the nodes dump file of NCBI Taxonomy, \microbetag may retrieve the child taxa of a taxon in user's data, along with their corresponding NCBI Taxonomy Ids, if requested by the user.
@@ -361,7 +377,7 @@
         % As a consequence, there is not a standardised format of the taxonomies assigned, from bioinformatics pipelines used for the analysis of such data.
 
 
-    \subsection*{Network inference }
+    \subsection*{Network inference}
     \label{subsec:net-infer}
 
         When a co-occurrence network is not provided by the user, \microbetag exploits FlashWeave~\cite{flashweave_cite} to build one on the fly.
@@ -377,15 +393,18 @@
         %     •    FDR - perform False Discovery Rate correction (Benjamini-Hochberg method) on pairwise associations
         %     •    n_obs_min - don't compute associations between variables having less reliable samples (i.e. non-zero if heterogeneous=true) than this number. -1: automatically choose a threshold.
 
-    \subsection*{\microbetag pre-processing }
+    \subsection*{\microbetag pre-processing}
     \label{subsec:preprocess}
 
-        In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to trained the TAXID classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{https:/hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
+        In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to train the IDTAXA classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{https:/hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
         Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory.
         Again, to help the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave.
 
+        For a computationally efficient way to annotate large networks, a Docker image is provided, so the user runs a taxonomy assignment using the IDTAXA algorithm~\cite{murali2018idtaxa} of the DECIPHER R package~\cite{wright2016using}.
+        A co-occurrence network is also built using FlashWeave~\cite{flashweave_cite}, as \microbetag also does.
 
-    \subsection*{Literature based nodes annotation }
+
+    \subsection*{Literature based nodes annotation}
     \label{subsec:fapro}
 
         Using a set of Tara Ocean samples~\cite{sunagawa2015structure} FAPROTAX~\cite{louca2016decoupling} estimates the functional potential of the bacterial and archaeal communities, by classifying each taxonomic unit into functional group(s) based on current literature, descriptions of cultured representatives and/or manuals of systematic microbiology. 
@@ -396,14 +415,14 @@
         Contrary to gene content based approaches, e.g. PICRUSt2~\cite{douglas2020picrust2}, FAPROTAX  estimates metabolic phenotypes based on experimental evidence. 
 
         \microbetag invokes the accompanying script of FAPROTAX and converts the taxonomic microbial community profile of the samples included in the user's abundance table or of the taxa present in the provided network, into putative functional profiles.
-        Then, it parses FAPROTAX's subtables to annotate each taxonomic unit present in the user's data with all the functions for which they had a hit. 
+        Then, it parses FAPROTAX's sub-tables to annotate each taxonomic unit present in the user's data with all the functions for which they had a hit. 
         FAPROTAX annotations are not part of the microbetagDB but are computed on the fly.
 
 
-    \subsection*{Genomic based nodes annotation }
+    \subsection*{Genomic based nodes annotation}
     \label{subsec:phen}
 
-        phenDB~\cite{feldbauer2015prediction} is a publicly available resource that supports the analysis of bacterial (meta)genomes to identify 47 distinct functional traits, e.g. whether a species is producing butanol or has an halophilic lifestyle. 
+        phenDB~\cite{feldbauer2015prediction} is a publicly available resource that supports the analysis of bacterial (meta)genomes to identify 47 distinct functional traits, e.g. whether a species is producing butanol or has a halophilic lifestyle.
         It relies on support vector machines (SVM) trained with manually curated datasets based on gene presence/absence patterns for trait prediction.
         More specifically, the model for a particular trait is trained using a collection of EggNOG annotated genomes where the knowledge of whether that trait is present or absent among its members is available.
         These models (classifiers) are used to predict presence/absence of their corresponding traits in non-studied species. 
@@ -425,11 +444,11 @@
         % For example, for the acetic acid production case, the corresponding webpage of phenDB pointed to the set of genomes that had been originally used. 
         Then, \textit{genotype} files were produced for all the high quality GTDB representative genomes.
         Each model was then used against all the GTDB \textit{genotype} files to annotate each with the presence or the absence of the trait. 
-        A list of all the phenotypic traits available for the genomes present in microbetagDB is available on \microbetag's \href{https://hariszaf.github.io/microbetag/docs/modules/phen-traits/}{documentation site}.
+        A list of all the phenotypic traits available for the genomes present in microbetagDB is available on \microbetag 's \href{https://hariszaf.github.io/microbetag/docs/modules/phen-traits/}{documentation site}.
         The updated models are also available
 
 
-    \subsection*{Pathway complementarity }
+    \subsection*{Pathway complementarity}
     \label{subsec:path-compl}
 
 
@@ -452,11 +471,12 @@
         Given a module's definition, we will consider as an~\textit{alternative} any subset of the KO terms mentioned in the definition, 
         that has exactly one way to perform each step, provided that all the steps of the module are covered.
         % and support the functioning of all the steps of the module.
-        We define a genome as having a~\textit{complete} module, if and only if all of the KOs of at least one alternative are present on the genome.
+        We define a genome as having a~\textit{complete} module, if and only if all the KOs of at least one alternative are present on the genome.
+        In Appendix~\ref{app:pathcompl} we show an example of a module along with its alternatives.
 
         Within this framework,~\texttt{kofamscan}~\cite{aramaki2020kofamkoala} was used to annotate with KEGG ORTHOLOGY terms (KOs) the $16,900$ high quality GTDB representative genomes for which a~\texttt{.faa} was available~\cite{kanehisa2012kegg}.
-        The KOs of each genome were then mapped to their corresponding KEGG modules; a KO may map to more than one modules ($1:n$).
-        % , see Appendix~\ref{secA1}).
+        The KOs of each genome were then mapped to their corresponding KEGG modules; a KO may map to more than one module ($1:n$).
+        % , see Appendix~\ref{secA2}).
 
         \begin{figure}[h!]
             \includegraphics*[width=0.8\columnwidth]{figs/path_complem.png}
@@ -484,14 +504,14 @@
 
         Thanks to the graphical user interface (GUI) of the~\href{https://www.kegg.jp/kegg/docs/color_gui.html}{KEGG pathway map viewer}~\cite{kanehisa2020kegg,kanehisa2022kegg}, 
         each complementarity can be visualised as part of the closest KEGG metabolic map; 
-        where the KOs contributed by the donor are shown in blue-green whereas those coming from the beneficiary genome are coloured in rose.
+        where the KOs contributed by the donor are shown in blue-green whereas those coming from the beneficiary genome are coloured in red.
 
         \microbetag annotates the edges of a co-occurrence network by identifying pairs where both taxa map to an annotated genome present on microbetagDB.
         % Each taxon on the network has been mapped to a NCBI Taxonomy Id and their related GTDB genomes.
         Since co-occurrence networks are undirected, both nodes of a suggested association are considered as potential donors and beneficiary species. 
         When more than one GTDB representative genome map to the same NCBI Taxonomy Id all the possible genome combinations are considered.
         Finally, two edges are added in such pairs of taxa in the annotated network: 
-        one considering $species_A$ as the potential beneficiary and $species_B$ as the potenial donor species, and one vice-versa. 
+        one considering $species_A$ as the potential beneficiary and $species_B$ as the potential donor species, and one vice-versa. 
 
 
     \subsection*{Seed scores and complements using genome scale metabolic reconstructions }
@@ -504,9 +524,9 @@
         This index establishes an upper limit on the level of competition that one species may face from another.
         Those indices have been thoroughly described and implemented in the NetCooperate~\cite{levy2015netcooperate} and NetCompt~\cite{kreimer2012netcmpt} tools correspondingly.
         We will be referring to those two indices as "seed scores".
-        Recently, the~\texttt{PhyloMint}tool~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
+        Recently, the~\texttt{PhyloMint} tool~\cite{phylomint_ms} was released supporting the calculation of the seed scores of GENREs in SBML format.
 
-        In the framework of \microbetag, seed scores were computed using GENREs derived from the high quality GTDB representative genomes and the~\texttt{PhyloMint} tool.
+        In the~\microbetag framework, seed scores were computed using GENREs derived from the high quality GTDB representative genomes and the~\texttt{PhyloMint} tool.
         GENREs were reconstructed using the Model SEED pipeline~\cite{henry2010high} through its Python interface \href{https://modelseedpy.readthedocs.io/en/latest/index.html}{ModelSEEDpy}.
         The latter requires RAST annotated genomes~\cite{overbeek2014seed}; 
         if available through the PATRIC database~\cite{wattam2017improvements}, annotations were retrieved.
@@ -519,7 +539,7 @@
 
 
 
-    \subsection*{Clustering network  }
+    \subsection*{Clustering network}
     \label{subsec:manta}
 
         % KF: sentence not complete
@@ -528,21 +548,80 @@
         In case \texttt{manta} is performed, the annotated network inherits the layout that \texttt{manta} returns.
 
 
-    \subsection*{Groups of annotations }
+    \subsection*{The~\microbetag workflow}
+    \label{subsec:app}
+        % --------------------
+        % FIGURE for workflow overall (fig:wf)
+        % --------------------
+        \begin{figure}[h!]
+            \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
+            \caption{
+                Diagram of \microbetag's on-the-fly workflow. 
+                \microbetag expects either an abundance table only as input and infers a co-occurrence network using FlashWeave 
+                or an abundance table along with an already inferred co-occurrence network 
+                and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned on the nodes. 
+                Literature-based annotation on the nodes are also using FAPROTAX.
+                On the edges level then, \microbetag annotates them by assigning the pre-calculated potential complements based on the pathway and the seed complementarities approaches. 
+                \microbetag supports optional network clustering with manta.
+                The annotated network can then be parsed on Cytoscape using the MGG app.
+            }
+            \label{fig:wf}
+        \end{figure}
+
+
+        As shown in Figure~\ref{fig:wf}, the~\microbetag workflow expects an abundance table representing either amplicon or shotgun data.
+        If a co-occurrence network is already available the user may provide it too as input.
+        The~\microbetag workflow will first map the taxa present on the abundance table to their corresponding GTDB representative genomes if that is possible, i.e., in case the taxonomy provided does reach the species or the strain level (see paragraph~\ref{subsec:taxonomies}).
+        If a network is not provided, \microbetag will then build one using FlashWeave~\cite{flashweave_cite}. 
+        Then the abundance table will be used for a literature - based annotation using FAPROTAX~\cite{louca2016decoupling}.
+        This is the only annotation step that is microbetagDB independent in the framework of the web-service workflow.
+        The nodes of the network will be further annotated with phenotypic traits based on the model predictions~\cite{feldbauer2015prediction}.
+        Edges linking taxa that have been assigned to the species or strain level will be then annotated with pathway and seed complementarities and with seed scores.
+        Last, a network clustering will be performed assigning each node to a cluster.
+        The annotated network is then returned in a \texttt{.cx} format. 
+        The user may skip any of these annotation steps if not needed for their analysis.
+
+        % The~\microbetag workflow is written in Python and can be performed either through the \microbetag API or through the MGG app (see paragraph~\ref{subsec:app}). 
+        % It is hosted on the same server as microbetagDB.
+
+
+
+    \subsection*{Groups of annotations}
     \label{subsec:groups}
 
         Biologically meaningful groups were described to group phenotypic traits returned from FAPROTAX and phenDB-like annotation steps.
         The main groups supported are related to: 
-        1. the lifestyle of a species, for example being halophilic or thermophyllic etc.,
-        2. the biogeochemical processes a species metabolic potenial has been found related to, for example Nitrite-oxidizing bacteria (NOB) bacteria and 
-        3. important metabolites a species is suggested to produce, e.g. butanol.
+        a. the lifestyle of a species, for example being halophilic or thermophyllic etc.,
+        b. the biogeochemical processes a species metabolic potential has been found related to, for example Nitrite-oxidizing bacteria (NOB) bacteria and 
+        c. important metabolites a species is suggested to produce, e.g. butanol.
         Aim of these groups are to facilitate filtering of the taxa present.
-        Enrichemnt analysis for members of such groups 
-        (e.g., based on the finfings of a clustering algorithm like \texttt{manta}) 
+        Enrichment analysis for members of such groups 
+        (e.g., based on the findings of a clustering algorithm like \texttt{manta}) 
         can be performed through the CytoscapeApp.
 
 
-    \subsection*{The \texttt{MGG} CytoscapeApp }
+    \subsection*{Software architecture}
+    \label{subsec:webserver}
+
+
+        \microbetag is a Docker-based application.
+        We deployed the \microbetag application using Docker containers~\cite{merkel2014docker} (v24.0.2)  managed by Docker Compose (see Supplementary Figure~\ref{app:software}).
+        Docker Compose is a tool for defining and running multi-container Docker applications using a YAML file to configure the services required for the application.
+        Containers of three Docker images are being used simultaneously:
+        a. a~\href{https://www.mysql.com}{MySQL} database including the microbetagDB
+        b. a nginx~\cite{nginx} web server and 
+        c. the application itself, including the API and the \microbetag workflow.
+        The latter uses~\href{https://gunicorn.org}{Gunicorn} (20.1.0) to build an application server which communicates with the web server using the Web Server Gateway Interface (WSGI) protocol and handles incoming HTTP requests.
+        % Nginx acts as a reverse proxy server that sits in front of Gunicorn and forwards client requests to Gunicorn for processing. It serves as an intermediary between clients and your application server.
+        \microbetag is implemented as a~\href{https://flask.palletsprojects.com/en/3.0.x/}{Flask} application (v2.3.2); 
+        Flask is a micro web framework for developing Python web applications and RESTful APIs.
+        The API has a route for performing the \microbetag workflow, either through any Python console or the Cytoscape MGG app, but also several other routes that enable quick and easy access to the microbetagDB content, i.e. the genomes present, their phenotypic traits predicted annotations, pathway and seed complementarities among specific genomes or NCBI Taxonomy Ids and their corresponding seed scores if available.
+        % REST stands for Representational State Transfer 
+        A thorough description of the \microbetag API is available at the \href{https://hariszaf.github.io/microbetag/docs/api/}{ReadTheDocs web site}. 
+        The source code of the \microbetag web service is available on~\href{https://github.com/msysbio/microbetagApp/}{GitHub}.
+
+
+    \subsection*{The \texttt{MGG} CytoscapeApp}
     \label{subsec:build-cytoapp}
 
         \microbetag is accessible as a CytoscapeApp. 
@@ -552,69 +631,78 @@
         allows the user to import their data, retrieve an annotated network and investigate the annotations through a series of CyPanels both for node and edge annotations.
         Figure~\ref{fig:panels} shows an example of the edges CyPanel. 
 
+        The app was based on the StringApp and supported by the NRNB group.
+        The coloured URLs returned from the two complementarity modules point to KEGG maps, meaning the default browser of the user pops-up moving them to a colored KEGG map based on the complement to be viewed.
 
-    \subsection*{Dependencies, Web server and API }
-    \label{subsec:webserver}
-
-        The \microbetag web service is container - based and consists of three Docker~\cite{merkel2014docker} (v24.0.2) images: 
-        a. the~\href{https://www.mysql.com}{MySQL} database 
-        b. an nginx~\cite{nginx} web server and 
-        c. the app itself. 
-        The latter uses~\href{https://gunicorn.org}{Gunicorn} (20.1.0) to build an application server which communicates with the web server using the Web Server Gateway Interface (WSGI) protocol and handles incoming HTTP requests.
-        % Nginx acts as a reverse proxy server that sits in front of Gunicorn and forwards client requests to Gunicorn for processing. It serves as an intermediary between clients and your application server.
-        \microbetag is implemented as a~\href{https://flask.palletsprojects.com/en/3.0.x/}{Flask} application (v2.3.2); 
-        Flask is a micro web framework for developing Python web applications and RESTful APIs. 
-        % REST stands for Representational State Transfer 
-        A thorough description of \microbetag's API is available at the \href{https://hariszaf.github.io/microbetag/docs/api/}{ReadTheDocs web site}. 
-        The source code of the \microbetag web service is available on~\href{https://github.com/msysbio/microbetagApp/}{GitHub}.
-
-
-        % python 3.11 slim docker image 
-        % julia 1.7.1 for flashweave 
-        % mysql.connector 8.0.27 python library
-        % pandas 2.1.1.
-        % numpy 1.26.0
-        % multiprocessing
-        % text processing using awk 
-        % KEGG API
-
-
-
-
-% ====================================================
-% Results
-% ====================================================
-\section*{Results
-    \footnote{
-        Significant advance over previously published software (usually demonstrated by direct comparison with available related software)
-        This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. 
-        This section may be combined with the Discussion section for Software articles.
-    }
-}
-\label{sec:results}
-
-
-    \subsection*{\microbetag and microbetagDB}
-    \label{subsec:microbetagdb}
-
-        \microbetag is 
-
-
-
-        \begin{figure}[h!]
-            \label{fig:wf}
-            \includegraphics[width=0.9\columnwidth]{figs/microbetag-wf.png}
+        % -----------
+        % MGG CyPanels figure
+        % -----------
+        \newpage
+        \begin{figure}[H]
+            \centering
+            \includegraphics*[width=0.85\columnwidth]{figs/cyPanel.png}
             \caption{
-                Diagram of the \microbetag pre - calculations (top panel) and the on the fly workflow (bottom panel). 
-                GTDB v207 representative genomes were filtered and for those of high-quality
-                33 phenotypic traits were predicted using~\texttt{phenotrex}.
-                To this end, models were re-trained to sync with recent version of eggNOG.
+                CyPanels of the MGG CytoscapeApp. 
+                A. \textit{Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes.
+                PhenDB-like predicted attributes are shown along with their prediction score.
+                B. \textit{Edges} panel display the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a directed perspective on the graph. There are two cases of complementarities in the \microbetag framework. 
+                \textit{Seed complementarities} shown here are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). 
+                In the URL provided, a colored KEGG map is provided.
+                The same applies for the case of the *Pathway complementarities* only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit{Seed complementarities}.
+                C. Part of a colored KEGG map returned based on the seed complementarities. 
+                Compounds that the beneficiary taxon brings on its own are colored in cyan while the potential complement with red.
             }
+            \label{fig:panels}
+            \thispagestyle{empty} % Remove page number
+            \nolinenumbers % Disable line numbering for this page
         \end{figure}
+         
+
+
+
+\newpage
+
+% ====================================================
+% Results and Discussion 
+% ====================================================
+\section*{Results and discussion
+\footnote{
+    \textbf{Results-related: }
+    Significant advance over previously published software (usually demonstrated by direct comparison with available related software)
+    This should include the findings of the study including, if appropriate, results of statistical analysis which must be included either in the text or as tables and figures. 
+    This section may be combined with the Discussion section for Software articles.
+    \textbf{Discussion-related:}
+    The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
+    A case study of the use of the software may be presented. 
+    The planned future development of new features, if any, should be mentioned.
+    }}
+\label{sec:results-and-discussion}
+
+
+    \subsection*{Annotating microbial co-occurrence networks with \microbetag}
+    \label{subsec:running-wf}
+
+        The \microbetag software ecosystem consists of five main modules:
+        a. \texttt{microbetagDb} including~\microbetag precalculations,
+        b. the \microbetag workflow to annotate the co-occurrence network,
+        c. a webserver hosting both the~\texttt{microbetagDB} and the~\microbetag application,
+        d. a CytoscapeApp called \texttt{MGG} that enables a user-friendly invoke of the workflow and investigation of the annotated network, and
+        e. a pre-processing step for cases of more than $1,000$ sequence identifiers (OTUs/ASVs/bins etc.) available as a Docker image.
+
+
+
+        364 archaeal genomes only
+        annotated network returned in \texttt{.cx} format
 
 
 
 
+
+        
+
+        % --------------------
+        % TABLE for microbetagDB stats (tab:db)
+        % --------------------
         \begin{table}[h!]
             \caption[Summary of Data]{
                 Summary of the data in microbetagDB
@@ -638,27 +726,467 @@
 
 
 
+        see Supplementary Table~\ref{sup.tab:times}
 
 
-        annotated network returned in \texttt{.cyjs} format
 
 
-        For a computationally efficient way to annotate large networks, a Docker image is provided so the user runs a taxonomy assignment using the IDTAXA algorithm~\cite{murali2018idtaxa} of the DECIPHER R package~\cite{wright2016using}.
-        A co-occurrence network is also built using FlashWeave~\cite{flashweave_cite}, as \microbetag also does. 
-            
+
+
+    \subsection*{Validation of \microbetag potential}
+    \label{subsec:validation}
+
+
+        To validate \microbetag we used the correlation network of Hessler et~\textit{al.}~\cite{hessler2023vitamin} describing mine tailing-derived laboratory microbial consortia.
+        In this study, \textit{Variovorax}, a thiamine producer, and its co-occurrence with a series of thiamine auxotrophs are discussed.
+        The study was selected as a validation case as the authors tested network's predictions by performing co-culture experimnets measuring the thiamine production. 
+        Both bins sequences corrensponding to network's nodes and the original network were retrieved. 
+        Using GTDB-tk~\cite{chaumeil2020gtdb} bins were annotated to GTDB taxonomies.
+        Taxonomies retrieved for each bin were added in the original network which was then annotated with~\microbetag.
+        Figure~\ref{fig:val} highlights bin\_55 that corresponds to \textit{Variovorax} and its first neighbors.
+        The annotated network is available on \microbetag's \href{https://github.com/hariszaf/microbetag/blob/develop/tests/validation_case/microbetag_val.cx}{GitHub repository}.
+        GTDB-tk returned GCA\_001899795.1 as the one closer to bin\_55 assigning it as \textit{Variovorax} sp001899795.
+        \microbetag then suggested that this specific genome corresponds to an aerobe~\cite{aerobeVariovorax}, autotroph if needed~\textsubscript{autotrophVariovorax} that utilizes D-glucose, while producing ethanol and lactic acid~\cite{lacticVariovorax}. 
+        Last, Type VI secretion system was suggested to be available on its genome~\cite{t6ssVariovorax}.
+        As shown in Table~\ref{tab:Variovorax}, \microbetag suggested several thiamine-related potential seed complements between~\textit{Variovorax} and their first neighbors on the network (Table~\ref{tab:Variovorax}.A).
+        Further,~\microbetag also suggested potential thiamine-related complements among the neighboring taxa (Table~\ref{tab:Variovorax}.B).
+
+
+        supplementary file~\ref{app:valAnnotNet}
+
+
+ 
+        The network is overlaid with metagenomic information about functional capacities to generate testable hypotheses.
+
+
+        Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}
+
+
+        % C01081: Thiamin monophosphate;
+        % \href{https://www.genome.jp/module/M00899+C01081}{Thiamine salvage pathway, HMP/HET => TMP}
+        % \href{https://www.genome.jp/module/M00898+C01081}{Thiamine biosynthesis, pyridoxal-5P => TMP/thiamine/TPP}
+        % \href{https://www.genome.jp/module/M00897+C01081}{Thiamine biosynthesis, plants, AIR (+ NAD+) => TMP/thiamine/TPP}
+        % \href{https://www.genome.jp/module/M00896+C01081}{Thiamine biosynthesis, archaea, AIR (+ NAD+) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00895+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00127+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
+
+        % C15809:
+        % \href{https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0079786.g005}{thiamine biosynthesis pathway with Iminoglycine }
+
+        % C04327: 4-Methyl-5-(2-phosphooxyethyl)thiazole;
+        % C01279: 4-Amino-5-hydroxymethyl-2-methylpyrimidine;
+        % \href{https://www.genome.jp/module/M00899+C04327}{thiamine salvage pathway}
+
+
+        % C20246: 2-[(2R,5Z)-2-Carboxy-4-methylthiazol-5(2H)-ylidene]ethyl phosphate;
+        % \href{https://www.genome.jp/module/M00127+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
+        % \href{https://www.genome.jp/module/M00895+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
+
+
+
+
+        % -----------
+        % Table for Variovorax - thiamine and neighbors (tab:Variovoraax)
+        % -----------
+        \begin{table}[ht]
+        \begin{minipage}{\linewidth}
+            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
+                \begin{tabular}{c|c}
+                    \begin{tabular}{l l l r}
+                        \multicolumn{4}{c}{A. \textit{Variovorax} thiamine-related benefits to its neighbors} \\
+                        \toprule
+                        \thead{Neighboring taxon} & \thead{node id} & \thead{KEGG compounds} & \thead{url} \\
+                        \midrule
+        
+                        \textit{Kapabacteria thiocyanatum}  & bin\_59  &   C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+        
+                        \textit{Terrimonas ferruginea}      & bin\_100 &  C15809;C01081    & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/}{url}  \\
+        
+                        \textit{Tahibacter} sp001725155     & bin\_167 &  C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}  \\
+        
+                        \textit{Microbacterium} sp900156455 & bin\_28  &  C15809; C20246  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04327%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C20246%09%23ff0000/C15809%09%23ff0000/C20246%09%23ff0000/}{url}  \\
+        
+                        \textit{Sphingobium} sp001899715    & bin\_155 &   Iminoglycine C15809;    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+        
+                        \textit{Nitrosospira} sp001899235   & bin\_176 &  None  &  None \\
+        
+                        62-47 sp001899255*                  & bin\_233 &  None  &  None  \\
+        
+                        \textit{Bosea} sp001898115          & bin\_273 & C04327;C01279 & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01279%09%23ff0000/C04327%09%23ff0000/}{url}  \\
+        
+                        54-19 sp001898225**                 & bin\_41  &  C15809   & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}   \\
+        
+                        \textit{Rhodoglobus} sp001725325    & bin\_8   &  C15809  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+                        \bottomrule
+                    \end{tabular} &
+                    \begin{tabular}{ccc}
+                        \multicolumn{3}{c}{B. Potential thiamine-related complements among \textit{Variovorax} neighbors} \\
+                        \toprule
+                        \thead{Beneficiary} & \thead{Donor} & \thead{potential complement} \\
+                        \toprule
+                        \textit{T. ferruginea} & \textit{Tahibacter} sp001725155 & C01081 \\
+                        \textit{T. ferruginea} & \textit{Rhodoglobus} sp001725325 & C01081 \\
+                        \textit{Nitrosospira} sp001899235 & \textit{Bosea} sp001898115 & C04327;C01279 \\
+                        Chloroflexi & \textit{Bosea} sp001898115 & C15809 \\
+                        Chloroflexi & Xanthobacteraceae & C15809 \\
+                        Chloroflexi & \textit{Nitrosospira} sp001899235 & C15809 \\
+                    \end{tabular} \\
+                \end{tabular} \\
+            \end{adjustbox}
+        \end{minipage}
+        \caption{ Thiamine biosynthesis related seed complements between \textit{Variovorax} and its first closest neighbors on the network of Hessler \textit{et al.}~\cite{hessler2023vitamin} (A), and between pairs of the neighbors (B).
+        Bin sequence files were mapped against GTDB using GTDB-tk. 
+        Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225
+        }
+        \label{tab:Variovorax}
+        \end{table}
+
+
+
+
+
+
+        Regarding pantothenate, the~\textit{Variovorax} genome mapped from GTDB-tk 
+        % \(GCA\_001899795.\)
+        brings two complete KEGG modules for that, (
+            \href{https://www.genome.jp/module/M00119+K01918+K00826+K00077+K00606}{M00119}: Pantothenate biosynthesis, valine/L-aspartate $\Rightarrow$ pantothenate and 
+            \href{https://www.genome.jp/module/M00913+K01918+K00077+K00128+K00606}{M00913}: Pantothenate biosynthesis, 2-oxoisovalerate/spermine $\Rightarrow$ pantothenate
+        )
+
+
+        thus either some Variovorax species can actually produce that or this is a limitation of our method \ref{tab:VariovoraxGenomes}
+
+        In fact, \textit{Variovorax} seems to be able to benefit some partners of their. 
+
+
+
+
+
+        From the hub species: 
+        % \begin{itemize}
+        %         node        taxonomy                                role 
+        %     \item bin\_54  d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Alphaproteobacteria;o\_\_Acetobacterales;f\_\_Acetobacteraceae;g\_\_70-18;s\_\_70-18 sp001899585
+        %     \item bin\__55 s__Variovorax sp001899795 serves thiamine 
+        %     \item bin\_116 Novosphingobium sp001898925
+        %     \item bin\_176 Nitrosospira sp001899235   
+        %     \item bin\_206 Mesorhizobium sp001899205
+        %     \item bin\_215 d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Gammaproteobacteria;o\_\_Xanthomonadales;f\_\_Rhodanobacteraceae;g\_\_66-474;s\_\_66-474 sp001899805
+        %     \item bin\_221 Chitinophagaceae;g\_\_Palsa-955;s\_\_     not a genome 
+        %     \item bin\_261 Comamonas C sp001725255         GTDB genome that would be assigned \href{https://gtdb.ecogenomic.org/genome?gid=GCA_001725255.1}{GCA_001725255.1} but has a completeness of 94.59\%
+
+        % \end{itemize}
+
+
+
+    \subsection*{Interpreting a real-world network with \microbetag}
+        \label{subsec:usecase}
+
+
+        Annelies' dataset. 
+
+        One last visual component from the use case would be nice to have.  
+
+
+
+
+
+    \subsection*{Potential and limitations}
+    \label{subsec:pot-and-limits}
+
+        The previous paragraph shows the potential the \microbetag workflow may have in the interpretation of co-occurrence network and how it can be used to generate new hypotheses derived from these.
+        However,~\microbetag benefits the microbiome community in sevaral other ways. 
+        The microbetagDB provides a vast number of annotations; 31 predicted traits for more than $30,000$ genomes, their GENREs along with their corresponding seed sets, potential metabolic complementarities and cooperation/competition scores.
+        Such a resource may benefit a range of studies; 
+        from a more theoretical perspective regarding the distribution of the complements among taxonimic groups or how often a complement potentially appears, to more applicable such as eco-evolutionary studies and the investigation of established interactions.
+
+        Yet, there is a number of challenges in our approach.
+        First, \microbetag inherits all the biases and drawbacks of both the data and the software it is based on. 
+        For example, regarding the genomes currently supported, and as shown in~\cite{chklovski2023checkm2} (see Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness $\sim 65\%$.
+        Thus, only few representatives from these taxonomic groups are present on microbetagDB leading to an important under-representation of Archaea.
+        Functional annotation comes with its own limitations.
+        Some domains boast richer annotations and more comprehensive descriptions compared to others. 
+        These areas exhibit a wealth of detail and employ more precise terminology, particularly for widely recognized processes.
+        In our case, pathway compelmentarity can be as accurate as the KEGG MODULE database goes and the precision of the software annotating genomes with KO terms.
+        It is well known that automated Genome-Scale Metabolic Reconstruction comes with a great number of challenges and different software for this task come with their certain limitations~\cite{mendoza2019systematic}. 
+        Using ModelSEED with a complete medium may limited potential metabolic interactions but made those retrieved of higher confidence.
+
+        It is also well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}
+        Pairwise relationships do not capture more complex forms of ecological interactions, in which one species depends on (or is influenced by) multiple other species~\cite{faust2012microbialReviewInteractions}.
+        Further, 
+
+
+    \subsection*{Future work}
+    \label{subsec:future}
+
+        In the near future, we plan to develop two main features: 
+        a. the integration of transcriptomics data provided by the user, this would enhance or lower the probability for a potential metabolic interaction to occur based on whether the KO terms involved are present or not, and 
+        b. the integration of spatial data; it is well-known that the spatial dimension plays a great role to the extent that an interaction occurs~\cite{dal2020short}, to this end we intend to integrate user's data on how their data are distributed in space. 
+        Thus, potential metabolic interactions beween taxa that are closer one-another would be more probable to occur.
+
+        Last, we already work on a \textit{"for advanced users"} version, a server-independent version of \microbetag is about to be released, so the user can provide bins/MAGs of theirs and annotations will be held not by mapping taxonomies to reference genomes but using their sequencing data directly.
+        This would require important computing resources and time and cannot be supported in an app-framework like the one presented here. 
+        In this case, one will be again able to investigate the annotated network returned through Cytoscape and the MGG app.
+        \footnote{Could be part of this release; time will tell }
+
+        % Further indices using the seed concept have been also presented such as the metabolic interaction potential ($MIP$) and the metabolic resource overlap ($MRO$).
+        % $MIP$ is defined as the difference between the minimal number of components required for the growth of all members in a noninteracting community and an interacting community, i.e. the maximum number of essential nutritional components that a community can provide for itself through interspecies metabolic exchanges~\cite{zelezniak2015metabolic}.
+        % Similarly, $MRO$ is defined as the maximum possible overlap between the minimal nutritional requirements of all member species~\cite{zelezniak2015metabolic}.
+        % Regression and association rule mining~\cite{assocciationRuleMining} can be applied to address this challenge.
+
+
+
+% ====================================================
+% Conclusions
+% ====================================================
+\section*{Conclusions
+\footnote{
+    This should state clearly the main conclusions and provide an explanation of the importance and relevance of the case, data, opinion, database or software reported.
+}
+}
+\label{sec:conclusions}
+
+
+    Co-occurrence networks are widely used in microbiome studies to infer associations~\cite{rottjers2018hairballs}. 
+    Both their inference and their interpretation though come with a range of challenges~\cite{faust2021open}.
+    Metabolic exchanges among microbial taxa is considered ubiquitous~\cite{kost2023metabolic} at least in a great range of environments. 
+    In our study, we exploit reverse-ecology approaches and publicly available genomic data and software to predict phenotypic traits and metabolic interactions and annotate with those co-occurrence networks derived from amplicon or shotgun data.
+    Our annotation was in-line with the study of Hessler et \textit{al.}~cite{hessler2023vitamin} predicting thiamine-related metabolic interactions among \textit{Variovorax} and its closest neighbors, suggesting several ways to achieve them. 
+    Using ..... \todo{use case}
+    Enrichment analysis using them combined with network clustering algorithms can further benefit their interpretation. 
+    Both the microbetagDB and \microbetag workflow may benefit microbiome studies, both as a resource and as a hypothesis generation tool.
+
+
+
+\backmatter
+
+
+
+\bmhead{Supplementary information}
+\label{supplementary-files}
+    
+    List of supplementary figures and tables.
+
+    \textbf{Supplementary Figure 1:} \microbetag software ecosystem architecture.
+
+    \textbf{Supplementary Table 1:} \textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate - 
+    related KEGG modules
+
+    \textbf{Supplementary Table 2:} Computing times per step of the \microbetag workflow using four different data sets. 
+
+
+
+% ====================================================
+% Declarations
+% ====================================================
+\section*{Declarations}
+
+
+    \begin{itemize}
+
+        \item \textbf{Availability of data and materials}
+
+            \begin{itemize}
+                \item Raw sequences for the use case: 
+                \item Raw data for the validations case:
+            \end{itemize}
+
+        \item \textbf{Funding}
+        
+            This work was initiated thanks to an EMBO Scientific Exchange Grant to HZ. 
+            It was then supported by the 3D’omics Horizon project (101000309). 
+            We would also like to thank the National Resource for Network Biology (NRNB) and the Google Summer of Code 2023 for the support of E.I.M.D.
+
+        \item \textbf{Conflict of interest/Competing interests} 
+
+            The authors declare that they have no other competing interests.
+
+        \item \textbf{Authors' contributions}
+            \footnote{Based on the \href{https://www-elsevier-com.kuleuven.e-bronnen.be/researcher/author/policies-and-guidelines/credit-author-statement}{CRediT system}.}
+
+            Conceptualization: K.F.
+            Methodology: K.F. and H.Z.
+            Software: H.Z., E.I.M.D. and J.M.
+            Validation: H.Z. and K.F.
+            Formal analysis: H.Z. and K.F.
+            Investigation: H.Z.
+            Resources: K.F., A.E. and A.G.
+            Data Curation: H.Z.
+            Writing - Original Draft: H.Z. and K.F. 
+            Writing - Review \& Editing: all
+            Visualization: H.Z.
+            Supervision: K.F., H.Z. and S.M.
+            Project administration: K.F.
+            Funding acquisition: K.F., H.Z.
+
+
+        \item \textbf{Acknowledgements}
+
+            We would like to thank Dr. Christina Pavloudi for the insight on how to organise the trait groups.
+            We would also like to thank Dr. Hessler and Prof. Jillian F. Banfield for sharing both the bins and the network of their study~\cite{hessler2023vitamin}. 
+
+
+        \item \textbf{Ethics approval}
+
+            Not applicable
+
+        \item \textbf{Consent to participate}
+        
+            Not applicable.
+
+        \item \textbf{Code availability: }
+
+            \begin{itemize}
+                \item microbetagDB related scripts: \href{https://github.com/hariszaf/microbetag}{https://github.com/hariszaf/microbetag}
+                \item \microbetag application: \href{https://github.com/msysbio/microbetagApp}{https://github.com/msysbio/microbetagApp}.
+                \item MGG CytoscapeApp: \href{https://github.com/ermismd/MGG/}{https://github.com/ermismd/MGG/}
+                \item Validation and use case: \footnote{Consider moving that under the 3D'omics organization}
+                \item Documentation web-site: \href{https://hariszaf.github.io/microbetag/}{https://hariszaf.github.io/microbetag/}
+            \end{itemize}
+
+    \end{itemize}
+
+
+% ====================================================
+% Appendices
+% ====================================================
+\begin{appendices}
+
+    \section{}
+
+    \subsection*{Background on seed scores}
+    \label{app:seeds}
+
+
+        In that case, once a seed is assured, it activates all the rest of that group.
+        Therefore, a confidence level ($C$) ranging from 0 to 1, has been previously described to quantify the relevance of each seed:
+
+        \begin{equation}
+            \label{eq:confidence}
+            C_i = 1 / seed's\ group\ with \ i \ size
+        \end{equation}
+
+        $C=0$ corresponds to a non-seed node, while $C=1$ represents an independent node. 
+
+
+
+        \begin{equation}
+            \label{eq:mi_complementarity}
+            MI_{Complementarity} = \frac{ | SeedSet_A \cap \neg SeedSet_B | }{ | SeedSet_A \cap (SeedSet_B \cup \neg SeedSet_B) | }
+        \end{equation}
+
+
+        As also described in~\cite{phylomint_ms}, it is calculated as the proportion of compounds in a species' seed set that coincide with those in an other's, while also factoring in the confidence scores associated with seed compounds.
+
+        \begin{equation}
+            \label{eq:mi_competition}
+            MI_{Competition} = \frac{ \sum C (SeedSet_A \cap SeedSet_B) }{ \sum{ C (SeedSet_A )} }
+        \end{equation}
+
+
+    \subsection*{Background on pathway complementarity}
+    \label{app:pathcompl}
+
+
+        For a genome to have a KEGG module~\textit{complete} means it affords at least one complete~\textit{alternative}.
+        Based on the module's definition, alternatives are considered as the unique combinations of KOs that will enable the module.
+        For example, the definition of the D-Galacturonate degradation in Bacteria (\href{https://www.genome.jp/dbget-bin/www_bget?M00631}{M00631}) is:
+        \bigskip
+        \begin{verbatim}    K01812 K00041 (K01685,K16849+K16850) K00874 (K01625,K17463)\end{verbatim}
+        \bigskip
+        
+        Once breaking down, it leads to 4 alternative sets of KOs (pathways):
+
+        \bigskip
+        \begin{verbatim}
+        K01812 K00041 K01685 K00874 K01625
+        K01812 K00041 K16849+K16850 K00874 K01625
+        K01812 K00041 K01685 K00874 K17463
+        K01812 K00041 K16849+K16850 K00874 K17463
+        \end{verbatim}
+        \bigskip
+
+
+        In alternatives two and four, the K16849+K16850 is a complex, meaning both KO terms are required for the step to be available.
+
 
         
+        KEGG compound 
+        ModelSEED compounds
+        ModelSEED compounds mapped to KEGG compounds and kept only those related to KEGG modules. 
 
-    \subsection*{\microbetag CytoscapeApp}
-    \label{subsec:cytoapp}
 
-        Overall comment, the CytoscapeApp returns averages and s.d. for example in seed scores. 
-        If you want the exact values, go through the API. 
+
+
+    \subsection*{Validation}
+    \label{app:val}
+
+            % Variovorax genomes
+            \begin{table}[h!]
+                \begin{minipage}[t]{\columnwidth}
+                    \centering
+                    \caption{\textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}
+                \end{minipage}
+                \label{tab:VariovoraxGenomes}
+                \begin{tabular}{rrr}
+                \thead{Genome}  & \thead{md:M00119} & \thead{md:M00913} \\
+                \toprule
+                GCA\_004210915.1 & incomplete             & complete               \\
+                GCA\_902506565.1 & incomplete             & incomplete             \\
+                GCF\_000184745.1 & complete               & complete               \\
+                GCF\_000282635.1 & complete               & complete               \\
+                GCF\_000463015.1 & complete               & complete               \\
+                GCF\_000834655.1 & complete               & complete               \\
+                GCF\_001424835.1 & complete               & complete               \\
+                GCF\_001425205.1 & complete               & complete               \\
+                GCF\_001426505.1 & complete               & complete               \\
+                GCF\_001577265.1 & incomplete             & incomplete             \\
+                GCF\_002157355.1 & complete               & complete               \\
+                GCF\_002754375.1 & complete               & complete               \\
+                GCF\_003019815.1 & incomplete             & complete               \\
+                GCF\_003852515.1 & complete               & complete               \\
+                GCF\_003951285.1 & complete               & complete               \\
+                GCF\_003952165.1 & complete               & complete               \\
+                GCF\_003952185.1 & complete               & complete               \\
+                GCF\_003984625.1 & complete               & complete               \\
+                GCF\_003984645.1 & complete               & complete               \\
+                GCF\_006438845.1 & complete               & complete               \\
+                GCF\_007828835.1 & complete               & complete               \\
+                GCF\_009498455.1 & complete               & complete               \\
+                GCF\_009755665.1 & complete               & complete               \\
+                GCF\_010499245.1 & complete               & complete               \\
+                GCF\_013376045.1 & complete               & complete               \\
+                GCF\_014170375.1 & complete               & complete               \\
+                GCF\_014302995.1 & complete               & complete               \\
+                GCF\_014303735.1 & incomplete             & incomplete             \\
+                GCF\_901827175.1 & complete               & complete               \\
+                GCF\_901827205.1 & complete               & complete              
+                \end{tabular}
+            \end{table}
+    
+
+    \subsection*{software development}
+    \label{app:software}
+
+
+
+        \begin{figure}[H]
+            \includegraphics*[width=0.9\columnwidth]{figs/architecture.png}
+            \caption{
+                \microbetag software ecosystem.
+            }
+        \label{fig:s1}
+        \end{figure}
+
+
+
+        Time performance using various datasets 
+
+
 
         % -----------
         % stats table
         % -----------
-        \begin{table}[ht]
+        \begin{table}[h!]
             % \centeringe
             \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
 
@@ -720,430 +1248,15 @@
                 *specs of the laptop used.
                 Docker image on HP*
             }
-            \label{tab:grid}            
-        \end{table}
-        
-
-
-
-        The app was based on the StringApp and supported by the NRNB group.
-
-
-    \subsection*{Validation of \microbetag potential}
-    \label{subsec:validation}
-
-
-        vitamin dataset~\cite{hessler2023vitamin}
-        supplementary file~\ref{suppl:valAnnotNet}
-
-
-        Metagenomic or metabarcoding data are often used to predict microbial interactions in complex communities, but these predictions are rarely explored experimentally. 
-        Here, we use an organism abundance correlation network to investigate factors that control community organization in mine tailings-derived laboratory microbial consortia grown under dozens of conditions.
-
-        The network is overlaid with metagenomic information about functional capacities to generate testable hypotheses.
-
-
-        Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}~\footnote{to understand our findings}
-
-
-
-
-        % C01081: Thiamin monophosphate;
-        % \href{https://www.genome.jp/module/M00899+C01081}{Thiamine salvage pathway, HMP/HET => TMP}
-        % \href{https://www.genome.jp/module/M00898+C01081}{Thiamine biosynthesis, pyridoxal-5P => TMP/thiamine/TPP}
-        % \href{https://www.genome.jp/module/M00897+C01081}{Thiamine biosynthesis, plants, AIR (+ NAD+) => TMP/thiamine/TPP}
-        % \href{https://www.genome.jp/module/M00896+C01081}{Thiamine biosynthesis, archaea, AIR (+ NAD+) => TMP/TPP}
-        % \href{https://www.genome.jp/module/M00895+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
-        % \href{https://www.genome.jp/module/M00127+C01081}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
-
-
-        % C15809:
-        % \href{https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0079786.g005}{thiamine biosynthesis pathway with Iminoglycine }
-
-        % C04327: 4-Methyl-5-(2-phosphooxyethyl)thiazole;
-        % C01279: 4-Amino-5-hydroxymethyl-2-methylpyrimidine;
-        % \href{https://www.genome.jp/module/M00899+C04327}{thiamine salvage pathway}
-
-
-        % C20246: 2-[(2R,5Z)-2-Carboxy-4-methylthiazol-5(2H)-ylidene]ethyl phosphate;
-        % \href{https://www.genome.jp/module/M00127+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
-        % \href{https://www.genome.jp/module/M00895+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
-
-
-        % Table for Variovorax - thiamine and neighbors
-        \begin{table}[ht]
-        \begin{minipage}{\linewidth}
-            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
-                \begin{tabular}{c|c}
-                    \begin{tabular}{l l l r}
-                        \multicolumn{4}{c}{A. \textit{Variovorax} thiamine-related benefits to its neighbors} \\
-                        \toprule
-                        \thead{Neighboring taxon} & \thead{node id} & \thead{KEGG compounds} & \thead{url} \\
-                        \midrule
-        
-                        \textit{Kapabacteria thiocyanatum}  & bin\_59  &   C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-        
-                        \textit{Terrimonas ferruginea}      & bin\_100 &  C15809;C01081    & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/}{url}  \\
-        
-                        \textit{Tahibacter} sp001725155     & bin\_167 &  C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}  \\
-        
-                        \textit{Microbacterium} sp900156455 & bin\_28  &  C15809; C20246  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04327%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C20246%09%23ff0000/C15809%09%23ff0000/C20246%09%23ff0000/}{url}  \\
-        
-                        \textit{Sphingobium} sp001899715    & bin\_155 &   Iminoglycine C15809;    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-        
-                        \textit{Nitrosospira} sp001899235   & bin\_176 &  None  &  None \\
-        
-                        62-47 sp001899255*                  & bin\_233 &  None  &  None  \\
-        
-                        \textit{Bosea} sp001898115          & bin\_273 & C04327;C01279 & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01279%09%23ff0000/C04327%09%23ff0000/}{url}  \\
-        
-                        54-19 sp001898225**                 & bin\_41  &  C15809   & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}   \\
-        
-                        \textit{Rhodoglobus} sp001725325    & bin\_8   &  C15809  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-                        \bottomrule
-                    \end{tabular} &
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{B. Neighbors thiamine-related benefits among them } \\
-                        \toprule
-                        \thead{Beneficiary} & \thead{Donor} & \thead{potential complement} \\
-                        \toprule
-                        \textit{T. ferruginea} & Tahibacter & C01081 \\
-                        \textit{T. ferruginea} & Rhodoglobus & C01081 \\
-                        Nitrosospira & Bosea sp001898115 & C04327;C01279 \\
-                        Chloroflexi & Bosea sp001898115 & C15809 \\
-                        Chloroflexi & Xanthobacteraceae & C15809 \\
-                        Chloroflexi & Nitrosospira & C15809 \\
-                    \end{tabular} \\
-                \end{tabular} \\
-            \end{adjustbox}
-            \caption{
-                Computing times per step using an abundance table of 400 taxa with taxonomy: 
-                A. taxonomy scheme 
-                B. 
-            }
-            \label{tab:grid}
-
-        \end{minipage}
-    \end{table}
-
-
-
-        Regarding pantothenate, the Variovorax genome mapped from GTDB-tk \(GCA\_001899795.\)
-        brings two complete KEGG modules for that....
-
-        \>\>\> a["md:M00119"] \\
-        \{'0': 'K01918', '1': 'K00826', '2': 'K00077', '3': 'K00606'\} \\
-        \>\>\> a["md:M00913"] \\
-        \{'0': 'K01918', '1': 'K00077', '2': 'K00128', '3': 'K00606'\} \\
-
-        thus either some Variovorax species can actually produce that or this is a limitation of our method 
-        In fact, \textit{Variovorax} seems to be able to benefit some partners of their. 
-
-
-
-        \begin{figure}[h!]
-            \includegraphics*[width=0.8\columnwidth]{figs/cyPanels.png}
-            \centering
-            \caption{
-                CyPanels of the MGG CytoscapeApp. 
-            }
-            \label{fig:panels}
-        \end{figure}
-
-
-
-
-        From the hub species: 
-        % \begin{itemize}
-        %         node        taxonomy                                role 
-        %     \item bin\_54  d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Alphaproteobacteria;o\_\_Acetobacterales;f\_\_Acetobacteraceae;g\_\_70-18;s\_\_70-18 sp001899585
-        %     \item bin\__55 s__Variovorax sp001899795 serves thiamine 
-        %     \item bin\_116 Novosphingobium sp001898925
-        %     \item bin\_176 Nitrosospira sp001899235   
-        %     \item bin\_206 Mesorhizobium sp001899205
-        %     \item bin\_215 d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Gammaproteobacteria;o\_\_Xanthomonadales;f\_\_Rhodanobacteraceae;g\_\_66-474;s\_\_66-474 sp001899805
-        %     \item bin\_221 Chitinophagaceae;g\_\_Palsa-955;s\_\_     not a genome 
-        %     \item bin\_261 Comamonas C sp001725255         GTDB genome that would be assigned \href{https://gtdb.ecogenomic.org/genome?gid=GCA_001725255.1}{GCA_001725255.1} but has a completeness of 94.59\%
-
-        % \end{itemize}
-
-
-
-
-        % Please add the following required packages to your document preamble:
-        % \usepackage[table,xcdraw]{xcolor}
-        % Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
-        \begin{table}[]
-            \begin{minipage}[t]{\columnwidth}
-                \centering
-                \caption{\textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}
-            \end{minipage}
-            \label{tab:Variovorax}
-            \begin{tabular}{rrr}
-            \thead{Genome}  & \thead{md:M00119} & \thead{md:M00913} \\
-            \toprule
-            GCA\_004210915.1 & incomplete             & complete               \\
-            GCA\_902506565.1 & incomplete             & incomplete             \\
-            GCF\_000184745.1 & complete               & complete               \\
-            GCF\_000282635.1 & complete               & complete               \\
-            GCF\_000463015.1 & complete               & complete               \\
-            GCF\_000834655.1 & complete               & complete               \\
-            GCF\_001424835.1 & complete               & complete               \\
-            GCF\_001425205.1 & complete               & complete               \\
-            GCF\_001426505.1 & complete               & complete               \\
-            GCF\_001577265.1 & incomplete             & incomplete             \\
-            GCF\_002157355.1 & complete               & complete               \\
-            GCF\_002754375.1 & complete               & complete               \\
-            GCF\_003019815.1 & incomplete             & complete               \\
-            GCF\_003852515.1 & complete               & complete               \\
-            GCF\_003951285.1 & complete               & complete               \\
-            GCF\_003952165.1 & complete               & complete               \\
-            GCF\_003952185.1 & complete               & complete               \\
-            GCF\_003984625.1 & complete               & complete               \\
-            GCF\_003984645.1 & complete               & complete               \\
-            GCF\_006438845.1 & complete               & complete               \\
-            GCF\_007828835.1 & complete               & complete               \\
-            GCF\_009498455.1 & complete               & complete               \\
-            GCF\_009755665.1 & complete               & complete               \\
-            GCF\_010499245.1 & complete               & complete               \\
-            GCF\_013376045.1 & complete               & complete               \\
-            GCF\_014170375.1 & complete               & complete               \\
-            GCF\_014302995.1 & complete               & complete               \\
-            GCF\_014303735.1 & incomplete             & incomplete             \\
-            GCF\_901827175.1 & complete               & complete               \\
-            GCF\_901827205.1 & complete               & complete              
-            \end{tabular}
+            \label{sup.tab:times}
         \end{table}
 
 
 
+        \clearpage
 
 
-% ====================================================
-% Discussion
-% ====================================================
-\section*{Discussion
-    \footnote{
-        The user interface should be described and a discussion of the intended uses of the software, and the benefits that are envisioned, should be included, together with data on how its performance and functionality compare with, and improve, on functionally similar existing software. 
-        A case study of the use of the software may be presented. 
-        The planned future development of new features, if any, should be mentioned.
-    }
-}
-\label{sec:discussion}
 
-    \subsection*{Interpreting a real-world network with \microbetag}
-    \label{subsec:usecase}
-
-
-        Annelies' dataset. 
-
-
-    \subsection*{\microbetag as a resource }
-    \label{subsec:resource}
-
-        Eco-evolutionary studies 
-        Distribution of the complements among taxa // su
-
-
-    \subsection*{Limitations}
-    \label{subsec:limitations}
-
-
-        As shown in~\cite{chklovski2023checkm2} (see Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness \~65\%.
-        \microbetag inherits this in the filtering process for getting only high quality genomes and thus, only few representatives from these taxonomic groups are present on microbetagDB.
-
-
-        It is well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}
-        Pairwise relationships do not capture more complex forms of ecological interactions, in which one species depends on (or is influenced by) multiple other species.~\cite{faust2012microbialReviewInteractions}
-    
-
-
-
-
-    \subsection*{Future work}
-    \label{subsec:future}
-
-
-        Further indices using the seed concept have been also presented such as the metabolic interaction potential ($MIP$) and the metabolic resource overlap ($MRO$).
-        $MIP$ is defined as the difference between the minimal number of components required for the growth of all members in a noninteracting community and an interacting community, i.e. the maximum number of essential nutritional components that a community can provide for itself through interspecies metabolic exchanges~\cite{zelezniak2015metabolic}.
-        Similarly, $MRO$ is defined as the maximum possible overlap between the minimal nutritional requirements of all member species~\cite{zelezniak2015metabolic}.
-        Regression and association rule mining~\cite{assocciationRuleMining} can be applied to address this challenge.
-
-        \begin{itemize}
-            \item pathway and seed complementarities for higher-order interactions 
-            \item spatial dimension 
-            \item transcriptomics data integration: compare potential complementarities with what is going on 
-            \item 
-        \end{itemize}
-
-
-
-
-% ====================================================
-% Conclusions
-% ====================================================
-\section*{Conclusions}
-\label{sec:conclusions}
-
-    \footnote{
-        This should state clearly the main conclusions and provide an explanation of the importance and relevance of the case, data, opinion, database or software reported.
-    }
-
-    Data integration 
-
-
-
-
-\backmatter
-
-
-
-\bmhead{Supplementary information}
-    \label{supplementary-files}
-    \footnote{
-        If your article has accompanying supplementary file(s) please state so here.
-        E.g. supplementary figures and tables captions. 
-    }
-
-
-
-% ====================================================
-% Declarations
-% ====================================================
-\section*{Declarations}
-
-
-    \begin{itemize}
-
-        \item \textbf{Availability of data and materials}
-
-            \begin{itemize}
-                \item Raw sequences for the use case: 
-                \item Raw data for the validations case:
-            \end{itemize}
-
-        \item \textbf{Funding}
-        
-            This work was initiated thanks to an EMBO Scientific Exchange Grant to HZ. 
-            It was then supported by the 3D’omics Horizon project (101000309). 
-            We would also like to thank the National Resource for Network Biology (NRNB) and the Google Summer of Code 2023 for the support of E.I.M.D.
-
-        \item \textbf{Conflict of interest/Competing interests} 
-
-            The authors declare that they have no other competing interests.
-
-        \item \textbf{Authors' contributions}
-            \footnote{Based on the \href{https://www-elsevier-com.kuleuven.e-bronnen.be/researcher/author/policies-and-guidelines/credit-author-statement}{CRediT system}. Current list is indicative.}
-
-            Conceptualization: K.F.
-            Methodology: K.F. and H.Z.
-            Software: H.Z., E.I.M.D. and J.M
-            Validation: H.Z. and K.F.
-            Formal analysis: H.Z. and K.F.
-            Investigation: H.Z.
-            Resources: K.F., A.E. and A.G.
-            Data Curation: H.Z.
-            Writing - Original Draft: H.Z. and K.F. 
-            Writing - Review \& Editing: all
-            Visualization: H.Z.
-            Supervision: K.F., H.Z. and S.M.
-            Project administration: K.F.
-            Funding acquisition: K.F., H.Z.
-
-
-        \item \textbf{Acknowledgements}
-
-            We would like to thank Dr Christina Pavloudi and ++ for the insight on how to organise the trait groups.
-
-
-        \item \textbf{Ethics approval}
-
-            Not applicable
-
-        \item \textbf{Consent to participate}
-        
-            Not applicable.
-
-        \item \textbf{Code availability: }
-
-            \begin{itemize}
-                \item microbetagDB related scripts: \href{https://github.com/hariszaf/microbetag}{https://github.com/hariszaf/microbetag}
-                \item microbetagApp and webserver: \href{https://github.com/msysbio/microbetagApp}{https://github.com/msysbio/microbetagApp}.
-                \item CytoscapeApp: \href{https://github.com/ermismd/MGG/}{https://github.com/ermismd/MGG/}
-                \item Validation and use case: <think of having that under the 3D'omics organization> 
-                \item Documentation web-site: \href{https://hariszaf.github.io/microbetag/}{https://hariszaf.github.io/microbetag/}
-            \end{itemize}
-
-    \end{itemize}
-
-
-% ====================================================
-% Appendices
-% ====================================================
-\begin{appendices}
-
-    \section{Mappings}
-    \label{secA1}
-        $n:1$
-        $n:n$ etc
-
-    \section{Background on seed scores and complementarities}
-    \label{secA2}
-
-        \subsection{Background on seed scores}
-
-            In that case, once a seed is assured, it activates all the rest of that group.
-            Therefore, a confidence level ($C$) ranging from 0 to 1, has been previously described to quantify the relevance of each seed:
-
-            \begin{equation}
-                \label{eq:confidence}
-                C_i = 1 / seed's\ group\ with \ i \ size
-            \end{equation}
-
-            $C=0$ corresponds to a non-seed node, while $C=1$ represents an independent node. 
-
-
-
-            \begin{equation}
-                \label{eq:mi_complementarity}
-                MI_{Complementarity} = \frac{ | SeedSet_A \cap \neg SeedSet_B | }{ | SeedSet_A \cap (SeedSet_B \cup \neg SeedSet_B) | }
-            \end{equation}
-
-
-            As also described in~\cite{phylomint_ms}, it is calculated as the proportion of compounds in a species' seed set that coincide with those in an other's, while also factoring in the confidence scores associated with seed compounds.
-
-            \begin{equation}
-                \label{eq:mi_competition}
-                MI_{Competition} = \frac{ \sum C (SeedSet_A \cap SeedSet_B) }{ \sum{ C (SeedSet_A )} }
-            \end{equation}
-
-
-        \subsection{Background on pathway complementarity}
-
-            For example, the definition of the D-Galacturonate degradation in Bacteria (\href{https://www.genome.jp/dbget-bin/www_bget?M00631}{M00631}) is: \vspace{0.35cm}
-
-
-            \makebox[1in][l]{K01812 K00041 (K01685,K16849+K16850) K00874 (K01625,K17463)}
-            
-            % \vspace{0.25cm}
-            \begin{flushleft}
-                that once breaking down, it leads to 4 alternative sets of KOs (pathways):\vspace{0.25cm}
-            \end{flushleft} 
-
-            K01812 K00041 K01685 K00874 K01625\vspace{0.25cm}
-
-            K01812 K00041 K16849+K16850 K00874 K01625\vspace{0.25cm}
-
-            K01812 K00041 K01685 K00874 K17463\vspace{0.25cm}
-
-            K01812 K00041 K16849+K16850 K00874 K17463\vspace{0.5cm}
-
-
-        \subsection{Complementarities}
-            
-            KEGG compound 
-            ModelSEED compounds
-            ModelSEED compounds mapped to KEGG compounds and kept only those related to KEGG modules. 
 
 
 \end{appendices}
@@ -1152,6 +1265,7 @@
 % ======================
 % Bibliography
 % ======================
+\newpage
 \bibliography{sn-bibliography}
 
 

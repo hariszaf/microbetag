@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{68}
+\begin{thebibliography}{74}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -840,6 +840,17 @@ e14396 MICROBIO-2023-392.R1
 \endbibitem
 
 %%% 46
+\bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
+\begin{botherref}
+\oauthor{\bsnm{Wright}, \binits{E.S.}}:
+Using decipher v2. 0 to analyze big biological sequence data in r.
+R Journal
+\textbf{8}(1)
+(2016)
+\end{botherref}
+\endbibitem
+
+%%% 47
 \bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
 \begin{barticle}
 \bauthor{\bsnm{Sunagawa}, \binits{S.}},
@@ -860,7 +871,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 47
+%%% 48
 \bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
 \begin{barticle}
 \bauthor{\bsnm{Louca}, \binits{S.}},
@@ -874,7 +885,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 48
+%%% 49
 \bibitem[\protect\citeauthoryear{Douglas et~al.}{2020}]{douglas2020picrust2}
 \begin{barticle}
 \bauthor{\bsnm{Douglas}, \binits{G.M.}},
@@ -893,7 +904,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 49
+%%% 50
 \bibitem[\protect\citeauthoryear{Feldbauer
   et~al.}{2015}]{feldbauer2015prediction}
 \begin{barticle}
@@ -909,7 +920,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 50
+%%% 51
 \bibitem[\protect\citeauthoryear{Huerta-Cepas et~al.}{2019}]{huerta2019eggnog}
 \begin{barticle}
 \bauthor{\bsnm{Huerta-Cepas}, \binits{J.}},
@@ -931,7 +942,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 51
+%%% 52
 \bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
 \begin{barticle}
 \bauthor{\bsnm{Muto}, \binits{A.}},
@@ -949,7 +960,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 52
+%%% 53
 \bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
 \begin{barticle}
 \bauthor{\bsnm{Aramaki}, \binits{T.}},
@@ -968,7 +979,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 53
+%%% 54
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -985,7 +996,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 54
+%%% 55
 \bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -998,7 +1009,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 55
+%%% 56
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -1012,7 +1023,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 56
+%%% 57
 \bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
 \begin{barticle}
 \bauthor{\bsnm{Lam}, \binits{T.J.}},
@@ -1028,7 +1039,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 57
+%%% 58
 \bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
 \begin{barticle}
 \bauthor{\bsnm{Henry}, \binits{C.S.}},
@@ -1046,7 +1057,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 58
+%%% 59
 \bibitem[\protect\citeauthoryear{Overbeek et~al.}{2014}]{overbeek2014seed}
 \begin{barticle}
 \bauthor{\bsnm{Overbeek}, \binits{R.}},
@@ -1068,7 +1079,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 59
+%%% 60
 \bibitem[\protect\citeauthoryear{Brettin et~al.}{2015}]{brettin2015rasttk}
 \begin{barticle}
 \bauthor{\bsnm{Brettin}, \binits{T.}},
@@ -1088,23 +1099,6 @@ e14396 MICROBIO-2023-392.R1
 \bfpage{1}--\blpage{6}
 (\byear{2015})
 \end{barticle}
-\endbibitem
-
-%%% 60
-\bibitem[\protect\citeauthoryear{Choudhary
-  et~al.}{2021}]{choudhary2021scnetviz}
-\begin{botherref}
-\oauthor{\bsnm{Choudhary}, \binits{K.}},
-\oauthor{\bsnm{Meng}, \binits{E.C.}},
-\oauthor{\bsnm{Diaz-Mejia}, \binits{J.J.}},
-\oauthor{\bsnm{Bader}, \binits{G.D.}},
-\oauthor{\bsnm{Pico}, \binits{A.R.}},
-\oauthor{\bsnm{Morris}, \binits{J.H.}}:
-scnetviz: from single cells to networks using cytoscape.
-F1000Research
-\textbf{10}
-(2021)
-\end{botherref}
 \endbibitem
 
 %%% 61
@@ -1132,17 +1126,101 @@ Linux J.
 \endbibitem
 
 %%% 63
-\bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
+\bibitem[\protect\citeauthoryear{Choudhary
+  et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
-\oauthor{\bsnm{Wright}, \binits{E.S.}}:
-Using decipher v2. 0 to analyze big biological sequence data in r.
-R Journal
-\textbf{8}(1)
-(2016)
+\oauthor{\bsnm{Choudhary}, \binits{K.}},
+\oauthor{\bsnm{Meng}, \binits{E.C.}},
+\oauthor{\bsnm{Diaz-Mejia}, \binits{J.J.}},
+\oauthor{\bsnm{Bader}, \binits{G.D.}},
+\oauthor{\bsnm{Pico}, \binits{A.R.}},
+\oauthor{\bsnm{Morris}, \binits{J.H.}}:
+scnetviz: from single cells to networks using cytoscape.
+F1000Research
+\textbf{10}
+(2021)
 \end{botherref}
 \endbibitem
 
 %%% 64
+\bibitem[\protect\citeauthoryear{Chaumeil et~al.}{2020}]{chaumeil2020gtdb}
+\begin{botherref}
+\oauthor{\bsnm{Chaumeil}, \binits{P.-A.}},
+\oauthor{\bsnm{Mussig}, \binits{A.J.}},
+\oauthor{\bsnm{Hugenholtz}, \binits{P.}},
+\oauthor{\bsnm{Parks}, \binits{D.H.}}:
+GTDB-Tk: a toolkit to classify genomes with the Genome Taxonomy Database.
+Oxford University Press
+(2020)
+\end{botherref}
+\endbibitem
+
+%%% 65
+\bibitem[\protect\citeauthoryear{Carbajal-Rodríguez
+  et~al.}{2011}]{aerobeVariovorax}
+\begin{barticle}
+\bauthor{\bsnm{Carbajal-Rodríguez}, \binits{I.}},
+\bauthor{\bsnm{Stöveken}, \binits{N.}},
+\bauthor{\bsnm{Satola}, \binits{B.}},
+\bauthor{\bsnm{Wübbeler}, \binits{J.H.}},
+\bauthor{\bsnm{Steinbüchel}, \binits{A.}}:
+\batitle{Aerobic degradation of mercaptosuccinate by the gram-negative
+  bacterium <i>variovorax paradoxus</i> strain b4}.
+\bjtitle{Journal of Bacteriology}
+\bvolume{193}(\bissue{2}),
+\bfpage{527}--\blpage{539}
+(\byear{2011})
+\doiurl{10.1128/jb.00793-10}
+{\href{https://arxiv.org/abs/https://journals.asm.org/doi/pdf/10.1128/jb.00793-10}{{https://journals.asm.org/doi/pdf/10.1128/jb.00793-10}}}
+\end{barticle}
+\endbibitem
+
+%%% 66
+\bibitem[\protect\citeauthoryear{Sun et~al.}{2014}]{lacticVariovorax}
+\begin{barticle}
+\bauthor{\bsnm{Sun}, \binits{J.}},
+\bauthor{\bsnm{Matsumoto}, \binits{K.}},
+\bauthor{\bsnm{Nduko}, \binits{J.M.}},
+\bauthor{\bsnm{Ooi}, \binits{T.}},
+\bauthor{\bsnm{Taguchi}, \binits{S.}}:
+\batitle{Enzymatic characterization of a depolymerase from the isolated
+  bacterium variovorax sp. c34 that degrades poly(enriched
+  lactate-co-3-hydroxybutyrate)}.
+\bjtitle{Polymer Degradation and Stability}
+\bvolume{110},
+\bfpage{44}--\blpage{49}
+(\byear{2014})
+\doiurl{10.1016/j.polymdegradstab.2014.08.013}
+\end{barticle}
+\endbibitem
+
+%%% 67
+\bibitem[\protect\citeauthoryear{Astafyeva et~al.}{2022}]{t6ssVariovorax}
+\begin{barticle}
+\bauthor{\bsnm{Astafyeva}, \binits{Y.}},
+\bauthor{\bsnm{Gurschke}, \binits{M.}},
+\bauthor{\bsnm{Qi}, \binits{M.}},
+\bauthor{\bsnm{Bergmann}, \binits{L.}},
+\bauthor{\bsnm{Indenbirken}, \binits{D.}},
+\bauthor{\bsnm{Grahl}, \binits{I.}},
+\bauthor{\bsnm{Katzowitsch}, \binits{E.}},
+\bauthor{\bsnm{Reumann}, \binits{S.}},
+\bauthor{\bsnm{Hanelt}, \binits{D.}},
+\bauthor{\bsnm{Alawi}, \binits{M.}},
+\bauthor{\bsnm{Streit}, \binits{W.R.}},
+\bauthor{\bsnm{Krohn}, \binits{I.}}:
+\batitle{Microalgae and bacteria interaction—evidence for division of
+  diligence in the alga microbiota}.
+\bjtitle{Microbiology Spectrum}
+\bvolume{10}(\bissue{4}),
+\bfpage{00633}--\blpage{22}
+(\byear{2022})
+\doiurl{10.1128/spectrum.00633-22}
+{\href{https://arxiv.org/abs/https://journals.asm.org/doi/pdf/10.1128/spectrum.00633-22}{{https://journals.asm.org/doi/pdf/10.1128/spectrum.00633-22}}}
+\end{barticle}
+\endbibitem
+
+%%% 68
 \bibitem[\protect\citeauthoryear{Llavero-Pasquina
   et~al.}{2022}]{llavero2022thiamine}
 \begin{barticle}
@@ -1163,7 +1241,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 65
+%%% 69
 \bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
 \begin{barticle}
 \bauthor{\bsnm{Romine}, \binits{M.F.}},
@@ -1180,7 +1258,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 66
+%%% 70
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -1196,7 +1274,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 71
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -1213,23 +1291,52 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 68
-\bibitem[\protect\citeauthoryear{Agrawal et~al.}{1993}]{assocciationRuleMining}
-\begin{bchapter}
-\bauthor{\bsnm{Agrawal}, \binits{R.}},
-\bauthor{\bsnm{Imieli\'{n}ski}, \binits{T.}},
-\bauthor{\bsnm{Swami}, \binits{A.}}:
-\bctitle{Mining association rules between sets of items in large databases}.
-In: \bbtitle{Proceedings of the 1993 ACM SIGMOD International Conference on
-  Management of Data}.
-\bsertitle{SIGMOD '93},
-pp. \bfpage{207}--\blpage{216}.
-\bpublisher{Association for Computing Machinery},
-\blocation{New York, NY, USA}
-(\byear{1993}).
-\doiurl{10.1145/170035.170072} .
-\burl{https://doi-org.kuleuven.e-bronnen.be/10.1145/170035.170072}
-\end{bchapter}
+%%% 72
+\bibitem[\protect\citeauthoryear{Mendoza et~al.}{2019}]{mendoza2019systematic}
+\begin{barticle}
+\bauthor{\bsnm{Mendoza}, \binits{S.N.}},
+\bauthor{\bsnm{Olivier}, \binits{B.G.}},
+\bauthor{\bsnm{Molenaar}, \binits{D.}},
+\bauthor{\bsnm{Teusink}, \binits{B.}}:
+\batitle{A systematic assessment of current genome-scale metabolic
+  reconstruction tools}.
+\bjtitle{Genome biology}
+\bvolume{20}(\bissue{1}),
+\bfpage{1}--\blpage{20}
+(\byear{2019})
+\end{barticle}
+\endbibitem
+
+%%% 73
+\bibitem[\protect\citeauthoryear{Dal~Co et~al.}{2020}]{dal2020short}
+\begin{barticle}
+\bauthor{\bsnm{Dal~Co}, \binits{A.}},
+\bauthor{\bsnm{Vliet}, \binits{S.}},
+\bauthor{\bsnm{Kiviet}, \binits{D.J.}},
+\bauthor{\bsnm{Schlegel}, \binits{S.}},
+\bauthor{\bsnm{Ackermann}, \binits{M.}}:
+\batitle{Short-range interactions govern the dynamics and functions of
+  microbial communities}.
+\bjtitle{Nature ecology \& evolution}
+\bvolume{4}(\bissue{3}),
+\bfpage{366}--\blpage{375}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 74
+\bibitem[\protect\citeauthoryear{Kost et~al.}{2023}]{kost2023metabolic}
+\begin{botherref}
+\oauthor{\bsnm{Kost}, \binits{C.}},
+\oauthor{\bsnm{Patil}, \binits{K.R.}},
+\oauthor{\bsnm{Friedman}, \binits{J.}},
+\oauthor{\bsnm{Garcia}, \binits{S.L.}},
+\oauthor{\bsnm{Ralser}, \binits{M.}}:
+Metabolic exchanges are ubiquitous in natural microbial communities.
+Nature Microbiology,
+1--9
+(2023)
+\end{botherref}
 \endbibitem
 
 \end{thebibliography}
