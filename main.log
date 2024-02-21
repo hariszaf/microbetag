@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 03:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 17:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -776,69 +776,71 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \TeXr@lab=\toks55
 ) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/capt-of/capt-of.sty
 Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
+) (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/caption/subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count358
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count359
 )
 
-Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 48.
+Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 49.
 
-\c@theorem=\count358
+\c@theorem=\count360
 
-Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 51.
+Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 52.
 
-\c@example=\count359
-\c@remark=\count360
+\c@example=\count361
+\c@remark=\count362
 
-Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 54.
+Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 55.
 
-\c@definition=\count361
+\c@definition=\count363
 (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/lineno/lineno.sty
 Package: lineno 2023/05/20 line numbers on paragraphs v5.3
-\linenopenalty=\count362
+\linenopenalty=\count364
 \output=\toks56
-\linenoprevgraf=\count363
+\linenoprevgraf=\count365
 \linenumbersep=\dimen343
 \linenumberwidth=\dimen344
-\c@linenumber=\count364
-\c@pagewiselinenumber=\count365
-\c@LN@truepage=\count366
-\c@internallinenumber=\count367
-\c@internallinenumbers=\count368
+\c@linenumber=\count366
+\c@pagewiselinenumber=\count367
+\c@LN@truepage=\count368
+\c@internallinenumber=\count369
+\c@internallinenumbers=\count370
 \quotelinenumbersep=\dimen345
 \bframerule=\dimen346
 \bframesep=\dimen347
 \bframebox=\box91
-\linenoamsmath@ams@eqpen=\count369
+\linenoamsmath@ams@eqpen=\count371
 LaTeX Info: Redefining \\ on input line 3180.
 ) (/usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count370
+\l__color_backend_stack_int=\count372
 \l__pdf_internal_box=\box92
-) (main.aux
-
-LaTeX Warning: Label `fig:s1' multiply defined.
-
-)
+) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
+LaTeX Font Info:    ... okay on input line 76.
 \footinsA=\insert252
-\c@footnoteA=\count371
+\c@footnoteA=\count373
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -877,16 +879,16 @@ LaTeX Font Info:    ... okay on input line 75.
 
 (/usr/local/share/miktex-texmf/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count372
+\scratchcounter=\count374
 \scratchdimen=\dimen348
 \scratchbox=\box93
-\nofMPsegments=\count373
-\nofMParguments=\count374
+\nofMPsegments=\count375
+\nofMParguments=\count376
 \everyMPshowfont=\toks57
-\MPscratchCnt=\count375
+\MPscratchCnt=\count377
 \MPscratchDim=\dimen349
-\MPnumerator=\count376
-\makeMPintoPDFobject=\count377
+\MPnumerator=\count378
+\makeMPintoPDFobject=\count379
 \everyMPtoPDFconversion=\toks58
 ) (/usr/local/share/miktex-texmf/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -894,89 +896,89 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/share/miktex-texmf/tex/latex/00miktex/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring ON on input line 75.
+Package hyperref Info: Link coloring ON on input line 76.
  (main.out) (main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-\c@lstlisting=\count378
+\c@lstlisting=\count380
 
 
-Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 75.
+Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 76.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 172.
+LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 173.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 172.
+(Font)              size <8> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <8.43146> not available
-(Font)              size <8> substituted on input line 172.
+(Font)              size <8> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 172.
+(Font)              size <8> substituted on input line 173.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 172.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 173.
 (/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 172.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 173.
  (/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 172.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 173.
  (/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/jknappen/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 172.
+(Font)              size <8> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 172.
+(Font)              size <8> substituted on input line 173.
 
-LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 172.
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 173.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 172.
+(Font)              size <6> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <5.52061> not available
-(Font)              size <6> substituted on input line 172.
+(Font)              size <6> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 172.
+(Font)              size <6> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 172.
+(Font)              size <6> substituted on input line 173.
 
-LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 172.
+LaTeX Font Info:    Calculating math sizes for size <9.03374> on input line 173.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 172.
+(Font)              size <5> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <4.51686> not available
-(Font)              size <5> substituted on input line 172.
+(Font)              size <5> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 172.
+(Font)              size <5> substituted on input line 173.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.51686> not available
-(Font)              size <5> substituted on input line 172.
+(Font)              size <5> substituted on input line 173.
 
-<figs/figure_abstract.png, id=15, 1084.05pt x 604.2575pt>
+<figs/figure_abstract.png, id=19, 1084.05pt x 604.2575pt>
 File: figs/figure_abstract.png Graphic file (type png)
 <use figs/figure_abstract.png>
-Package pdftex.def Info: figs/figure_abstract.png  used on input line 172.
+Package pdftex.def Info: figs/figure_abstract.png  used on input line 173.
 (pdftex.def)             Requested size: 372.0pt x 207.35341pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -984,8 +986,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [1
 
 {/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map}]
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 172.
-LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 191.
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 173.
+LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 192.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -996,17 +998,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4]
-<figs/microbetag-precal.png, id=146, 1392.20125pt x 782.925pt>
+<figs/microbetag-precal.png, id=150, 1392.20125pt x 782.925pt>
 File: figs/microbetag-precal.png Graphic file (type png)
 <use figs/microbetag-precal.png>
-Package pdftex.def Info: figs/microbetag-precal.png  used on input line 336.
+Package pdftex.def Info: figs/microbetag-precal.png  used on input line 337.
 (pdftex.def)             Requested size: 334.79773pt x 188.27617pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5 <./figs/microbetag-precal.png>]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12.045> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 396.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 397.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1014,10 +1016,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
-<figs/path_complem.png, id=220, 1072.005pt x 856.19875pt>
+<figs/path_complem.png, id=223, 1072.005pt x 856.19875pt>
 File: figs/path_complem.png Graphic file (type png)
 <use figs/path_complem.png>
-Package pdftex.def Info: figs/path_complem.png  used on input line 482.
+Package pdftex.def Info: figs/path_complem.png  used on input line 483.
 (pdftex.def)             Requested size: 297.60114pt x 237.68288pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1026,10 +1028,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-<figs/microbetag-wf.png, id=257, 1304.875pt x 1221.56375pt>
+<figs/microbetag-wf.png, id=260, 1304.875pt x 1221.56375pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
-Package pdftex.def Info: figs/microbetag-wf.png  used on input line 558.
+Package pdftex.def Info: figs/microbetag-wf.png  used on input line 559.
 (pdftex.def)             Requested size: 334.79773pt x 313.42383pt.
 
 
@@ -1045,102 +1047,75 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-<figs/cyPanel.png, id=306, 427.8384pt x 653.8026pt>
+<figs/cyPanel.png, id=309, 427.8384pt x 653.8026pt>
 File: figs/cyPanel.png Graphic file (type png)
 <use figs/cyPanel.png>
-Package pdftex.def Info: figs/cyPanel.png  used on input line 656.
+Package pdftex.def Info: figs/cyPanel.png  used on input line 657.
 (pdftex.def)             Requested size: 316.20227pt x 483.22772pt.
 
 Overfull \vbox (119.4579pt too high) has occurred while \output is active []
 
  [13 <./figs/cyPanel.png>]
+Overfull \vbox (4.81123pt too high) has occurred while \output is active []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 732.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 734.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 732.
+(Font)              size <5> substituted on input line 734.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 732.
+(Font)              size <5> substituted on input line 734.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 732.
+(Font)              size <5> substituted on input line 734.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 732.
-
-
-LaTeX Warning: Reference `fig:val' on page 15 undefined on input line 764.
-
-
-LaTeX Warning: Reference `app:valAnnotNet' on page 15 undefined on input line 773.
-
-
-Underfull \hbox (badness 1142) in paragraph at lines 867--873
-\OT1/cmr/m/n/10 two com-plete KEGG mod-ules for that, ( [][]M00119[][]: Pan-tothen-ate biosyn-the-sis,
- []
-
-
-Underfull \hbox (badness 1057) in paragraph at lines 867--873
-\OT1/cmr/m/n/10 valine/L-aspartate $\OMS/cmsy/m/n/10 )$ \OT1/cmr/m/n/10 pan-tothen-ate and [][]M00913[][]: Pan-tothen-ate biosyn-the-sis, 2-
- []
+(Font)              size <5> substituted on input line 734.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
-
-Package caption Warning: \label without proper reference on input line 1147.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `tab:VariovoraxGenomes' on page 16 undefined on input line 875.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [16]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 973.
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [17]
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 966.
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<figs/architecture.png, id=416, 1506.62875pt x 1150.2975pt>
+ [19]
+<figs/architecture.png, id=425, 1506.62875pt x 1150.2975pt>
 File: figs/architecture.png Graphic file (type png)
 <use figs/architecture.png>
-Package pdftex.def Info: figs/architecture.png  used on input line 1191.
+Package pdftex.def Info: figs/architecture.png  used on input line 1189.
 (pdftex.def)             Requested size: 334.79773pt x 255.61128pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
-Overfull \vbox (179.44849pt too high) has occurred while \output is active []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [20 <./figs/architecture.png>]
-<figs/node22Neigh.png, id=433, 1431.3475pt x 863.225pt>
-File: figs/node22Neigh.png Graphic file (type png)
-<use figs/node22Neigh.png>
-Package pdftex.def Info: figs/node22Neigh.png  used on input line 1273.
+ [20]
+<figs/node55Neigh.png, id=432, 1431.3475pt x 863.225pt>
+File: figs/node55Neigh.png Graphic file (type png)
+<use figs/node55Neigh.png>
+Package pdftex.def Info: figs/node55Neigh.png  used on input line 1198.
 (pdftex.def)             Requested size: 334.79773pt x 201.90953pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21 <./figs/node22Neigh.png>] (main.bbl
+ [21 <./figs/architecture.png> <./figs/node55Neigh.png>] (main.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22
@@ -1193,27 +1168,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 1162--1177
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1200--1222
+Underfull \hbox (badness 10000) in paragraph at lines 1229--1251
 []\OT1/cmr/m/n/10 Astafyeva, Y., Gurschke, M., Qi, M., Bergmann, L., Inden-birken,
  []
 
 
-Underfull \hbox (badness 3792) in paragraph at lines 1200--1222
+Underfull \hbox (badness 3792) in paragraph at lines 1229--1251
 \OT1/cmr/m/n/10 D., Grahl, I., Kat-zow-itsch, E., Reumann, S., Hanelt, D., Alawi, M.,
  []
 
 
-Underfull \hbox (badness 4846) in paragraph at lines 1200--1222
+Underfull \hbox (badness 4846) in paragraph at lines 1229--1251
 \OT1/cmr/m/n/10 Streit, W.R., Krohn, I.: Microal-gae and bac-te-ria inter-ac-tion|evidence
  []
 
 
-Underfull \hbox (badness 6445) in paragraph at lines 1200--1222
+Underfull \hbox (badness 6445) in paragraph at lines 1229--1251
 \OT1/cmr/m/n/10 for divi-sion of dili-gence in the alga micro-biota. Micro-bi-ol-ogy Spec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1200--1222
+Underfull \hbox (badness 10000) in paragraph at lines 1229--1251
 \OT1/cmr/m/n/10 trum \OT1/cmr/bx/n/10 10\OT1/cmr/m/n/10 (4), 00633--22 (2022) [][]$https : / / doi . org / 10 . 1128 / spectrum . 00633-[]22$[][]
  []
 
@@ -1233,27 +1208,21 @@ L3 programming layer <2024-01-22>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.985pt have occurred.
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 3061870959DBBAA67982AB58C2976946;209.
+(rerunfilecheck)             Checksum: 54805EF1C40D8374A9602C6BCDF9A5CE;557.
  ) 
 Here is how much of TeX's memory you used:
- 28274 strings out of 474543
- 514566 string characters out of 5751482
- 1947975 words of memory out of 5000000
- 49825 multiletter control sequences out of 15000+600000
+ 28370 strings out of 474543
+ 516423 string characters out of 5751482
+ 1945975 words of memory out of 5000000
+ 49922 multiletter control sequences out of 15000+600000
  586937 words of font info for 154 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 99i,28n,117p,1440b,920s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,28n,117p,1440b,922s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (28 pages, 3343532 bytes).
+Output written on main.pdf (28 pages, 3346081 bytes).
 PDF statistics:
- 621 PDF objects out of 1000 (max. 8388607)
- 155 named destinations out of 1000 (max. 500000)
- 88 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 623 PDF objects out of 1000 (max. 8388607)
+ 152 named destinations out of 1000 (max. 500000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -37,6 +37,7 @@
 \usepackage{makecell}  % For \makecell command
 
 \usepackage{capt-of}
+\usepackage{subcaption} % for subtables
 
 
 \renewcommand\theadfont{\bfseries}
@@ -606,7 +607,7 @@ No subheadings.
 
 
         \microbetag is a Docker-based application.
-        We deployed the \microbetag application using Docker containers~\cite{merkel2014docker} (v24.0.2)  managed by Docker Compose (see Supplementary Figure~\ref{app:software}).
+        We deployed the \microbetag application using Docker containers~\cite{merkel2014docker} (v24.0.2)  managed by Docker Compose (see Supplementary Figure~\ref{fig:s1}).
         Docker Compose is a tool for defining and running multi-container Docker applications using a YAML file to configure the services required for the application.
         Containers of three Docker images are being used simultaneously:
         a. a~\href{https://www.mysql.com}{MySQL} database including the microbetagDB
@@ -700,7 +701,8 @@ No subheadings.
         d. a CytoscapeApp called \texttt{MGG} that enables a user-friendly invoke of the workflow and investigation of the annotated network, and
         e. a stand-alone pre-processing workflow provided as Docker image for data sets with more than $1,000$ sequence identifiers (OTUs/ASVs/bins etc.).
 
-        Currently, microbetagDB includes genome and thus annotations for more than $34,000$ genomes (Table~\ref{tab:db}) with the vast majority of those representing bacterial taxa and 364 archaeal.
+        Currently, microbetagDB includes more than $34,000$ genomes (Table~\ref{tab:db}) along with their corresponding annotations.
+        The vast majority of these genomes represent bacterial taxa and 364 archaeal.
         Presence/absence of more than 30 phenotypic traits have been predicted for those genomes.
         About 1.4 billion potential metabolic interactions leading to pathway or seed complementarities have been precomputed as well.
         Seed complements are one order of magnitude more than those corresponding to pathway complementarities as for all GENREs present in microbetagDB all pairwise complements were calculated ($33,755^2$) and stored even if empty.
@@ -718,7 +720,7 @@ No subheadings.
         The user can either assign their amplicon data to the GTDB-oriented taxonomy and/or reconstruct a network locally. 
         Once a network is available and the taxonomy used is among the standard ones for \microbetag, the computational time required for annotation ranges from several seconds to a few minutes based on user's settings.
         An annotated network in \texttt{cx2} format is returned which can be viewed on Cytoscape.
-        A tutorial, frequently asked questions and hints to address the idiosyncrasy of various data sets are available on the~\textit{https://hariszaf.github.io/microbetag/}{ReadTheDocs web site} while a Gitter community allows users to exchange experience and ask for more specific help.
+        A tutorial, frequently asked questions and hints to address the idiosyncrasy of various data sets are available on the~\href{https://hariszaf.github.io/microbetag/}{ReadTheDocs web site} while a Gitter community allows users to exchange experience and ask for more specific help.
         In the following two sections we present a validation and a use case, highlighting the potential of our approach.
 
         % --------------------
@@ -746,38 +748,35 @@ No subheadings.
         \end{table}
 
 
-
-
-        
-
-
-    \subsection*{Validation of \microbetag potential}
+    \subsection*{A validation case}
     \label{subsec:validation}
 
 
         To validate \microbetag we used the correlation network of Hessler et~\textit{al.}~\cite{hessler2023vitamin} describing mine tailing-derived laboratory microbial consortia.
         In this study, \textit{Variovorax}, a thiamine producer, and its co-occurrence with a series of thiamine auxotrophs are discussed.
-        The study was selected as a validation case as the authors tested network's predictions by performing co-culture experimnets measuring the thiamine production. 
-        Both bins sequences corrensponding to network's nodes and the original network were retrieved. 
-        Using GTDB-tk~\cite{chaumeil2020gtdb} bins were annotated to GTDB taxonomies.
-        Taxonomies retrieved for each bin were added in the original network which was then annotated with~\microbetag.
-        Figure~\ref{fig:val} highlights bin\_55 that corresponds to \textit{Variovorax} and its first neighbors.
+        The study was selected as a validation case as the authors tested network's predictions by performing co-culture experiments measuring the thiamine production.
+        Bin sequences corresponding to network's nodes, as well as the original network, were retrieved upon communication with the study's authors. 
+        Using GTDB-tk~\cite{chaumeil2020gtdb} bins were annotated to GTDB taxonomies;those retrieved were added in the original network which was then annotated with~\microbetag.
+        Supplementary Figure~\ref{fig:s2} highlights bin\_55 that corresponds to \textit{Variovorax} and its first neighbors.
         The annotated network is available on \microbetag's \href{https://github.com/hariszaf/microbetag/blob/develop/tests/validation_case/microbetag_val.cx}{GitHub repository}.
-        GTDB-tk returned GCA\_001899795.1 as the one closer to bin\_55 assigning it as \textit{Variovorax} sp001899795.
-        \microbetag then suggested that this specific genome corresponds to an aerobe~\cite{aerobeVariovorax}, autotroph if needed~\textsubscript{autotrophVariovorax} that utilizes D-glucose, while producing ethanol and lactic acid~\cite{lacticVariovorax}. 
+        GTDB-tk returned GCA\_001899795.1 as the one closer to bin\_55 assigning it to \textit{Variovorax} sp001899795.
+        \microbetag then suggested that this specific genome corresponds to an aerobe~\cite{aerobeVariovorax}, autotroph if needed~\cite{autotrophVariovorax} that utilizes D-glucose, while producing ethanol and lactic acid~\cite{lacticVariovorax}. 
         Last, Type VI secretion system was suggested to be available on its genome~\cite{t6ssVariovorax}.
-        As shown in Table~\ref{tab:Variovorax}, \microbetag suggested several thiamine-related potential seed complements between~\textit{Variovorax} and their first neighbors on the network (Table~\ref{tab:Variovorax}.A).
-        Further,~\microbetag also suggested potential thiamine-related complements among the neighboring taxa (Table~\ref{tab:Variovorax}.B).
+
+        Hessler et~\textit{al.} argue that \textit{Variovorax} is an important thiamine source and can supply neighboring species that cannot produce it (auxotrophs). 
+        Indeed, \microbetag was able to suggest several thiamine-related potential seed complements among the potential metabolic interactions between \textit{Variovorax} and its neighbors (Table~\ref{tab:Variovorax}.A). 
+        Relative potential interactions were also found in some cases between the neighbors themselves (Table~\ref{tab:Variovorax}.B).
+        The authors also argue that isolates of that \textit{Variovorax} strain required the addition of pantothenate acid to grow. 
+        However, based on the KEGG annotation of the genome that bin\_55 was mapped to, it is enabled to perform both KEGG MODULES related to pantothenate biosynthesis,  
+        M00119 (valine/L-aspartate $\Rightarrow$ pantothenate) and 
+        M00913 (2-oxoisovalerate/spermine $\Rightarrow$ pantothenate).
+        Other genomes though, are not capable of either one or any of those (Supplementary Table)~\ref{tab:VariovoraxGenomes}.
+        This example highlights a challenge of the \microbetag approach (see Section~\ref{subsec:pot-and-limits}). 
+        The complementarities between the nodes would have been different if bin\_55 was classified as another \textit{Variovorax} genome, with incomplete modules. 
+        For example, if GCF\_001577265.1 was picked and its complementarities with the neighboring taxa were retrieved, it would have revealed that all its neighboring species can actually provide it with pantothenate (C00864) as suggested by their seed complementarities (see
+        \href{https://www.kegg.jp/kegg-bin/show_pathway?map00770/C00049%20skyblue%2Cblue/C00099%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C00010%20skyblue%2Cblue/C00882%20skyblue%2Cblue/C01134%20skyblue%2Cblue/C03492%20skyblue%2Cblue/C04352%20skyblue%2Cblue/C00099%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C05665%20skyblue%2Cblue/C00010%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00882%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C01134%20skyblue%2Cblue/C03492%20skyblue%2Cblue/C04352%20skyblue%2Cblue/C18911%20skyblue%2Cblue/C00864%09%23ff0000/C00864%09%23ff0000/C00864%09%23ff0000/}{coloured map}). 
 
 
-        supplementary file~\ref{app:valAnnotNet}
-
-
- 
-        The network is overlaid with metagenomic information about functional capacities to generate testable hypotheses.
-
-
-        Thiamine alternative pathway~\cite{llavero2022thiamine, romine2017underlying}
 
 
         % C01081: Thiamin monophosphate;
@@ -800,87 +799,71 @@ No subheadings.
         % \href{https://www.genome.jp/module/M00127+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/tyrosine) => TMP/TPP}
         % \href{https://www.genome.jp/module/M00895+C20246}{Thiamine biosynthesis, prokaryotes, AIR (+ DXP/glycine) => TMP/TPP}
 
-
-
-
         % -----------
         % Table for Variovorax - thiamine and neighbors (tab:Variovoraax)
         % -----------
         \begin{table}[ht]
-        \begin{minipage}{\linewidth}
-            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
-                \begin{tabular}{c|c}
-                    \begin{tabular}{l l l r}
-                        \multicolumn{4}{c}{A. \textit{Variovorax} thiamine-related benefits to its neighbors} \\
-                        \toprule
-                        \thead{Neighboring taxon} & \thead{node id} & \thead{KEGG compounds} & \thead{url} \\
-                        \midrule
-        
-                        \textit{Kapabacteria thiocyanatum}  & bin\_59  &   C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-        
-                        \textit{Terrimonas ferruginea}      & bin\_100 &  C15809;C01081    & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/}{url}  \\
-        
-                        \textit{Tahibacter} sp001725155     & bin\_167 &  C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}  \\
-        
-                        \textit{Microbacterium} sp900156455 & bin\_28  &  C15809; C20246  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04327%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C20246%09%23ff0000/C15809%09%23ff0000/C20246%09%23ff0000/}{url}  \\
-        
-                        \textit{Sphingobium} sp001899715    & bin\_155 &   Iminoglycine C15809;    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-        
-                        \textit{Nitrosospira} sp001899235   & bin\_176 &  None  &  None \\
-        
-                        62-47 sp001899255*                  & bin\_233 &  None  &  None  \\
-        
-                        \textit{Bosea} sp001898115          & bin\_273 & C04327;C01279 & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01279%09%23ff0000/C04327%09%23ff0000/}{url}  \\
-        
-                        54-19 sp001898225**                 & bin\_41  &  C15809   & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}   \\
-        
-                        \textit{Rhodoglobus} sp001725325    & bin\_8   &  C15809  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
-                        \bottomrule
-                    \end{tabular} &
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{B. Potential thiamine-related complements among \textit{Variovorax} neighbors} \\
-                        \toprule
-                        \thead{Beneficiary} & \thead{Donor} & \thead{potential complement} \\
-                        \toprule
-                        \textit{T. ferruginea} & \textit{Tahibacter} sp001725155 & C01081 \\
-                        \textit{T. ferruginea} & \textit{Rhodoglobus} sp001725325 & C01081 \\
-                        \textit{Nitrosospira} sp001899235 & \textit{Bosea} sp001898115 & C04327;C01279 \\
-                        Chloroflexi & \textit{Bosea} sp001898115 & C15809 \\
-                        Chloroflexi & Xanthobacteraceae & C15809 \\
-                        Chloroflexi & \textit{Nitrosospira} sp001899235 & C15809 \\
+            \begin{minipage}{\linewidth}
+                
+                \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
+                    \begin{tabular}{c|c}
+                        \begin{tabular}{l l l r}
+                            \multicolumn{4}{c}{A. \textit{Variovorax} thiamine-related benefits to its neighbors} \\
+                            \toprule
+                            \thead{Neighboring taxon} & \thead{node id} & \thead{KEGG compounds} & \thead{url} \\
+                            \midrule
+            
+                            \textit{Kapabacteria thiocyanatum}  & bin\_59  &   C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+            
+                            \textit{Terrimonas ferruginea}      & bin\_100 &  C15809;C01081    & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C15809%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/C01081%09%23ff0000/}{url}  \\
+            
+                            \textit{Tahibacter} sp001725155     & bin\_167 &  C15809    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}  \\
+            
+                            \textit{Microbacterium} sp900156455 & bin\_28  &  C15809; C20246  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04327%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C20246%09%23ff0000/C15809%09%23ff0000/C20246%09%23ff0000/}{url}  \\
+            
+                            \textit{Sphingobium} sp001899715    & bin\_155 &   Iminoglycine C15809;    &  \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+            
+                            \textit{Nitrosospira} sp001899235   & bin\_176 &  None  &  None \\
+            
+                            62-47 sp001899255*                  & bin\_233 &  None  &  None  \\
+            
+                            \textit{Bosea} sp001898115          & bin\_273 & C04327;C01279 & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C15809%20skyblue%2Cblue/C20246%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C04556%20skyblue%2Cblue/C04752%20skyblue%2Cblue/C01279%09%23ff0000/C04327%09%23ff0000/}{url}  \\
+            
+                            54-19 sp001898225**                 & bin\_41  &  C15809   & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url}   \\
+            
+                            \textit{Rhodoglobus} sp001725325    & bin\_8   &  C15809  & \href{https://www.kegg.jp/kegg-bin/show_pathway?map00730/C00068%20skyblue%2Cblue/C00082%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C11437%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C03373%20skyblue%2Cblue/C00003%20skyblue%2Cblue/C00018%20skyblue%2Cblue/C00037%20skyblue%2Cblue/C00068%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C01081%20skyblue%2Cblue/C15809%09%23ff0000/C15809%09%23ff0000/}{url} \\
+                            \bottomrule
+                        \end{tabular} &
+                        \begin{tabular}{ccc}
+                            \multicolumn{3}{c}{B. Potential thiamine-related complements among \textit{Variovorax} neighbors} \\
+                            \toprule
+                            \thead{Beneficiary} & \thead{Donor} & \thead{potential complement} \\
+                            \toprule
+                            \textit{T. ferruginea} & \textit{Tahibacter} sp001725155 & C01081 \\
+                            \textit{T. ferruginea} & \textit{Rhodoglobus} sp001725325 & C01081 \\
+                            \textit{Nitrosospira} sp001899235 & \textit{Bosea} sp001898115 & C04327;C01279 \\
+                            Chloroflexi & \textit{Bosea} sp001898115 & C15809 \\
+                            Chloroflexi & Xanthobacteraceae & C15809 \\
+                            Chloroflexi & \textit{Nitrosospira} sp001899235 & C15809 \\
+                        \end{tabular} \\
                     \end{tabular} \\
-                \end{tabular} \\
-            \end{adjustbox}
-        \end{minipage}
-        \caption{ Thiamine biosynthesis related seed complements between \textit{Variovorax} and its first closest neighbors on the network of Hessler \textit{et al.}~\cite{hessler2023vitamin} (A), and between pairs of the neighbors (B).
-        Bin sequence files were mapped against GTDB using GTDB-tk. 
-        Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225
-        }
-        \label{tab:Variovorax}
-        \end{table}
+                \end{adjustbox}
+            \caption{ 
+                Thiamine biosynthesis related seed complements between \textit{Variovorax} and its first closest neighbors on the network of Hessler \textit{et al.}~\cite{hessler2023vitamin} (A), and between pairs of the neighbors (B).
+                Bin sequence files were mapped against GTDB using GTDB-tk. 
+                Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225
+            }
+            \label{tab:Variovorax}
+            \end{minipage}
+            \end{table}
+    
+        % --- end of large table with urls ---
+    
 
 
 
 
-
-
-        Regarding pantothenate, the~\textit{Variovorax} genome mapped from GTDB-tk 
-        % \(GCA\_001899795.\)
-        brings two complete KEGG modules for that, (
-            \href{https://www.genome.jp/module/M00119+K01918+K00826+K00077+K00606}{M00119}: Pantothenate biosynthesis, valine/L-aspartate $\Rightarrow$ pantothenate and 
-            \href{https://www.genome.jp/module/M00913+K01918+K00077+K00128+K00606}{M00913}: Pantothenate biosynthesis, 2-oxoisovalerate/spermine $\Rightarrow$ pantothenate
-        )
-
-
-        thus either some Variovorax species can actually produce that or this is a limitation of our method \ref{tab:VariovoraxGenomes}
-
-        In fact, \textit{Variovorax} seems to be able to benefit some partners of their. 
-
-
-
-
-
-        From the hub species: 
+        % From the hub species: 
         % \begin{itemize}
         %         node        taxonomy                                role 
         %     \item bin\_54  d\_\_Bacteria;p\_\_Proteobacteria;c\_\_Alphaproteobacteria;o\_\_Acetobacterales;f\_\_Acetobacteraceae;g\_\_70-18;s\_\_70-18 sp001899585
@@ -918,20 +901,30 @@ No subheadings.
         from a more theoretical perspective regarding the distribution of the complements among taxonimic groups or how often a complement potentially appears, to more applicable such as eco-evolutionary studies and the investigation of established interactions.
 
         Yet, there is a number of challenges in our approach.
-        First, \microbetag inherits all the biases and drawbacks of both the data and the software it is based on. 
-        For example, regarding the genomes currently supported, and as shown in~\cite{chklovski2023checkm2} (see Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness $\sim 65\%$.
-        Thus, only few representatives from these taxonomic groups are present on microbetagDB leading to an important under-representation of Archaea.
+        First, \microbetag inherits all the biases and drawbacks of both the data and the software it is based on.
         Functional annotation comes with its own limitations.
         Some domains boast richer annotations and more comprehensive descriptions compared to others. 
         These areas exhibit a wealth of detail and employ more precise terminology, particularly for widely recognized processes.
-        In our case, pathway compelmentarity can be as accurate as the KEGG MODULE database goes and the precision of the software annotating genomes with KO terms.
+
+        In the validation case, the bin representing the \textit{Variovorax} strain was mapped to a genome that it is supposed to be able to perform the pantothenate KEGG modules.
+        Thus, the fact that it requires to get it from its environment to grow as the authors mention would not be possible to predict in the \microbetag framework. 
+        Beyond the sequencing and the annotation challenges, we also need to consider the fact that a pathway may not be fully represented from a KEGG module.
+        Of course, various factors can prevent the actual production of the enzyme even if the genetic information for that is part of a species genome.
+        % , including genetic mutations, regulatory mechanisms, or environmental conditions 
+        
+        Pathway complementarity can be as accurate as the KEGG MODULE database goes and the precision of the software annotating genomes with KO terms.
         It is well known that automated Genome-Scale Metabolic Reconstruction comes with a great number of challenges and different software for this task come with their certain limitations~\cite{mendoza2019systematic}. 
         Using ModelSEED with a complete medium may limit potential metabolic interactions but made those retrieved of higher confidence.
         % reconstructing GENREs with automatic tools is of course a challenging tasks and it is known that comes with several drawbacks that especially when producing reconstructions massively
 
         It is also well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}
         Pairwise relationships do not capture more complex forms of ecological interactions, in which one species depends on (or is influenced by) multiple other species~\cite{faust2012microbialReviewInteractions}.
-        Further, 
+
+        Last, the short number of Archaea in microbetagDB is also the result of a software - oriented limitation.
+        As shown in~\cite{chklovski2023checkm2} (Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still being used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness $\sim 65\%$.
+        Thus, only few representatives from these taxonomic groups passed our filters leading to an important under-representation of Archaea.
+
+
 
 
     \subsection*{Future work}
@@ -986,6 +979,8 @@ No subheadings.
     List of supplementary figures and tables.
 
     \textbf{Supplementary Figure 1:} \microbetag software ecosystem architecture.
+
+    \textbf{Supplementary Figure 2:} \textit{Variovorax} (node\_55) and its closest neighbors. \textit{Variovorax} annotations are shown in the node CyPanel.
 
     \textbf{Supplementary Table 1:} \textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate - 
     related KEGG modules
@@ -1070,8 +1065,6 @@ No subheadings.
 % ====================================================
 \begin{appendices}
 
-    \section{}
-
     % \subsection*{Background on seed scores}
     % \label{app:seeds}
 
@@ -1102,7 +1095,7 @@ No subheadings.
         % \end{equation}
 
 
-    \subsection*{Background on pathway and seed complementarity}
+    \section{Background on pathway and seed complementarity}
     \label{app:pathcompl}
 
         For a genome to have a KEGG module~\textit{complete} means it affords at least one complete~\textit{alternative}.
@@ -1135,58 +1128,63 @@ No subheadings.
 
 
 
-    \subsection*{Validation}
+    \section{Validation}
     \label{app:val}
 
-            % Variovorax genomes
-            \begin{table}[h!]
-                \begin{minipage}[t]{\columnwidth}
-                    \centering
-                    \caption{\textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.}
-                \end{minipage}
-                \label{tab:VariovoraxGenomes}
-                \begin{tabular}{rrr}
+        % Variovorax genomes Table - (tab:VariovoraxGenomes)
+        \begin{table}[h!]
+            % \begin{minipage}[t]{\columnwidth}
+            %     \centering
+            %     \caption{
+            %         \textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.
+            %         With bold the genome that bin\_55 was mapped to.
+            %     }
+            %     \label{tab:VariovoraxGenomes}
+            % \end{minipage}
+            \caption{
+                \textit{Variovorax} genomes present on microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules.
+                With bold the genome that bin\_55 was mapped to.
+            }
+            \label{tab:VariovoraxGenomes}
+            \begin{tabular}{rrr}
                 \thead{Genome}  & \thead{md:M00119} & \thead{md:M00913} \\
                 \toprule
-                GCA\_004210915.1 & incomplete             & complete               \\
-                GCA\_902506565.1 & incomplete             & incomplete             \\
-                GCF\_000184745.1 & complete               & complete               \\
-                GCF\_000282635.1 & complete               & complete               \\
-                GCF\_000463015.1 & complete               & complete               \\
-                GCF\_000834655.1 & complete               & complete               \\
-                GCF\_001424835.1 & complete               & complete               \\
-                GCF\_001425205.1 & complete               & complete               \\
-                GCF\_001426505.1 & complete               & complete               \\
-                GCF\_001577265.1 & incomplete             & incomplete             \\
-                GCF\_002157355.1 & complete               & complete               \\
-                GCF\_002754375.1 & complete               & complete               \\
-                GCF\_003019815.1 & incomplete             & complete               \\
-                GCF\_003852515.1 & complete               & complete               \\
-                GCF\_003951285.1 & complete               & complete               \\
-                GCF\_003952165.1 & complete               & complete               \\
-                GCF\_003952185.1 & complete               & complete               \\
-                GCF\_003984625.1 & complete               & complete               \\
-                GCF\_003984645.1 & complete               & complete               \\
-                GCF\_006438845.1 & complete               & complete               \\
-                GCF\_007828835.1 & complete               & complete               \\
-                GCF\_009498455.1 & complete               & complete               \\
-                GCF\_009755665.1 & complete               & complete               \\
-                GCF\_010499245.1 & complete               & complete               \\
-                GCF\_013376045.1 & complete               & complete               \\
-                GCF\_014170375.1 & complete               & complete               \\
-                GCF\_014302995.1 & complete               & complete               \\
-                GCF\_014303735.1 & incomplete             & incomplete             \\
-                GCF\_901827175.1 & complete               & complete               \\
+                GCA\_004210915.1 & incomplete             & complete                   \\
+                GCA\_902506565.1 & incomplete             & incomplete                 \\
+                GCF\_000184745.1 & complete               & complete                   \\
+                GCF\_000282635.1 & complete               & complete                   \\
+                GCF\_000463015.1 & complete               & complete                   \\
+                GCF\_000834655.1 & complete               & complete                   \\
+                GCF\_001424835.1 & complete               & complete                   \\
+                GCF\_001425205.1 & complete               & complete                   \\
+                GCF\_001426505.1 & complete               & complete                   \\
+                GCF\_001577265.1 & incomplete             & incomplete                 \\
+                GCF\_002157355.1 & complete               & complete                   \\
+                GCF\_002754375.1 & complete               & complete                   \\
+                GCF\_003019815.1 & incomplete             & complete                   \\
+                \textbf{GCA\_001899795.1} & \textbf{complete}    &   \textbf{complete} \\
+                GCF\_003852515.1 & complete               & complete                   \\
+                GCF\_003951285.1 & complete               & complete                   \\
+                GCF\_003952165.1 & complete               & complete                   \\
+                GCF\_003952185.1 & complete               & complete                   \\
+                GCF\_003984625.1 & complete               & complete                   \\
+                GCF\_003984645.1 & complete               & complete                   \\
+                GCF\_006438845.1 & complete               & complete                   \\
+                GCF\_007828835.1 & complete               & complete                   \\
+                GCF\_009498455.1 & complete               & complete                   \\
+                GCF\_009755665.1 & complete               & complete                   \\
+                GCF\_010499245.1 & complete               & complete                   \\
+                GCF\_013376045.1 & complete               & complete                   \\
+                GCF\_014170375.1 & complete               & complete                   \\
+                GCF\_014302995.1 & complete               & complete                   \\
+                GCF\_014303735.1 & incomplete             & incomplete                 \\
+                GCF\_901827175.1 & complete               & complete                   \\ 
                 GCF\_901827205.1 & complete               & complete              
-                \end{tabular}
-            \end{table}
+            \end{tabular}
+        \end{table}
     
 
-    \subsection*{software development}
-    \label{app:software}
-
-
-
+        % Figure for architectire - (figs:s1)
         \begin{figure}[H]
             \includegraphics*[width=0.9\columnwidth]{figs/architecture.png}
             \caption{
@@ -1194,8 +1192,17 @@ No subheadings.
             }
         \label{fig:s1}
         \end{figure}
-
-
+    
+        % Figure for Variovorax - (fig:s2)
+        \begin{figure}[H]
+            \includegraphics*[width=0.9\columnwidth]{figs/node55Neigh.png}
+            \caption{
+                \textit{Variovorax} node and its neighbors \microbetag annotated. All but three of them were not mapped to a GTDB representative genome. 
+                All edges  
+            }
+        \label{fig:s2}
+        \end{figure}
+        
 
         % Time performance using various datasets 
         % % -----------
@@ -1265,23 +1272,6 @@ No subheadings.
         %     }
         %     \label{sup.tab:times}
         % \end{table}
-
-
-
-
-        \begin{figure}[H]
-            \includegraphics*[width=0.9\columnwidth]{figs/node22Neigh.png}
-            \caption{
-                \textit{Variovorax} node and its neighbors \microbetag annotated. All but three of them were not mapped to a GTDB representative genome. 
-                All edges  
-            }
-            \label{fig:s1}
-        \end{figure}
-
-
-
-        
-
 
 
         \clearpage

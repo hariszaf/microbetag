@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{74}
+\begin{thebibliography}{73}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -1176,6 +1176,35 @@ Oxford University Press
 \endbibitem
 
 %%% 66
+\bibitem[\protect\citeauthoryear{Han et~al.}{2011}]{autotrophVariovorax}
+\begin{barticle}
+\bauthor{\bsnm{Han}, \binits{J.-I.}},
+\bauthor{\bsnm{Choi}, \binits{H.-K.}},
+\bauthor{\bsnm{Lee}, \binits{S.-W.}},
+\bauthor{\bsnm{Orwin}, \binits{P.M.}},
+\bauthor{\bsnm{Kim}, \binits{J.}},
+\bauthor{\bsnm{LaRoe}, \binits{S.L.}},
+\bauthor{\bsnm{Kim}, \binits{T.-g.}},
+\bauthor{\bsnm{O'Neil}, \binits{J.}},
+\bauthor{\bsnm{Leadbetter}, \binits{J.R.}},
+\bauthor{\bsnm{Lee}, \binits{S.Y.}},
+\bauthor{\bsnm{Hur}, \binits{C.-G.}},
+\bauthor{\bsnm{Spain}, \binits{J.C.}},
+\bauthor{\bsnm{Ovchinnikova}, \binits{G.}},
+\bauthor{\bsnm{Goodwin}, \binits{L.}},
+\bauthor{\bsnm{Han}, \binits{C.}}:
+\batitle{Complete genome sequence of the metabolically versatile plant
+  growth-promoting endophyte <i>variovorax paradoxus</i> s110}.
+\bjtitle{Journal of Bacteriology}
+\bvolume{193}(\bissue{5}),
+\bfpage{1183}--\blpage{1190}
+(\byear{2011})
+\doiurl{10.1128/jb.00925-10}
+{\href{https://arxiv.org/abs/https://journals.asm.org/doi/pdf/10.1128/jb.00925-10}{{https://journals.asm.org/doi/pdf/10.1128/jb.00925-10}}}
+\end{barticle}
+\endbibitem
+
+%%% 67
 \bibitem[\protect\citeauthoryear{Sun et~al.}{2014}]{lacticVariovorax}
 \begin{barticle}
 \bauthor{\bsnm{Sun}, \binits{J.}},
@@ -1194,7 +1223,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 68
 \bibitem[\protect\citeauthoryear{Astafyeva et~al.}{2022}]{t6ssVariovorax}
 \begin{barticle}
 \bauthor{\bsnm{Astafyeva}, \binits{Y.}},
@@ -1220,41 +1249,19 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 68
-\bibitem[\protect\citeauthoryear{Llavero-Pasquina
-  et~al.}{2022}]{llavero2022thiamine}
-\begin{barticle}
-\bauthor{\bsnm{Llavero-Pasquina}, \binits{M.}},
-\bauthor{\bsnm{Geisler}, \binits{K.}},
-\bauthor{\bsnm{Holzer}, \binits{A.}},
-\bauthor{\bsnm{Mehrshahi}, \binits{P.}},
-\bauthor{\bsnm{Mendoza-Ochoa}, \binits{G.I.}},
-\bauthor{\bsnm{Newsad}, \binits{S.A.}},
-\bauthor{\bsnm{Davey}, \binits{M.P.}},
-\bauthor{\bsnm{Smith}, \binits{A.G.}}:
-\batitle{Thiamine metabolism genes in diatoms are not regulated by thiamine
-  despite the presence of predicted riboswitches}.
-\bjtitle{New Phytologist}
-\bvolume{235}(\bissue{5}),
-\bfpage{1853}--\blpage{1867}
-(\byear{2022})
-\end{barticle}
-\endbibitem
-
 %%% 69
-\bibitem[\protect\citeauthoryear{Romine et~al.}{2017}]{romine2017underlying}
+\bibitem[\protect\citeauthoryear{Mendoza et~al.}{2019}]{mendoza2019systematic}
 \begin{barticle}
-\bauthor{\bsnm{Romine}, \binits{M.F.}},
-\bauthor{\bsnm{Rodionov}, \binits{D.A.}},
-\bauthor{\bsnm{Maezato}, \binits{Y.}},
-\bauthor{\bsnm{Osterman}, \binits{A.L.}},
-\bauthor{\bsnm{Nelson}, \binits{W.C.}}:
-\batitle{Underlying mechanisms for syntrophic metabolism of essential enzyme
-  cofactors in microbial communities}.
-\bjtitle{The ISME journal}
-\bvolume{11}(\bissue{6}),
-\bfpage{1434}--\blpage{1446}
-(\byear{2017})
+\bauthor{\bsnm{Mendoza}, \binits{S.N.}},
+\bauthor{\bsnm{Olivier}, \binits{B.G.}},
+\bauthor{\bsnm{Molenaar}, \binits{D.}},
+\bauthor{\bsnm{Teusink}, \binits{B.}}:
+\batitle{A systematic assessment of current genome-scale metabolic
+  reconstruction tools}.
+\bjtitle{Genome biology}
+\bvolume{20}(\bissue{1}),
+\bfpage{1}--\blpage{20}
+(\byear{2019})
 \end{barticle}
 \endbibitem
 
@@ -1292,22 +1299,6 @@ Oxford University Press
 \endbibitem
 
 %%% 72
-\bibitem[\protect\citeauthoryear{Mendoza et~al.}{2019}]{mendoza2019systematic}
-\begin{barticle}
-\bauthor{\bsnm{Mendoza}, \binits{S.N.}},
-\bauthor{\bsnm{Olivier}, \binits{B.G.}},
-\bauthor{\bsnm{Molenaar}, \binits{D.}},
-\bauthor{\bsnm{Teusink}, \binits{B.}}:
-\batitle{A systematic assessment of current genome-scale metabolic
-  reconstruction tools}.
-\bjtitle{Genome biology}
-\bvolume{20}(\bissue{1}),
-\bfpage{1}--\blpage{20}
-(\byear{2019})
-\end{barticle}
-\endbibitem
-
-%%% 73
 \bibitem[\protect\citeauthoryear{Dal~Co et~al.}{2020}]{dal2020short}
 \begin{barticle}
 \bauthor{\bsnm{Dal~Co}, \binits{A.}},
@@ -1324,7 +1315,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 74
+%%% 73
 \bibitem[\protect\citeauthoryear{Kost et~al.}{2023}]{kost2023metabolic}
 \begin{botherref}
 \oauthor{\bsnm{Kost}, \binits{C.}},
