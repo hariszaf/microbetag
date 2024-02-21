@@ -347,7 +347,7 @@ No subheadings.
     \subsection*{Genomes included}
     \label{subsec:genomes}
 
-        Using the Genome Taxonomy Database (GTDB) v207 \href{https://data.gtdb.ecogenomic.org/releases/release207/207.0/}{metadata files}, we retrieved the NCBI genome accessions of the high quality representative genomes, i.e. completeness $\geq 95\%$  and contamination $\leq 5\%$.
+        Using the Genome Taxonomy Database (GTDB) v207 \href{https://data.gtdb.ecogenomic.org/releases/release207/207.0/}{metadata files}, we retrieved the NCBI genome accessions of the high-quality representative genomes, i.e., completeness $\geq 95\%$  and contamination $\leq 5\%$.
         % That resulted a set of $26,778$ covering $22,009$ unique NCBI Taxonomy Ids.
         A set of $26,778$ genomes was obtained, representing $22,009$ unique NCBI Taxonomy Ids.
         Using these accession numbers, we were able to download their corresponding \texttt{.faa} files when available 
@@ -362,9 +362,9 @@ No subheadings.
 
         \microbetag maps the taxonomy of each entry in the abundance table to their corresponding NCBI Taxonomy Id and, if available, their closest GTDB representative genome(s), since several GTDB representative genomes may map to the same NCBI Taxonomy Id.
         Two well established taxonomy schemes are supported: the GTDB~\cite{parks2022gtdb} that is being broadly used for bins and/or MAGs taxonomic classification and the Silva database~\cite{quast2012silva} that is widely used in amplicon studies. Both taxonomy schemes link their taxonomies to NCBI Taxonomy Ids~\cite{schoch2020ncbi}.
-        In case none of those two taxonomies was used, and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. 
+        In case neither of those two taxonomies was used, and the abundance table contains less than 1,000 taxa, \microbetag maps the user provided taxonomies to NCBI Taxonomy. 
         %However, this is done only for abundance tables containing less the 1,000 taxa. 
-        To this end, \microbetag makes use of the~\href{https://github.com/seatgeek/thefuzz}{\texttt{fuzzywuzzy}} library that implements the Levenshtein Distance Metric to get the closest NCBI taxon name and thus its corresponding NCBI Taxonomy Id; a relatively high similarity score is used (90) to avoid false positives. 
+        To this end, \microbetag makes use of the~\href{https://github.com/seatgeek/thefuzz}{\texttt{fuzzywuzzy}} library that implements the Levenshtein Distance Metric to get the closest NCBI taxon name and thus its corresponding NCBI Taxonomy Id; a high similarity score is used (90) to avoid false positives. 
         Also, using the nodes dump file of NCBI Taxonomy, \microbetag may retrieve the child taxa of a taxon in user's data, along with their corresponding NCBI Taxonomy Ids, if requested by the user.
         % Thus, \microbetag maps a network taxon to their corresponding NCBI Taxonomy Id and if available their corresponding GTDB genomes.
         If the user provides their abundance table with taxonomies already mapped to the GTDB taxonomy, \microbetag will report the best possible annotations in a time efficient manner. 
@@ -397,7 +397,7 @@ No subheadings.
     \subsection*{\microbetag pre-processing}
     \label{subsec:preprocess}
 
-        In order to aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to train the IDTAXA classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{https:/hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
+        To aid the user to map their sequences to the GTDB taxonomy, DADA2-formatted 16S rRNA gene sequences for both bacteria and archaea~\cite{ali_alishum_2022_6655692} were used to train the IDTAXA classifier of the DECIPHER package~\cite{{murali2018idtaxa}} and are available through the~\href{https:/hub.docker.com/repository/docker/hariszaf/microbetag_prep/}{microbetag preprocess Docker image}.
         Likewise, when the abundance table consists of more than $1,000$ taxa, providing a network as an input is mandatory.
         Again, to help the user, \microbetag preprocess Docker image supports the inference of a network using FlashWeave.
 
@@ -409,11 +409,11 @@ No subheadings.
     \label{subsec:fapro}
 
         Using a set of Tara Ocean samples~\cite{sunagawa2015structure} FAPROTAX~\cite{louca2016decoupling} estimates the functional potential of the bacterial and archaeal communities, by classifying each taxonomic unit into functional group(s) based on current literature, descriptions of cultured representatives and/or manuals of systematic microbiology. 
-        In this manually curated approach, a taxon is associated with a function if and only if all the cultured species within the taxon have been shown to exhibit that function. 
+        In this manually curated approach, a taxon is associated with a function only if all the cultured species within the taxon have been shown to exhibit that function. 
         % Apparently, FAPROTAX does not support the annotation of clades with no cultured representatives that have been rising thanks to high throughput sequencing technologies.
         % Further, a taxon could be annotated with more than one functions while functional groups could be nested.
-        In its current version, FAPROTAX includes more than 80 functions based on ~7600 functional annotations and covering more than 4600 taxa.
-        Contrary to gene content based approaches, e.g. PICRUSt2~\cite{douglas2020picrust2}, FAPROTAX  estimates metabolic phenotypes based on experimental evidence. 
+        In its current version, FAPROTAX includes more than 80 functions based on ~7600 functional annotations and covers more than 4600 taxa.
+        Contrary to gene content based approaches, e.g., PICRUSt2~\cite{douglas2020picrust2}, FAPROTAX  estimates metabolic phenotypes based on experimental evidence. 
 
         \microbetag invokes the accompanying script of FAPROTAX and converts the taxonomic microbial community profile of the samples included in the user's abundance table or of the taxa present in the provided network, into putative functional profiles.
         Then, it parses FAPROTAX's sub-tables to annotate each taxonomic unit present in the user's data with all the functions for which they had a hit. 
@@ -453,10 +453,10 @@ No subheadings.
     \label{subsec:path-compl}
 
 
-        To infer potential pathway complementarities we consider the modules described in KEGG MODULES database~\cite{keggmodulesdb}.
+        To infer potential pathway complementarities, we consider the modules described in KEGG MODULES database~\cite{keggmodulesdb}.
         % as functional units to highlight can provide a valid proxy.
         A KEGG module is defined as a functional unit within the KEGG framework that represents a set of enzymes and reactions involved in a specific biological process or pathway~\cite{muto2013modular}.
-        Such a unit consists of several~\textit{steps}, each of which may have more than one molecular ways to occur (Figure~\ref{fig:pathcompl}).
+        Such a unit consists of several~\textit{steps}, each of which may have more than one molecular way to occur (Figure~\ref{fig:pathcompl}).
         A module's definition is a logical expression and consists of KOs 
         % and the following symbols:
         that may be coupled with one another as:
@@ -472,7 +472,7 @@ No subheadings.
         Given a module's definition, we will consider as an~\textit{alternative} any subset of the KO terms mentioned in the definition, 
         that has exactly one way to perform each step, provided that all the steps of the module are covered.
         % and support the functioning of all the steps of the module.
-        We define a genome as having a~\textit{complete} module, if and only if all the KOs of at least one alternative are present on the genome.
+        We define a genome as having a~\textit{complete} module, only if all the KOs of at least one alternative are present on it.
         In Appendix~\ref{app:pathcompl} we show an example of a module along with its alternatives.
 
         Within this framework,~\texttt{kofamscan}~\cite{aramaki2020kofamkoala} was used to annotate with KEGG ORTHOLOGY terms (KOs) the $16,900$ high quality GTDB representative genomes for which a~\texttt{.faa} was available~\cite{kanehisa2012kegg}.
@@ -498,7 +498,7 @@ No subheadings.
         %, i.e. alternative sets of KOs, for a module to be complete.
         % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/mappings/kegg_mappings/module_definition_map.json}{module\_definition\_map.json})
         Each pair of the KEGG annotated genomes was then investigated for potential pathway complementarities, 
-        i.e. whether a genome lacking a number of KOs ($genome_A$) to have a complete module ($module_x$) could benefit from another's species genome(s) ($genome_B$).
+        i.e., whether a genome lacking a number of KOs ($genome_A$) to have a complete module ($module_x$) could benefit from another's species genome(s) ($genome_B$).
         In that case, $genome_B$ does not necessarily have a complete alternative of $module_x$; as long as it has the missing KOs that $genome_A$ needs to complete an alternative of it, $genome_B$ potentially complements $genome_A$ with respect to $module_x$.
         In total, $341,568$ unique complementarities were exported.
         % (\href{https://github.com/hariszaf/microbetag/blob/develop/microbetagDB/scripts/pathway_complementarity.py}{\texttt{pathway\_complementarity.py}})
@@ -572,13 +572,13 @@ No subheadings.
 
 
         As shown in Figure~\ref{fig:wf}, the~\microbetag workflow expects an abundance table representing either amplicon or shotgun data.
-        If a co-occurrence network is already available the user may provide it too as input.
+        If a co-occurrence network is already available, the user may provide it too as input.
         The~\microbetag workflow will first map the taxa present on the abundance table to their corresponding GTDB representative genomes if that is possible, i.e., in case the taxonomy provided does reach the species or the strain level (see paragraph~\ref{subsec:taxonomies}).
         If a network is not provided, \microbetag will then build one using FlashWeave~\cite{flashweave_cite}. 
         Then the abundance table will be used for a literature - based annotation using FAPROTAX~\cite{louca2016decoupling}.
         This is the only annotation step that is microbetagDB independent in the framework of the web-service workflow.
         The nodes of the network will be further annotated with phenotypic traits based on the model predictions~\cite{feldbauer2015prediction}.
-        Edges linking taxa that have been assigned to the species or strain level will be then annotated with pathway and seed complementarities and with seed scores.
+        Edges linking taxa assigned to the species or strain level will be annotated with pathway and seed complementarities and seed scores.
         Last, a network clustering will be performed assigning each node to a cluster.
         The annotated network is then returned in a \texttt{.cx} format. 
         The user may skip any of these annotation steps if not needed for their analysis.
@@ -628,7 +628,7 @@ No subheadings.
 
         We developed a Cytoscape app to enable a straightforward, user-friendly way to perform the \microbetag workflow and visualise \microbetag - annotated networks.
         The \microbetag CytoscapeApp (called \texttt{MGG}) was built based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
-        A visual style was developed to facilitate in distinguishing annotated nodes and edges.
+        A visual style was developed to facilitate distinguishing annotated nodes and edges.
         Nodes are colored based on the level of the taxonomic assignment with those being annotated highlighted with green.
         Similarly, edges are light green when they carry a positive weight and red when negative. 
         Black edges denote pathway and/or seed complementarities.
@@ -1192,10 +1192,12 @@ No subheadings.
         \begin{figure}[H]
             \includegraphics*[width=0.9\columnwidth]{figs/node55Neigh.png}
             \caption{
-                \textit{Variovorax} node and its neighbors \microbetag annotated. All but three of them were not mapped to a GTDB representative genome. 
-                All edges  
+                \textit{Variovorax} node (bin\_55) and its neighbors \microbetag annotated. 
+                All but three of them were not mapped to a GTDB representative genome. 
+                Green edges represent the positive association weights. 
+                The black edges represent pairwise seed complementarities and scores.
             }
-        \label{fig:s2}
+            \label{fig:s2}
         \end{figure}
         
 

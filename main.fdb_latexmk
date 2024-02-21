@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1708534817.78083 "main.aux" "main.bbl" "main" 1708534822.22646 0
+["bibtex main"] 1708539704.83729 "main.aux" "main.bbl" "main" 1708539709.6597 0
   "./sn-bibliography.bib" 1708534817.36328 52809 2686062c00895b4228fda2bf0dd3f5ce ""
   "./sn-mathphys.bst" 1708516433.92261 64141 2560fd4f8e8321a304f732d035eb1b51 ""
-  "main.aux" 1708534821.57927 21012 190b4253b4af8d7785176ff5d5172aa1 "pdflatex"
+  "main.aux" 1708539708.94389 21262 0f24627f8059669b8ab6f72a361be99b "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1708534818.12673 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1708534822.22678 0
+["pdflatex"] 1708539705.11636 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1708539709.66005 0
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1708526462.75438 194433 74b3e6cb9916cd3c06582ae903a6c9a4 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk" 1705845194.10204 7284 e74341cad9e1a3d52c5edf6478defb50 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk" 1705845193.38605 8268 186cd7ac4660d89a304fa66d96ef384c ""
@@ -64,7 +64,7 @@
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/todonotes/todonotes.sty" 1706047395.26112 21404 916e19cbd009b6d289c8194b313d3895 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty" 1700756999.95134 10894 d359a13923460b2a73d4312d613554c8 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty" 1700663095.60704 26220 3701aebf80ccdef248c0c20dd062fea9 ""
-  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1708534816.08729 100130 791d823749bf98d9316dc638a2000e08 ""
+  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1708539699.53991 100227 4099ffdf6b797c51bef3ee276c10abc1 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1679232417.27654 1456 d21918d95ca20f07aa266303b9a0a14c ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0700.tfm" 1679232417.27654 1452 97bdc98984cb373fbcd868e2fa55f5f2 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1679232417.27654 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -254,10 +254,10 @@
   "figs/microbetag-wf.png" 1708516433.89061 825993 33eed2c70777eaa74d5ded2594eb044b ""
   "figs/node55Neigh.png" 1708516433.89461 230630 02d2e13e7808ff2e951809b2879b4a9f ""
   "figs/path_complem.png" 1708516433.89861 438344 2d73d53d8f9c05287f30be41a313213c ""
-  "main.aux" 1708534821.57927 21012 190b4253b4af8d7785176ff5d5172aa1 "pdflatex"
-  "main.bbl" 1708534818.00328 42509 cb7b0b56c996fa06c71a0586b5e7ecb1 "bibtex main"
-  "main.out" 1708534821.57927 557 54805ef1c40d8374a9602c6bcdf9a5ce "pdflatex"
-  "main.tex" 1708534816.08729 100130 791d823749bf98d9316dc638a2000e08 ""
+  "main.aux" 1708539708.94389 21262 0f24627f8059669b8ab6f72a361be99b "pdflatex"
+  "main.bbl" 1708539705.0439 42509 cb7b0b56c996fa06c71a0586b5e7ecb1 "bibtex main"
+  "main.out" 1708539708.94389 557 54805ef1c40d8374a9602c6bcdf9a5ce "pdflatex"
+  "main.tex" 1708539699.53991 100227 4099ffdf6b797c51bef3ee276c10abc1 ""
   "sn-jnl.cls" 1708516433.92261 55955 38fcab50bf900ac0998e350ba2123285 ""
   (generated)
   "main.aux"

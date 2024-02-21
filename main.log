@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 18:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 19:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1019,6 +1019,10 @@ File: figs/path_complem.png Graphic file (type png)
 Package pdftex.def Info: figs/path_complem.png  used on input line 483.
 (pdftex.def)             Requested size: 297.60114pt x 237.68288pt.
 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
@@ -1028,22 +1032,18 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-<figs/microbetag-wf.png, id=258, 1304.875pt x 1221.56375pt>
+<figs/microbetag-wf.png, id=259, 1304.875pt x 1221.56375pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
 Package pdftex.def Info: figs/microbetag-wf.png  used on input line 559.
 (pdftex.def)             Requested size: 334.79773pt x 313.42383pt.
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [10]
+ [10 <./figs/microbetag-wf.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11 <./figs/microbetag-wf.png>]
+ [11]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
@@ -1115,15 +1115,18 @@ Package pdftex.def Info: figs/node55Neigh.png  used on input line 1193.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21 <./figs/architecture.png> <./figs/node55Neigh.png>] (main.bbl
+ [21 <./figs/architecture.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [22
+ [22 <./figs/node55Neigh.png>] (main.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23
 
 ]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [23]
+ [24]
 Underfull \hbox (badness 10000) in paragraph at lines 628--647
 \OT1/cmr/m/n/10 Biotech-nol-ogy \OT1/cmr/bx/n/10 n/a\OT1/cmr/m/n/10 (n/a), 14396 [][]$https : / / doi . org / 10 . 1111 / 1751-[]7915 . 14396$[][]
  []
@@ -1136,7 +1139,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 628--647
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [24]
+ [25]
 Underfull \hbox (badness 3861) in paragraph at lines 697--714
 [][]$\OT1/cmr/m/n/10 https : / / doi . org / 10 . 1021 / ci3005379$[][] [][]https://doi.org/10.1021/ci3005379[][]. PMID:
  []
@@ -1144,10 +1147,10 @@ Underfull \hbox (badness 3861) in paragraph at lines 697--714
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [25]
+ [26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26]
+ [27]
 Underfull \hbox (badness 10000) in paragraph at lines 1162--1177
 []\OT1/cmr/m/n/10 Carbajal-Rodr^^S^^Pguez, I., St^^?oveken, N., Satola, B., W^^?ubbeler, J.H.,
  []
@@ -1195,10 +1198,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 1229--1251
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27])
+ [28])
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [28] (main.aux)
+ [29] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1212,17 +1215,17 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 54805EF1C40D8374A9602C6BCDF9A5CE;557.
  ) 
 Here is how much of TeX's memory you used:
- 28368 strings out of 474543
- 516404 string characters out of 5751482
+ 28369 strings out of 474543
+ 516411 string characters out of 5751482
  1942975 words of memory out of 5000000
  49921 multiletter control sequences out of 15000+600000
  586637 words of font info for 153 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
  99i,28n,117p,1440b,916s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (28 pages, 3330766 bytes).
+Output written on main.pdf (29 pages, 3331642 bytes).
 PDF statistics:
- 614 PDF objects out of 1000 (max. 8388607)
- 152 named destinations out of 1000 (max. 500000)
+ 618 PDF objects out of 1000 (max. 8388607)
+ 153 named destinations out of 1000 (max. 500000)
  96 words of extra memory for PDF output out of 10000 (max. 10000000)
 
