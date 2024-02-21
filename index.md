@@ -12,7 +12,7 @@ permalink: /
 background, documentation and a use case
 {: .fs-6 .fw-300 }
 
-Under development
+beta version
 {: .label .label-yellow }
 
 
@@ -107,6 +107,11 @@ docker push hariszaf/microbetag:tagname
 where `tagname` is the name of the specific version. 
 
  -->
+
+
+## Contact
+
+For hints on how to use microbetag, ideas for new features and bug reports find us on out [matrix space](https://matrix.to/#/#microbetagcommunity:matrix.org).
 
 
 
