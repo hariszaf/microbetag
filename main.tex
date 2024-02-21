@@ -533,9 +533,10 @@ No subheadings.
         For the rest of the genomes, RAST annotation was performed through RASTtk~\cite{brettin2015rasttk}.
 
         Moreover, the computed seed and the non-seed (i.e., set of metabolic compounds a genome can build on its own) sets of each genome were used to compute their overlap among all the pairwise combinations of those genomes.
-        More specifically, seed and non-seed compounds of each genome were mapped to their corresponding KO terms and those related to any KEGG MODULE were considered.
-        The latter were then used for the calculation of the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
-        \microbetag then annotates again the edges of the co-occurrence network where both taxa have been mapped to a at least one GTDB genome, mentioning all the KEGG maps for which there is at least one seed compound of the potentially beneficiary species 
+        More specifically, seed and non-seed compounds of each genome were mapped to their corresponding KO terms and those related to any KEGG MODULE were considered further.
+        Focusing on the KEGG MODULE - related KO terms as terms of interest, the overlap of ${seed\ set}_{species_A}$ with the ${non\ seed\ set}_{species_B}$ was retrieved.
+        Such \textit{seed complementarities} were calculated for all pairwise GENREs and are now available through microbetagDB.
+        Edges of the co-occurrence network where both taxa have been mapped to at least one GTDB genome can be further annotated mentioning all the KEGG maps for which there is at least one seed compound of the potentially beneficiary species. 
 
 
 
@@ -624,16 +625,28 @@ No subheadings.
     \subsection*{The \texttt{MGG} CytoscapeApp}
     \label{subsec:build-cytoapp}
 
-        \microbetag is accessible as a CytoscapeApp. 
+        We developed a Cytoscape app to enable a straightforward, user-friendly way to perform the \microbetag workflow and visualise \microbetag - annotated networks.
         The \microbetag CytoscapeApp (called \texttt{MGG}) was built based on the~\href{https://github.com/RBVI/scNetViz}{source code} of the scVizNet~\cite{choudhary2021scnetviz}.
-        A visual style was developed to facilitate the distinguish of nodes and edges annotated. 
-        \texttt{MGG} 
-        allows the user to import their data, retrieve an annotated network and investigate the annotations through a series of CyPanels both for node and edge annotations.
-        Figure~\ref{fig:panels} shows an example of the edges CyPanel. 
+        A visual style was developed to facilitate in distinguishing annotated nodes and edges.
+        Nodes are colored based on the level of the taxonomic assignment with those being annotated highlighted with green.
+        Similarly, edges are light green when they carry a positive weight and red when negative. 
+        Black edges denote pathway and/or seed complementarities.
+        The last were not added in the weight edge as the first describes an undirected relationship while the last a directed one. 
+        \texttt{MGG} allows the user to import their data, retrieve an annotated network and investigate the annotations through a series of CyPanels both for node and edge annotations.
+        Figure~\ref{fig:panels} shows an example of the CyPanels.
+        In the nodes panel (\ref{fig:panels}.A), the node name, the taxonomy as well as the NCBI Taxonomy Id and the GTDB genome to which the sequence was mapped can be viewed. 
+        Depending on the user's settings and the available annotations for a node, genomic based predictions may be present and/or literature - based ones.
+        Further, the annotation groups mentioned in paragraph~\ref{subsec:groups} are on top of this panel allowing for the selection of the nodes carrying either one among several attributes (OR logical relationship) or all of them (AND).
+        Accordingly, in the edges panel (\ref{fig:panels}.B), the beneficiary taxon is specified along with their corresponding GTDB representative sequence identifier.
+        Pathway and seed complementarities are shown each in a table.
+        Potential metabolic interactions are shown in sub-table entitled with the pair of genomes under consideration, as several GTDB genomes may have been assigned to a node.
+        In case of pathway complementarities, these tables consist of six columns: a. the KEGG MODULE id of the module to be completed, b. its description, c. a more general metabolism category the module is related to, d. the complement itself as a list of KEGG terms, e. the alternative that is now complete and allows the beneficiary to perform the module and f. a URL that points to a coloured KEGG map highlighting the complement.
+        If clicked, user's default browser pops-up showing a coloured KEGG map a part of an example is shown in Figure~\ref{fig:panels}.C.
+        Last, MGG supports enrichment analysis of the network's modes based on the phenotypic traits assigned between clusters. 
+        Clusters may have been returned from \texttt{manta}~\cite{rottjers2020manta} while performing the \microbetag workflow or users may assign them on their own or using any other network clustering algorithm.
+        For thorough instructions on how to use MGG and \microbetag the reader may visit the~\href{https://hariszaf.github.io/microbetag/docs/cytoApp/}{ReadTheDocs web site}.
 
-        The app was based on the StringApp and supported by the NRNB group.
-        The coloured URLs returned from the two complementarity modules point to KEGG maps, meaning the default browser of the user pops-up moving them to a colored KEGG map based on the complement to be viewed.
-
+        % The app was based on the StringApp and supported by the NRNB group.
         % -----------
         % MGG CyPanels figure
         % -----------
@@ -644,7 +657,7 @@ No subheadings.
             \caption{
                 CyPanels of the MGG CytoscapeApp. 
                 A. \textit{Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes.
-                PhenDB-like predicted attributes are shown along with their prediction score.
+                In this example, genomic predicted phenotypic attributes are shown along with their prediction score.
                 B. \textit{Edges} panel display the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a directed perspective on the graph. There are two cases of complementarities in the \microbetag framework. 
                 \textit{Seed complementarities} shown here are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). 
                 In the URL provided, a colored KEGG map is provided.
@@ -656,8 +669,6 @@ No subheadings.
             \thispagestyle{empty} % Remove page number
             \nolinenumbers % Disable line numbering for this page
         \end{figure}
-         
-
 
 
 \newpage
@@ -683,22 +694,32 @@ No subheadings.
     \label{subsec:running-wf}
 
         The \microbetag software ecosystem consists of five main modules:
-        a. \texttt{microbetagDb} including~\microbetag precalculations,
+        a. microbetagDb including~\microbetag precalculations,
         b. the \microbetag workflow to annotate the co-occurrence network,
-        c. a webserver hosting both the~\texttt{microbetagDB} and the~\microbetag application,
+        c. a web server hosting both the~\texttt{microbetagDB} and the~\microbetag application,
         d. a CytoscapeApp called \texttt{MGG} that enables a user-friendly invoke of the workflow and investigation of the annotated network, and
-        e. a pre-processing step for cases of more than $1,000$ sequence identifiers (OTUs/ASVs/bins etc.) available as a Docker image.
+        e. a stand-alone pre-processing workflow provided as Docker image for data sets with more than $1,000$ sequence identifiers (OTUs/ASVs/bins etc.).
 
+        Currently, microbetagDB includes genome and thus annotations for more than $34,000$ genomes (Table~\ref{tab:db}) with the vast majority of those representing bacterial taxa and 364 archaeal.
+        Presence/absence of more than 30 phenotypic traits have been predicted for those genomes.
+        About 1.4 billion potential metabolic interactions leading to pathway or seed complementarities have been precomputed as well.
+        Seed complements are one order of magnitude more than those corresponding to pathway complementarities as for all GENREs present in microbetagDB all pairwise complements were calculated ($33,755^2$) and stored even if empty.
+        In case of pathway complementarities, a genome pair is present in the database and thus counted only if a potential complementarity was found.
+        Yet, in the first case, the number of genomes with absolutely no potential seed complement ranges from zero to a few dozens.
+        A following paper on the microbetagDB content is in preparation.
+        All annotations can be accessed directly from microbetagDB through the API.
+        Using GENREs for the seed complements and not the genomes per se supports a more realistic simulation of what the corresponding taxa do need to get from the environment to grow (seeds) but also, assuming they grow what they may secrete (non-seeds).
+        However, this comes with its own challenges (see paragraph~\ref{subsec:pot-and-limits}). 
 
-
-        364 archaeal genomes only
-        annotated network returned in \texttt{.cx} format
-
-
-
-
-
-        
+        Running the \microbetag workflow is straightforward and can be done using a taxonomically assigned abundance table as input.
+        When the taxonomy scheme being used is not one among the GTDB, Silva or the GTDB-oriented taxonomy for 16S rRNA amplicon data (see pre-process paragraph~\ref{subsec:preprocess}), the most time-consuming step of the workflow is the one mapping user's taxonomy to a NCBI Taxonomy Id and from that, to GTDB representative genomes. 
+        Network inference can be a computationally intensive step too, particularly as the number of sequences in the abundance table increases. 
+        To enable annotation of large data sets, a stand-alone pre-process workflow is provided with \microbetag.
+        The user can either assign their amplicon data to the GTDB-oriented taxonomy and/or reconstruct a network locally. 
+        Once a network is available and the taxonomy used is among the standard ones for \microbetag, the computational time required for annotation ranges from several seconds to a few minutes based on user's settings.
+        An annotated network in \texttt{cx2} format is returned which can be viewed on Cytoscape.
+        A tutorial, frequently asked questions and hints to address the idiosyncrasy of various data sets are available on the~\textit{https://hariszaf.github.io/microbetag/}{ReadTheDocs web site} while a Gitter community allows users to exchange experience and ask for more specific help.
+        In the following two sections we present a validation and a use case, highlighting the potential of our approach.
 
         % --------------------
         % TABLE for microbetagDB stats (tab:db)
@@ -726,11 +747,8 @@ No subheadings.
 
 
 
-        see Supplementary Table~\ref{sup.tab:times}
 
-
-
-
+        
 
 
     \subsection*{Validation of \microbetag potential}
@@ -908,7 +926,8 @@ No subheadings.
         These areas exhibit a wealth of detail and employ more precise terminology, particularly for widely recognized processes.
         In our case, pathway compelmentarity can be as accurate as the KEGG MODULE database goes and the precision of the software annotating genomes with KO terms.
         It is well known that automated Genome-Scale Metabolic Reconstruction comes with a great number of challenges and different software for this task come with their certain limitations~\cite{mendoza2019systematic}. 
-        Using ModelSEED with a complete medium may limited potential metabolic interactions but made those retrieved of higher confidence.
+        Using ModelSEED with a complete medium may limit potential metabolic interactions but made those retrieved of higher confidence.
+        % reconstructing GENREs with automatic tools is of course a challenging tasks and it is known that comes with several drawbacks that especially when producing reconstructions massively
 
         It is also well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}
         Pairwise relationships do not capture more complex forms of ecological interactions, in which one species depends on (or is influenced by) multiple other species~\cite{faust2012microbialReviewInteractions}.
@@ -1053,39 +1072,38 @@ No subheadings.
 
     \section{}
 
-    \subsection*{Background on seed scores}
-    \label{app:seeds}
+    % \subsection*{Background on seed scores}
+    % \label{app:seeds}
 
 
-        In that case, once a seed is assured, it activates all the rest of that group.
-        Therefore, a confidence level ($C$) ranging from 0 to 1, has been previously described to quantify the relevance of each seed:
+        % In that case, once a seed is assured, it activates all the rest of that group.
+        % Therefore, a confidence level ($C$) ranging from 0 to 1, has been previously described to quantify the relevance of each seed:
 
-        \begin{equation}
-            \label{eq:confidence}
-            C_i = 1 / seed's\ group\ with \ i \ size
-        \end{equation}
+        % \begin{equation}
+        %     \label{eq:confidence}
+        %     C_i = 1 / seed's\ group\ with \ i \ size
+        % \end{equation}
 
-        $C=0$ corresponds to a non-seed node, while $C=1$ represents an independent node. 
-
-
-
-        \begin{equation}
-            \label{eq:mi_complementarity}
-            MI_{Complementarity} = \frac{ | SeedSet_A \cap \neg SeedSet_B | }{ | SeedSet_A \cap (SeedSet_B \cup \neg SeedSet_B) | }
-        \end{equation}
+        % $C=0$ corresponds to a non-seed node, while $C=1$ represents an independent node. 
 
 
-        As also described in~\cite{phylomint_ms}, it is calculated as the proportion of compounds in a species' seed set that coincide with those in an other's, while also factoring in the confidence scores associated with seed compounds.
 
-        \begin{equation}
-            \label{eq:mi_competition}
-            MI_{Competition} = \frac{ \sum C (SeedSet_A \cap SeedSet_B) }{ \sum{ C (SeedSet_A )} }
-        \end{equation}
+        % \begin{equation}
+        %     \label{eq:mi_complementarity}
+        %     MI_{Complementarity} = \frac{ | SeedSet_A \cap \neg SeedSet_B | }{ | SeedSet_A \cap (SeedSet_B \cup \neg SeedSet_B) | }
+        % \end{equation}
 
 
-    \subsection*{Background on pathway complementarity}
+        % As also described in~\cite{phylomint_ms}, it is calculated as the proportion of compounds in a species' seed set that coincide with those in an other's, while also factoring in the confidence scores associated with seed compounds.
+
+        % \begin{equation}
+        %     \label{eq:mi_competition}
+        %     MI_{Competition} = \frac{ \sum C (SeedSet_A \cap SeedSet_B) }{ \sum{ C (SeedSet_A )} }
+        % \end{equation}
+
+
+    \subsection*{Background on pathway and seed complementarity}
     \label{app:pathcompl}
-
 
         For a genome to have a KEGG module~\textit{complete} means it affords at least one complete~\textit{alternative}.
         Based on the module's definition, alternatives are considered as the unique combinations of KOs that will enable the module.
@@ -1106,13 +1124,13 @@ No subheadings.
         \bigskip
 
 
-        In alternatives two and four, the K16849+K16850 is a complex, meaning both KO terms are required for the step to be available.
+        In alternatives two and four, the K16849+K16850 is a \textit{complex}, meaning both KO terms are required for the step to be available.
 
 
-        
-        KEGG compound 
-        ModelSEED compounds
-        ModelSEED compounds mapped to KEGG compounds and kept only those related to KEGG modules. 
+        In case of seed complementarity, in the framework of \microbetag we focus on the effect that a metabolic exchange between two taxa might have if the seed of the beneficiary taxon is related to a KEGG MODULE.
+        Therefore, the KOs that were found related to modules were mapped to ModelSEED ids. 
+        The initial seed and non-seed sets that were exported as sets of ModelSEED ids were then mapped to KOs too.
+        When the non-seed set of a genome (donor) was able to provide a seed that is related to a KEGG module to another genome (beneficiary) was considered as potential metabolic interaction.
 
 
 
@@ -1179,77 +1197,90 @@ No subheadings.
 
 
 
-        Time performance using various datasets 
+        % Time performance using various datasets 
+        % % -----------
+        % % stats table
+        % % -----------
+        % \begin{table}[h!]
+        %     % \centeringe
+        %     \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
+
+        %         \begin{tabular}{c|c}
+        %             \begin{tabular}{ccc}
+        %                 \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
+        %                 \toprule
+        %                 \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+        %                 \toprule
+        %                 % \makecell[tl]
+        %                 {Taxonomy } & Cell 1,2 & on the fly\\
+        %                 {Network } & Cell 2,2 & on the fly\\
+        %                 {microbetag} & Cell 3,2 & on the fly\\
+        %                 {manta clustering} & Cell 4,2 & \\
+        %             \end{tabular} &
+        %             \begin{tabular}{ccc}
+        %                 \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
+        %                 \toprule
+        %                 \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+        %                 \toprule
+        %                 {Taxonomy assignment*} & & \\
+        %                 {Taxonomy mapping}  & & \\
+        %                 {Network inference} & & \\
+        %                 {microbetag annotations} & & \\
+        %                 {manta clustering} & & \\
+        %             \end{tabular} \\
+        %             \\
+        %             \hline
+        %             \\
+        %             \begin{tabular}{ccc}
+        %                 \multicolumn{3}{c}{C. Silva: } \\
+        %                 \toprule
+        %                 \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+        %                 \toprule
+        %                 {Taxonomy mapping} & & \\
+        %                 {Network inference} & & \\
+        %                 {microbetag annotations} & & \\
+        %                 {manta clustering} & & \\
+        %             \end{tabular} &
+        %             \begin{tabular}{ccc}
+        %                 \multicolumn{3}{c}{D. fuzzywuzzy: } \\
+        %                 \toprule
+        %                 \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
+        %                 \toprule
+        %                 {Taxonomy mapping } & & \\
+        %                 {Network inference} & & \\
+        %                 {microbetag annotations } & & \\
+        %                 {manta clustering } & & \\
+        %             \end{tabular} \\
+        %         \end{tabular}
+        %     \end{adjustbox}
+        %     \captionsetup{justification=centering} %
+        %     \caption{
+        %         Computing times per step using an abundance table of 400 taxa with taxonomy: 
+        %         A. taxonomy scheme 
+        %         B. 
+        %         C.
+        %         D. 
+        %         *specs of the laptop used.
+        %         Docker image on HP*
+        %     }
+        %     \label{sup.tab:times}
+        % \end{table}
 
 
 
-        % -----------
-        % stats table
-        % -----------
-        \begin{table}[h!]
-            % \centeringe
-            \begin{adjustbox}{width=1.3\textwidth,center=\textwidth}
 
-                \begin{tabular}{c|c}
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{A. GTDB-tk: 480 bins} \\
-                        \toprule
-                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
-                        \toprule
-                        % \makecell[tl]
-                        {Taxonomy } & Cell 1,2 & on the fly\\
-                        {Network } & Cell 2,2 & on the fly\\
-                        {microbetag} & Cell 3,2 & on the fly\\
-                        {manta clustering} & Cell 4,2 & \\
-                    \end{tabular} &
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{B. GTDB 16S: 3000 ASVs} \\
-                        \toprule
-                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
-                        \toprule
-                        {Taxonomy assignment*} & & \\
-                        {Taxonomy mapping}  & & \\
-                        {Network inference} & & \\
-                        {microbetag annotations} & & \\
-                        {manta clustering} & & \\
-                    \end{tabular} \\
-                    \\
-                    \hline
-                    \\
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{C. Silva: } \\
-                        \toprule
-                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
-                        \toprule
-                        {Taxonomy mapping} & & \\
-                        {Network inference} & & \\
-                        {microbetag annotations} & & \\
-                        {manta clustering} & & \\
-                    \end{tabular} &
-                    \begin{tabular}{ccc}
-                        \multicolumn{3}{c}{D. fuzzywuzzy: } \\
-                        \toprule
-                        \thead{Step} & \thead{Time (sec)} & \thead{Notes} \\
-                        \toprule
-                        {Taxonomy mapping } & & \\
-                        {Network inference} & & \\
-                        {microbetag annotations } & & \\
-                        {manta clustering } & & \\
-                    \end{tabular} \\
-                \end{tabular}
-            \end{adjustbox}
-            \captionsetup{justification=centering} %
+        \begin{figure}[H]
+            \includegraphics*[width=0.9\columnwidth]{figs/node22Neigh.png}
             \caption{
-                Computing times per step using an abundance table of 400 taxa with taxonomy: 
-                A. taxonomy scheme 
-                B. 
-                C.
-                D. 
-                *specs of the laptop used.
-                Docker image on HP*
+                \textit{Variovorax} node and its neighbors \microbetag annotated. All but three of them were not mapped to a GTDB representative genome. 
+                All edges  
             }
-            \label{sup.tab:times}
-        \end{table}
+            \label{fig:s1}
+        \end{figure}
+
+
+
+        
 
 
 
@@ -1271,252 +1302,3 @@ No subheadings.
 
 \end{document}
 
-
-
-
-
-
-
-
-% ----------------------- TABLES ----------------------
-% \section{Tables}\label{sec5}
-
-% Tables can be inserted via the normal table and tabular environment. To put
-% footnotes inside tables you should use \verb+\footnotetext[]{...}+ tag.
-% The footnote appears just below the table itself (refer Tables~\ref{tab1} and \ref{tab2}). 
-% For the corresponding footnotemark use \verb+\footnotemark[...]+
-
-% \begin{table}[h]
-% \caption{Caption text}\label{tab1}%
-% \begin{tabular}{@{}llll@{}}
-% \toprule
-% Column 1 & Column 2  & Column 3 & Column 4\\
-% \midrule
-% row 1    & data 1   & data 2  & data 3  \\
-% row 2    & data 4   & data 5\footnotemark[1]  & data 6  \\
-% row 3    & data 7   & data 8  & data 9\footnotemark[2]  \\
-% \botrule
-% \end{tabular}
-% \footnotetext{Source: This is an example of table footnote. This is an example of table footnote.}
-% \footnotetext[1]{Example for a first table footnote. This is an example of table footnote.}
-% \footnotetext[2]{Example for a second table footnote. This is an example of table footnote.}
-% \end{table}
-
-% \noindent
-% The input format for the above table is as follows:
-
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-% \bigskip
-% \begin{verbatim}
-% \begin{table}[<placement-specifier>]
-% \caption{<table-caption>}\label{<table-label>}%
-% \begin{tabular}{@{}llll@{}}
-% \toprule
-% Column 1 & Column 2 & Column 3 & Column 4\\
-% \midrule
-% row 1 & data 1 & data 2	 & data 3 \\
-% row 2 & data 4 & data 5\footnotemark[1] & data 6 \\
-% row 3 & data 7 & data 8	 & data 9\footnotemark[2]\\
-% \botrule
-% \end{tabular}
-% \footnotetext{Source: This is an example of table footnote. 
-% This is an example of table footnote.}
-% \footnotetext[1]{Example for a first table footnote.
-% This is an example of table footnote.}
-% \footnotetext[2]{Example for a second table footnote. 
-% This is an example of table footnote.}
-% \end{table}
-% \end{verbatim}
-% \bigskip
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-
-% \begin{table}[h]
-% \caption{Example of a lengthy table which is set to full textwidth}\label{tab2}
-% \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
-% \toprule%
-% & \multicolumn{3}{@{}c@{}}{Element 1\footnotemark[1]} & \multicolumn{3}{@{}c@{}}{Element 2\footnotemark[2]} \\\cmidrule{2-4}\cmidrule{5-7}%
-% Project & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ \\
-% \midrule
-% Element 3  & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$\\
-% Element 4  & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$\\
-% \botrule
-% \end{tabular*}
-% \footnotetext{Note: This is an example of table footnote. This is an example of table footnote this is an example of table footnote this is an example of~table footnote this is an example of table footnote.}
-% \footnotetext[1]{Example for a first table footnote.}
-% \footnotetext[2]{Example for a second table footnote.}
-% \end{table}
-
-% \vfill\eject
-
-% In case of double column layout, tables which do not fit in single column width should be set to full text width. For this, you need to use \verb+\begin{table*}+ \verb+...+ \verb+\end{table*}+ instead of \verb+\begin{table}+ \verb+...+ \verb+\end{table}+ environment. Lengthy tables which do not fit in textwidth should be set as rotated table. For this, you need to use \verb+\begin{sidewaystable}+ \verb+...+ \verb+\end{sidewaystable}+ instead of \verb+\begin{table*}+ \verb+...+ \verb+\end{table*}+ environment. This environment puts tables rotated to single column width. For tables rotated to double column width, use \verb+\begin{sidewaystable*}+ \verb+...+ \verb+\end{sidewaystable*}+.
-
-% \begin{sidewaystable}
-% \caption{Tables which are too long to fit, should be written using the ``sidewaystable'' environment as shown here}\label{tab3}
-% \begin{tabular*}{\textheight}{@{\extracolsep\fill}lcccccc}
-% \toprule%
-% & \multicolumn{3}{@{}c@{}}{Element 1\footnotemark[1]}& \multicolumn{3}{@{}c@{}}{Element\footnotemark[2]} \\\cmidrule{2-4}\cmidrule{5-7}%
-% Projectile & Energy	& $\sigma_{calc}$ & $\sigma_{expt}$ & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ \\
-% \midrule
-% Element 3 & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$ \\
-% Element 4 & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$ \\
-% Element 5 & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$ \\
-% Element 6 & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$ \\
-% \botrule
-% \end{tabular*}
-% \footnotetext{Note: This is an example of table footnote this is an example of table footnote this is an example of table footnote this is an example of~table footnote this is an example of table footnote.}
-% \footnotetext[1]{This is an example of table footnote.}
-% \end{sidewaystable}
-
-
-
-
-% ------------------   FIGURES ---------------------
-
-% \section{Figures}\label{sec6}
-
-% As per the \LaTeX\ standards you need to use eps images for \LaTeX\ compilation and \verb+pdf/jpg/png+ images for \verb+PDFLaTeX+ compilation. This is one of the major difference between \LaTeX\ and \verb+PDFLaTeX+. Each image should be from a single input .eps/vector image file. Avoid using subfigures. The command for inserting images for \LaTeX\ and \verb+PDFLaTeX+ can be generalized. The package used to insert images in \verb+LaTeX/PDFLaTeX+ is the graphicx package. Figures can be inserted via the normal figure environment as shown in the below example:
-
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-% \bigskip
-% \begin{verbatim}
-% \begin{figure}[<placement-specifier>]
-% \centering
-% \includegraphics{<eps-file>}
-% \caption{<figure-caption>}\label{<figure-label>}
-% \end{figure}
-% \end{verbatim}
-% \bigskip
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-
-% \begin{figure}[h]%
-% \centering
-% \includegraphics[width=0.9\textwidth]{fig.eps}
-% \caption{This is a widefig. This is an example of long caption this is an example of long caption  this is an example of long caption this is an example of long caption}\label{fig1}
-% \end{figure}
-
-% In case of double column layout, the above format puts figure captions/images to single column width. To get spanned images, we need to provide \verb+\begin{figure*}+ \verb+...+ \verb+\end{figure*}+.
-
-% For sample purpose, we have included the width of images in the optional argument of \verb+\includegraphics+ tag. Please ignore this. 
-
-
-
-
-% ----------------  ALGORITHSM ------------------------
-
-% Packages \verb+algorithm+, \verb+algorithmicx+ and \verb+algpseudocode+ are used for setting algorithms in \LaTeX\ using the format:
-
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-% \bigskip
-% \begin{verbatim}
-% \begin{algorithm}
-% \caption{<alg-caption>}\label{<alg-label>}
-% \begin{algorithmic}[1]
-% . . .
-% \end{algorithmic}
-% \end{algorithm}
-% \end{verbatim}
-% \bigskip
-% %%=============================================%%
-% %% For presentation purpose, we have included  %%
-% %% \bigskip command. please ignore this.       %%
-% %%=============================================%%
-
-% You may refer above listed package documentations for more details before setting \verb+algorithm+ environment. For program codes, the ``verbatim'' package is required and the command to be used is \verb+\begin{verbatim}+ \verb+...+ \verb+\end{verbatim}+. 
-
-% Similarly, for \verb+listings+, use the \verb+listings+ package. \verb+\begin{lstlisting}+ \verb+...+ \verb+\end{lstlisting}+ is used to set environments similar to \verb+verbatim+ environment. Refer to the \verb+lstlisting+ package documentation for more details.
-
-% A fast exponentiation procedure:
-
-% \lstset{texcl=true,basicstyle=\small\sf,commentstyle=\small\rm,mathescape=true,escapeinside={(*}{*)}}
-% \begin{lstlisting}
-% begin
-%   for $i:=1$ to $10$ step $1$ do
-%       expt($2,i$);  
-%       newline() od                (*\textrm{Comments will be set flush to the right margin}*)
-% where
-% proc expt($x,n$) $\equiv$
-%   $z:=1$;
-%   do if $n=0$ then exit fi;
-%      do if odd($n$) then exit fi;                 
-%         comment: (*\textrm{This is a comment statement;}*)
-%         $n:=n/2$; $x:=x*x$ od;
-%      { $n>0$ };
-%      $n:=n-1$; $z:=z*x$ od;
-%   print($z$). 
-% end
-% \end{lstlisting}
-
-% \begin{algorithm}
-% \caption{Calculate $y = x^n$}\label{algo1}
-% \begin{algorithmic}[1]
-% \Require $n \geq 0 \vee x \neq 0$
-% \Ensure $y = x^n$ 
-% \State $y \Leftarrow 1$
-% \If{$n < 0$}\label{algln2}
-%         \State $X \Leftarrow 1 / x$
-%         \State $N \Leftarrow -n$
-% \Else
-%         \State $X \Leftarrow x$
-%         \State $N \Leftarrow n$
-% \EndIf
-% \While{$N \neq 0$}
-%         \If{$N$ is even}
-%             \State $X \Leftarrow X \times X$
-%             \State $N \Leftarrow N / 2$
-%         \Else[$N$ is odd]
-%             \State $y \Leftarrow y \times X$
-%             \State $N \Leftarrow N - 1$
-%         \EndIf
-% \EndWhile
-% \end{algorithmic}
-% \end{algorithm}
-
-
-
-% ----------------- EQUATIONS --------------------
-
-% \section{Equations}\label{sec4}
-
-% Equations in \LaTeX\ can either be inline or on-a-line by itself (``display equations''). For
-% inline equations use the \verb+$...$+ commands. E.g.: The equation
-% $H\psi = E \psi$ is written via the command \verb+$H \psi = E \psi$+.
-
-% For display equations (with auto generated equation numbers)
-% one can use the equation or align environments:
-% \begin{equation}
-% \|\tilde{X}(k)\|^2 \leq\frac{\sum\limits_{i=1}^{p}\left\|\tilde{Y}_i(k)\right\|^2+\sum\limits_{j=1}^{q}\left\|\tilde{Z}_j(k)\right\|^2 }{p+q}.\label{eq1}
-% \end{equation}
-% where,
-% \begin{align}
-% D_\mu &=  \partial_\mu - ig \frac{\lambda^a}{2} A^a_\mu \nonumber \\
-% F^a_{\mu\nu} &= \partial_\mu A^a_\nu - \partial_\nu A^a_\mu + g f^{abc} A^b_\mu A^a_\nu \label{eq2}
-% \end{align}
-% Notice the use of \verb+\nonumber+ in the align environment at the end
-% of each line, except the last, so as not to produce equation numbers on
-% lines where no equation numbers are required. The \verb+\label{}+ command
-% should only be used at the last line of an align environment where
-% \verb+\nonumber+ is not used.
-% \begin{equation}
-% Y_\infty = \left( \frac{m}{\textrm{GeV}} \right)^{-3}
-%     \left[ 1 + \frac{3 \ln(m/\textrm{GeV})}{15}
-%     + \frac{\ln(c_2/5)}{15} \right]
-% \end{equation}
-% The class file also supports the use of \verb+\mathbb{}+, \verb+\mathscr{}+ and
-% \verb+\mathcal{}+ commands. As such \verb+\mathbb{R}+, \verb+\mathscr{R}+
-% and \verb+\mathcal{R}+ produces $\mathbb{R}$, $\mathscr{R}$ and $\mathcal{R}$
-% respectively (refer Subsubsection~\ref{subsubsec2}).

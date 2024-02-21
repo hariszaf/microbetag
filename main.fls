@@ -490,6 +490,13 @@ INPUT ./figs/architecture.png
 INPUT ./figs/architecture.png
 INPUT ./figs/architecture.png
 INPUT ./figs/architecture.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
+INPUT ./figs/node22Neigh.png
 INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl
@@ -512,8 +519,6 @@ INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb
@@ -538,8 +543,6 @@ INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb

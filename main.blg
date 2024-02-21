@@ -1,0 +1,85 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 12 items.
+The style file: sn-mathphys.bst
+Reallocating 'name_of_file' (item size: 1) to 16 items.
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: sn-bibliography.bib
+Warning--entry type for "ali_alishum_2022_6655692" isn't style-file defined
+--line 557 of file sn-bibliography.bib
+Reallocating 'wiz_functions' (item size: 4) to 9000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"{DADA2" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"archaea}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"archaea}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Warning--"ARCHAEA}" isn't a brace-balanced string for entry ali_alishum_2022_6655692
+while executing--line 2870 of file sn-mathphys.bst
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+You've used 74 entries,
+            7480 wiz_defined-function locations,
+            1619 strings with 28211 characters,
+and the built_in function-call counts, 462475 in all, are:
+= -- 62525
+> -- 3527
+< -- 1357
++ -- 20078
+- -- 942
+* -- 28930
+:= -- 88682
+add.period$ -- 78
+call.type$ -- 74
+change.case$ -- 429
+chr.to.int$ -- 3791
+cite$ -- 74
+duplicate$ -- 4524
+empty$ -- 25592
+format.name$ -- 2935
+if$ -- 108019
+int.to.chr$ -- 1
+int.to.str$ -- 104
+missing$ -- 0
+newline$ -- 1276
+num.names$ -- 370
+pop$ -- 2259
+preamble$ -- 1
+purify$ -- 324
+quote$ -- 0
+skip$ -- 34338
+stack$ -- 0
+substring$ -- 61214
+swap$ -- 2597
+text.length$ -- 801
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 3171
+warning$ -- 0
+while$ -- 2731
+width$ -- 0
+write$ -- 1731
+(There were 7 warnings)

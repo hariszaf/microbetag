@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex main"] 1708365053.86851 "main.aux" "main.bbl" "main" 1708365057.2359 0
+["bibtex main"] 1708480622.8989 "main.aux" "main.bbl" "main" 1708480914.96922 0
   "./sn-bibliography.bib" 1708347194.41647 52393 1c951a6046172afed27831776141269e ""
   "./sn-mathphys.bst" 1707322338.80547 64141 2560fd4f8e8321a304f732d035eb1b51 ""
-  "main.aux" 1708365056.80502 21093 2a7e2c5b58ece80c7168c31d4968a605 "pdflatex"
+  "main.aux" 1708480914.13734 20832 194821f7e13b782d3537540a397661b6 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1708365054.12974 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1708365057.23608 0
-  "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1708266009.07976 86747 d5d3fc0534da88d542532be194910137 ""
+["pdflatex"] 1708480910.15774 "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" "main.pdf" "main" 1708480914.96985 0
+  "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1708440174.90928 194433 74b3e6cb9916cd3c06582ae903a6c9a4 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk" 1705845194.10204 7284 e74341cad9e1a3d52c5edf6478defb50 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk" 1705845193.38605 8268 186cd7ac4660d89a304fa66d96ef384c ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1700663130.22705 11548 5d734332472b8906fb72d5e4e94e4fed ""
@@ -63,7 +63,7 @@
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/todonotes/todonotes.sty" 1706047395.26112 21404 916e19cbd009b6d289c8194b313d3895 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/varwidth/varwidth.sty" 1700756999.95134 10894 d359a13923460b2a73d4312d613554c8 ""
   "/home/luna.kuleuven.be/u0156635/.miktex/texmfs/install/tex/latex/wrapfig/wrapfig.sty" 1700663095.60704 26220 3701aebf80ccdef248c0c20dd062fea9 ""
-  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1708365047.22904 101740 a08c7e17bd0469fb0cfb330f863e5295 ""
+  "/home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/main.tex" 1708480914.01334 97177 a6451b50b196057bf2f3c666aafbcc3f ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1679232417.27654 1456 d21918d95ca20f07aa266303b9a0a14c ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm0700.tfm" 1679232417.27654 1452 97bdc98984cb373fbcd868e2fa55f5f2 ""
   "/usr/local/share/miktex-texmf/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1679232417.27654 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -116,7 +116,6 @@
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb" 1679232415.51255 32007 e8fa0078355f39467039935974716569 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb" 1679232415.51255 32166 b0c356b15f19587482a9217ce1d8fa67 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb" 1679232415.51255 32298 c6d25bb16d1eac01ebdc6d7084126a1e ""
-  "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1679232415.52055 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1679232415.52455 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1679232415.52855 37912 77d683123f92148345f3fc36a38d9ab1 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1679232415.53255 36281 c355509802a035cadc5f15869451dcee ""
@@ -129,7 +128,6 @@
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb" 1679232415.54455 33993 9b89b85fd2d9df0482bd47194d1d3bf3 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb" 1679232415.55655 24420 52dbb8e8aa0069a1b987309557f8d303 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1679232415.56855 32569 5e5ddc8df908dea60932f3c484a54c0d ""
-  "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1679232415.57255 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1679232415.58055 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb" 1679232415.58455 35660 fb24af7afbadb71801619f1415838111 ""
   "/usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1679232415.58855 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
@@ -252,14 +250,15 @@
   "/usr/local/share/miktex-texmf/tex/latex/xkeyval/xkeyval.sty" 1679232427.36052 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "figs/architecture.png" 1708341648.0568 713437 d0e3379326465633e18214f49dd6b889 ""
   "figs/cyPanel.png" 1708268035.54699 991870 b5babee6b0be586c5e8bae087460ce75 ""
-  "figs/figure_abstract.png" 1707322338.78147 1338961 473af046918f4163f94ff4347e4aebfb ""
+  "figs/figure_abstract.png" 1708461815.2098 371474 91b3a33601927ac101ea550b063635fe ""
   "figs/microbetag-precal.png" 1708264755.13443 644686 2b8bedf92b445b1b6debf00cff714284 ""
   "figs/microbetag-wf.png" 1708264680.19031 825993 33eed2c70777eaa74d5ded2594eb044b ""
+  "figs/node22Neigh.png" 1708480828.99342 230630 02d2e13e7808ff2e951809b2879b4a9f ""
   "figs/path_complem.png" 1707322338.79347 438344 2d73d53d8f9c05287f30be41a313213c ""
-  "main.aux" 1708365056.80502 21093 2a7e2c5b58ece80c7168c31d4968a605 "pdflatex"
-  "main.bbl" 1708365054.08103 42635 143aa4e1292688381f891e592fcfa1a7 "bibtex main"
-  "main.out" 1708365056.80902 209 3061870959dbbaa67982ab58c2976946 "pdflatex"
-  "main.tex" 1708365047.22904 101740 a08c7e17bd0469fb0cfb330f863e5295 ""
+  "main.aux" 1708480914.13734 20832 194821f7e13b782d3537540a397661b6 "pdflatex"
+  "main.bbl" 1708480623.11364 42635 143aa4e1292688381f891e592fcfa1a7 "bibtex main"
+  "main.out" 1708480914.14134 209 3061870959dbbaa67982ab58c2976946 "pdflatex"
+  "main.tex" 1708480914.01334 97177 a6451b50b196057bf2f3c666aafbcc3f ""
   "sn-jnl.cls" 1707322338.80547 55955 38fcab50bf900ac0998e350ba2123285 ""
   (generated)
   "main.aux"
