@@ -75,7 +75,7 @@
 
 \begin{document}
 
-\linenumbers
+% \linenumbers
 
 \title[Article Title]{
     % Genomic, metabolic and literature oriented annotation of microbial co-occurrence networks enhances associations confidence level and hypothesis generation
@@ -777,8 +777,6 @@ No subheadings.
         \href{https://www.kegg.jp/kegg-bin/show_pathway?map00770/C00049%20skyblue%2Cblue/C00099%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C00010%20skyblue%2Cblue/C00882%20skyblue%2Cblue/C01134%20skyblue%2Cblue/C03492%20skyblue%2Cblue/C04352%20skyblue%2Cblue/C00099%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C05665%20skyblue%2Cblue/C00010%20skyblue%2Cblue/C00141%20skyblue%2Cblue/C00882%20skyblue%2Cblue/C00966%20skyblue%2Cblue/C01134%20skyblue%2Cblue/C03492%20skyblue%2Cblue/C04352%20skyblue%2Cblue/C18911%20skyblue%2Cblue/C00864%09%23ff0000/C00864%09%23ff0000/C00864%09%23ff0000/}{coloured map}). 
 
 
-
-
         % C01081: Thiamin monophosphate;
         % \href{https://www.genome.jp/module/M00899+C01081}{Thiamine salvage pathway, HMP/HET => TMP}
         % \href{https://www.genome.jp/module/M00898+C01081}{Thiamine biosynthesis, pyridoxal-5P => TMP/thiamine/TPP}
@@ -849,7 +847,7 @@ No subheadings.
                     \end{tabular} \\
                 \end{adjustbox}
             \caption{ 
-                Thiamine biosynthesis related seed complements between \textit{Variovorax} and its first closest neighbors on the network of Hessler \textit{et al.}~\cite{hessler2023vitamin} (A), and between pairs of the neighbors (B).
+                Thiamine biosynthesis related seed complements between \textit{Variovorax} and its first closest neighbors on the network of Hessler \textit{et al.}\cite{hessler2023vitamin} (A), and between pairs of the neighbors (B).
                 Bin sequence files were mapped against GTDB using GTDB-tk. 
                 Chloroflexi refers to the GTDB taxonomy of: 54-19 sp001898225
             }
@@ -894,37 +892,36 @@ No subheadings.
     \subsection*{Potential and limitations}
     \label{subsec:pot-and-limits}
 
-        The previous paragraph shows the potential the \microbetag workflow may have in the interpretation of co-occurrence network and how it can be used to generate new hypotheses derived from these.
-        However,~\microbetag benefits the microbiome community in sevaral other ways. 
+        The previous paragraph shows the potential of \microbetag in the interpretation of co-occurrence networks and how it can be used to generate new hypotheses derived from those.
+        However,~\microbetag benefits the microbiome community in several other ways. 
         The microbetagDB provides a vast number of annotations; 31 predicted traits for more than $30,000$ genomes, their GENREs along with their corresponding seed sets, potential metabolic complementarities and cooperation/competition scores.
-        Such a resource may benefit a range of studies; 
-        from a more theoretical perspective regarding the distribution of the complements among taxonimic groups or how often a complement potentially appears, to more applicable such as eco-evolutionary studies and the investigation of established interactions.
+        Such a resource may support a range of studies; 
+        from a more theoretical perspective regarding the distribution of the complements among taxonomic groups or how often a complement potentially appears, to more applicable concepts such as eco-evolutionary studies and investigation of established interactions.
 
         Yet, there is a number of challenges in our approach.
         First, \microbetag inherits all the biases and drawbacks of both the data and the software it is based on.
         Functional annotation comes with its own limitations.
-        Some domains boast richer annotations and more comprehensive descriptions compared to others. 
-        These areas exhibit a wealth of detail and employ more precise terminology, particularly for widely recognized processes.
+        Some domains boast richer annotations and more comprehensive descriptions compared to others, thus exhibiting a wealth of detail and employing more precise terminology, particularly for widely recognized processes.
 
-        In the validation case, the bin representing the \textit{Variovorax} strain was mapped to a genome that it is supposed to be able to perform the pantothenate KEGG modules.
-        Thus, the fact that it requires to get it from its environment to grow as the authors mention would not be possible to predict in the \microbetag framework. 
+        In the validation case, the bin representing the \textit{Variovorax} strain was mapped to a genome that is supposed to perform the pantothenate KEGG modules.
+        Thus, the fact that it requires to receive pantothenate from its environment to grow, as the authors mention, would not have been predicted in the \microbetag framework. 
         Beyond the sequencing and the annotation challenges, we also need to consider the fact that a pathway may not be fully represented from a KEGG module.
-        Of course, various factors can prevent the actual production of the enzyme even if the genetic information for that is part of a species genome.
+        Of course, various factors can prevent the actual production of the enzyme even if the genetic information for that is included in a species genome.
         % , including genetic mutations, regulatory mechanisms, or environmental conditions 
         
-        Pathway complementarity can be as accurate as the KEGG MODULE database goes and the precision of the software annotating genomes with KO terms.
-        It is well known that automated Genome-Scale Metabolic Reconstruction comes with a great number of challenges and different software for this task come with their certain limitations~\cite{mendoza2019systematic}. 
-        Using ModelSEED with a complete medium may limit potential metabolic interactions but made those retrieved of higher confidence.
+        Pathway complementarity can be as accurate as the KEGG MODULE database and as the precision of the software annotating genomes with KO terms.
+        It is well known that automated Genome-Scale Metabolic Reconstruction comes with a great number of challenges and different software for this task come with their intrinsic limitations~\cite{mendoza2019systematic}. 
+        Using ModelSEED with a complete medium may limit potential metabolic interactions but, on the other hand, the retrieved ones will be of higher confidence.
         % reconstructing GENREs with automatic tools is of course a challenging tasks and it is known that comes with several drawbacks that especially when producing reconstructions massively
 
-        It is also well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}
-        Pairwise relationships do not capture more complex forms of ecological interactions, in which one species depends on (or is influenced by) multiple other species~\cite{faust2012microbialReviewInteractions}.
+        It is also well known that higher-order interactions, i.e. interactions involving more than two species~\cite{zelezniak2015metabolic}, should also be taken into account. 
+        % can reshape microbial interactions~\cite{morin2022higher}. 
+        Pairwise relationships do not capture the more complex forms of ecological interactions, in which species depend on (or are influenced by) multiple other species~\cite{faust2012microbialReviewInteractions}.
 
-        Last, the short number of Archaea in microbetagDB is also the result of a software - oriented limitation.
-        As shown in~\cite{chklovski2023checkm2} (Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still being used on GTDB returns lower completeness scores to genomes that correspond to phyla known for having shorter genomes in general, e.g. Patescibacteria representative genomes on GTDB have an average completeness $\sim 65\%$.
+        Last, the limited number of Archaea in microbetagDB is also the result of a software - oriented limitation.
+        As shown in~\cite{chklovski2023checkm2} (Figure 6b), the original version of CheckM~\cite{parks2015checkm} that is still being used by GTDB returns lower completeness scores for genomes that correspond to phyla known for having smaller genomes in general, 
+        e.g. Patescibacteria representative genomes on GTDB have an average completeness of $\sim 65\%$.
         Thus, only few representatives from these taxonomic groups passed our filters leading to an important under-representation of Archaea.
-
-
 
 
     \subsection*{Future work}
@@ -933,12 +930,12 @@ No subheadings.
         In the near future, we plan to develop two main features: 
         a. the integration of transcriptomics data provided by the user, this would enhance or lower the probability for a potential metabolic interaction to occur based on whether the KO terms involved are present or not, and 
         b. the integration of spatial data; it is well-known that the spatial dimension plays a great role to the extent that an interaction occurs~\cite{dal2020short}, to this end we intend to integrate user's data on how their data are distributed in space. 
-        Thus, potential metabolic interactions beween taxa that are closer one-another would be more probable to occur.
+        Thus, potential metabolic interactions between taxa that are closer one-another would be more probable to occur.
 
         Last, we already work on a \textit{"for advanced users"} version, a server-independent version of \microbetag is about to be released, so the user can provide bins/MAGs of theirs and annotations will be held not by mapping taxonomies to reference genomes but using their sequencing data directly.
         This would require important computing resources and time and cannot be supported in an app-framework like the one presented here. 
         In this case, one will be again able to investigate the annotated network returned through Cytoscape and the MGG app.
-        \footnote{Could be part of this release; time will tell }
+        \footnote{Could be part of this release; time will tell.}
 
         % Further indices using the seed concept have been also presented such as the metabolic interaction potential ($MIP$) and the metabolic resource overlap ($MRO$).
         % $MIP$ is defined as the difference between the minimal number of components required for the growth of all members in a noninteracting community and an interacting community, i.e. the maximum number of essential nutritional components that a community can provide for itself through interspecies metabolic exchanges~\cite{zelezniak2015metabolic}.
@@ -962,12 +959,10 @@ No subheadings.
     Both their inference and their interpretation though come with a range of challenges~\cite{faust2021open}.
     Metabolic exchanges among microbial taxa is considered ubiquitous~\cite{kost2023metabolic} at least in a great range of environments. 
     In our study, we exploit reverse-ecology approaches and publicly available genomic data and software to predict phenotypic traits and metabolic interactions and annotate with those co-occurrence networks derived from amplicon or shotgun data.
-    Our annotation was in-line with the study of Hessler et \textit{al.}~cite{hessler2023vitamin} predicting thiamine-related metabolic interactions among \textit{Variovorax} and its closest neighbors, suggesting several ways to achieve them. 
-    Using ..... \todo{use case}
+    Our annotation was in-line with the study of Hessler et \textit{al.}~\cite{hessler2023vitamin} predicting thiamine-related metabolic interactions among \textit{Variovorax} and its closest neighbors, suggesting several ways to achieve them. 
+    Using ..... \todo{Use case}
     Enrichment analysis using them combined with network clustering algorithms can further benefit their interpretation. 
-    Both the microbetagDB and \microbetag workflow may benefit microbiome studies, both as a resource and as a hypothesis generation tool.
-
-
+    Both microbetagDB and \microbetag workflow will benefit microbiome studies, as a resource and as a hypothesis generation tool correspondingly.
 
 \backmatter
 

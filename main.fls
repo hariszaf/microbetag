@@ -324,7 +324,6 @@ INPUT ./main.out
 OUTPUT main.out
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmr17.tfm
-INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmss8.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmbx8.tfm
@@ -541,8 +540,6 @@ INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmss8.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb
