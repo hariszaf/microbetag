@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 19:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  21 FEB 2024 19:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1062,23 +1062,23 @@ Overfull \vbox (4.81123pt too high) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 734.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 735.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 734.
+(Font)              size <5> substituted on input line 735.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 734.
+(Font)              size <5> substituted on input line 735.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 734.
+(Font)              size <5> substituted on input line 735.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 734.
+(Font)              size <5> substituted on input line 735.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1090,7 +1090,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [17]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 963.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 964.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1101,7 +1101,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figs/architecture.png, id=422, 1506.62875pt x 1150.2975pt>
 File: figs/architecture.png Graphic file (type png)
 <use figs/architecture.png>
-Package pdftex.def Info: figs/architecture.png  used on input line 1184.
+Package pdftex.def Info: figs/architecture.png  used on input line 1186.
 (pdftex.def)             Requested size: 334.79773pt x 255.61128pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1110,7 +1110,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figs/node55Neigh.png, id=429, 1431.3475pt x 863.225pt>
 File: figs/node55Neigh.png Graphic file (type png)
 <use figs/node55Neigh.png>
-Package pdftex.def Info: figs/node55Neigh.png  used on input line 1193.
+Package pdftex.def Info: figs/node55Neigh.png  used on input line 1195.
 (pdftex.def)             Requested size: 334.79773pt x 201.90953pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1223,7 +1223,7 @@ Here is how much of TeX's memory you used:
  1151 hyphenation exceptions out of 8191
  99i,28n,117p,1440b,916s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0700.pk> </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm0600.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (29 pages, 3331642 bytes).
+Output written on main.pdf (29 pages, 3331630 bytes).
 PDF statistics:
  618 PDF objects out of 1000 (max. 8388607)
  153 named destinations out of 1000 (max. 500000)

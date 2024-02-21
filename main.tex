@@ -706,7 +706,7 @@ No subheadings.
         Presence/absence of more than 30 phenotypic traits have been predicted for those genomes.
         About 1.4 billion potential metabolic interactions leading to pathway or seed complementarities have been precomputed as well.
         Seed complements are one order of magnitude more than those corresponding to pathway complementarities as for all GENREs present in microbetagDB all pairwise complements were calculated ($33,755^2$) and stored even if empty.
-        In case of pathway complementarities, a genome pair is present in the database and thus counted only if a potential complementarity was found.
+        In the case of pathway complementarities, a genome pair is present in the database and thus counted only if a potential complementarity was found.
         Yet, in the first case, the number of genomes with absolutely no potential seed complement ranges from zero to a few dozens.
         A following paper on the microbetagDB content is in preparation.
         All annotations can be accessed directly from microbetagDB through the API.
@@ -721,7 +721,8 @@ No subheadings.
         Once a network is available and the taxonomy used is among the standard ones for \microbetag, the computational time required for annotation ranges from several seconds to a few minutes based on user's settings.
         An annotated network in \texttt{cx2} format is returned which can be viewed on Cytoscape.
         A tutorial, frequently asked questions and hints to address the idiosyncrasy of various data sets are available on the~\href{https://hariszaf.github.io/microbetag/}{ReadTheDocs web site} while a Gitter community allows users to exchange experience and ask for more specific help.
-        In the following two sections we present a validation and a use case, highlighting the potential of our approach.
+        % In the following two sections we present a validation and a use case, highlighting the potential of our approach.
+        In the following two sections, we present a validation and use case, highlighting our approach's potential.
 
         % --------------------
         % TABLE for microbetagDB stats (tab:db)
@@ -1118,7 +1119,8 @@ No subheadings.
         In case of seed complementarity, in the framework of \microbetag we focus on the effect that a metabolic exchange between two taxa might have if the seed of the beneficiary taxon is related to a KEGG MODULE.
         Therefore, the KOs that were found related to modules were mapped to ModelSEED ids. 
         The initial seed and non-seed sets that were exported as sets of ModelSEED ids were then mapped to KOs too.
-        When the non-seed set of a genome (donor) was able to provide a seed that is related to a KEGG module to another genome (beneficiary) was considered as potential metabolic interaction.
+        % When the non-seed set of a genome (donor) was able to provide a seed that is related to a KEGG module to another genome (beneficiary) was considered as potential metabolic interaction.
+        When the non-seed set of a genome (donor) provided a seed related to a KEGG module to another genome (beneficiary) was considered potential metabolic interaction.
 
 
 
