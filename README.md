@@ -2,38 +2,16 @@
 
 `microbetag` attempts to be a microbial interactions co-occurrence network annotator
 
-In this repository we have:
-
-- the precalculation steps/scripts under the `microbetagDB` folder; the database of `microbetag` consists of the outcome of these precalculations and to get those the resources under the `ref-dbs` folder are used
-- the `microbetag` python library which makes use of the microbetagDB and assumes several other software have been installed properly (see Installation)
-- a `Dockerfile` to run `microbetag` in a container-based way
+In this branch we have a stand-alone tool to run the software on your own bins.
+This module cannot be performed directly from the CytoscapeApp as it requires intense computing resources is not possible to provide in a web-based app.
+Yet, once you run this stand-alone version, you will still be able to load the annotated network returned on Cytoscape and investigate the annotations through the MGG CytoscapeApp of ours.
 
 ## Dependencies
 
-`microbetag` makes use of several 3rd-party software. Thus, it inherits the dependencies of theirs.
+- Docker
+- kofam_database
 
-* Julia
-* FlashWeave
-* FAPROTAX
-* BugBase
 
-To help you create such an environment, we provide the [`installation.sh`](installation.sh) script. However, this will work smoothly in case you are running `microbetag` on Linux systems. If your OS is MacOs or Windows, you need to set this manually or jump into the containerized version of `microbetag`.
-
-<!-- 
-
-MUTED
-
-BugBase requires the `biomformat` library. To install it on R version 4.2 you may run:
-
-```R
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("biomformat")
-
-```
-
--->
 
 
 ## Installation

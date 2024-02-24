@@ -1,24 +1,37 @@
-#
-# microbetag parameters
-#
 
-# Run as a container - if True then the IO path will be /mnt. If false please provide the input - output path 
-approach: 
-  container: False
-  io_path: /home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/tests/ # if docker : null
-
-# OUTPUT
 # ------
-output_directory: kostas # output_dev_dada2_may # output_dev_qiime2
+# INPUT/OUTPUT
+# ------
+on_container:
+  value: False
+  description: If running through Docker set to true.
+  type: bool
 
-# OTU TABLE
-# ----------
+io_path:
+  path: /home/luna.kuleuven.be/u0156635/dev_io_microbetag
+  description: Attention! All files to be mounted need to be under this directory.
+  type: Path
 
-# Filename of your OTU table
-otu_table: konst_test.tsv # dada2_use_case.tsv # qiime2_use_case.tsv   # otu_table_silva132_partial.tsv   #  table.from_biom_w_taxonomy.txt 
+bins_fasta:
+  folderName: my_bins
+  description: Name of the folder with the bins .fasta files.
+  type: String
 
-# Delimeter used in the OTU table file 
-otu_table_delim: \t
+abundance_table_file: 
+  fileName: vitAbund.tsv
+  description: Filename of the abundance table file. The taxonomy scheme in this case is irrelevant.
+  type: String
+
+output_directory: 
+  folderName: microbetag_run
+  description: 
+  type: String
+
+otu_table_delim: 
+  value: \t
+  description: Delimeter used in the OTU table file 
+  type: String
+
 
 # Taxonomy. 
 # Set it to "GTDB" in case you have used the GTDB for your bins.
@@ -53,6 +66,56 @@ edge_list:     #tests/output_dev_qiime2/flashweave/network_detailed_output.edgel
 # METADATA 
 # --------
 metadata_file:
+  fileName: 
+  description: 
+  type:
+
+
+
+build_network:
+  value: True
+  description: A co-occurrence network will be built using your abundance table, your metadata file (if provided) and FlashWeave. If selected, make sure you also set the FlashWeave arguments.
+  type: bool
+
+flashweave_sensitive:
+  value: True
+  description: (From FlashWeave documentation) Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F 
+  type: bool
+
+flashweave_heterogeneous:
+  value: False
+  description: (From FlashWeave documentation) Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE)
+  type: bool
+
+
+
+
+
+threads:
+  value: 2
+  description: Number of CPUs to be used 
+  type: Integer
+
+
+
+
+
+min_proba:
+  value: 0.6
+  description: Minimum confidence that a prediction needs to have for keeping the the presence/absence finding.
+  type: float
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # STEPS 
@@ -63,14 +126,9 @@ FAPROTAX: True
 # If you are still to use it, please make sure you have the $BUGBASE_PATH environmental variable as in the installation.sh script.
 # Further, you need to remember that BugBase only works with GreenGenes IDs; you can get those using OTU pickers such as https://github.com/GabeAl/NINJA-OPS
 # If no GreenGenes IDs for OTUs or IMG IDs for shotgun data are present, microbetag will fail (https://github.com/knights-lab/BugBase/issues/2)
-BugBase: True
-NetCooperate: True
+
 pathway_complementarity: False
 
-
-# ------
-# TOOLS
-# ------
 
 # Flashweave
 flashweave_opt:
@@ -118,31 +176,3 @@ flashweave_opt:
 faprotax_opt: 
   --force: False
 
-
-# BugBase optional parameters
-# [ATTENTION!] If no GreenGenes IDs for OTUs or IMG IDs for shotgun data are present, microbetag will fail (https://github.com/knights-lab/BugBase/issues/2)
-bugbase_opt:
-  
-  -c: taxonomy  # Map column header to plot by (which column denotes treatment groups)
-  -w:           # Data is shotgun metagenomic data (picked against IMG database)
-  -a:           # Plot all samples (no stats will be run)
-  -x:           # Output prediction files only, no plots will be made
-  -g:           # Specify subset of groups in map column to plot (list, comma separated)
-  -z:           # Data is of type continuous 
-  -C:           # Use coefficient of variance instead of variance to determine thresholds
-  -l:           # Centered log-ratio transform the data instead of using relative abundance
-  -t: 3           # Taxa level to plot OTU contributions by (number 1-7)
-  -T:           # Specify a threshold to use for all traits (number 0-1)
-  -k:           # Use the KEGG modules instead of default traits (Note: you must specify which modules!)
-  -p:           # List modules or traits to predict (comma separated list, no spaces)
-  -u:           # Use a user-define trait table. Absolute file path must be specified
-  -m:         # give mapping file, example file under the tests/ folder
-
-
-# microbetag needs to link the species level taxonomy assignments 
-# to a NCBI Taxonomy id. If Silva is the reference taxonomy database used to get the OTU table, 
-# then microbetag will do that automatically. 
-# In case silva_db is False, the user needs to have an extra column 
-# on the OTU table with the NCBI taxonomy id of the species found.
-# Assignmnets that are not at the species level should filled with "null".
-silva_db: True
