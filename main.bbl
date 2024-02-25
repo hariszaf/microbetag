@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{73}
+\begin{thebibliography}{72}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -130,21 +130,6 @@
 \endbibitem
 
 %%% 6
-\bibitem[\protect\citeauthoryear{Robinson et~al.}{2010}]{robinson2010structure}
-\begin{barticle}
-\bauthor{\bsnm{Robinson}, \binits{C.J.}},
-\bauthor{\bsnm{Bohannan}, \binits{B.J.}},
-\bauthor{\bsnm{Young}, \binits{V.B.}}:
-\batitle{From structure to function: the ecology of host-associated microbial
-  communities}.
-\bjtitle{Microbiology and Molecular Biology Reviews}
-\bvolume{74}(\bissue{3}),
-\bfpage{453}--\blpage{476}
-(\byear{2010})
-\end{barticle}
-\endbibitem
-
-%%% 7
 \bibitem[\protect\citeauthoryear{D'Souza et~al.}{2018}]{d2018ecology}
 \begin{barticle}
 \bauthor{\bsnm{D'Souza}, \binits{G.}},
@@ -162,7 +147,7 @@
 \end{barticle}
 \endbibitem
 
-%%% 8
+%%% 7
 \bibitem[\protect\citeauthoryear{Finn et~al.}{2024}]{elixir_microbiome}
 \begin{botherref}
 \oauthor{\bsnm{Finn}, \binits{R.}},
@@ -199,7 +184,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 9
+%%% 8
 \bibitem[\protect\citeauthoryear{Hug et~al.}{2016}]{hug2016new}
 \begin{barticle}
 \bauthor{\bsnm{Hug}, \binits{L.A.}},
@@ -220,7 +205,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 10
+%%% 9
 \bibitem[\protect\citeauthoryear{Matchado et~al.}{2021}]{matchado2021network}
 \begin{barticle}
 \bauthor{\bsnm{Matchado}, \binits{M.S.}},
@@ -239,7 +224,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 11
+%%% 10
 \bibitem[\protect\citeauthoryear{Faust et~al.}{2012}]{faust2012microbial}
 \begin{barticle}
 \bauthor{\bsnm{Faust}, \binits{K.}},
@@ -257,7 +242,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 12
+%%% 11
 \bibitem[\protect\citeauthoryear{Friedman and
   Alm}{2012}]{friedman2012inferring}
 \begin{barticle}
@@ -271,7 +256,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 13
+%%% 12
 \bibitem[\protect\citeauthoryear{Kurtz et~al.}{2015}]{kurtz2015sparse}
 \begin{barticle}
 \bauthor{\bsnm{Kurtz}, \binits{Z.D.}},
@@ -289,7 +274,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 13
 \bibitem[\protect\citeauthoryear{Tackmann et~al.}{2019}]{flashweave_cite}
 \begin{barticle}
 \bauthor{\bsnm{Tackmann}, \binits{J.}},
@@ -304,7 +289,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 15
+%%% 14
 \bibitem[\protect\citeauthoryear{Faust}{2021}]{faust2021open}
 \begin{barticle}
 \bauthor{\bsnm{Faust}, \binits{K.}}:
@@ -316,7 +301,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 16
+%%% 15
 \bibitem[\protect\citeauthoryear{Cao et~al.}{2017}]{cao2017inferring}
 \begin{barticle}
 \bauthor{\bsnm{Cao}, \binits{H.-T.}},
@@ -332,7 +317,7 @@ F1000Research
 \end{barticle}
 \endbibitem
 
-%%% 17
+%%% 16
 \bibitem[\protect\citeauthoryear{Kishore et~al.}{2023}]{kishore2023inferring}
 \begin{botherref}
 \oauthor{\bsnm{Kishore}, \binits{D.}},
@@ -349,7 +334,7 @@ Msystems,
 \end{botherref}
 \endbibitem
 
-%%% 18
+%%% 17
 \bibitem[\protect\citeauthoryear{Weiss et~al.}{2016}]{weiss2016correlation}
 \begin{barticle}
 \bauthor{\bsnm{Weiss}, \binits{S.}},
@@ -371,7 +356,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 19
+%%% 18
 \bibitem[\protect\citeauthoryear{Berry and Widder}{2014}]{berry2014deciphering}
 \begin{barticle}
 \bauthor{\bsnm{Berry}, \binits{D.}},
@@ -385,7 +370,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 20
+%%% 19
 \bibitem[\protect\citeauthoryear{Guo et~al.}{2022}]{guo2022microbial}
 \begin{barticle}
 \bauthor{\bsnm{Guo}, \binits{B.}},
@@ -405,7 +390,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 21
+%%% 20
 \bibitem[\protect\citeauthoryear{Ma et~al.}{2020}]{ma2020earth}
 \begin{barticle}
 \bauthor{\bsnm{Ma}, \binits{B.}},
@@ -427,7 +412,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 22
+%%% 21
 \bibitem[\protect\citeauthoryear{Guidi et~al.}{2016}]{guidi2016plankton}
 \begin{barticle}
 \bauthor{\bsnm{Guidi}, \binits{L.}},
@@ -448,7 +433,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 23
+%%% 22
 \bibitem[\protect\citeauthoryear{R{\"o}ttjers and
   Faust}{2020}]{rottjers2020manta}
 \begin{barticle}
@@ -462,7 +447,7 @@ Msystems,
 \end{barticle}
 \endbibitem
 
-%%% 24
+%%% 23
 \bibitem[\protect\citeauthoryear{Levy and Borenstein}{2012}]{levy2012reverse}
 \begin{bchapter}
 \bauthor{\bsnm{Levy}, \binits{R.}},
@@ -475,7 +460,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{bchapter}
 \endbibitem
 
-%%% 25
+%%% 24
 \bibitem[\protect\citeauthoryear{Levy and
   Borenstein}{2014}]{levy2014metagenomic}
 \begin{barticle}
@@ -490,7 +475,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 26
+%%% 25
 \bibitem[\protect\citeauthoryear{Borenstein et~al.}{2008}]{borenstein2008large}
 \begin{barticle}
 \bauthor{\bsnm{Borenstein}, \binits{E.}},
@@ -506,7 +491,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 27
+%%% 26
 \bibitem[\protect\citeauthoryear{Parter et~al.}{2007}]{parter2007environmental}
 \begin{barticle}
 \bauthor{\bsnm{Parter}, \binits{M.}},
@@ -521,7 +506,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 28
+%%% 27
 \bibitem[\protect\citeauthoryear{Levy et~al.}{2015}]{levy2015netcooperate}
 \begin{barticle}
 \bauthor{\bsnm{Levy}, \binits{R.}},
@@ -538,7 +523,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 29
+%%% 28
 \bibitem[\protect\citeauthoryear{Kreimer et~al.}{2012}]{kreimer2012netcmpt}
 \begin{barticle}
 \bauthor{\bsnm{Kreimer}, \binits{A.}},
@@ -554,7 +539,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 30
+%%% 29
 \bibitem[\protect\citeauthoryear{Zelezniak
   et~al.}{2015}]{zelezniak2015metabolic}
 \begin{barticle}
@@ -573,7 +558,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 31
+%%% 30
 \bibitem[\protect\citeauthoryear{Belcour
   et~al.}{2020}]{belcour2020metage2metabo}
 \begin{barticle}
@@ -592,7 +577,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 32
+%%% 31
 \bibitem[\protect\citeauthoryear{Thiele and Palsson}{2010}]{thiele2010protocol}
 \begin{barticle}
 \bauthor{\bsnm{Thiele}, \binits{I.}},
@@ -606,7 +591,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 33
+%%% 32
 \bibitem[\protect\citeauthoryear{Durot et~al.}{2008}]{durot2008genome}
 \begin{barticle}
 \bauthor{\bsnm{Durot}, \binits{M.}},
@@ -621,7 +606,7 @@ pp. \bfpage{329}--\blpage{345}.
 \end{barticle}
 \endbibitem
 
-%%% 34
+%%% 33
 \bibitem[\protect\citeauthoryear{Cerk
   et~al.}{}]{communityGemMicrobiomeModel2023}
 \begin{botherref}
@@ -645,7 +630,7 @@ e14396 MICROBIO-2023-392.R1
 \end{botherref}
 \endbibitem
 
-%%% 35
+%%% 34
 \bibitem[\protect\citeauthoryear{Little et~al.}{2008}]{little2008rules}
 \begin{barticle}
 \bauthor{\bsnm{Little}, \binits{A.E.}},
@@ -662,7 +647,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 36
+%%% 35
 \bibitem[\protect\citeauthoryear{Zientz et~al.}{2004}]{zientz2004metabolic}
 \begin{barticle}
 \bauthor{\bsnm{Zientz}, \binits{E.}},
@@ -677,7 +662,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 37
+%%% 36
 \bibitem[\protect\citeauthoryear{Kallus et~al.}{2017}]{kallus2017paradoxes}
 \begin{barticle}
 \bauthor{\bsnm{Kallus}, \binits{Y.}},
@@ -691,7 +676,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 38
+%%% 37
 \bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{keggmodulesdb}
 \begin{barticle}
 \bauthor{\bsnm{Muto}, \binits{A.}},
@@ -712,7 +697,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 39
+%%% 38
 \bibitem[\protect\citeauthoryear{Hessler et~al.}{2023}]{hessler2023vitamin}
 \begin{barticle}
 \bauthor{\bsnm{Hessler}, \binits{T.}},
@@ -731,7 +716,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 40
+%%% 39
 \bibitem[\protect\citeauthoryear{Wattam et~al.}{2017}]{wattam2017improvements}
 \begin{barticle}
 \bauthor{\bsnm{Wattam}, \binits{A.R.}},
@@ -753,7 +738,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 41
+%%% 40
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2022}]{parks2022gtdb}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -772,7 +757,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 42
+%%% 41
 \bibitem[\protect\citeauthoryear{Quast et~al.}{2012}]{quast2012silva}
 \begin{barticle}
 \bauthor{\bsnm{Quast}, \binits{C.}},
@@ -792,7 +777,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 43
+%%% 42
 \bibitem[\protect\citeauthoryear{Schoch et~al.}{2020}]{schoch2020ncbi}
 \begin{barticle}
 \bauthor{\bsnm{Schoch}, \binits{C.L.}},
@@ -814,7 +799,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 44
+%%% 43
 \bibitem[\protect\citeauthoryear{Alishum}{2022}]{ali_alishum_2022_6655692}
 \begin{botherref}
 \oauthor{\bsnm{Alishum}, \binits{A.}}:
@@ -824,7 +809,7 @@ e14396 MICROBIO-2023-392.R1
 \end{botherref}
 \endbibitem
 
-%%% 45
+%%% 44
 \bibitem[\protect\citeauthoryear{Murali et~al.}{2018}]{murali2018idtaxa}
 \begin{barticle}
 \bauthor{\bsnm{Murali}, \binits{A.}},
@@ -839,7 +824,7 @@ e14396 MICROBIO-2023-392.R1
 \end{barticle}
 \endbibitem
 
-%%% 46
+%%% 45
 \bibitem[\protect\citeauthoryear{Wright}{2016}]{wright2016using}
 \begin{botherref}
 \oauthor{\bsnm{Wright}, \binits{E.S.}}:
@@ -850,7 +835,7 @@ R Journal
 \end{botherref}
 \endbibitem
 
-%%% 47
+%%% 46
 \bibitem[\protect\citeauthoryear{Sunagawa et~al.}{2015}]{sunagawa2015structure}
 \begin{barticle}
 \bauthor{\bsnm{Sunagawa}, \binits{S.}},
@@ -871,7 +856,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 48
+%%% 47
 \bibitem[\protect\citeauthoryear{Louca et~al.}{2016}]{louca2016decoupling}
 \begin{barticle}
 \bauthor{\bsnm{Louca}, \binits{S.}},
@@ -885,7 +870,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 49
+%%% 48
 \bibitem[\protect\citeauthoryear{Douglas et~al.}{2020}]{douglas2020picrust2}
 \begin{barticle}
 \bauthor{\bsnm{Douglas}, \binits{G.M.}},
@@ -904,7 +889,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 50
+%%% 49
 \bibitem[\protect\citeauthoryear{Feldbauer
   et~al.}{2015}]{feldbauer2015prediction}
 \begin{barticle}
@@ -920,7 +905,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 51
+%%% 50
 \bibitem[\protect\citeauthoryear{Huerta-Cepas et~al.}{2019}]{huerta2019eggnog}
 \begin{barticle}
 \bauthor{\bsnm{Huerta-Cepas}, \binits{J.}},
@@ -942,7 +927,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 52
+%%% 51
 \bibitem[\protect\citeauthoryear{Muto et~al.}{2013}]{muto2013modular}
 \begin{barticle}
 \bauthor{\bsnm{Muto}, \binits{A.}},
@@ -960,7 +945,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 53
+%%% 52
 \bibitem[\protect\citeauthoryear{Aramaki et~al.}{2020}]{aramaki2020kofamkoala}
 \begin{barticle}
 \bauthor{\bsnm{Aramaki}, \binits{T.}},
@@ -979,7 +964,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 54
+%%% 53
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2012}]{kanehisa2012kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -996,7 +981,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 55
+%%% 54
 \bibitem[\protect\citeauthoryear{Kanehisa and Sato}{2020}]{kanehisa2020kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -1009,7 +994,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 56
+%%% 55
 \bibitem[\protect\citeauthoryear{Kanehisa et~al.}{2022}]{kanehisa2022kegg}
 \begin{barticle}
 \bauthor{\bsnm{Kanehisa}, \binits{M.}},
@@ -1023,7 +1008,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 57
+%%% 56
 \bibitem[\protect\citeauthoryear{Lam et~al.}{2020}]{phylomint_ms}
 \begin{barticle}
 \bauthor{\bsnm{Lam}, \binits{T.J.}},
@@ -1039,7 +1024,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 58
+%%% 57
 \bibitem[\protect\citeauthoryear{Henry et~al.}{2010}]{henry2010high}
 \begin{barticle}
 \bauthor{\bsnm{Henry}, \binits{C.S.}},
@@ -1057,7 +1042,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 59
+%%% 58
 \bibitem[\protect\citeauthoryear{Overbeek et~al.}{2014}]{overbeek2014seed}
 \begin{barticle}
 \bauthor{\bsnm{Overbeek}, \binits{R.}},
@@ -1079,7 +1064,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 60
+%%% 59
 \bibitem[\protect\citeauthoryear{Brettin et~al.}{2015}]{brettin2015rasttk}
 \begin{barticle}
 \bauthor{\bsnm{Brettin}, \binits{T.}},
@@ -1101,7 +1086,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 61
+%%% 60
 \bibitem[\protect\citeauthoryear{Merkel et~al.}{2014}]{merkel2014docker}
 \begin{barticle}
 \bauthor{\bsnm{Merkel}, \binits{D.}}, \betal:
@@ -1114,7 +1099,7 @@ R Journal
 \end{barticle}
 \endbibitem
 
-%%% 62
+%%% 61
 \bibitem[\protect\citeauthoryear{Reese}{2008}]{nginx}
 \begin{botherref}
 \oauthor{\bsnm{Reese}, \binits{W.}}:
@@ -1125,7 +1110,7 @@ Linux J.
 \end{botherref}
 \endbibitem
 
-%%% 63
+%%% 62
 \bibitem[\protect\citeauthoryear{Choudhary
   et~al.}{2021}]{choudhary2021scnetviz}
 \begin{botherref}
@@ -1142,7 +1127,7 @@ F1000Research
 \end{botherref}
 \endbibitem
 
-%%% 64
+%%% 63
 \bibitem[\protect\citeauthoryear{Chaumeil et~al.}{2020}]{chaumeil2020gtdb}
 \begin{botherref}
 \oauthor{\bsnm{Chaumeil}, \binits{P.-A.}},
@@ -1155,7 +1140,7 @@ Oxford University Press
 \end{botherref}
 \endbibitem
 
-%%% 65
+%%% 64
 \bibitem[\protect\citeauthoryear{Carbajal-Rodríguez
   et~al.}{2011}]{aerobeVariovorax}
 \begin{barticle}
@@ -1175,7 +1160,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 66
+%%% 65
 \bibitem[\protect\citeauthoryear{Han et~al.}{2011}]{autotrophVariovorax}
 \begin{barticle}
 \bauthor{\bsnm{Han}, \binits{J.-I.}},
@@ -1204,7 +1189,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 67
+%%% 66
 \bibitem[\protect\citeauthoryear{Sun et~al.}{2014}]{lacticVariovorax}
 \begin{barticle}
 \bauthor{\bsnm{Sun}, \binits{J.}},
@@ -1223,7 +1208,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 68
+%%% 67
 \bibitem[\protect\citeauthoryear{Astafyeva et~al.}{2022}]{t6ssVariovorax}
 \begin{barticle}
 \bauthor{\bsnm{Astafyeva}, \binits{Y.}},
@@ -1249,7 +1234,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 69
+%%% 68
 \bibitem[\protect\citeauthoryear{Mendoza et~al.}{2019}]{mendoza2019systematic}
 \begin{barticle}
 \bauthor{\bsnm{Mendoza}, \binits{S.N.}},
@@ -1265,7 +1250,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 70
+%%% 69
 \bibitem[\protect\citeauthoryear{Chklovski et~al.}{2023}]{chklovski2023checkm2}
 \begin{barticle}
 \bauthor{\bsnm{Chklovski}, \binits{A.}},
@@ -1281,7 +1266,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 71
+%%% 70
 \bibitem[\protect\citeauthoryear{Parks et~al.}{2015}]{parks2015checkm}
 \begin{barticle}
 \bauthor{\bsnm{Parks}, \binits{D.H.}},
@@ -1298,7 +1283,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 72
+%%% 71
 \bibitem[\protect\citeauthoryear{Dal~Co et~al.}{2020}]{dal2020short}
 \begin{barticle}
 \bauthor{\bsnm{Dal~Co}, \binits{A.}},
@@ -1315,7 +1300,7 @@ Oxford University Press
 \end{barticle}
 \endbibitem
 
-%%% 73
+%%% 72
 \bibitem[\protect\citeauthoryear{Kost et~al.}{2023}]{kost2023metabolic}
 \begin{botherref}
 \oauthor{\bsnm{Kost}, \binits{C.}},
