@@ -50,13 +50,8 @@ RUN apt-get install -y liblzma-dev \
     libtool \
     zlib1g-dev
 
-
-
 # PhenDB
 RUN pip install phenotrex[fasta]
-#  git pull https://github.com/univieCUBE/phenotrex.git &&\
-#  cd phenotrex &&\
-
 
 # RUN wget https://zenodo.org/records/10562677/files/phen_classes.zip &&\
 #     unzip phen_classes.zip &&\
@@ -72,35 +67,21 @@ RUN chmod 777 /data/ &&\
 
 # Install pandas, dash, plotly 
 RUN pip install pandas
-# RUN    pip install dash &&\
-#        pip install plotly
-
 
 # -----------------------------------
 #  ADD WHATEVER BEFORE THE COPIES 
 # -----------------------------------
 
-# Copy microbetag utils 
-WORKDIR /microbetag
-ADD utils.py ./
-ADD microbetag.py  ./
-ADD config.py ./
-
-
 WORKDIR /microbetag/microbetagDB/ref-dbs/phenDB/classes/
 ADD microbetagDB/ref-dbs/phenDB/classes/*  ./
-
 
 RUN sed -i 's/np\.integer/int/g' /usr/local/lib/python3.8/dist-packages/phenotrex/io/flat.py  &&\
     sed -i 's/np\.floating/float/g' /usr/local/lib/python3.8/dist-packages/phenotrex/io/flat.py  &&\
     sed -i 's/np\.int/int/g' /usr/local/lib/python3.8/dist-packages/deepnog/data/dataset.py &&\
     sed -i 's/np\.int/int/g' /usr/local/lib/python3.8/dist-packages/deepnog/learning/training.py
 
-
-
 RUN pip install networkx[default] &&\
     pip install scikit-learn==1.2.2
-
 
 WORKDIR /usr/local
 RUN git clone https://github.com/hyattpd/Prodigal.git 
@@ -114,8 +95,7 @@ RUN apt-get install infernal infernal-doc
 
 # To install DRAM (for KEGG annotation of the bins), we need the following
 # pandas [done], networkx[done], scikit-bio[done], prodigal[done], mmseqs2, hmmer and 
-# tRNAscan-SE (for )
-
+# tRNAscan-SE (for ) === [TODO] CHECK IF ALL NEEDED 
 RUN wget http://lowelab.ucsc.edu/software/trnascan-se-2.0.12.tar.gz &&\ 
     gunzip trnascan-se-2.0.12.tar.gz  &&\
     tar xf trnascan-se-2.0.12.tar &&\
@@ -129,18 +109,24 @@ ENV PATH="/usr/local/mmseqs/bin:${PATH}"
 
 RUN wget http://eddylab.org/software/hmmer/hmmer-3.4.tar.gz ; tar xf hmmer-3.4.tar.gz ; cd hmmer-3.4 ; ./configure ; make ; make install
 
-RUN git clone https://github.com/xuechunxu/DiTing.git
-
-# This needs to be performed locally and then mounted; otherwise we go to an image of 15G
-RUN mkdir kofam_database &&\
-    cd kofam_database &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-    gzip -d ko_list.gz &&\
-    tar zxvf profiles.tar.gz 
-
+# # This needs to be performed locally and then mounted; otherwise we go to an image of 15G
+# RUN mkdir kofam_database &&\
+#     cd kofam_database &&\
+#     wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
+#     wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
+#     gzip -d ko_list.gz &&\
+#     tar zxvf profiles.tar.gz 
 
 WORKDIR /microbetag
+RUN git clone https://github.com/xuechunxu/DiTing.git
+
+
+# Copy microbetag utils 
+WORKDIR /microbetag
+ADD utils.py ./
+ADD microbetag.py  ./
+ADD config.py ./
+
 
 ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 
@@ -187,40 +173,10 @@ ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 # RUN make install
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ----------------------------------------------------------------
 
 # WORKDIR /home/software/FAPROTAX_1.2.4/
 # RUN sed -i "208s/return (s.lower() is not 'nan') and is_number(s);/return (s.lower() != 'nan' and is_number(s))/g" collapse_table.py
-
-
-# # Format 
-# RUN pip install pyarrow
-
-
-
-
 
 # # BugBase 
 # # Dependencies
@@ -236,45 +192,6 @@ ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 #     Rscript -e 'install.packages("Matrix", repos="https://cran.rstudio.com")' && \
 #     Rscript -e 'install.packages("labeling", repos="https://cran.rstudio.com")' &&\
 #     Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
-
-# # Install BugBase
-# WORKDIR /opt
-# RUN git clone https://github.com/knights-lab/BugBase.git
-# RUN echo "export BUGBASE_PATH=/opt/BugBase" >> /root/.bashrc && \
-#     echo "export PATH=$BUGBASE_PATH/bin:$PATH" >> /root/.bashrc
-# ENV PATH="${BUGBASE_PATH}/bin:${PATH}"
-# WORKDIR /usr/local/lib64/R/library
-# RUN ln -s $PWD/dplyr /opt/BugBase/R_lib &&\
-#     ln -s $PWD/RColorBrewer /opt/BugBase/R_lib &&\
-#     ln -s $PWD/beeswarm /opt/BugBase/R_lib &&\
-#     ln -s $PWD/reshape2 /opt/BugBase/R_lib &&\
-#     ln -s $PWD/plyr /opt/BugBase/R_lib &&\
-#     ln -s $PWD/gridExtra /opt/BugBase/R_lib &&\
-#     ln -s $PWD/RJSONIO /opt/BugBase/R_lib &&\
-#     ln -s $PWD/digest /opt/BugBase/R_lib &&\
-#     ln -s $PWD/optparse /opt/BugBase/R_lib &&\
-#     ln -s $PWD/Matrix /opt/BugBase/R_lib &&\
-#     ln -s $PWD/labeling /opt/BugBase/R_lib &&\
-#     ln -s $PWD/ggplot2 /opt/BugBase/R_lib
-
-
-# # Install EnDED
-# WORKDIR /home/software
-# # The boost library is dependency for that
-# RUN apt-get install -y libboost-dev
-# # Get and install EnDED
-# RUN git clone https://github.com/InaMariaDeutschmann/EnDED.git &&\
-#     cd EnDED &&\
-#     make
-
-# # Install cwl-runner
-# RUN git clone https://github.com/common-workflow-language/cwltool.git &&\
-#     cd cwltool &&\
-#     pip install .[deps] 
-
-# RUN pip install cwlref-runner
-#------------     SET THE DASH - CYTO - DOCKER SERVER  --------- #
-
 
 
 # ==========================================================================================================
@@ -313,8 +230,6 @@ ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 # ==========================================================================================================
 
 
-
-
 # ==========================================================================================================
 
 # # Install OpenJDK-11
@@ -334,68 +249,4 @@ ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 # RUN export JAVA_HOME
 
 # ==========================================================================================================
-
-
-
-
-
-
-# RUN pip install dash-cytoscape &&\
-#     pip install dash-vtk &&\
-#     pip install ipywidgets
-
-
-
-
-# RUN wget https://zenodo.org/record/6406992/files/gtdb_kofam_scan_per_module.tar.gz?download=1 &&\
-#          wget https://zenodo.org/record/6406992/files/kegg_genomes.tar.xz?download=1 &&\
-#          wget https://zenodo.org/record/6406992/files/mgnify_catalogues.tar.xz?download=1
-
-# RUN mv gtdb_kofam_scan_per_module.tar.gz\?download\=1 gtdb_kofam_scan_per_module.tar.gz &&\
-#     mv kegg_genomes.tar.xz\?download\=1 kegg_genomes.tar.xz &&\
-#     mv mgnify_catalogues.tar.xz\?download\=1 mgnify_catalogues.tar.xz
-
-# RUN tar -zxvf gtdb_kofam_scan_per_module.tar.gz &&\
-#     tar -xf kegg_genomes.tar.xz &&\
-#     tar -xf mgnify_catalogues.tar.xz &&\
-#     rm gtdb_kofam_scan_per_module.tar.gz kegg_genomes.tar.xz mgnify_catalogues.tar.xz
-
-
-
-
-
-
-
-
-
-# # the App-SpaM placement tool
-# WORKDIR /usr/lib
-
-# RUN git clone https://github.com/matthiasblanke/App-SpaM &&\
-#     cd App-SpaM &&\
-#     mkdir build &&\
-#     cd build &&\
-#     cmake .. &&\
-#     make &&\
-#     echo "export PATH=/usr/lib/App-SpaM/build/:$PATH" >> /root/.bashrc 
-
-# ENV PATH="/usr/lib/App-SpaM/build/:${PATH}"
-
-
-
-# # Install Graphtools
-# WORKDIR /opt
-# RUN wget http://msysbiology.com/documents/Graphtools.zip && \
-#     unzip Graphtools.zip && \
-#     cd Graphtools && \
-#     export GRAPHTOOLS_ROOT=/opt/Graphtools/Graphtools && \
-#     export CLASSPATH=$CLASSPATH:$GRAPHTOOLS_ROOT/lib/NeAT_javatools.jar &&\
-#     cd REA &&\
-#     make &&\
-#     REA_ROOT=$GRAPHTOOLS_ROOT/REA && \
-#     cd ../kwalks/src/ && \
-#     make && \
-#     KWALKS_ROOT=$GRAPHTOOLS_ROOT/kwalks/bin && \
-#     echo "export CLASSPATH=$CLASSPATH" >> .bashrc && \
-#     echo "export REA_ROOT=$REA_ROOT" >> .bashrc
 

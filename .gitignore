@@ -91,3 +91,6 @@ gtdb_16s.RData
 # Ignore the kofam database
 kofam_database/
 
+# Ignore the output folder of the stand alone tool
+microbetag_run/
+

@@ -13,6 +13,7 @@ class Config:
         # self.group_id = file_info.st_gid
 
         self.io_path = conf["io_path"]["path"]
+        self.kegg_db_dir = "/microbetag/microbetagDB/ref-dbs/kofam_database/"
 
         if conf["on_container"]["value"]:
             self.mount = "/data"
@@ -25,6 +26,8 @@ class Config:
             self.output_dir = os.path.join(self.io_path, conf["output_directory"]["folderName"])
 
 
+        self.bin_filenames = os.listdir(self.bins_path)
+
         if os.path.exists(self.output_dir) and os.path.isdir(self.output_dir):
             print("Output directory already exists.")
         else:
@@ -35,6 +38,20 @@ class Config:
             print("Predictions path already exists.")
         else:
             os.mkdir(self.predictions_path)
+
+        self.prodigal = os.path.join(self.output_dir, "ORFs")
+        if os.path.exists(self.prodigal) and os.path.isdir(self.prodigal):
+            print("ORFs path already exists.")
+        else:
+            os.mkdir(self.prodigal)
+
+        self.kegg_annotations = os.path.join(self.output_dir, "KEGG_annotations")
+        self.kegg_pieces_dir = os.path.join(self.kegg_annotations, 'hmmout')
+        if os.path.exists(self.kegg_annotations) and os.path.isdir(self.kegg_annotations):
+            print("KEGG annotations output directory already built.")
+        else:
+            os.mkdir(self.kegg_annotations)
+            os.mkdir(self.kegg_pieces_dir)
 
         # Metadata file for FlashWeave
         if conf["metadata_file"]["fileName"]:
@@ -60,11 +77,8 @@ class Config:
         else:
             self.heterogeneous = "false"
 
-
         self.genotypes_file = os.path.join(self.output_dir, "train.genotype")
         self.min_proba = conf["min_proba"]["value"]
-
-
 
         # init torch
         import torch

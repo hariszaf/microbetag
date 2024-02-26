@@ -21,7 +21,6 @@ import yaml
 from config import Config
 from utils import *
 
-
 config_file = sys.argv[1]
 
 with open(config_file, 'r') as yaml_file:
@@ -31,14 +30,14 @@ if config.bins_path is None:
     raise ValueError
 
 
-
+# ----------------
 # STEP1: phenotrex
-
+# ----------------
 suffixes = [".fa", ".fasta", ".gz"]
 bin_files = get_files_with_suffixes(config.bins_path, suffixes)
 bin_files_in_a_row = " ".join(bin_files)
 
-
+# Build genotypes
 compute_genotype_params = [ "phenotrex",
                             "compute-genotype",
                             "--out",
@@ -46,39 +45,65 @@ compute_genotype_params = [ "phenotrex",
                             "--threads",
                             str(config.threads),
                             bin_files_in_a_row
-]
+                        ]
 compute_genotype_command = " ".join(compute_genotype_params)
 
 if not os.path.exists(config.genotypes_file):
-    print(compute_genotype_command)
     print("Phenotrex genotype for the first time.")
     if os.system(compute_genotype_command) != 0:
         print("Try phenotrex genotype for the second time.")
         if os.system(compute_genotype_command) != 0:
             raise ValueError
+else:
+    print("Genotypes already comptued.")
 
+# Get predictions
 folder_path = "microbetagDB/ref-dbs/phenDB/classes/"
 phen_models = [os.path.join(folder_path, model) for model in os.listdir(folder_path)]
 
-
-
 for model in phen_models:
     model_name =  os.path.basename(model)
-    predict_traits_params = [
-        "phenotrex",
-        "predict",
-        "--genotype",
-        config.genotypes_file,
-        "--classifier",
-        model,
-        "--min_proba",
-        str(config.min_proba),
-        "--verb >",
-        "".join([config.predictions_path, "/", model_name[:-4], ".prediction.tsv"])
-    ]
-    predict_trait_command = " ".join(predict_traits_params)
-    print(predict_trait_command)
+    model_predictions_output = "".join([
+        config.predictions_path, "/", model_name[:-4], ".prediction.tsv"
+    ])
+    if os.path.exists(model_predictions_output):
+        print("Predictions already there for model:", model_name)
+    else:
+        predict_traits_params = [
+            "phenotrex",
+            "predict",
+            "--genotype",
+            config.genotypes_file,
+            "--classifier",
+            model,
+            "--min_proba",
+            str(config.min_proba),
+            "--verb >",
+            model_predictions_output
+        ]
+        predict_trait_command = " ".join(predict_traits_params)
+        if os.system(predict_trait_command) != 0:
+            raise ValueError
 
-    if os.system(predict_trait_command) != 0:
-        raise ValueError
+# ----------------
+# STEP 2: prodigal - using diting interface
+# ----------------
+
+for bin_fa in bin_files:
+    bin_filename = os.path.basename(bin_fa)
+    run_prodigal(bin_fa, bin_filename, config.prodigal)
+
+# ----------------
+# STEP 3: KEGG annotation - using diting interface
+# ----------------
+
+ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
+ko_dic = ko_list_parser(ko_list)
+
+
+for bn in config.bin_filenames:
+    faa = os.path.join(config.prodigal, bn + '.faa')
+    kegg_annotation(faa, bn, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
+
+
 

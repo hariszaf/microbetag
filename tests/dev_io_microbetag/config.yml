@@ -92,7 +92,7 @@ flashweave_heterogeneous:
 
 
 threads:
-  value: 2
+  value: 10
   description: Number of CPUs to be used 
   type: Integer
 
