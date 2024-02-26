@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  24 FEB 2024 21:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.4) (preloaded format=pdflatex 2024.2.18)  26 FEB 2024 23:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -977,8 +977,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
-LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 331.
-<figs/microbetag-precal.png, id=122, 1392.20125pt x 782.925pt>
+<figs/microbetag-precal.png, id=116, 1392.20125pt x 782.925pt>
 File: figs/microbetag-precal.png Graphic file (type png)
 <use figs/microbetag-precal.png>
 Package pdftex.def Info: figs/microbetag-precal.png  used on input line 340.
@@ -986,9 +985,6 @@ Package pdftex.def Info: figs/microbetag-precal.png  used on input line 340.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Overfull \vbox (5.29115pt too high) has occurred while \output is active []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1007,11 +1003,11 @@ Underfull \hbox (badness 1147) in paragraph at lines 445--454
 \OT1/cmr/m/n/10 phenDB for each trait to sync with the lat-est ver-sion of eggNOG [[]] and
  []
 
-<figs/path_complem.png, id=204, 1072.005pt x 856.19875pt>
+<figs/path_complem.png, id=193, 1216.545pt x 856.19875pt>
 File: figs/path_complem.png Graphic file (type png)
 <use figs/path_complem.png>
 Package pdftex.def Info: figs/path_complem.png  used on input line 487.
-(pdftex.def)             Requested size: 297.60114pt x 237.68288pt.
+(pdftex.def)             Requested size: 297.60114pt x 209.45044pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1022,11 +1018,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./figs/path_complem.png>]
-<figs/microbetag-wf.png, id=239, 1304.875pt x 1221.56375pt>
+<figs/microbetag-wf.png, id=228, 1304.875pt x 1222.5675pt>
 File: figs/microbetag-wf.png Graphic file (type png)
 <use figs/microbetag-wf.png>
 Package pdftex.def Info: figs/microbetag-wf.png  used on input line 563.
-(pdftex.def)             Requested size: 334.79773pt x 313.42383pt.
+(pdftex.def)             Requested size: 334.79773pt x 313.68137pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1044,78 +1040,77 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-<figs/cyPanel.png, id=296, 427.8384pt x 653.8026pt>
+<figs/cyPanel.png, id=285, 427.8384pt x 653.8026pt>
 File: figs/cyPanel.png Graphic file (type png)
 <use figs/cyPanel.png>
-Package pdftex.def Info: figs/cyPanel.png  used on input line 676.
+Package pdftex.def Info: figs/cyPanel.png  used on input line 665.
 (pdftex.def)             Requested size: 316.20227pt x 483.22772pt.
 
 Overfull \vbox (179.68289pt too high) has occurred while \output is active []
 
  [13 <./figs/cyPanel.png>]
-Overfull \vbox (4.81123pt too high) has occurred while \output is active []
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 748.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 748.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
+(Font)              size <5> substituted on input line 748.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 748.
+
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
+(Font)              size <5> substituted on input line 748.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [14]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 758.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 758.
-
-
-LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 758.
-
-
-LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 758.
-
-
-LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 758.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15]
-Underfull \hbox (badness 10000) in paragraph at lines 925--929
-[]\OT1/cmr/m/n/10 Yet, there are sev-eral chal-lenges involved in our approach. First,
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [16]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 996.
-
-Overfull \vbox (8.36615pt too high) has occurred while \output is active []
-
+LaTeX Font Info:    Calculating math sizes for size <14.05249> on input line 981.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 990.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [17]
+Overfull \vbox (0.93314pt too high) has occurred while \output is active []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19]
-<figs/architecture.png, id=412, 1506.62875pt x 1150.2975pt>
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<figs/architecture.png, id=392, 1506.62875pt x 1150.2975pt>
 File: figs/architecture.png Graphic file (type png)
 <use figs/architecture.png>
-Package pdftex.def Info: figs/architecture.png  used on input line 1217.
+Package pdftex.def Info: figs/architecture.png  used on input line 1212.
 (pdftex.def)             Requested size: 334.79773pt x 255.61128pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [19]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [20]
-<figs/node55Neigh.png, id=419, 1431.3475pt x 863.225pt>
+<figs/node55Neigh.png, id=405, 1431.3475pt x 863.225pt>
 File: figs/node55Neigh.png Graphic file (type png)
 <use figs/node55Neigh.png>
-Package pdftex.def Info: figs/node55Neigh.png  used on input line 1226.
+Package pdftex.def Info: figs/node55Neigh.png  used on input line 1221.
 (pdftex.def)             Requested size: 334.79773pt x 201.90953pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1129,74 +1124,74 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [23
 
 ]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [24]
-Underfull \hbox (badness 10000) in paragraph at lines 613--632
+Underfull \hbox (badness 10000) in paragraph at lines 469--488
 \OT1/cmr/m/n/10 Biotech-nol-ogy \OT1/cmr/bx/n/10 n/a\OT1/cmr/m/n/10 (n/a), 14396 [][]$https : / / doi . org / 10 . 1111 / 1751-[]7915 . 14396$[][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 613--632
+Underfull \hbox (badness 10000) in paragraph at lines 469--488
 [][]\OT1/cmr/m/n/10 https://ami-journals.onlinelibrary.wiley.com/doi/pdf/10.1111/1751-7915.14396[][].
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [25]
-Underfull \hbox (badness 3861) in paragraph at lines 682--699
+ [24]
+Underfull \hbox (badness 3861) in paragraph at lines 633--650
 [][]$\OT1/cmr/m/n/10 https : / / doi . org / 10 . 1021 / ci3005379$[][] [][]https://doi.org/10.1021/ci3005379[][]. PMID:
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [25]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [26]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [27]
-Underfull \hbox (badness 10000) in paragraph at lines 1147--1162
+Underfull \hbox (badness 10000) in paragraph at lines 1098--1113
 []\OT1/cmr/m/n/10 Carbajal-Rodr^^S^^Pguez, I., St^^?oveken, N., Satola, B., W^^?ubbeler, J.H.,
  []
 
 
-Underfull \hbox (badness 1789) in paragraph at lines 1147--1162
+Underfull \hbox (badness 1789) in paragraph at lines 1098--1113
 \OT1/cmr/m/n/10 Steinb^^?uchel, A.: Aer-o-bic degra-da-tion of mer-cap-to-suc-ci-nate by the gram-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1147--1162
+Underfull \hbox (badness 10000) in paragraph at lines 1098--1113
 \OT1/cmr/m/n/10 negative bac-terium <i>variovorax para-doxus</i> strain b4. Jour-nal of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1147--1162
+Underfull \hbox (badness 10000) in paragraph at lines 1098--1113
 \OT1/cmr/m/n/10 Bac-te-ri-ol-ogy \OT1/cmr/bx/n/10 193\OT1/cmr/m/n/10 (2), 527--539 (2011) [][]$https : / / doi . org / 10 . 1128 / jb . 00793-[]10$[][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1214--1236
+Underfull \hbox (badness 10000) in paragraph at lines 1165--1187
 []\OT1/cmr/m/n/10 Astafyeva, Y., Gurschke, M., Qi, M., Bergmann, L., Inden-birken,
  []
 
 
-Underfull \hbox (badness 3792) in paragraph at lines 1214--1236
+Underfull \hbox (badness 3792) in paragraph at lines 1165--1187
 \OT1/cmr/m/n/10 D., Grahl, I., Kat-zow-itsch, E., Reumann, S., Hanelt, D., Alawi, M.,
  []
 
 
-Underfull \hbox (badness 4846) in paragraph at lines 1214--1236
+Underfull \hbox (badness 4846) in paragraph at lines 1165--1187
 \OT1/cmr/m/n/10 Streit, W.R., Krohn, I.: Microal-gae and bac-te-ria inter-ac-tion|evidence
  []
 
 
-Underfull \hbox (badness 6445) in paragraph at lines 1214--1236
+Underfull \hbox (badness 6445) in paragraph at lines 1165--1187
 \OT1/cmr/m/n/10 for divi-sion of dili-gence in the alga micro-biota. Micro-bi-ol-ogy Spec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1214--1236
+Underfull \hbox (badness 10000) in paragraph at lines 1165--1187
 \OT1/cmr/m/n/10 trum \OT1/cmr/bx/n/10 10\OT1/cmr/m/n/10 (4), 00633--22 (2022) [][]$https : / / doi . org / 10 . 1128 / spectrum . 00633-[]22$[][]
  []
 
@@ -1220,17 +1215,17 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 54805EF1C40D8374A9602C6BCDF9A5CE;557.
  ) 
 Here is how much of TeX's memory you used:
- 28326 strings out of 474543
- 515694 string characters out of 5751482
- 1943975 words of memory out of 5000000
- 49886 multiletter control sequences out of 15000+600000
+ 28311 strings out of 474543
+ 515390 string characters out of 5751482
+ 1944975 words of memory out of 5000000
+ 49877 multiletter control sequences out of 15000+600000
  582623 words of font info for 136 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
  99i,28n,117p,1868b,916s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (29 pages, 3325397 bytes).
+ </home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on main.pdf (29 pages, 3310796 bytes).
 PDF statistics:
- 599 PDF objects out of 1000 (max. 8388607)
- 150 named destinations out of 1000 (max. 500000)
+ 579 PDF objects out of 1000 (max. 8388607)
+ 144 named destinations out of 1000 (max. 500000)
  96 words of extra memory for PDF output out of 10000 (max. 10000000)
 
