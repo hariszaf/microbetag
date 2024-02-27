@@ -91,7 +91,8 @@ for model in phen_models:
 
 for bin_fa in bin_files:
     bin_filename = os.path.basename(bin_fa)
-    run_prodigal(bin_fa, bin_filename, config.prodigal)
+    bin_id, extension = os.path.splitext(bin_filename)
+    run_prodigal(bin_fa, bin_id, config.prodigal)
 
 # ----------------
 # STEP 3: KEGG annotation - using diting interface
@@ -100,10 +101,12 @@ for bin_fa in bin_files:
 ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
 ko_dic = ko_list_parser(ko_list)
 
-
 for bn in config.bin_filenames:
-    faa = os.path.join(config.prodigal, bn + '.faa')
-    kegg_annotation(faa, bn, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
+    bin_id, extension = os.path.splitext(bn)
+    faa = os.path.join(config.prodigal, bin_id + '.faa')
+    kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
 
+ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
+merge_ko(config.kegg_pieces_dir, ko_merged_tab)
 
 
