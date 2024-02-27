@@ -11,6 +11,8 @@
 \citation{raes2008molecular,faust2012microbialReviewInteractions}
 \citation{rottjers2018hairballs}
 \citation{balint2016millions}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 182}}{2}{\abstractname }{figure.caption.2}{}}
 \citation{faust2012microbialReviewInteractions}
 \citation{d2018ecology}
 \citation{elixir_microbiome}
@@ -25,13 +27,11 @@
 \citation{kishore2023inferring,weiss2016correlation}
 \citation{faust2021open}
 \citation{rottjers2018hairballs}
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:abstract}{{\caption@xref {fig:abstract}{ on input line 169}}{2}{\abstractname }{figure.caption.2}{}}
-\newlabel{sec:background}{{3}{2}{Background}{section*.3}{}}
 \citation{berry2014deciphering}
 \citation{faust2021open}
 \citation{guidi2016plankton}
 \citation{rottjers2020manta}
+\newlabel{sec:background}{{3}{3}{Background}{section*.3}{}}
 \citation{levy2012reverse}
 \citation{levy2014metagenomic}
 \citation{thiele2010protocol,durot2008genome,communityGemMicrobiomeModel2023}
@@ -42,15 +42,14 @@
 \citation{keggmodulesdb}
 \citation{hessler2023vitamin}
 \citation{wattam2017improvements}
-\newlabel{sec:implementation}{{3}{4}{Implementation}{section*.4}{}}
-\newlabel{subsec:genomes}{{3}{4}{Genomes included}{section*.6}{}}
 \citation{parks2022gtdb}
 \citation{quast2012silva}
 \citation{schoch2020ncbi}
+\newlabel{sec:implementation}{{3}{5}{Implementation}{section*.4}{}}
+\newlabel{fig:precalc}{{\caption@xref {fig:precalc}{ on input line 352}}{5}{Implementation}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Diagram of the \texttt  {microbetag}~pre-calculations. GTDB v207 representative genomes were filtered and for those of high-quality, 33 phenotypic traits were predicted using~\texttt  {phenotrex}. To this end, models were re-trained to sync with version 5.0 of eggNOG. }}{5}{figure.caption.5}\protected@file@percent }
+\newlabel{subsec:genomes}{{3}{5}{Genomes included}{section*.6}{}}
 \citation{flashweave_cite}
-\newlabel{fig:precalc}{{\caption@xref {fig:precalc}{ on input line 339}}{5}{Implementation}{figure.caption.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  Diagram of the \texttt  {microbetag}pre-calculations. GTDB v207 representative genomes were filtered and for those of high-quality, 33 phenotypic traits were predicted using~\texttt  {phenotrex}. To this end, models were re-trained to sync with version 5.0 of eggNOG. }}{5}{figure.caption.5}\protected@file@percent }
-\newlabel{subsec:taxonomies}{{3}{5}{Taxonomy schemes}{section*.7}{}}
 \citation{ali_alishum_2022_6655692}
 \citation{murali2018idtaxa}
 \citation{murali2018idtaxa}
@@ -59,47 +58,48 @@
 \citation{sunagawa2015structure}
 \citation{louca2016decoupling}
 \citation{douglas2020picrust2}
-\citation{feldbauer2015prediction}
+\newlabel{subsec:taxonomies}{{3}{6}{Taxonomy schemes}{section*.7}{}}
 \newlabel{subsec:net-infer}{{3}{6}{Network inference}{section*.8}{}}
-\newlabel{subsec:preprocess}{{3}{6}{\microbetag pre-processing}{section*.9}{}}
+\newlabel{subsec:preprocess}{{3}{6}{\microbetag ~pre-processing}{section*.9}{}}
 \newlabel{subsec:fapro}{{3}{6}{Literature based nodes annotation}{section*.10}{}}
-\newlabel{subsec:phen}{{3}{6}{Genomic based nodes annotation}{section*.11}{}}
+\citation{feldbauer2015prediction}
 \citation{huerta2019eggnog}
 \citation{feldbauer2015prediction}
 \citation{keggmodulesdb}
 \citation{muto2013modular}
 \citation{aramaki2020kofamkoala}
 \citation{kanehisa2012kegg}
-\citation{kanehisa2020kegg,kanehisa2022kegg}
+\newlabel{subsec:phen}{{3}{7}{Genomic based nodes annotation}{section*.11}{}}
 \newlabel{subsec:path-compl}{{3}{7}{Pathway complementarity}{section*.12}{}}
+\citation{kanehisa2020kegg,kanehisa2022kegg}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Pathway complementarity approach. The high-quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of completing a KEGG module were enumerated and all the possible ways a donor species could "gap-fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways to complete the serine biosynthesis module; in all of them K00831 is required. However, it is missing from the beneficiary species that supports two out of the three steps of the module's definition. A donor species including the missing KO (K00831) could potentially transfer the respective gene or provide the beneficiary species with the relevant intermediary product, enabling the beneficiary species to produce serine. }}{8}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:pathcompl}{{2}{8}{Pathway complementarity approach. The high-quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of completing a KEGG module were enumerated and all the possible ways a donor species could "gap-fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways to complete the serine biosynthesis module; in all of them K00831 is required. However, it is missing from the beneficiary species that supports two out of the three steps of the module's definition. A donor species including the missing KO (K00831) could potentially transfer the respective gene or provide the beneficiary species with the relevant intermediary product, enabling the beneficiary species to produce serine}{figure.caption.13}{}}
 \citation{phylomint_ms}
 \citation{levy2015netcooperate}
 \citation{kreimer2012netcmpt}
 \citation{phylomint_ms}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Pathway complementarity approach. The high-quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of completing a KEGG module were enumerated and all the possible ways a donor species could "gap-fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways to complete the serine biosynthesis module; in all of them K00831 is required. However, it is missing from the beneficiary species that supports two out of the three steps of the module's definition. A donor species including the missing KO (K00831) could potentially transfer the respective gene or provide the beneficiary species with the relevant intermediary product, enabling the beneficiary species to produce serine. }}{8}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:pathcompl}{{2}{8}{Pathway complementarity approach. The high-quality GTDB genomes were annotated with KEGG ORTHOLOGY (KO) terms. The various ways of completing a KEGG module were enumerated and all the possible ways a donor species could "gap-fill" a beneficiary's non-complete module were calculated. In this case, there are 4 unique ways to complete the serine biosynthesis module; in all of them K00831 is required. However, it is missing from the beneficiary species that supports two out of the three steps of the module's definition. A donor species including the missing KO (K00831) could potentially transfer the respective gene or provide the beneficiary species with the relevant intermediary product, enabling the beneficiary species to produce serine}{figure.caption.13}{}}
-\newlabel{subsec:seeds}{{3}{8}{Seed scores and complements using genome scale metabolic reconstructions}{section*.14}{}}
 \citation{henry2010high}
 \citation{overbeek2014seed}
 \citation{wattam2017improvements}
 \citation{brettin2015rasttk}
 \citation{rottjers2020manta}
+\newlabel{subsec:seeds}{{3}{9}{Seed scores and complements using genome scale metabolic reconstructions}{section*.14}{}}
 \citation{flashweave_cite}
 \citation{louca2016decoupling}
 \citation{feldbauer2015prediction}
-\newlabel{subsec:manta}{{3}{9}{Clustering network}{section*.15}{}}
-\newlabel{subsec:app}{{3}{9}{The~\microbetag \space workflow}{section*.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Diagram of \texttt  {microbetag}'s on-the-fly workflow. \texttt  {microbetag}~ expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned to the nodes. Literature-based annotations of the nodes are also added using FAPROTAX. On the edge level, \texttt  {microbetag}~ assigns the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \texttt  {microbetag}~ supports optional network clustering with manta. The annotated network can then be parsed into Cytoscape using the MGG app. }}{10}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:wf}{{3}{10}{Diagram of \microbetag 's on-the-fly workflow. \microbetag ~\space expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned to the nodes. Literature-based annotations of the nodes are also added using FAPROTAX. On the edge level, \microbetag ~\space assigns the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \microbetag ~\space supports optional network clustering with manta. The annotated network can then be parsed into Cytoscape using the MGG app}{figure.caption.17}{}}
-\newlabel{subsec:groups}{{3}{10}{Groups of annotations}{section*.18}{}}
 \citation{merkel2014docker}
 \citation{nginx}
+\newlabel{subsec:manta}{{3}{10}{Clustering network}{section*.15}{}}
+\newlabel{subsec:app}{{3}{10}{The~\microbetag \space workflow}{section*.16}{}}
+\newlabel{subsec:groups}{{3}{10}{Groups of annotations}{section*.18}{}}
+\newlabel{subsec:webserver}{{3}{10}{Software architecture}{section*.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Diagram of \texttt  {microbetag}'s on-the-fly workflow. \texttt  {microbetag}~expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned to the nodes. Literature-based annotations of the nodes are also added using FAPROTAX. On the edge level, \texttt  {microbetag}~assigns the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \texttt  {microbetag}~supports optional network clustering with manta. The annotated network can then be parsed into Cytoscape using the MGG app. }}{11}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:wf}{{3}{11}{Diagram of \microbetag 's on-the-fly workflow. \microbetag ~expects either an abundance table only as input and infers a co-occurrence network using FlashWeave or an abundance table along with an already inferred co-occurrence network and after mapping taxa present to GTDB reference genomes, for those possible, phenotypic attributes are assigned to the nodes. Literature-based annotations of the nodes are also added using FAPROTAX. On the edge level, \microbetag ~assigns the pre-calculated potential complements based on the pathway and the seed complementarities approaches. \microbetag ~supports optional network clustering with manta. The annotated network can then be parsed into Cytoscape using the MGG app}{figure.caption.17}{}}
 \citation{choudhary2021scnetviz}
 \citation{rottjers2020manta}
-\newlabel{subsec:webserver}{{3}{11}{Software architecture}{section*.19}{}}
-\newlabel{subsec:build-cytoapp}{{3}{11}{The \texttt {MGG} CytoscapeApp}{section*.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  CyPanels of the MGG CytoscapeApp. A. \textit  {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. In this example, genomic predicted phenotypic attributes are shown along with their prediction score. B. \textit  {Edges} panel displays the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a direction to the corresponding edge in the graph. There are two cases of complementarities in \texttt  {microbetag}. The first are seed complementarities, which are computed based on the species' reconstructed metabolic networks (case shown above). \textit  {Seed complementarities} are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). The provided URL points to a colored KEGG map that highlights seeds complementing a beneficiary's metabolic network The same applies for the case of the *Pathway complementarities* only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit  {Seed complementarities}. The second are pathway complementarities. These are directly computed from the KEGG annotated genomes and do not involve ModelSEED ids since the metabolic network construction step is not necessary in this case. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that belong to the beneficiary taxon are colored in cyan while the potential complementing seeds from the donor are highlighted in red. }}{13}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:panels}{{4}{13}{CyPanels of the MGG CytoscapeApp. A. \textit {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. In this example, genomic predicted phenotypic attributes are shown along with their prediction score. B. \textit {Edges} panel displays the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a direction to the corresponding edge in the graph. There are two cases of complementarities in \microbetag . The first are seed complementarities, which are computed based on the species' reconstructed metabolic networks (case shown above). \textit {Seed complementarities} are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). The provided URL points to a colored KEGG map that highlights seeds complementing a beneficiary's metabolic network The same applies for the case of the *Pathway complementarities* only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit {Seed complementarities}. The second are pathway complementarities. These are directly computed from the KEGG annotated genomes and do not involve ModelSEED ids since the metabolic network construction step is not necessary in this case. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that belong to the beneficiary taxon are colored in cyan while the potential complementing seeds from the donor are highlighted in red}{figure.caption.21}{}}
+\newlabel{subsec:build-cytoapp}{{3}{12}{The \texttt {MGG} CytoscapeApp}{section*.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces  CyPanels of the MGG CytoscapeApp. A. \textit  {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. In this example, genomic predicted phenotypic attributes are shown along with their prediction score. B. \textit  {Edges} panel displays the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a direction to the corresponding edge in the graph. There are two cases of complementarities in \texttt  {microbetag}. The first are seed complementarities, which are computed based on the species' reconstructed metabolic networks (case shown above). \textit  {Seed complementarities} are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). The provided URL points to a colored KEGG map that highlights seeds complementing a beneficiary's metabolic network The same applies for the case of the \textit  {Pathway complementarities} only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit  {Seed complementarities}. The second are pathway complementarities. These are directly computed from the KEGG annotated genomes and do not involve ModelSEED ids since the metabolic network construction step is not necessary in this case. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that belong to the beneficiary taxon are colored in cyan while the potential complementing seeds from the donor are highlighted in red. }}{13}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:panels}{{4}{13}{CyPanels of the MGG CytoscapeApp. A. \textit {Nodes} panel display the annotations of each taxon (node) mapped to one or more GTDB genomes. In this example, genomic predicted phenotypic attributes are shown along with their prediction score. B. \textit {Edges} panel displays the list of potential metabolic complementarities between two nodes, specifying which is the potential donor and the potential beneficiary taxon; thus giving a direction to the corresponding edge in the graph. There are two cases of complementarities in \microbetag . The first are seed complementarities, which are computed based on the species' reconstructed metabolic networks (case shown above). \textit {Seed complementarities} are first exported based on ModelSEED complements (column three) and mapped in KEGG COMPOUNDS (column four). The provided URL points to a colored KEGG map that highlights seeds complementing a beneficiary's metabolic network The same applies for the case of the \textit {Pathway complementarities} only there is no ModelSEED ids as they are computed directly from the KEGG annotated genomes and not from the Genome-Scale Metabolic Reconstructions; that is the case for the \textit {Seed complementarities}. The second are pathway complementarities. These are directly computed from the KEGG annotated genomes and do not involve ModelSEED ids since the metabolic network construction step is not necessary in this case. C. Part of a colored KEGG map returned based on the seed complementarities. Compounds that belong to the beneficiary taxon are colored in cyan while the potential complementing seeds from the donor are highlighted in red}{figure.caption.21}{}}
 \citation{hessler2023vitamin}
 \citation{chaumeil2020gtdb}
 \citation{aerobeVariovorax}
@@ -128,22 +128,22 @@
 \citation{kost2023metabolic}
 \citation{hessler2023vitamin}
 \newlabel{subsec:future}{{3}{17}{Future work}{section*.31}{}}
-\newlabel{sec:conclusions}{{3}{17}{Conclusions \footnote { This should state clearly the main conclusions and provide an explanation of the importance and relevance of the case, data, opinion, database or software reported. }}{section*.32}{}}
+\newlabel{sec:conclusions}{{3}{17}{Conclusions}{section*.32}{}}
 \@writefile{tdo}{\contentsline {todo}{Use case}{17}{section*.33}\protected@file@percent }
-\pgfsyspdfmark {pgfid1}{27638091}{17931398}
-\pgfsyspdfmark {pgfid2}{4515306}{17943686}
-\pgfsyspdfmark {pgfid3}{5617729}{17719772}
+\pgfsyspdfmark {pgfid1}{27638091}{18153420}
+\pgfsyspdfmark {pgfid2}{4515306}{18165708}
+\pgfsyspdfmark {pgfid3}{5617729}{17941794}
+\newlabel{supplementary-files}{{3}{17}{Supplementary information}{section*.34}{}}
+\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{17}{section*.34}\protected@file@percent }
 \citation{hessler2023vitamin}
-\newlabel{supplementary-files}{{3}{18}{Supplementary information}{section*.34}{}}
-\@writefile{toc}{\contentsline {subparagraph}{Supplementary information}{18}{section*.34}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {A}Background on pathway and seed complementarity}{19}{appendix.a.A}\protected@file@percent }
 \newlabel{app:pathcompl}{{A}{19}{Background on pathway and seed complementarity}{appendix.a.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Validation}{20}{appendix.a.B}\protected@file@percent }
+\newlabel{app:val}{{B}{20}{Validation}{appendix.a.B}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {B1}{\ignorespaces  \textit  {Variovorax} genomes present in microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules. The genome that bin\_55 was mapped to is shown in bold. }}{20}{table.caption.37}\protected@file@percent }
 \newlabel{tab:VariovoraxGenomes}{{B1}{20}{\textit {Variovorax} genomes present in microbetagDB and their corresponding complete/incomplete presence of the pantothenate-related KEGG modules. The genome that bin\_55 was mapped to is shown in bold}{table.caption.37}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Validation}{21}{appendix.a.B}\protected@file@percent }
-\newlabel{app:val}{{B}{21}{Validation}{appendix.a.B}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {B1}{\ignorespaces  \texttt  {microbetag}software ecosystem. }}{21}{figure.caption.38}\protected@file@percent }
-\newlabel{fig:s1}{{B1}{21}{\microbetag software ecosystem}{figure.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B1}{\ignorespaces  \texttt  {microbetag}~software ecosystem. Three Docker containers are combined: a nginx web server connected to a MySQL database and the \texttt  {microbetag}~workflow. An API, as part of the last container, enables the communication between the client (front) and the server side (back end). The content of the microbetagDB and the \texttt  {microbetag}~workflow are accessible through a web-browser, a terminal and a CytoscapeApp (MGG). }}{21}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:s1}{{B1}{21}{\microbetag ~software ecosystem. Three Docker containers are combined: a nginx web server connected to a MySQL database and the \microbetag ~workflow. An API, as part of the last container, enables the communication between the client (front) and the server side (back end). The content of the microbetagDB and the \microbetag ~workflow are accessible through a web-browser, a terminal and a CytoscapeApp (MGG)}{figure.caption.38}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {B2}{\ignorespaces  \textit  {Variovorax} node (bin\_55) and its neighbors annotated by \texttt  {microbetag}. All but three of them were not mapped to a GTDB representative genome. Green edges represent the positive association weights. The black edges represent pairwise seed complementarities and scores. }}{22}{figure.caption.39}\protected@file@percent }
 \newlabel{fig:s2}{{B2}{22}{\textit {Variovorax} node (bin\_55) and its neighbors annotated by \microbetag . All but three of them were not mapped to a GTDB representative genome. Green edges represent the positive association weights. The black edges represent pairwise seed complementarities and scores}{figure.caption.39}{}}
 \bibdata{sn-bibliography}
