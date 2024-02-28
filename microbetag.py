@@ -31,7 +31,7 @@ if config.bins_path is None:
 
 
 # ----------------
-# STEP1: phenotrex
+# STEP1: phen annotations
 # ----------------
 suffixes = [".fa", ".fasta", ".gz"]
 bin_files = get_files_with_suffixes(config.bins_path, suffixes)
@@ -107,6 +107,25 @@ for bn in config.bin_filenames:
     kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
 
 ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
-merge_ko(config.kegg_pieces_dir, ko_merged_tab)
+bins_kos, pivot_df = merge_ko(config.kegg_pieces_dir, ko_merged_tab)
+
+bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
+    config,
+    pivot_df
+    )
+
+with open(os.path.join(config.output_dir, "alts.json"), "w") as file:
+    json.dump(alt_to_gapfill, file, cls=SetEncoder)
+
+with open(os.path.join(config.output_dir, "pathCompls.json"), "w") as file:
+    json.dump(complements, file, cls=SetEncoder)
+
+
+# ----------------
+# STEP 4: Build GENREs
+# ----------------
+
+
+
 
 

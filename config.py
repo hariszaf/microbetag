@@ -13,7 +13,8 @@ class Config:
         # self.group_id = file_info.st_gid
 
         self.io_path = conf["io_path"]["path"]
-        self.kegg_db_dir = "/microbetag/microbetagDB/ref-dbs/kofam_database/"
+        self.cwd = os.getcwd()
+        self.kegg_db_dir = os.path.join(self.cwd, "microbetagDB/ref-dbs/kofam_database/")
 
         if conf["on_container"]["value"]:
             self.mount = "/data"
@@ -63,7 +64,6 @@ class Config:
         else:
             self.metadata = "false"
 
-
         self.build_network = conf["build_network"]["value"]
         self.threads = conf["threads"]["value"]
 
@@ -80,7 +80,14 @@ class Config:
         self.genotypes_file = os.path.join(self.output_dir, "train.genotype")
         self.min_proba = conf["min_proba"]["value"]
 
-        # init torch
+
+        self.ko_terms_per_module_definition = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/kegg_terms_per_module.tsv")
+        self.modules_definitions_json_map = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_definition_map.json")
+        self.kegg_modules_to_maps = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_map_pairs.tsv")
+
+        # ==========
+        # Init torch
+        # ==========
         import torch
         from deepnog.utils import get_weights_path
         from deepnog.utils import set_device

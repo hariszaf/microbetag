@@ -11,7 +11,7 @@ r = re.compile(r'ABacteria')
 for i in range(len(lines)):
 
    if r.search(lines[i]):
-      starting_point = i 
+      starting_point = i
       break
 
 kegg_file = open("br08610.keg", "r")
@@ -24,10 +24,10 @@ line  = ''
 for line in kegg_file:
    if counter < starting_point:
       counter += 1
-   
+
    else:
-      
-      if "TAX:" in line: 
+
+      if "TAX:" in line:
          level   = line[0]
          ncbi_id = line.split("TAX:")[1][:-2]
          check   = True
@@ -43,15 +43,13 @@ for line in kegg_file:
                ncbi_id_to_kegg_ids[ncbi_id].append(kegg_id)
             level   = line[0]
 
-         else: 
+         else:
             check = False
-
-
 
       except:
          continue
 
-out_file = open("out_file.json", "w")  
+out_file = open("out_file.json", "w")
 json.dump(ncbi_id_to_kegg_ids, out_file, indent = 6)
 
 
@@ -59,7 +57,7 @@ output_file = open("NCBI_IDS2KEGG_IDS", "a")
 
 for ncbi_id, kegg_ids, in ncbi_id_to_kegg_ids.items():
 
-   if len(kegg_ids) == 1: 
+   if len(kegg_ids) == 1:
 
       print(ncbi_id, kegg_ids)
 
@@ -80,3 +78,4 @@ for ncbi_id, kegg_ids, in ncbi_id_to_kegg_ids.items():
             time.sleep(0.35)
          except:
             print(kegg_id)
+

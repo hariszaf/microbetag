@@ -1,8 +1,45 @@
 import os
 import re
+import ast
+import json
+import itertools
+import pandas as pd
 from multiprocessing import Pool
 
+
+class SetEncoder(json.JSONEncoder):
+    """
+    Custom JSON encoder that handles serialization of Python sets.
+
+    This encoder extends the functionality of the standard JSONEncoder to support
+    serializing Python sets. JSON does not have a native representation for sets,
+    so this encoder converts sets to lists before serializing them.
+
+    Usage:
+        When serializing data to JSON using json.dump() or json.dumps(), specify
+        cls=SetEncoder to use this custom encoder.
+
+    References:
+        - json.JSONEncoder: https://docs.python.org/3/library/json.html#json.JSONEncoder
+    """
+    def default(self, obj):
+        """
+        Override the default method of JSONEncoder to handle serialization of sets.
+        Notes:
+            If the object is a set, it is converted to a list before serialization.
+            Otherwise, the default behavior of JSONEncoder.default() is used.        Notes:
+            If the object is a set, it is converted to a list before serialization.
+            Otherwise, the default behavior of JSONEncoder.default() is used.
+        """
+        if isinstance(obj, set):
+            return list(obj)
+        return json.JSONEncoder.default(self, obj)
+
+
 def get_files_with_suffixes(directory, suffixes):
+    """
+
+    """
     matching_files = []
     for root, _, files in os.walk(directory):
         for file in files:
@@ -125,26 +162,219 @@ def ko_list_parser(ko_list):
     return ko_dic
 
 
-# merge kegg annotations into one file
 def merge_ko(hmmout_dir, output):
-    with open(output, 'w') as fo:
-        fo.write('#sample\tgene_id\tk_number\n')
-    for hmmout_file in os.listdir(hmmout_dir):
-        if hmmout_file.endswith('.hmmout'):
-            kobasename = hmmout_file.rsplit('.', 1)[0]
-            basename = kobasename.split('.', 1)[1]
-            hmmout_file_path = os.path.join(hmmout_dir, hmmout_file)
-            with open(hmmout_file_path, 'r') as fi:
-                for line in fi:
-                    if not line.startswith('#'):
-                        gene_id, accession = line.split()[0:2]
-                        lines = line.split()
-                        if re.match(r'[0-9]+$', lines[2]):
-                            k_number = lines[3]
-                        else:
-                            k_number = lines[2]
-                        with open(output, 'a') as fo:
-                            fo.write(basename + '\t' + gene_id + '\t' + k_number + '\n')
-    #return ko_merged_dict
+    """
+    Parses the KO<>.<bin>.hmmout files produced by the kegg_annotation() function
+    to create a single 3-column file (output) with the bin_id, the corresponding conting and the KO that wa mapped to it.
+    The function then returns a dictionary with the bin ids as the keys and the set of KOs found to each as the value.
+
+    hmmout_dir: path to the .hmmout files
+    output: path/filename to save the output file
+    """
+    if not os.path.exists(output):
+        with open(output, 'w') as fo:
+            fo.write('bin_id\tcontig_id\tko_term\n')
+        for hmmout_file in os.listdir(hmmout_dir):
+            if hmmout_file.endswith('.hmmout'):
+                kobasename = hmmout_file.rsplit('.', 1)[0]
+                basename = kobasename.split('.', 1)[1]
+                hmmout_file_path = os.path.join(hmmout_dir, hmmout_file)
+                with open(hmmout_file_path, 'r') as fi:
+                    for line in fi:
+                        if not line.startswith('#'):
+                            gene_id, _ = line.split()[0:2]  # under _ the accession
+                            lines = line.split()
+                            if re.match(r'[0-9]+$', lines[2]):
+                                k_number = lines[3]
+                            else:
+                                k_number = lines[2]
+                            with open(output, 'a') as fo:
+                                fo.write(basename + '\t' + gene_id + '\t' + k_number + '\n')
+
+    df = pd.read_csv(output, sep="\t")
+
+    bins_kos = df.groupby('bin_id')['ko_term'].apply(set).to_dict()
+
+    # Pivot the DataFrame to have 'kegg_id' as rows and 'bin_id' as columns
+    unique_combinations = df.drop_duplicates().copy()
+    unique_combinations.loc[:, 'presence'] = 1
+    pivot_df = unique_combinations.pivot_table(index='ko_term', columns='bin_id', values='presence', fill_value=0)
+
+    return bins_kos, pivot_df  # keep one
 
 
+def flatten(list_of_lists):
+   """
+   This function takes a list of lists and flattens it until it returns a list with
+   all the components of the initial one.
+   """
+   if len(list_of_lists) == 0:
+      return list_of_lists
+   if isinstance(list_of_lists[0], list):
+      return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
+   return list_of_lists[:1] + flatten(list_of_lists[1:])
+
+
+def build_kegg_url(kegg_map, clean_path, missing_kos):
+   """
+   Build url to colorify the related to the module kegg map based on the KO terms
+   of the beneficiary (pink) and those it gets from the donor (green)
+   """
+   # Load the dictionary with the kegg modules and their corresponding maps
+   color_mapp_base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
+   present_kos_color   = "%09%23EAD1DC/"
+   complemet_kos_color = "%09%2300A898/"
+
+   # Make a url pointing at a colored kegg map based on what's on the beneficiary's genome and what it gets as complement from the donor
+   beneficiarys_kos = ""
+   complements_kos  = ""
+   for ko_term in clean_path:
+      if ko_term not in missing_kos:
+         beneficiarys_kos = "".join([beneficiarys_kos, ko_term, present_kos_color])
+      else:
+         complements_kos = "".join([beneficiarys_kos, ko_term, complemet_kos_color])
+   try:
+      """ we do the try as in some rare cases, the module might not have a related map"""
+      url_ko_map_colored = "".join([color_mapp_base_url, kegg_map,  "/", beneficiarys_kos, complements_kos])
+   except:
+      url_ko_map_colored = "N/A"
+
+   return url_ko_map_colored
+
+
+
+def export_pathway_complementarities(config, bins_kos_df):
+    """
+
+    ko_terms_per_module_definition: path to a two-cols file with
+    modules_definitions_json_map: a json
+    bins_kos_df: dictionary with bin id as a key and the KOs found in the bin as the value
+
+    output:
+    =======
+    {
+        beneficiary_bin: {
+            donor_bin_A: {
+                module_a: [],
+                module_b: [],..
+            }
+        }
+    }
+    """
+    ko_terms_per_module_definition = config.ko_terms_per_module_definition
+    modules_definitions_json_map = config.modules_definitions_json_map
+    kegg_maps = config.kegg_modules_to_maps
+    maps = open(kegg_maps, "r")
+    module_to_map = {}
+    for line in maps:
+        module, mmap = line.split("\t")
+        module_to_map[module[:-1]] = mmap[1:-1]
+
+    # Step 1: Keep track of the KOs related to a module present on each bin
+    d = pd.read_csv(ko_terms_per_module_definition, sep="\t")
+    d.columns =["module_id","ko_term"]
+    d.loc[:, 'presence'] = 1
+    definitions_df = d.pivot_table(index='ko_term', columns='module_id', values='presence', fill_value=0)
+    ind = definitions_df.index.str.replace('ko:', '')
+    definitions_df.index = ind
+
+    bin_kos_per_module = {}
+    # Iterate over each column in the second dataframe
+    for bin_id in bins_kos_df.columns:
+        bin_kos_per_module[bin_id] = {}  # Initialize inner dictionary for each bin
+        for module, definition_ko_terms in definitions_df.items():
+            # Get KOs of the module definition
+            definition_ko_terms = definition_ko_terms[definition_ko_terms != 0]
+            # Get KOs present on the bin
+            bins_kos = bins_kos_df[bins_kos_df[bin_id]==1][bin_id]
+            # Get intersection and add the module: kos_present to the dict
+            bin_kos_per_module[bin_id][module] = bins_kos.index.intersection(definition_ko_terms.index).tolist()
+
+    # Step 2: list alternatives for a bin's modules to be completed
+    mo_map = json.load(open(modules_definitions_json_map))
+    structurals = ["md:M00144","md:M00149","md:M00151",
+                   "md:M00152","md:M00154","md:M00155",
+                   "md:M00153", "md:M00156", "md:M00158",
+                   "md:M00160"
+                ]
+    # Iterate through bins
+    bins_alternatives = {}
+    for bin_id in bin_kos_per_module:
+        complete_modules = set()
+        alternatives_to_gap = {}
+        for module, kos_on_its_own in bin_kos_per_module[bin_id].items():
+            if module in structurals:
+                continue
+            # Get KOs related to the module under study that are present on the beneficiary's genome
+            list_of_kos_present = set(kos_on_its_own)
+            definition_under_study = mo_map[module]['steps']
+            definition_under_study_proc = [term if isinstance(term, list) else [term] for term in definition_under_study.values()]
+            potential_compl_paths = [list(tup) for tup in itertools.product(*definition_under_study_proc)]
+            flat_potent_compl_paths = [flatten(path) for path in potential_compl_paths]
+            for path in flat_potent_compl_paths:
+                check = all(item in list_of_kos_present for item in path)
+                if check:
+                    if module not in complete_modules:
+                        complete_modules.add(module)
+                else:
+                    gaps = set(x for x in set(path) if x not in set(list_of_kos_present))
+                    if module not in alternatives_to_gap:
+                        alternatives_to_gap[module] = {}
+                        alternatives_to_gap[module][str(path)] = gaps
+                    else:
+                        alternatives_to_gap[module][str(path)] = gaps
+        # Remove complete modules for the alternatived dict
+        for key in complete_modules:
+            if key in alternatives_to_gap:
+                del alternatives_to_gap[key]
+        # Get shortert alternative for each
+        for module, path_gaps in alternatives_to_gap.items():
+            tmp = tmp2 = alternatives_to_gap[module].copy()
+            min_val = min([len(path_gaps[ele]) for ele in path_gaps])
+            values = list(tmp2.values())
+            shortest_alternatives = [
+                                    list(tmp2.keys())[values.index(s)]
+                                    for s in values
+                                    if not any(s.issuperset(i) and len(s) > len(i) for i in values)
+                                    ]
+
+            for path, gaps in alternatives_to_gap[module].items():
+                if len(gaps) > min_val + 1 or path not in shortest_alternatives:
+                    del tmp[path]
+            alternatives_to_gap[module] = tmp
+        bins_alternatives[bin_id] = alternatives_to_gap
+
+    # Step 3: extract potential complementarities from other bins
+    complements = {}
+    for beneficiary_bin_id, all_bin_module_alternatives in bins_alternatives.items():
+        complements[beneficiary_bin_id] = {}
+        for donor_bin_id in bin_kos_per_module:
+            complements[beneficiary_bin_id][donor_bin_id] = []
+            for module, alts in all_bin_module_alternatives.items():
+                donors_kos_relativ_to_module = bin_kos_per_module[donor_bin_id][module]
+                for alternative, missing_kos_for_alternative in alts.items():
+                    is_subset = set(missing_kos_for_alternative).issubset(set(donors_kos_relativ_to_module))
+                    if is_subset:
+                        alternative = ast.literal_eval(alternative)
+                        beneficiarys_kos_for_alt = set(alternative) - set(missing_kos_for_alternative)
+                        try:
+                            module_map = module_to_map[module]
+                            url = build_kegg_url(module_map, alternative, list(beneficiarys_kos_for_alt))
+                        except:
+                            url = ""
+
+                        print(module)
+                        print("complete alt:", alternative, type(alternative))
+                        print("on its own:", beneficiarys_kos_for_alt, type(beneficiarys_kos_for_alt))
+                        print("from donor:", missing_kos_for_alternative, type(missing_kos_for_alternative))
+                        print(url)
+                        print("~~~~~~~~~~")
+
+                        pot_compl = [module,
+                                     missing_kos_for_alternative,
+                                     alternative,
+                                     url
+                                     ]
+                        complements[beneficiary_bin_id][donor_bin_id].append(pot_compl)
+
+    return bin_kos_per_module, bins_alternatives, complements

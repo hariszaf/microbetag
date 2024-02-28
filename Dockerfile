@@ -123,6 +123,7 @@ RUN git clone https://github.com/xuechunxu/DiTing.git
 
 # Copy microbetag utils 
 WORKDIR /microbetag
+ADD microbetagDB/mappings/kegg_mappings/*  ./microbetagDB/mappings/kegg_mappings/
 ADD utils.py ./
 ADD microbetag.py  ./
 ADD config.py ./
