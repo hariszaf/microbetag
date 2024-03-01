@@ -26,33 +26,33 @@ class Config:
             self.abundance_table = os.path.join(self.io_path, conf["abundance_table_file"]["fileName"])
             self.output_dir = os.path.join(self.io_path, conf["output_directory"]["folderName"])
 
-
         self.bin_filenames = os.listdir(self.bins_path)
 
-        if os.path.exists(self.output_dir) and os.path.isdir(self.output_dir):
-            print("Output directory already exists.")
-        else:
+        if not (os.path.exists(self.output_dir) and os.path.isdir(self.output_dir)):
             os.mkdir(self.output_dir)
 
         self.predictions_path = os.path.join(self.output_dir, "predictions")
-        if os.path.exists(self.predictions_path) and os.path.isdir(self.predictions_path):
-            print("Predictions path already exists.")
-        else:
+        if not (os.path.exists(self.predictions_path) and os.path.isdir(self.predictions_path)):
             os.mkdir(self.predictions_path)
 
         self.prodigal = os.path.join(self.output_dir, "ORFs")
-        if os.path.exists(self.prodigal) and os.path.isdir(self.prodigal):
-            print("ORFs path already exists.")
-        else:
+        if not (os.path.exists(self.prodigal) and os.path.isdir(self.prodigal)):
             os.mkdir(self.prodigal)
+
+        self.reconstructions = os.path.join(self.output_dir, "reconstructions")
+        self.genres = os.path.join(self.reconstructions, "GENREs")
+        os.makedirs(self.reconstructions, exist_ok=True)
+        os.makedirs(self.genres, exist_ok=True)
+
 
         self.kegg_annotations = os.path.join(self.output_dir, "KEGG_annotations")
         self.kegg_pieces_dir = os.path.join(self.kegg_annotations, 'hmmout')
-        if os.path.exists(self.kegg_annotations) and os.path.isdir(self.kegg_annotations):
-            print("KEGG annotations output directory already built.")
-        else:
+        if not (os.path.exists(self.kegg_annotations) and os.path.isdir(self.kegg_annotations)):
             os.mkdir(self.kegg_annotations)
             os.mkdir(self.kegg_pieces_dir)
+
+        self.seeds = os.path.join(self.output_dir, "seeds")
+        os.makedirs(self.seeds, exist_ok=True)
 
         # Metadata file for FlashWeave
         if conf["metadata_file"]["fileName"]:
@@ -67,6 +67,12 @@ class Config:
         self.build_network = conf["build_network"]["value"]
         self.threads = conf["threads"]["value"]
 
+
+        # ModelSEEDpy arguments
+        self.gapfill_model = conf["gapfill_model"]["value"]
+        self.gapfill_media = conf["gapfill_media"]["value"]
+
+
         # Flashweave arguments
         if conf["flashweave_sensitive"]["value"]:
             self.sensitive = "true"
@@ -79,7 +85,6 @@ class Config:
 
         self.genotypes_file = os.path.join(self.output_dir, "train.genotype")
         self.min_proba = conf["min_proba"]["value"]
-
 
         self.ko_terms_per_module_definition = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/kegg_terms_per_module.tsv")
         self.modules_definitions_json_map = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_definition_map.json")

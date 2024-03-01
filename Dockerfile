@@ -109,16 +109,36 @@ ENV PATH="/usr/local/mmseqs/bin:${PATH}"
 
 RUN wget http://eddylab.org/software/hmmer/hmmer-3.4.tar.gz ; tar xf hmmer-3.4.tar.gz ; cd hmmer-3.4 ; ./configure ; make ; make install
 
-# # This needs to be performed locally and then mounted; otherwise we go to an image of 15G
-# RUN mkdir kofam_database &&\
-#     cd kofam_database &&\
-#     wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-#     wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-#     gzip -d ko_list.gz &&\
-#     tar zxvf profiles.tar.gz 
-
 WORKDIR /microbetag
 RUN git clone https://github.com/xuechunxu/DiTing.git
+
+
+# ------- FOR SEED COMPLEMENTS ----------
+WORKDIR /usr/local/
+RUN apt-get update &&\
+    apt install curl &&\
+    add-apt-repository universe &&\ 
+    apt-get update
+RUN apt-get install -y gdebi-core
+RUN curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/1.040/bvbrc-cli-1.040.deb &&\
+    yes | gdebi bvbrc-cli-1.040.deb
+
+# ------- END SEED COMPLEMENTS ----------
+
+RUN pip install modelseedpy cobra
+
+# Because of a conflict between numpy and scikit-learn versions phenotrex and modelseedpy require, we do this little trick
+WORKDIR /usr/local/lib/python3.8/dist-packages/sklearn
+RUN find . -type f -name "*.py" -exec sed -i 's/np\.float)/float)/g; s/np\.float,/float,/g' {} +
+
+
+WORKDIR /microbetag
+# RUN git clone https://github.com/mgtools/PhyloMint.git
+ADD PhyloMint ./
+
+# Add an export to file the seedset and nonseedeset dics
+
+
 
 
 # Copy microbetag utils 
@@ -130,6 +150,11 @@ ADD config.py ./
 
 
 ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
+
+
+
+
+
 
 
 

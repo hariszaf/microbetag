@@ -13,6 +13,16 @@ Yet, once you run this stand-alone version, you will still be able to load the a
 
 
 
+```bash
+mkdir kofam_database &&\
+    cd kofam_database &&\
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
+    gzip -d ko_list.gz &&\
+    tar zxvf profiles.tar.gz 
+```
+
+
 
 ## Installation
 
@@ -22,22 +32,11 @@ Yet, once you run this stand-alone version, you will still be able to load the a
 python microbetag.py -conf config.yml 
 ```
 
-`microbetag` expects a **7-level taxonomy** in a `.csv` or `.tsv` format with:
+> **Taxonomy**
+>
+> Contrary to the microbetagDB - dependent approach, in this case we do not care on the scheme!
+>
 
-* **no** `D_1__` or `K__`,`P__` any other similar prefixes befor the taxon name
-* the complete species name if that is available on its last column.
-
-> **Example**
->
-> If your taxonomy is
->
-> `Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Family III;Thermoanaerobacterium;thermosaccharolyticum`,
->
-> you need to set it as:
->
-> `Bacteria;Firmicutes;Thermoanaerobacteria;Thermoanaerobacterales;Family III;Thermoanaerobacterium;Thermoanaerobacterium thermosaccharolyticum`
-
-One
 
 ## Docker
 

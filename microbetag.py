@@ -33,6 +33,7 @@ if config.bins_path is None:
 # ----------------
 # STEP1: phen annotations
 # ----------------
+print("\n PREDICTING PHENOTYPIC TRAITS \n")
 suffixes = [".fa", ".fasta", ".gz"]
 bin_files = get_files_with_suffixes(config.bins_path, suffixes)
 bin_files_in_a_row = " ".join(bin_files)
@@ -88,7 +89,7 @@ for model in phen_models:
 # ----------------
 # STEP 2: prodigal - using diting interface
 # ----------------
-
+print("\n PREDICTING ORFs \n")
 for bin_fa in bin_files:
     bin_filename = os.path.basename(bin_fa)
     bin_id, extension = os.path.splitext(bin_filename)
@@ -97,7 +98,7 @@ for bin_fa in bin_files:
 # ----------------
 # STEP 3: KEGG annotation - using diting interface
 # ----------------
-
+print("\n KEGG ANNOTATION \n")
 ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
 ko_dic = ko_list_parser(ko_list)
 
@@ -109,23 +110,36 @@ for bn in config.bin_filenames:
 ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
 bins_kos, pivot_df = merge_ko(config.kegg_pieces_dir, ko_merged_tab)
 
+print("Exporting path complements....")
 bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
     config,
     pivot_df
     )
 
-with open(os.path.join(config.output_dir, "alts.json"), "w") as file:
-    json.dump(alt_to_gapfill, file, cls=SetEncoder)
-
-with open(os.path.join(config.output_dir, "pathCompls.json"), "w") as file:
-    json.dump(complements, file, cls=SetEncoder)
+alts_file = os.path.join(config.output_dir, "alts.json")
+compl_file = os.path.join(config.output_dir, "pathCompls.json")
+if not os.path.exists(alts_file):
+    with open(alts_file, "w") as file:
+        json.dump(alt_to_gapfill, file, cls=SetEncoder)
+if not os.path.exists(compl_file):
+    with open(compl_file, "w") as file:
+        json.dump(complements, file, cls=SetEncoder)
 
 
 # ----------------
 # STEP 4: Build GENREs
 # ----------------
+print("\n BUILDING RECONSTRUCTIONS \n")
+build_genres = build_genres(config)
+build_genres.rast_annotate_genomes()
+build_genres.modelseed_reconstructions()
 
 
+# ----------------
+# STEP 5: Phylomint
+# ----------------
+print("\n COMPUTING SEED SETS AND SCORES \n")
+get_seed_sets(config)
 
 
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-import os 
+import os
 import re
-import glob 
+import glob
 import subprocess
-import time 
+import time
 from modelseedpy import MSBuilder, MSGenome
 import cobra
 
@@ -11,7 +11,7 @@ import multiprocessing
 
 def split_list(input_list, chunk_size):
     """
-    Split a list to sublists of a size. 
+    Split a list to sublists of a size.
     """
     return [input_list[i:i + chunk_size] for i in range(0, len(input_list), chunk_size)]
 
@@ -19,15 +19,15 @@ def split_list(input_list, chunk_size):
 def handle_gtdb_id(gtdb_id):
     """
     Get PATRIC annotations for the GTDB genomes if available.
-    The GTDB genomes can be found in the gtdb_ids.tsv file 
-    In the gtdb2patricIds.tsv file we keep the GTDB id along with its corresponding PATRIC id. 
+    The GTDB genomes can be found in the gtdb_ids.tsv file
+    In the gtdb2patricIds.tsv file we keep the GTDB id along with its corresponding PATRIC id.
     Last, in the genomes_to_annotate.tsv file, we keep track of the GTDB ids for which there is no corresponding PATRIC annotation.
     """
     if gtdb_id in parsed_gtdb_ids:
         # print(gtdb_id, " parsed")
         return 1
 
-    get_patic_genome_id_command = "".join(["p3-all-genomes --eq assembly_accession,", gtdb_id, " --attr genome_id --attr genome_name"])    
+    get_patic_genome_id_command = "".join(["p3-all-genomes --eq assembly_accession,", gtdb_id, " --attr genome_id --attr genome_name"])
     patric_genome_id_run = subprocess.check_output(get_patic_genome_id_command, shell=True, text=True)
     patric_genome_id = patric_genome_id_run.split("\n")[1].split("\t")[0]
 
@@ -38,7 +38,7 @@ def handle_gtdb_id(gtdb_id):
         else:
             gtdb_id_gc_alt = gtdb_id.replace("GCA", "GCF")
 
-        get_patic_genome_id_command = "".join(["p3-all-genomes --eq assembly_accession,", gtdb_id_gc_alt, " --attr genome_id --attr genome_name"])    
+        get_patic_genome_id_command = "".join(["p3-all-genomes --eq assembly_accession,", gtdb_id_gc_alt, " --attr genome_id --attr genome_name"])
         patric_genome_id_run = subprocess.check_output(get_patic_genome_id_command, shell=True, text=True)
         patric_genome_id = patric_genome_id_run.split("\n")[1].split("\t")[0]
 
@@ -54,13 +54,13 @@ def handle_gtdb_id(gtdb_id):
 
     wget_command = "".join(["wget -P patric_annotations/ -qN ftp://ftp.bvbrc.org/genomes/", patric_genome_id, "/", patric_genome_id, ".PATRIC.faa"])
 
-    if os.system(wget_command) != 0: 
+    if os.system(wget_command) != 0:
         genomes_not_in_patric = open("gtdb_genomes_reps_r207/genomes_to_annotate.tsv", "a")
         genomes_not_in_patric.write(gtdb_id + "\n")
         print("new genome to annotate.")
     else:
         print("made it for gtdb id: ", gtdb_id)
-    
+
     return 1
 
 
@@ -70,7 +70,7 @@ def rast_annotate_a_genome(filename):
     """
     start = time.time()
 
-    # gunzip 
+    # gunzip
     gzip_command = " ".join(["gunzip", filename])
     try:
         os.system(gzip_command)
@@ -103,7 +103,7 @@ def rast_annotate_a_genome(filename):
     gto_filename = "".join([decompressed_filename[:-4], ".gto"])
 
     # rast_create_genome_command
-    rast_create_genome_command = " ".join(["rast-create-genome", "--scientific-name", name, 
+    rast_create_genome_command = " ".join(["rast-create-genome", "--scientific-name", name,
                             "--genetic-code", "11", "--domain", "Bacteria",
                             "--contigs", decompressed_filename,
                             "--genome-id", genome, ">", gto_filename])
@@ -119,7 +119,7 @@ def rast_annotate_a_genome(filename):
     except:
         pass
 
-    # rast-export-genome protein_fasta 
+    # rast-export-genome protein_fasta
     faa_filename = "".join([gto_filename[:-4], ".faa"])
     rast_export_genome_command = " ".join(["rast-export-genome", "protein_fasta", "<", gto_filename_2, ">", faa_filename])
     print("\nrast_export_genome_command: ", rast_export_genome_command)
@@ -128,7 +128,7 @@ def rast_annotate_a_genome(filename):
     except:
         pass
 
-    # rast-export-genome seed_dir 
+    # rast-export-genome seed_dir
     seed_dir = "".join([gto_filename[:-4], ".seed_dir.tar.gz"])
     rast_export_genome_dir_command = " ".join(["rast-export-genome", "seed_dir", "<", gto_filename_2, ">", seed_dir])
     print("\nrast_export_genome_dir_command:", rast_export_genome_dir_command)
@@ -149,20 +149,20 @@ def modelseed_reconstruction(annotation_faa):
     with open(annotation_faa, 'r') as file:
         first_line = file.readline()
         model_id = first_line.split("[")[1]
-        
-        try: 
+
+        try:
             model_id = model_id.split("|")[0]
         except:
             pass
-    
+
     print("about to reconstruct", annotation_faa.split("/")[-1])
     try:
-        model = MSBuilder.build_metabolic_model(model_id = model_id, 
-                                            genome   = msgenome, 
+        model = MSBuilder.build_metabolic_model(model_id = model_id,
+                                            genome   = msgenome,
                                             index    = "0",
-                                            classic_biomass = True, 
-                                            gapfill_model   = True, 
-                                            gapfill_media   = None, 
+                                            classic_biomass = True,
+                                            gapfill_model   = True,
+                                            gapfill_media   = None,
                                             annotate_with_rast = True,
                                             allow_all_non_grp_reactions = True)
 
@@ -170,11 +170,11 @@ def modelseed_reconstruction(annotation_faa):
     #    modelseed_reconstruction(annotation_faa)
         return 0
     print("reconstruct ready")
-    model_filename = "".join([annotation_faa[:-4], ".xml"]) 
+    model_filename = "".join([annotation_faa[:-4], ".xml"])
     cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
 
     return 1
-    
+
 
 
 pwd = os.getcwd()
@@ -203,15 +203,15 @@ parsed_gtdb_ids = [line.split("\t")[0] for line in pairs]
 """
 # PART A: Run a pool to get all the PATRIC annotations
 
-counter = 0 
+counter = 0
 for a_thousand_ids in gtdb_ids_to_patirc_ids_per_thousand:
 
     number_processes = 10
-    pool = multiprocessing.Pool(number_processes) 
+    pool = multiprocessing.Pool(number_processes)
     missing_projects = pool.map(handle_gtdb_id, a_thousand_ids)
     pool.close()
     pool.join()
-    counter += 1000    
+    counter += 1000
     print("We now have ", str(counter), " PATRIC annotations out of the ", str(len(gtdb_ids)))
 
 """
@@ -219,13 +219,13 @@ for a_thousand_ids in gtdb_ids_to_patirc_ids_per_thousand:
 
 
 """
-# PART A.2: (out of this python script) 
+# PART A.2: (out of this python script)
 
-To get the genomes of the GTDB ids that were not annotated in the PATRIC database, 
+To get the genomes of the GTDB ids that were not annotated in the PATRIC database,
 we ran the following 2 commands on the command line:
 
 ncbi-genome-download -s genbank -A genomes_to_annotate.tsv --formats fasta -o genomes_not_in_patric -p 4 bacteria
-ncbi-genome-download -s refseq -A genomes_to_annotate.tsv --formats fasta -o genomes_not_in_patric -p 4 bacteria    
+ncbi-genome-download -s refseq -A genomes_to_annotate.tsv --formats fasta -o genomes_not_in_patric -p 4 bacteria
 
 using the ncbi-genome-download: https://github.com/kblin/ncbi-genome-download
 """
@@ -239,12 +239,12 @@ using the ncbi-genome-download: https://github.com/kblin/ncbi-genome-download
 #genome_ids_per_5 = split_list(genome_ids, 5)
 #counter = 0
 
- 
+
 
 # for pentada in genome_ids_per_5:
 
 #     number_processes = 10
-#     pool = multiprocessing.Pool(number_processes) 
+#     pool = multiprocessing.Pool(number_processes)
 #     missing_projects = pool.map(rast_annotate_a_genome, pentada)
 #     pool.close()
 #     pool.join()
@@ -254,13 +254,13 @@ using the ncbi-genome-download: https://github.com/kblin/ncbi-genome-download
 
 
 
-# PART C: Reconstructe GEMs using modelSEEDpy
+# PART C: Reconstruct GEMs using modelSEEDpy
 print(patric_annotations_files)
 print("ready to go...")
 
 for ahundred in patric_annotations_files:
     number_processes = 20
-    pool = multiprocessing.Pool(number_processes) 
+    pool = multiprocessing.Pool(number_processes)
     reconsrtuctions = pool.map(modelseed_reconstruction, ahundred)
     pool.close()
     pool.terminate()

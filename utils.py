@@ -1,10 +1,17 @@
 import os
 import re
+import sys
 import ast
 import json
+import math
+import time
+import cobra
+import shutil
+import random
 import itertools
 import pandas as pd
-from multiprocessing import Pool
+import multiprocessing
+from modelseedpy import MSBuilder, MSGenome
 
 
 class SetEncoder(json.JSONEncoder):
@@ -117,7 +124,7 @@ def kegg_annotation(faa, basename, out_dir, db_dir, ko_dic, threads):
 
     print("Number of KEGG processes to be performed:", str(len(paras)))
 
-    process = Pool(threads)
+    process = multiprocessing.Pool(threads)
     process.map(hmmsearch, paras)
 
 
@@ -242,24 +249,16 @@ def build_kegg_url(kegg_map, clean_path, missing_kos):
    return url_ko_map_colored
 
 
-
 def export_pathway_complementarities(config, bins_kos_df):
     """
+    Function to get all the KEGG pathway complements among a set of bins
 
-    ko_terms_per_module_definition: path to a two-cols file with
-    modules_definitions_json_map: a json
+    Input:
+    config: output of the config class
     bins_kos_df: dictionary with bin id as a key and the KOs found in the bin as the value
 
-    output:
-    =======
-    {
-        beneficiary_bin: {
-            donor_bin_A: {
-                module_a: [],
-                module_b: [],..
-            }
-        }
-    }
+    Returns:
+    {beneficiary_bin: {donor_bin_A: {module_a: [], module_b: [],.. }}}
     """
     ko_terms_per_module_definition = config.ko_terms_per_module_definition
     modules_definitions_json_map = config.modules_definitions_json_map
@@ -295,8 +294,7 @@ def export_pathway_complementarities(config, bins_kos_df):
     structurals = ["md:M00144","md:M00149","md:M00151",
                    "md:M00152","md:M00154","md:M00155",
                    "md:M00153", "md:M00156", "md:M00158",
-                   "md:M00160"
-                ]
+                   "md:M00160"]
     # Iterate through bins
     bins_alternatives = {}
     for bin_id in bin_kos_per_module:
@@ -332,12 +330,10 @@ def export_pathway_complementarities(config, bins_kos_df):
             tmp = tmp2 = alternatives_to_gap[module].copy()
             min_val = min([len(path_gaps[ele]) for ele in path_gaps])
             values = list(tmp2.values())
-            shortest_alternatives = [
-                                    list(tmp2.keys())[values.index(s)]
-                                    for s in values
-                                    if not any(s.issuperset(i) and len(s) > len(i) for i in values)
+            shortest_alternatives = [list(tmp2.keys())[values.index(s)]
+                                     for s in values
+                                     if not any(s.issuperset(i) and len(s) > len(i) for i in values)
                                     ]
-
             for path, gaps in alternatives_to_gap[module].items():
                 if len(gaps) > min_val + 1 or path not in shortest_alternatives:
                     del tmp[path]
@@ -362,19 +358,215 @@ def export_pathway_complementarities(config, bins_kos_df):
                             url = build_kegg_url(module_map, alternative, list(beneficiarys_kos_for_alt))
                         except:
                             url = ""
-
-                        print(module)
-                        print("complete alt:", alternative, type(alternative))
-                        print("on its own:", beneficiarys_kos_for_alt, type(beneficiarys_kos_for_alt))
-                        print("from donor:", missing_kos_for_alternative, type(missing_kos_for_alternative))
-                        print(url)
-                        print("~~~~~~~~~~")
-
                         pot_compl = [module,
                                      missing_kos_for_alternative,
                                      alternative,
                                      url
                                      ]
                         complements[beneficiary_bin_id][donor_bin_id].append(pot_compl)
-
     return bin_kos_per_module, bins_alternatives, complements
+
+
+def split_list(input_list, chunk_size):
+    """
+    Split a list to sublists of a size.
+    """
+    return [input_list[i:i + chunk_size] for i in range(0, len(input_list), chunk_size)]
+
+
+def run_until_done(command):
+    """
+    Function to run recursively a command until
+    """
+    if os.system(command) == 0:
+        return 1
+    else:
+        time.sleep(random.randint(2, 10))
+        run_until_done(command)
+
+
+class build_genres():
+    """
+    Class to first RAST annotate and the build Genome Scale Metabolic Reconstructions
+    using modelseedpy
+    """
+    def __init__(self, config):
+        self.config = config
+
+    def rast_annotate_genomes(self):
+        """
+        Pool for running rast annotations for a list of bins
+        """
+        if  len(self.config.bin_filenames) > self.config.threads:
+            chunk_size = math.floor( len(self.config.bin_filenames) / self.config.threads  )
+            bin_chunks = split_list(self.config.bin_filenames, chunk_size)
+        else:
+            chunk_size = len(self.config.bin_filenames)
+            bin_chunks = [self.config.bin_filenames]
+
+        self.chunk_size = chunk_size
+
+        counter = 0
+        for chunk in bin_chunks:
+            number_processes = 10
+            pool = multiprocessing.Pool(number_processes)
+            pool.map(self.rast_annotate_a_genome, chunk)
+            pool.close()
+            pool.join()
+            counter += chunk_size
+            print(
+                "We now have annotated",
+                str(counter),
+                "genomes out of the",
+                str(len(self.config.bin_filenames))
+            )
+
+
+    def rast_annotate_a_genome(self, bin_filename):
+        """
+        RAST annotate a user's bin
+        """
+        bin_file = os.path.join(self.config.bins_path, bin_filename)
+        name, _ = os.path.splitext(bin_filename)
+        genome = name
+        gto_filename = os.path.join(self.config.reconstructions, "".join([name, ".gto"]))
+
+        # rast_create_genome_command
+        rast_create_genome_command = " ".join([
+            "rast-create-genome", "--scientific-name", name,
+            "--genetic-code", "11", "--domain", "Bacteria",
+            "--contigs", bin_file,
+            "--genome-id", genome, ">", gto_filename
+            ])
+        if not os.path.exists(gto_filename):
+            print("rast_create_genome_command:", rast_create_genome_command)
+            run_until_done(rast_create_genome_command)
+
+        # rast-process-genome
+        gto_filename_2 = "".join([gto_filename, "_2"])
+        rast_process_genome_command = " ".join([
+            "rast-process-genome", "<", gto_filename, ">", gto_filename_2
+            ])
+        if not os.path.exists(gto_filename_2):
+            print("\nrast_process_genome_command: ", rast_process_genome_command)
+            run_until_done(rast_process_genome_command)
+
+        # rast-export-genome protein_fasta
+        faa_filename = "".join([gto_filename[:-4], ".faa"])
+        rast_export_genome_command = " ".join([
+            "rast-export-genome",
+            "protein_fasta",
+            "<", gto_filename_2, ">",
+            faa_filename
+            ])
+        if not os.path.exists(faa_filename):
+            print("\nrast_export_genome_command: ", rast_export_genome_command)
+            run_until_done(rast_export_genome_command)
+
+        # rast-export-genome seed_dir
+        seed_dir = "".join([gto_filename[:-4], ".seed_dir.tar.gz"])
+        rast_export_genome_dir_command = " ".join([
+            "rast-export-genome", "seed_dir",
+            "<", gto_filename_2, ">",
+            seed_dir
+            ])
+        if not os.path.exists(seed_dir):
+            print("\nrast_export_genome_dir_command:", rast_export_genome_dir_command)
+            run_until_done(rast_export_genome_dir_command)
+
+        return
+
+
+    def modelseed_reconstructions(self):
+        """
+        Pool for running GENREs reconstruction using the final .faa files from the
+        rast_annotate_genomes() function
+        [NOTE] Not to be used for now as the RAST server seems not that stable to have several queries..
+        """
+        faa_files = [file
+                     for file in os.listdir(self.config.reconstructions)
+                     if file.endswith(".faa")
+                    ]
+        # if len(faa_files) > self.config.threads:
+        #     faa_chunks = bin_chunks = split_list(faa_files, self.chunk_size)
+        # else:
+        #     faa_chunks = [faa_files]
+
+        # counter = 0
+        # for chunk in faa_chunks:
+        #     pool = multiprocessing.Pool(self.config.threads)
+        #     pool.map(self.reconstruct_a_model, chunk)
+        #     pool.close()
+        #     pool.join()
+        #     counter += self.chunk_size
+        #     print(
+        #         "We now have reconstructed",
+        #         str(counter),
+        #         "GENREs out of the",
+        #         str(len(faa_files))
+        #     )
+        for faa_file in faa_files:
+            print("faa file to be reconstructed:", faa_file)
+            self.reconstruct_a_model(faa_file)
+
+    def reconstruct_a_model(self, annotation_faa):
+        """
+        Build a Genome Scale reconstruction using ModelSEEDpy and the PATRIC annotations
+        """
+        # ModelSEED using the default b.f and complete medium, gapfill with the default algo
+        model_id, _ = os.path.splitext(annotation_faa)
+        annotation_faa_path = os.path.join(self.config.reconstructions, annotation_faa)
+        model_filename =  os.path.join(self.config.genres, "".join([model_id, ".xml"]))
+
+        if os.path.exists(model_filename):
+            return 1
+
+        msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
+        print("msgenome ready for build_metabolic_model() ")
+        model = self.recursive_build(model_id, msgenome)
+
+        cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
+
+        return 1
+
+    def recursive_build(self, model_id, msgenome):
+        """
+        RAST server usually has issues that lead to fail attempts.
+        This recursive function allows the build_metabolic_model() to be performed until the server responses.
+        """
+        try:
+            model = MSBuilder.build_metabolic_model(model_id = model_id,
+                                                    genome   = msgenome,
+                                                    index    = "0",
+                                                    # classic_biomass = True,
+                                                    gapfill_model   = self.config.gapfill_model,
+                                                    gapfill_media   = None,
+                                                    annotate_with_rast = True,
+                                                    allow_all_non_grp_reactions = True
+                                                    )
+            return model
+        except:
+            time.sleep(random.randint(5, 15))
+            return self.recursive_build(model_id, msgenome)
+
+
+def get_seed_sets(config):
+    """
+    """
+    all_genres_files = [os.path.join(config.reconstructions, file) for file in os.listdir(config.reconstructions)]
+    genre_files = [file for file in all_genres_files if file.startswith(".xml")]
+    for file in genre_files:
+        dest_path = os.path.join(config.genres, os.path.basename(file))
+        shutil.move(file, dest_path)
+
+    phylomint_params = ["./PhyloMInt",
+                        "-d", config.genres,
+                        "--outdir", config.seeds,
+                        "-o", "phylomint_scores.tsv",
+                        "--dics", "True",
+                        "--threads", str(config.threads)
+                        ]
+    phylomint_cmd = " ".join(phylomint_params)
+    print(phylomint_cmd)
+    os.system(phylomint_cmd)
+

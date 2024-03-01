@@ -8,7 +8,7 @@ on_container:
   type: bool
 
 io_path:
-  path: /home/luna.kuleuven.be/u0156635/dev_io_microbetag
+  path: //home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/tests/dev_io_microbetag
   description: Attention! All files to be mounted need to be under this directory.
   type: Path
 
@@ -32,25 +32,27 @@ otu_table_delim:
   description: Delimeter used in the OTU table file 
   type: String
 
+# -----
+# GENRE
+# -----
 
-# Taxonomy. 
-# Set it to "GTDB" in case you have used the GTDB for your bins.
-# Set it to "qiime2" or "dada2" in case you have used one of those
-# Set it to "any" in case none of the previous apply
-# REMEMBER! In all cases, you need to provide a 7-level taxonomy as described in the "how to"
-taxonomy: dada2  # qiime2
+gapfill_model:
+  value: True
+  description: If True, modelseedpy will gapfill the reconstruction. 
+  type: bool
 
-# Column name denoting the OTU id; if special characters, for example "#", use double quotes 
-otu_identifier_column: "ASV_ID"     # qiime2 -> "#OTU ID" dada2 -> "ASV_id"
+gapfill_media: 
+  value: True
+  description: If True, modelseedpy will 
+  type: bool
 
-# Column name denoting the taxonomy assignment of the OTU 
-taxonomy_column_name : Taxonomy
 
-# Delimeter in the taxonomy column 
-taxonomy_delimeter: ";"
 
-# Character denoting commented lines if any in the OTU table
-comments_character: "#"
+
+
+
+
+
 
 # [ATTENTION! dada2 and qiime2 tests highlight difference] Column names are in the last comment line prior to any
 # The FAPROTAX step will break if this is not set properly
@@ -92,7 +94,7 @@ flashweave_heterogeneous:
 
 
 threads:
-  value: 10
+  value: 2
   description: Number of CPUs to be used 
   type: Integer
 
