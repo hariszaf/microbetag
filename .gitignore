@@ -80,3 +80,10 @@ microbetag_env
 microbetagDB/scripts/*.json 
 
 preprocess/
+
+
+
+PhyloMint/
+microbetagDB/
+tests/
+
