@@ -110,6 +110,9 @@ for bn in config.bin_filenames:
 ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
 bins_kos, pivot_df = merge_ko(config.kegg_pieces_dir, ko_merged_tab)
 
+# ----------------
+# STEP 4: Extract pathway complementarities
+# ----------------
 print("Exporting path complements....")
 bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
     config,
@@ -125,9 +128,8 @@ if not os.path.exists(compl_file):
     with open(compl_file, "w") as file:
         json.dump(complements, file, cls=SetEncoder)
 
-
 # ----------------
-# STEP 4: Build GENREs
+# STEP 5: Build GENREs
 # ----------------
 print("\n BUILDING RECONSTRUCTIONS \n")
 build_genres = build_genres(config)
@@ -136,10 +138,22 @@ build_genres.modelseed_reconstructions()
 
 
 # ----------------
-# STEP 5: Phylomint
+# STEP 6: Phylomint
 # ----------------
 print("\n COMPUTING SEED SETS AND SCORES \n")
 get_seed_sets(config)
 
 
+
+# ----------------
+# STEP 7: Export seed complementarities
+# ----------------
+
+seed_complements = export_seed_complementarities(config)
+seed_complements.update()
+# consider running again seed scores using update seed sets
+# in this case, we should also edit the ConfidenceScore dictionary
+# by removing seeds that were removed in the update()
+
+seed_complements.module_related_seeds()
 

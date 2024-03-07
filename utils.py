@@ -7,6 +7,7 @@ import math
 import time
 import cobra
 import shutil
+import pickle
 import random
 import itertools
 import pandas as pd
@@ -463,16 +464,16 @@ class build_genres():
             print("\nrast_export_genome_command: ", rast_export_genome_command)
             run_until_done(rast_export_genome_command)
 
-        # rast-export-genome seed_dir
-        seed_dir = "".join([gto_filename[:-4], ".seed_dir.tar.gz"])
-        rast_export_genome_dir_command = " ".join([
-            "rast-export-genome", "seed_dir",
-            "<", gto_filename_2, ">",
-            seed_dir
-            ])
-        if not os.path.exists(seed_dir):
-            print("\nrast_export_genome_dir_command:", rast_export_genome_dir_command)
-            run_until_done(rast_export_genome_dir_command)
+        # # rast-export-genome seed_dir
+        # seed_dir = "".join([gto_filename[:-4], ".seed_dir.tar.gz"])
+        # rast_export_genome_dir_command = " ".join([
+        #     "rast-export-genome", "seed_dir",
+        #     "<", gto_filename_2, ">",
+        #     seed_dir
+        #     ])
+        # if not os.path.exists(seed_dir):
+        #     print("\nrast_export_genome_dir_command:", rast_export_genome_dir_command)
+        #     run_until_done(rast_export_genome_dir_command)
 
         return
 
@@ -487,26 +488,7 @@ class build_genres():
                      for file in os.listdir(self.config.reconstructions)
                      if file.endswith(".faa")
                     ]
-        # if len(faa_files) > self.config.threads:
-        #     faa_chunks = bin_chunks = split_list(faa_files, self.chunk_size)
-        # else:
-        #     faa_chunks = [faa_files]
-
-        # counter = 0
-        # for chunk in faa_chunks:
-        #     pool = multiprocessing.Pool(self.config.threads)
-        #     pool.map(self.reconstruct_a_model, chunk)
-        #     pool.close()
-        #     pool.join()
-        #     counter += self.chunk_size
-        #     print(
-        #         "We now have reconstructed",
-        #         str(counter),
-        #         "GENREs out of the",
-        #         str(len(faa_files))
-        #     )
         for faa_file in faa_files:
-            print("faa file to be reconstructed:", faa_file)
             self.reconstruct_a_model(faa_file)
 
     def reconstruct_a_model(self, annotation_faa):
@@ -521,10 +503,10 @@ class build_genres():
         if os.path.exists(model_filename):
             return 1
 
+        print("Model to be reconstructed:", model_id)
         msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
-        print("msgenome ready for build_metabolic_model() ")
         model = self.recursive_build(model_id, msgenome)
-
+        print("Reconstruction for", model_id, "ready to export in SBML format.")
         cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
 
         return 1
@@ -552,6 +534,8 @@ class build_genres():
 
 def get_seed_sets(config):
     """
+    Invoke PhyloMInt as edited from microbetag team to support parallel calculation of the seed and non seed sets
+    and save corresponding sets to json files.
     """
     all_genres_files = [os.path.join(config.reconstructions, file) for file in os.listdir(config.reconstructions)]
     genre_files = [file for file in all_genres_files if file.startswith(".xml")]
@@ -567,6 +551,223 @@ def get_seed_sets(config):
                         "--threads", str(config.threads)
                         ]
     phylomint_cmd = " ".join(phylomint_params)
-    print(phylomint_cmd)
     os.system(phylomint_cmd)
+
+
+class export_seed_complementarities():
+    """
+    Class to  export seed complements
+    """
+    def __init__(self, config):
+        self.seeds = config.seeds
+        self.seed_sets = os.path.join(config.seeds, "SeedSetDic.json")
+        self.nonseed_sets = os.path.join(config.seeds, "nonSeedSetDic.json")
+        self.genres = config.genres
+        self.logfile = os.path.join(config.seeds, "log.tsv")
+        self.updated_seed_sets = os.path.join(config.seeds, "updated_SeedsDic.json")
+        self.updated_non_seed_sets = os.path.join(config.seeds, "updated_nonSeedsDic.json")
+        self.seed_ko_mo = config.seed_ko_mo
+        self.module_seeds = os.path.join(self.seeds, "module_related_seeds.pckl")
+        self.module_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
+
+    def update(self):
+        """
+        PhyloMInt does not consider the
+        Update seed sets returned by PhyloMint by:
+        - removing compounds from seed sets that are related to environmental metabolites that can be produced in several ways within the cell.
+        - removing from non seed sets compounds that cannot be produced in any other way than from entering the cell from the environment.
+        """
+        if os.path.exists(self.updated_seed_sets) and os.path.exists(self.updated_non_seed_sets):
+            return 1
+
+        f = open(self.logfile , "w")
+
+        f.write("model_id" + "\t" + "environmental_initial_seeds" +
+                "\t" + "non_environmental_initial_seeds" +  "\t" +  "total_initial_seeds" + "\t" +
+                "updated_seeds" + "\t" +  "initial_non_seeds" + "\t" + "updated_non_seeds" + "\n"
+        )
+
+        updated_seeds = {}
+        updated_nonSeeds = {}
+        current_seeds = json.load(open(self.seed_sets, "r"))
+        current_nonSeeds = json.load(open(self.nonseed_sets, "r"))
+
+        for xml in os.listdir(self.genres):
+
+            s1 = time.time()
+            counter = 0; counter2 = 0
+            xml_path =  os.path.join(self.genres, xml)
+
+            model_id, _ = os.path.splitext(xml)
+
+            model = cobra.io.read_sbml_model(xml_path)
+            model_mets = [met.id for met in model.metabolites]
+            models_tmp_non_seeds = current_nonSeeds[model_id]
+            models_tmp_seeds = current_seeds[model_id]
+            models_seeds = []; models_nonSeeds = models_tmp_non_seeds.copy()
+            for pot_seed in models_tmp_seeds:
+                check = True
+                if "_e0" in pot_seed:
+                    counter += 1
+                    cor_in_met = pot_seed[:-3] + "_c0"
+                    if cor_in_met in models_tmp_seeds:
+                        # Both _c0 and _e0 among the potential seed set.
+                        models_seeds.append(pot_seed)
+                    else:
+                        cor_in_met = cor_in_met[2:]
+                        if cor_in_met not in model_mets:
+                            # The _c0 case is not among the model's metabolites.
+                            models_seeds.append(pot_seed)
+                        else:
+                            for rxn in model.metabolites.get_by_id(cor_in_met).reactions:
+                                if cor_in_met in [met.id for met in rxn.products]:
+                                    if pot_seed[2:] not in [met.id for met in rxn.reactants]:
+                                        # There is at least a reaction that does not include the _e0 case that produces the _c0 metabolite.
+                                        check = False
+                                        break
+                            if check:
+                                models_seeds.append(pot_seed)
+                                models_nonSeeds.remove("M_"+cor_in_met)
+                else:
+                    counter2 += 1
+                    models_seeds.append(pot_seed)
+
+            with open(self.logfile, "a") as f:
+                f.write(model_id + "\t" + str(counter) + "\t" + str(counter2) + "\t" + str(len(models_tmp_seeds)) + "\t" + str(len(models_seeds)) + "\t" + str(len(models_tmp_non_seeds)) + "\t" + str(len(models_nonSeeds)) + "\n")
+            updated_seeds[model_id] = models_seeds
+            updated_nonSeeds[model_id] = models_nonSeeds
+
+            s2 = time.time()
+            print(str(s2-s1), "seconds for a .xml")
+
+        with open(self.updated_seed_sets, "w") as f:
+            json.dump(updated_seeds, f)
+        with open(self.updated_non_seed_sets, "w") as f:
+            json.dump(updated_nonSeeds, f)
+
+
+    def module_related_seeds(self):
+        """
+        Get seed and non seed sets with terms related to KEGG MODULES.
+                                                       NonSeedSet
+        PATRIC
+        bin101-contigs  [cpd02817, cpd00344, cpd03123, cpd00482, cpd11...
+        """
+        modules_compounds = pd.read_csv(self.seed_ko_mo, sep="\t")
+        modules_compounds.columns = ["modelseed", "kegg", "module"]
+        modelseed_compounds_of_interest = set(modules_compounds["modelseed"].unique().tolist())
+        # --------------------------
+        number_of_models = 0
+        patricId_to_seeds_of_interest = {}
+        patricId_to_non_seeds_of_interest = {}
+        mean_non_seedset_length = 0 ; mean_non_seedset_of_interest = 0
+        non_seedset_file = json.load(open(self.updated_non_seed_sets,"r"))
+        model_names = list(non_seedset_file.keys())
+
+        for smodel_name in model_names:
+            non_seedset = set( [x[2:] for x in non_seedset_file[smodel_name]] )
+            non_seedset_no_compartments = set( [x[2:-3]  for x in non_seedset_file[smodel_name] ])
+            non_seeds_of_interest = non_seedset_no_compartments.intersection(modelseed_compounds_of_interest)
+            mean_non_seedset_length += len(non_seedset)
+            patricId_to_non_seeds_of_interest[smodel_name] = non_seeds_of_interest
+            mean_non_seedset_of_interest += len(non_seeds_of_interest)
+        # --------------------------
+        mean_seedset_length = 0
+        mean_seedset_of_interest = 0
+        seedset_file = json.load(open(self.updated_seed_sets, "r"))
+        model_names = list(seedset_file.keys())
+
+        for model_name in model_names:
+            number_of_models += 1
+            # Get seeds with and without their compartment specific part
+            seedset = set([x[2:]  for x in seedset_file[model_name]])  # x[2:-3] seedset_file[model_name].keys()
+            seedset_no_compartments = set([x[2:-3]  for x in seedset_file[model_name]])  # seedset_file[model_name].keys()
+            mean_seedset_length += len(seedset)
+            # Using the list with the compounds without their compartment, find which are potentlially of interest
+            seeds_of_interest = seedset_no_compartments.intersection(modelseed_compounds_of_interest)
+            seeds_of_interest_tmp = list(seeds_of_interest.copy())
+            for pot_seed in seeds_of_interest:
+                if pot_seed in patricId_to_non_seeds_of_interest[model_name]:
+                    seeds_of_interest_tmp.remove(pot_seed)
+            patricId_to_seeds_of_interest[model_name] = set(seeds_of_interest_tmp)
+            mean_seedset_of_interest += len(set(seeds_of_interest_tmp))
+        # --------------------------
+        print("mean length of initial seedset:", str(mean_seedset_length/number_of_models))
+        print("mean length of seedsets of interest:", str(mean_seedset_of_interest/number_of_models))
+        print("~~")
+        print("mean of initial length of non seed sets:", str(mean_non_seedset_length/number_of_models))
+        print("mean of non seed sets of interest:", str(mean_non_seedset_of_interest/number_of_models))
+
+        tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
+        df1 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'SeedSet'])
+        df1['PATRIC'] = df1['PATRIC'].str.replace('.PATRIC', '')
+        df1.set_index('PATRIC', inplace=True)
+
+        with open(self.module_seeds,"wb") as f:
+            pickle.dump(df1, f)
+
+        tmp_dict = {key: list(value) for key, value in patricId_to_non_seeds_of_interest.items()}
+        df2 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'NonSeedSet'])
+        df2['PATRIC'] = df2['PATRIC'].str.replace('.PATRIC', '')
+        df2.set_index('PATRIC', inplace=True)
+
+        with open( self.module_non_seeds,"wb") as f:
+            pickle.dump(df2, f)
+
+
+    def export_seed_complements(self):
+        """
+
+        """
+        import pandas as pd
+        from joblib import Parallel, delayed
+        from tqdm import tqdm
+        import pickle
+
+        with open("updated_seedsets_of_interest.pckl", "rb") as f:
+            df1 = pickle.load(f)
+        with open("updated_non_seedsets_of_interest.pckl", "rb") as f:
+            df2 = pickle.load(f)
+        with open("updated_seedsets_of_interest_no3.pckl", "rb") as f:
+            df_no3 = pickle.load(f)
+
+        seeds_3000_df = df1.merge(df_no3, on='PATRIC', how='left', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
+        seeds_3000_df = seeds_3000_df.drop("SeedSet_y", axis =1)
+        seeds_3000_df.columns = ["SeedSet"]
+
+        nonseeds_3000_df = df2.merge(df_no3, on='PATRIC', how='left', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
+        nonseeds_3000_df = nonseeds_3000_df.drop("SeedSet", axis=1)
+
+        df14_subset = df1.iloc[28000:]
+
+        # Function to calculate overlap
+        def calculate_overlap(seed_set, non_seed_set):
+            return list(set(seed_set) & set(non_seed_set))
+
+        # Parallelized function to calculate overlap for one row in df1 with all rows in df2
+        def calculate_overlap_parallel(row1, df2):
+            return [calculate_overlap(row1['SeedSet'], row2['NonSeedSet']) for _, row2 in df2.iterrows()]
+
+        # Create a new DataFrame for overlaps
+        # NOTE: iterate over the subsets !!!!!!!!!
+        overlaps_df = pd.DataFrame(index=df14_subset.index, columns=df2.index)
+
+        # Parallelize the overlap calculation using joblib with tqdm for progress tracking
+        num_cores = -1  # Use all available cores
+
+        results = Parallel(n_jobs=num_cores)(
+            delayed(calculate_overlap_parallel)(row1, df2)
+            for _, row1 in tqdm(df14_subset.iterrows(),
+                                total=len(df14_subset)
+                                )
+            )
+
+        # Fill in the overlaps DataFrame with calculated values
+        for i, row in enumerate(results):
+            overlaps_df.iloc[i] = row
+
+        with open("overlaps_14.pckl","wb") as f:
+            pickle.dump(overlaps_df, f)
+
+        del results
 

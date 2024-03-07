@@ -89,6 +89,7 @@ class Config:
         self.ko_terms_per_module_definition = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/kegg_terms_per_module.tsv")
         self.modules_definitions_json_map = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_definition_map.json")
         self.kegg_modules_to_maps = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_map_pairs.tsv")
+        self.seed_ko_mo = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/seedId_keggId_module.tsv")
 
         # ==========
         # Init torch
