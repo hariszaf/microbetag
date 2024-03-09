@@ -41,45 +41,45 @@ Warning--"ARCHAEA}" isn't a brace-balanced string for entry ali_alishum_2022_665
 while executing--line 2870 of file sn-mathphys.bst
 Reallocating 'singl_function' (item size: 4) to 100 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 69 entries,
+You've used 71 entries,
             7480 wiz_defined-function locations,
-            1595 strings with 27484 characters,
-and the built_in function-call counts, 444663 in all, are:
-= -- 60274
-> -- 3356
-< -- 1286
-+ -- 19590
-- -- 904
-* -- 27773
-:= -- 85126
-add.period$ -- 73
-call.type$ -- 69
-change.case$ -- 398
-chr.to.int$ -- 3606
-cite$ -- 69
-duplicate$ -- 4294
-empty$ -- 24502
-format.name$ -- 2813
-if$ -- 103862
+            1603 strings with 28063 characters,
+and the built_in function-call counts, 456377 in all, are:
+= -- 61650
+> -- 3461
+< -- 1303
++ -- 19762
+- -- 942
+* -- 28772
+:= -- 87495
+add.period$ -- 75
+call.type$ -- 71
+change.case$ -- 408
+chr.to.int$ -- 3653
+cite$ -- 71
+duplicate$ -- 4427
+empty$ -- 25383
+format.name$ -- 2935
+if$ -- 106395
 int.to.chr$ -- 1
-int.to.str$ -- 93
+int.to.str$ -- 95
 missing$ -- 0
-newline$ -- 1207
-num.names$ -- 345
-pop$ -- 2141
+newline$ -- 1247
+num.names$ -- 355
+pop$ -- 2217
 preamble$ -- 1
-purify$ -- 298
+purify$ -- 306
 quote$ -- 0
-skip$ -- 33076
+skip$ -- 33736
 stack$ -- 0
-substring$ -- 59132
-swap$ -- 2469
-text.length$ -- 743
+substring$ -- 60922
+swap$ -- 2535
+text.length$ -- 762
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 2947
+type$ -- 3037
 warning$ -- 0
-while$ -- 2583
+while$ -- 2675
 width$ -- 0
-write$ -- 1632
+write$ -- 1685
 (There were 7 warnings)

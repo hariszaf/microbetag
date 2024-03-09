@@ -371,7 +371,6 @@ INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /home/luna.kuleuven.be/u0156635/.miktex/texmfs/data/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmr9.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmbx9.tfm
-INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmtt9.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/cm/cmbx5.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/amsfonts/cmextra/cmmib9.tfm
 INPUT /usr/local/share/miktex-texmf/fonts/tfm/public/amsfonts/cmextra/cmmib5.tfm
@@ -519,5 +518,3 @@ INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt10.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb
 INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt12.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt9.pfb
-INPUT /usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmtt9.pfb

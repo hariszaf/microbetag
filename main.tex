@@ -131,25 +131,28 @@
     
     \textbf{Background:} 
     % the context and purpose of the study
-    Co-occurrence networks are widely used for deducing microbial associations from metagenomic data, yet spurious associations and tool dependencies impede their accuracy. 
-    “Reverse ecology” utilizes genomic and metabolic modeling to predict ecological traits for less-understood microorganisms and their interactions within microbial communities. 
-    \microbetag, a microbial co-occurrence network annotator, employs reverse ecology to enhance/reduce confidence in network associations.
-
+    The inference of microbial association networks from metagenomic data is a popular hypothesis-generating method, yet its use is hampered by low accuracy and tool dependency “Reverse ecology” uses genomic and metabolic modeling to predict ecological traits for less well-known microorganisms and their interactions within microbial communities.  
+    microbetag combines reverse ecology approaches with phenotypic trait mapping to ease the interpretation of microbial association networks.
 
     \textbf{Results:} 
     % the main findings
-    microbetagDB consists of 34,608 high-quality Genome Taxonomy DataBase genomes, along with their corresponding KEGG-annotations and genome-scale metabolic reconstructions. Seed sets (externally required compounds) were retrieved from the latter, supporting the prediction of over 1 billion potential pairwise metabolic interactions. 
-    Relying on KEGG MODULE definitions, $342,000$ unique pathway complements were exported based on pairwise overlaps between the annotated genomes. 
-    Predictions for 33 phenotypic traits (e.g., pH optima, oxygen tolerance etc.) are also incorporated in microbetagDB based on annotated genomes.
-    \microbetag~maps node taxonomies to their closest genome in microbetagDB and annotates them with phenotypic traits, coupled with a literature-based assessment of functional potential. 
-    Edges are then annotated by screening the pairwise associations over the pathway complements and the seed complementarities.
-    
-    \microbetag~successfully identified potential metabolic interactions between \textit{Variovorax} and neighboring species, enabling the latter to produce thiamine in a network derived from a mining waste microbial consortium, as the authors independently verified.
-    Accessible as a CytoscapeApp, \microbetag~offers a user-friendly platform called microbetag GUI (MGG), that facilitates the prompt transition from an abundance table to a fully annotated co-occurrence network, providing a quick and intuitive mean to yielding explore hypotheses about the microbial interactions. 
+
+    microbetagDB consists of $34,608$ high-quality Genome Taxonomy DataBase genomes, along with their corresponding KEGG annotations and genome-scale metabolic reconstructions. Seed sets (externally acquired compounds) were retrieved from the latter, supporting the prediction of over 1 billion potential pairwise metabolic interactions. 
+    Relying on KEGG MODULE definitions, $342,000$ unique pathway complements were identified based on pairwise overlaps between the annotated genomes. 
+    In addition, 33 phenotypic traits (e.g., pH optima, oxygen tolerance etc.) were predicted for the annotated genomes and incorporated in microbetagDB. 
+    microbetag maps node taxonomies to their closest genome in microbetagDB and annotates them with phenotypic traits and functional potential previously derived from the literature. 
+    Edges are then annotated with pathway complements and seed complementarities that may represent cross-feeding relationships. 
+
+    In a validation case, microbetag successfully identified potential metabolic interactions between  \textit{Variovorax} and neighboring species, enabling the latter to produce thiamine in a network derived from a mining waste microbial consortium. .... 
+
+    Accessible as a CytoscapeApp, microbetag offers a user-friendly interface called microbetag GUI (MGG) that simplifies the construction of a fully annotated co-occurrence network from an abundance table, providing a quick and intuitive way to explore hypotheses about microbial interactions. 
+
 
     \textbf{Conclusions:} 
     % a brief summary and potential implications
-    microbetagDB provides insight on the range of potential complementarities and their distribution among prokaryotes and benefits eco-evolutionary studies.
+    microbetag, together with its database and GUI, simplify the interpretation of microbial association networks by systematically integrating prior knowledge about the taxa involved. 
+
+%  =============================================================
 
     \begin{figure}[H]
         \label{fig:abstract}
@@ -226,7 +229,7 @@
     A widely used approach to extract such patterns is the creation of co-occurrence networks based on metagenomic read data (amplicon and/or shotgun)~\cite{matchado2021network}. 
     Several approaches are available for co-occurrence network inference based on a range of statistical concepts such as: correlation (e.g., CoNet~\cite{faust2012microbial}, SparCC~\cite{friedman2012inferring}), linear regression (e.g., SpiecEasi~\cite{kurtz2015sparse}) and indirect causal inference (FlashWeave~\cite{flashweave_cite}).
     % instead of indirect causal inference, one could say "conditional dependency identification"
-    Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open}.
+    Nevertheless, microbial co-occurrence networks continue to encounter various challenges~\cite{faust2021open, cao2017inferring}.
     % Their inference inherits the challenges of metagenomic data analysis (e.g., compositionality, parameters inference)~\cite{cao2017inferring}.
     Each inference approach comes with its own assumptions and parameterization, leading to variations in network structure. 
     The choice of correlation metrics, the data preprocessing techniques applied and the handling of sparsity and zero inflation, and considerations for indirect causal relationships all influence the resulting network~\cite{cao2017inferring}. 
@@ -237,7 +240,7 @@
 
     % KF: why has the use of network inference for interaction prediction underscored its limited accuracy? Imprecise expression: the use itself did not underscore the low accuracy - evaluations did. This needs to be rephrased.
     % HZ: How about now ?
-    The assessment of interaction predictions derived from microbial co-occurrence networks has underscored their low accuracy for this task~\cite{berry2014deciphering}.
+    The assessment of interaction predictions derived from microbial co-occurrence networks has underscored their low accuracy for this task~\cite{berry2014deciphering, guo2022microbial, ma2020earth}.
     % Theoretical principles derived from network studies might provide indications of emergent biological characteristics~\cite{rottjers2018hairballs, guo2022microbial}. 
     % For example, modules (highly interconnected nodes) within microbial co-occurrence networks could serve as indicators of ecological processes that govern community structure, including niche filtering and habitat preference~\cite{ma2020earth}.
     Data integration and clustering have been suggested to address this challenge~\cite{faust2021open}.
