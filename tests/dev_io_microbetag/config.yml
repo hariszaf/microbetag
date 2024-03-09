@@ -1,39 +1,50 @@
-
 # ------
 # INPUT/OUTPUT
 # ------
 on_container:
   value: True
   description: If running through Docker set to true.
+  required: True
   type: bool
 
 io_path:
   path: //home/luna.kuleuven.be/u0156635/github_repos/KU/microbetag/tests/dev_io_microbetag
   description: Attention! All files to be mounted need to be under this directory.
+  required: True
   type: Path
 
 bins_fasta:
   folderName: my_bins
   description: Name of the folder with the bins .fasta files.
+  required: True
   type: String
 
 abundance_table_file: 
   fileName: vitAbund.tsv
   description: Filename of the abundance table file. The taxonomy scheme in this case is irrelevant.
+  required: True
+  type: String
+
+edge_list:
+  value: edgelist.csv
+  description: If co-occurrence network already available, please provide its edge list; a 2 column tab separated file
+  required: False
   type: String
 
 output_directory: 
   folderName: microbetag_run
-  description: 
+  description: Name of the output folder that will be built inside the io_path directory.
+  required: True
   type: String
 
 otu_table_delim: 
   value: \t
   description: Delimeter used in the OTU table file 
+  required: True
   type: String
 
 # -----
-# GENRE
+# Metabolic network reconstruction 
 # -----
 
 gapfill_model:
@@ -59,11 +70,6 @@ gapfill_media:
 column_names_are_in  : False # dada2 -> False   qiime2 -> True
 
 
-# EDGE LIST
-# ---------
-
-# If co-occurrence network already available, please provide its edge list; a 2 column tab separated file
-edge_list:     #tests/output_dev_qiime2/flashweave/network_detailed_output.edgelist
 
 # METADATA 
 # --------
