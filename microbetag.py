@@ -24,11 +24,10 @@ from utils import *
 config_file = sys.argv[1]
 
 with open(config_file, 'r') as yaml_file:
-    config = Config(yaml.safe_load(yaml_file))
+    config = Config(yaml.safe_load(yaml_file), config_file)
 
 if config.bins_path is None:
     raise ValueError
-
 
 # ----------------
 # STEP1: phen annotations
@@ -56,7 +55,7 @@ if not os.path.exists(config.genotypes_file):
         if os.system(compute_genotype_command) != 0:
             raise ValueError
 else:
-    print("Genotypes already comptued.")
+    print("Genotypes already computed.")
 
 # Get predictions
 folder_path = "microbetagDB/ref-dbs/phenDB/classes/"
@@ -141,19 +140,71 @@ build_genres.modelseed_reconstructions()
 # STEP 6: Phylomint
 # ----------------
 print("\n COMPUTING SEED SETS AND SCORES \n")
-get_seed_sets(config)
-
-
+if not os.path.exists(config.phylomint_scores):
+    run_phylomint(config)
+else:
+    print("Seed scores already computed.")
 
 # ----------------
 # STEP 7: Export seed complementarities
 # ----------------
-
+print("\n EXORTING SEED COMPLEMENTS \n")
 seed_complements = export_seed_complementarities(config)
-seed_complements.update()
-# consider running again seed scores using update seed sets
-# in this case, we should also edit the ConfidenceScore dictionary
-# by removing seeds that were removed in the update()
 
-seed_complements.module_related_seeds()
+"""
+[NOTE]:consider running again "seed scores" (PhyloMint) using update seed sets
+in this case, we should also edit the ConfidenceScore dictionary
+by removing seeds that were removed in the update()
+"""
+if not os.path.exists(seed_complements.updated_seed_sets):
+    seed_complements.update()
+else:
+    print("Seed sets already updated.")
+
+if not os.path.exists(seed_complements.module_seeds):
+    seed_complements.module_related_seeds()
+else:
+    print("Seed and non seed sets with compounds related to KEGG modules already retrieved.")
+
+if not os.path.exists(seed_complements.seed_complements):
+    seed_complements.export_seed_complements()
+else:
+    print("Seed complements already exported.")
+
+
+# ----------------
+# STEP 8: Build network if not available
+# ----------------
+
+if config.network is None:
+    ensure_flashweave_format(conf=config)
+    flashweave_params = [
+        "julia",
+        config.flashweave_script,
+        config.mount,
+        config.flashweave_abd_table,
+        config.sensitive,
+        config.heterogeneous,
+        config.metadata,
+        config.metadata_file
+    ]
+    flashweave_command = " ".join(flashweave_params)
+
+    print("Run FlashWeave")
+    print(flashweave_command)
+    if os.system(flashweave_command) != 0:
+        e = """ \
+            FlashWeave failed.
+            Please check on the content of your abundance table and the format of your metadata file if one provided.
+            We suggest you use FlashWeave or any other software to get the network and then perform microbetag providing the network returned.
+            You may find an implementation of FlashWeave in a Docker image in microbetag's preprocessing image:
+            https://hub.docker.com/r/hariszaf/microbetag_prep
+        """
+        raise ValueError(e)
+
+
+
+
+
+
 

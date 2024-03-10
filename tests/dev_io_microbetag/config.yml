@@ -20,10 +20,11 @@ bins_fasta:
   type: String
 
 abundance_table_file: 
-  fileName: vitAbund.tsv
+  fileName: thirty_Samples.tsv
   description: Filename of the abundance table file. The taxonomy scheme in this case is irrelevant.
   required: True
   type: String
+# vitAbund.tsv
 
 edge_list:
   value: edgelist.csv

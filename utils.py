@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 import ast
 import json
 import math
@@ -13,6 +12,8 @@ import itertools
 import pandas as pd
 import multiprocessing
 from modelseedpy import MSBuilder, MSGenome
+from tqdm import tqdm
+from joblib import Parallel, delayed
 
 
 class SetEncoder(json.JSONEncoder):
@@ -383,7 +384,21 @@ def run_until_done(command):
         return 1
     else:
         time.sleep(random.randint(2, 10))
+        print("recurscive run of:", command)
         run_until_done(command)
+
+
+def file_exists_and_nonzero(filename):
+    """
+    Check if a file exists and its size is nonzero.
+
+    Args:
+        filename (str): The path to the file.
+
+    Returns:
+        bool: True if the file exists and its size is nonzero, False otherwise.
+    """
+    return os.path.exists(filename) and os.path.getsize(filename) > 0
 
 
 class build_genres():
@@ -399,7 +414,7 @@ class build_genres():
         Pool for running rast annotations for a list of bins
         """
         if  len(self.config.bin_filenames) > self.config.threads:
-            chunk_size = math.floor( len(self.config.bin_filenames) / self.config.threads  )
+            chunk_size = self.config.threads  # math.floor(len(self.config.bin_filenames) / self.config.threads)
             bin_chunks = split_list(self.config.bin_filenames, chunk_size)
         else:
             chunk_size = len(self.config.bin_filenames)
@@ -409,8 +424,7 @@ class build_genres():
 
         counter = 0
         for chunk in bin_chunks:
-            number_processes = 10
-            pool = multiprocessing.Pool(number_processes)
+            pool = multiprocessing.Pool(self.config.threads)
             pool.map(self.rast_annotate_a_genome, chunk)
             pool.close()
             pool.join()
@@ -421,7 +435,6 @@ class build_genres():
                 "genomes out of the",
                 str(len(self.config.bin_filenames))
             )
-
 
     def rast_annotate_a_genome(self, bin_filename):
         """
@@ -439,7 +452,7 @@ class build_genres():
             "--contigs", bin_file,
             "--genome-id", genome, ">", gto_filename
             ])
-        if not os.path.exists(gto_filename):
+        if not file_exists_and_nonzero(gto_filename):
             print("rast_create_genome_command:", rast_create_genome_command)
             run_until_done(rast_create_genome_command)
 
@@ -448,7 +461,7 @@ class build_genres():
         rast_process_genome_command = " ".join([
             "rast-process-genome", "<", gto_filename, ">", gto_filename_2
             ])
-        if not os.path.exists(gto_filename_2):
+        if not file_exists_and_nonzero(gto_filename_2):
             print("\nrast_process_genome_command: ", rast_process_genome_command)
             run_until_done(rast_process_genome_command)
 
@@ -460,23 +473,9 @@ class build_genres():
             "<", gto_filename_2, ">",
             faa_filename
             ])
-        if not os.path.exists(faa_filename):
+        if not file_exists_and_nonzero(faa_filename):
             print("\nrast_export_genome_command: ", rast_export_genome_command)
             run_until_done(rast_export_genome_command)
-
-        # # rast-export-genome seed_dir
-        # seed_dir = "".join([gto_filename[:-4], ".seed_dir.tar.gz"])
-        # rast_export_genome_dir_command = " ".join([
-        #     "rast-export-genome", "seed_dir",
-        #     "<", gto_filename_2, ">",
-        #     seed_dir
-        #     ])
-        # if not os.path.exists(seed_dir):
-        #     print("\nrast_export_genome_dir_command:", rast_export_genome_dir_command)
-        #     run_until_done(rast_export_genome_dir_command)
-
-        return
-
 
     def modelseed_reconstructions(self):
         """
@@ -484,32 +483,29 @@ class build_genres():
         rast_annotate_genomes() function
         [NOTE] Not to be used for now as the RAST server seems not that stable to have several queries..
         """
+        # Make sure of the scikit version being used
         faa_files = [file
                      for file in os.listdir(self.config.reconstructions)
                      if file.endswith(".faa")
                     ]
+        os.system("python3 -m pip install scikit-learn==0.24.2")
         for faa_file in faa_files:
             self.reconstruct_a_model(faa_file)
 
     def reconstruct_a_model(self, annotation_faa):
         """
-        Build a Genome Scale reconstruction using ModelSEEDpy and the PATRIC annotations
+        Build a Genome Scale reconstruction using ModelSEEDpy and the BIN annotations
         """
         # ModelSEED using the default b.f and complete medium, gapfill with the default algo
         model_id, _ = os.path.splitext(annotation_faa)
         annotation_faa_path = os.path.join(self.config.reconstructions, annotation_faa)
         model_filename =  os.path.join(self.config.genres, "".join([model_id, ".xml"]))
-
         if os.path.exists(model_filename):
             return 1
-
         print("Model to be reconstructed:", model_id)
         msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
         model = self.recursive_build(model_id, msgenome)
-        print("Reconstruction for", model_id, "ready to export in SBML format.")
         cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
-
-        return 1
 
     def recursive_build(self, model_id, msgenome):
         """
@@ -517,22 +513,23 @@ class build_genres():
         This recursive function allows the build_metabolic_model() to be performed until the server responses.
         """
         try:
+            # model = MSBuilder.build_metabolic_model(model_id = "bin45", genome = msgenome, index = "0", gapfill_model = True, gapfill_media = None, annotate_with_rast = True, allow_all_non_grp_reactions = True)
             model = MSBuilder.build_metabolic_model(model_id = model_id,
-                                                    genome   = msgenome,
-                                                    index    = "0",
-                                                    # classic_biomass = True,
-                                                    gapfill_model   = self.config.gapfill_model,
-                                                    gapfill_media   = None,
+                                                    genome = msgenome,
+                                                    index = "0",
+                                                    gapfill_model = self.config.gapfill_model,
+                                                    gapfill_media = None,
                                                     annotate_with_rast = True,
                                                     allow_all_non_grp_reactions = True
-                                                    )
+                    )
             return model
         except:
-            time.sleep(random.randint(5, 15))
+            time.sleep(random.randint(20, 40))
+            print("recursive run for model_id:", model_id)
             return self.recursive_build(model_id, msgenome)
 
 
-def get_seed_sets(config):
+def run_phylomint(config):
     """
     Invoke PhyloMInt as edited from microbetag team to support parallel calculation of the seed and non seed sets
     and save corresponding sets to json files.
@@ -543,7 +540,7 @@ def get_seed_sets(config):
         dest_path = os.path.join(config.genres, os.path.basename(file))
         shutil.move(file, dest_path)
 
-    phylomint_params = ["./PhyloMInt",
+    phylomint_params = ["./PhyloMint/PhyloMInt",
                         "-d", config.genres,
                         "--outdir", config.seeds,
                         "-o", "phylomint_scores.tsv",
@@ -556,7 +553,8 @@ def get_seed_sets(config):
 
 class export_seed_complementarities():
     """
-    Class to  export seed complements
+    Class to  export seed complements.
+    Needs a config object to initiate it.
     """
     def __init__(self, config):
         self.seeds = config.seeds
@@ -569,6 +567,7 @@ class export_seed_complementarities():
         self.seed_ko_mo = config.seed_ko_mo
         self.module_seeds = os.path.join(self.seeds, "module_related_seeds.pckl")
         self.module_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
+        self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
 
     def update(self):
         """
@@ -650,7 +649,7 @@ class export_seed_complementarities():
         """
         Get seed and non seed sets with terms related to KEGG MODULES.
                                                        NonSeedSet
-        PATRIC
+        BIN
         bin101-contigs  [cpd02817, cpd00344, cpd03123, cpd00482, cpd11...
         """
         modules_compounds = pd.read_csv(self.seed_ko_mo, sep="\t")
@@ -699,17 +698,17 @@ class export_seed_complementarities():
         print("mean of non seed sets of interest:", str(mean_non_seedset_of_interest/number_of_models))
 
         tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
-        df1 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'SeedSet'])
-        df1['PATRIC'] = df1['PATRIC'].str.replace('.PATRIC', '')
-        df1.set_index('PATRIC', inplace=True)
+        df1 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'SeedSet'])
+        df1['BIN'] = df1['BIN'].str.replace('.BIN', '')
+        df1.set_index('BIN', inplace=True)
 
         with open(self.module_seeds,"wb") as f:
             pickle.dump(df1, f)
 
         tmp_dict = {key: list(value) for key, value in patricId_to_non_seeds_of_interest.items()}
-        df2 = pd.DataFrame(list(tmp_dict.items()), columns=['PATRIC', 'NonSeedSet'])
-        df2['PATRIC'] = df2['PATRIC'].str.replace('.PATRIC', '')
-        df2.set_index('PATRIC', inplace=True)
+        df2 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'NonSeedSet'])
+        df2['BIN'] = df2['BIN'].str.replace('.BIN', '')
+        df2.set_index('BIN', inplace=True)
 
         with open( self.module_non_seeds,"wb") as f:
             pickle.dump(df2, f)
@@ -717,28 +716,16 @@ class export_seed_complementarities():
 
     def export_seed_complements(self):
         """
+        Export pairwise seed complmenents.
+        Returns a df where beneficiary species are in the rows and potential donors in the columns.
 
+        example:
+        BIN                                             bin101-contigs                                     bin151-contigs                                      bin19-contigs                                     bin189-contigs
+        BIN
+        bin101-contigs                                                 []  [cpd02678, cpd00094, cpd02893, cpd00641, cpd00...  [cpd00259, cpd02678, cpd00641, cpd00200, cpd00...  [cpd02678, cpd00641, cpd00200, cpd00142, cpd00...
+        bin151-contigs  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...                                                 []  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...
+        bin19-contigs   [cpd01777, cpd00055, cpd00121, cpd00482, cpd00...  [cpd01777, cpd00055, cpd00121, cpd00338, cpd00...                                                 []  [cpd00145, cpd21480, cpd01777, cpd02160, cpd00...
         """
-        import pandas as pd
-        from joblib import Parallel, delayed
-        from tqdm import tqdm
-        import pickle
-
-        with open("updated_seedsets_of_interest.pckl", "rb") as f:
-            df1 = pickle.load(f)
-        with open("updated_non_seedsets_of_interest.pckl", "rb") as f:
-            df2 = pickle.load(f)
-        with open("updated_seedsets_of_interest_no3.pckl", "rb") as f:
-            df_no3 = pickle.load(f)
-
-        seeds_3000_df = df1.merge(df_no3, on='PATRIC', how='left', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
-        seeds_3000_df = seeds_3000_df.drop("SeedSet_y", axis =1)
-        seeds_3000_df.columns = ["SeedSet"]
-
-        nonseeds_3000_df = df2.merge(df_no3, on='PATRIC', how='left', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
-        nonseeds_3000_df = nonseeds_3000_df.drop("SeedSet", axis=1)
-
-        df14_subset = df1.iloc[28000:]
 
         # Function to calculate overlap
         def calculate_overlap(seed_set, non_seed_set):
@@ -748,17 +735,22 @@ class export_seed_complementarities():
         def calculate_overlap_parallel(row1, df2):
             return [calculate_overlap(row1['SeedSet'], row2['NonSeedSet']) for _, row2 in df2.iterrows()]
 
+        # Load my case
+        with open(self.module_seeds, "rb") as f:
+            df1 = pickle.load(f)
+        with open(self.module_non_seeds, "rb") as f:
+            df2 = pickle.load(f)
+
         # Create a new DataFrame for overlaps
-        # NOTE: iterate over the subsets !!!!!!!!!
-        overlaps_df = pd.DataFrame(index=df14_subset.index, columns=df2.index)
+        overlaps_df = pd.DataFrame(index=df1.index, columns=df2.index)
 
         # Parallelize the overlap calculation using joblib with tqdm for progress tracking
         num_cores = -1  # Use all available cores
 
         results = Parallel(n_jobs=num_cores)(
             delayed(calculate_overlap_parallel)(row1, df2)
-            for _, row1 in tqdm(df14_subset.iterrows(),
-                                total=len(df14_subset)
+            for _, row1 in tqdm(df1.iterrows(),
+                                total=len(df1)
                                 )
             )
 
@@ -766,8 +758,26 @@ class export_seed_complementarities():
         for i, row in enumerate(results):
             overlaps_df.iloc[i] = row
 
-        with open("overlaps_14.pckl","wb") as f:
+        with open(self.seed_complements,"wb") as f:
             pickle.dump(overlaps_df, f)
 
         del results
 
+
+def ensure_flashweave_format(conf):
+    """
+    Build an OTU table that will be in a FlashWeave-based format.
+    """
+
+    flashweave_table = pd.read_csv(conf.abundance_table, sep="\t").iloc[:, :-1]
+    float_col = flashweave_table.select_dtypes(include=['float64'])
+
+    for col in float_col.columns.values:
+        flashweave_table[col] = flashweave_table[col].astype('int64')
+
+    flashweave_table.iloc[:, 0] = flashweave_table.iloc[:, 0].astype(str)
+    flashweave_table.to_csv(conf.flashweave_abd_table, sep='\t', index=False)
+
+    return 1
+
+# from modelseedpy import MSBuilder, MSGenome ; msgenome = MSGenome.from_fasta("bin_101.faa", split=' ') ; model = MSBuilder.build_metabolic_model(model_id = "bin45", genome = msgenome, index = "0", gapfill_model = True, gapfill_media = None, annotate_with_rast = True, allow_all_non_grp_reactions = True)

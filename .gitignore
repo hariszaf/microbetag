@@ -95,3 +95,6 @@ kofam_database/
 microbetag_run/
 
 PhyloMint/
+
+microbetagDB/mappings/gtdb_ncbi/
+.vscode/
