@@ -67,6 +67,7 @@ def build_cx_annotated_graph(conf):
         {"applies_to": "node_table", "n": "microbetag::namespace"},
         {"applies_to": "node_table", "n": "microbetag::taxonomy", "d": "string"},
         {"applies_to": "node_table", "n": "microbetag::gtdb-genomes", "d": "list_of_string"},
+        {"applies_to": "node_table", "n": "microbetag::ncbi-tax-level", "d": "string"},
         # for edge table mandatory
         {"applies_to": "edge_table", "n": "shared name"},
         {"applies_to": "edge_table", "n": "name"},
@@ -228,7 +229,7 @@ def build_cx_annotated_graph(conf):
     # NODES TABLE
     # ===========
     for bin_seq in set_of_nodes:
-
+        check_mspecies = False
         node_counter += 1
         node = {"@id": node_counter, "n": bin_seq}
         seq_to_nodeID[bin_seq] = node_counter
@@ -252,6 +253,7 @@ def build_cx_annotated_graph(conf):
 
         # phen traits
         if bin_seq in bin_phen_traits:
+            check_mspecies = True
             for trait, presence in bin_phen_traits[bin_seq].items():
                 trait_presence = True if presence["presence"] == "YES" else False
                 nodeAttributes["nodeAttributes"].extend([
@@ -264,11 +266,12 @@ def build_cx_annotated_graph(conf):
             for term in bin_faprotax_traits[bin_seq]:
                 nodeAttributes["nodeAttributes"].append({"po": node_counter, "n": "::".join(["faprotax", term]), "v": True, "d": "boolean"})
 
+        level = "mspecies" if check_mspecies else "other"
+        nodeAttributes["nodeAttributes"].append({"po": node_counter, "n": "microbetag::ncbi-tax-level", "v": level, "d": "string"})
+
+
     annotated_cx.append(nodes)
     annotated_cx.append(nodeAttributes)
-
-    print(len(seq_to_nodeID))
-    print(len(set_of_nodes))
 
     # ===========
     # EDGES TABLE
@@ -306,13 +309,16 @@ def build_cx_annotated_graph(conf):
         pot_edge = {"@id": (edge_counter), "s": net_id_a, "t": net_id_b, "i": "comp_coop"}
 
         # Path complements A -> B
-        add_edge_pathway_complements(id_a, id_b, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
+        check1 = add_edge_pathway_complements(id_a, id_b, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
 
         # Seed complements A -> B
-        add_edge_seed_complements(id_a, id_b, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+        check2 = add_edge_seed_complements(id_a, id_b, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
 
         # Seed scores A -> B
         add_seed_edge_attributes(id_a, id_b, seed_scores, edgeAttributes, edge_counter)
+
+        if check1 or check2:
+            edge_counter += 1
 
         """
         Edge for B -> A
@@ -320,13 +326,16 @@ def build_cx_annotated_graph(conf):
         pot_edge = {"@id": (edge_counter), "s": net_id_b, "t": net_id_a, "i": "comp_coop"}
 
         # Path complements B -> A
-        add_edge_pathway_complements(id_b, id_a, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
+        check1 = add_edge_pathway_complements(id_b, id_a, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
 
         # Seed complements B -> A
-        add_edge_seed_complements(id_b, id_a, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+        check2 = add_edge_seed_complements(id_b, id_a, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
 
         # Seed scores B -> A
         add_seed_edge_attributes(id_b, id_a, seed_scores, edgeAttributes, edge_counter)
+
+        if check1 or check2:
+            edge_counter += 1
 
     annotated_cx.append(edges)
     annotated_cx.append(edgeAttributes)
@@ -393,6 +402,7 @@ def flatten_list(lista, flat_list=[]):
 
 
 def add_edge_pathway_complements(id_x, id_y, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter):
+    check = False
     if id_x in complements_dict_ext and id_y in complements_dict_ext[id_x]:
         pathway_complements = complements_dict_ext[id_x][id_y]
         edges["edges"].append(pot_edge)
@@ -403,9 +413,11 @@ def add_edge_pathway_complements(id_x, id_y, complements_dict_ext, edges, edgeAt
         attr = f"compl::{id_x}:{id_y}"
         merged_compl = ["^".join(gcompl) for gcompl in pathway_complements.values()]
         edgeAttributes["edgeAttributes"].append({"po": edge_counter, "n": attr, "v": merged_compl, "d": "list_of_string"})
-
+        check = True
+    return check
 
 def add_edge_seed_complements(id_x, id_y, complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements):
+    check = False
     if id_x in complements_dict and id_y in complements_dict[id_x]:
         if pot_edge not in edges["edges"]:
             edges["edges"].append(pot_edge)
@@ -435,6 +447,9 @@ def add_edge_seed_complements(id_x, id_y, complements_dict, edges, edgeAttribute
         attr = f"seedCompl::{id_x}:{id_y}"
         merged_compl = ["^".join(gcompl) for gcompl in complements_verbose]
         edgeAttributes["edgeAttributes"].append({"po": edge_counter, "n": attr, "v": merged_compl, "d": "list_of_string"})
+        check = True
+    return check
+
 
 
 def add_seed_edge_attributes(id_x, id_y, seed_scores, edgeAttributes, edge_counter):
