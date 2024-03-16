@@ -2,7 +2,6 @@ import os
 import re
 import ast
 import json
-import math
 import time
 import cobra
 import shutil
@@ -10,10 +9,21 @@ import pickle
 import random
 import itertools
 import pandas as pd
-import multiprocessing
-from modelseedpy import MSBuilder, MSGenome
+import pkg_resources
 from tqdm import tqdm
+import multiprocessing
 from joblib import Parallel, delayed
+from modelseedpy import MSBuilder, MSGenome
+
+
+def get_library_version(library_name):
+    try:
+        version = pkg_resources.get_distribution(library_name).version
+        return version
+    except pkg_resources.DistributionNotFound:
+        return "Library not found"
+    except Exception as e:
+        return str(e)
 
 
 class SetEncoder(json.JSONEncoder):
@@ -414,7 +424,7 @@ class build_genres():
         Pool for running rast annotations for a list of bins
         """
         if  len(self.config.bin_filenames) > self.config.threads:
-            chunk_size = self.config.threads  # math.floor(len(self.config.bin_filenames) / self.config.threads)
+            chunk_size = self.config.threads
             bin_chunks = split_list(self.config.bin_filenames, chunk_size)
         else:
             chunk_size = len(self.config.bin_filenames)
@@ -488,7 +498,8 @@ class build_genres():
                      for file in os.listdir(self.config.reconstructions)
                      if file.endswith(".faa")
                     ]
-        os.system("python3 -m pip install scikit-learn==0.24.2")
+        if get_library_version("scikit-learn") != "0.24.2":
+            os.system("python3 -m pip install scikit-learn==0.24.2")
         for faa_file in faa_files:
             self.reconstruct_a_model(faa_file)
 
@@ -781,3 +792,211 @@ def ensure_flashweave_format(conf):
     return 1
 
 # from modelseedpy import MSBuilder, MSGenome ; msgenome = MSGenome.from_fasta("bin_101.faa", split=' ') ; model = MSBuilder.build_metabolic_model(model_id = "bin45", genome = msgenome, index = "0", gapfill_model = True, gapfill_media = None, annotate_with_rast = True, allow_all_non_grp_reactions = True)
+
+
+
+
+
+
+def load_seed_complement_files(path_to_kegg_seed_mappings):
+
+    kmap = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "seedId_keggId_module.tsv"), sep="\t", header=None)
+    kmap.columns = ["modelseed", "kegg_compound", "kegg_module"]
+
+    module_to_map = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "module_map_pairs.tsv"), sep="\t", header=None)
+    module_to_map.columns = ["module", "map"]
+    module_to_map['module'] = module_to_map['module'].str.replace("md:", '')
+    module_to_map['map'] = module_to_map["map"].str.strip()
+
+    module_map_dict = module_to_map.set_index('module')['map'].to_dict()
+    kmap['map'] = kmap['kegg_module'].map(module_map_dict)
+
+    maps_categories_and_descrs = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "related_kegg_maps_descriptions.tsv"), sep="\t", header=None)
+    maps_categories_and_descrs.columns = ["map", "description", "category"]
+
+    kmap = pd.merge(kmap, maps_categories_and_descrs, on='map', how='left')
+
+    return kmap
+
+
+def order_seed_complements(r):
+    """
+    Order seed complements so they display based on their metabolism category
+    which have been ranked according to what metabolic interactions we believe most common.
+    """
+    # Define a custom sorting function
+    def custom_sort(item):
+        return category_index.get(item[0], len(order_list))
+    # Create a dictionary to map each category to its corresponding index in the order_list
+    order_list = [
+        'Amino acid metabolism',
+        'Metabolism of cofactors and vitamins',
+        'Energy metabolism',
+        'Carbohydrate metabolism',
+        'Nucleotide metabolism',
+        'Biosynthesis of other secondary metabolites',
+        'Biosynthesis of terpenoids and polyketides',
+        'Lipid metabolism',
+        'Glycan metabolism',
+        'Xenobiotics biodegradation'
+    ]
+    category_index = {category: index for index, category in enumerate(order_list)}
+    # Sort the data using the custom sorting function
+    sorted_data = sorted(r, key=custom_sort)
+    return sorted_data
+
+
+def build_url_with_seed_complements(seed_complements, nonseeds, kmap):
+    base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
+    url = "".join([base_url, kmap]) + "/"
+    # present_compounds_color = "%09%23ff0000/"
+    # complemet_compounds_color = "%20skyblue%2Cblue/"
+    present_compounds_color = "%20skyblue%2Cblue/"
+    complemet_compounds_color = "%09%23ff0000/"
+
+    for compound in nonseeds:
+        url += compound + present_compounds_color
+    for compound in seed_complements:
+        url += compound + complemet_compounds_color
+    return url
+
+
+def read_cyjson(filename, direction=False):
+    """
+    Function based on the corresponding of the manta library:
+    https://github.com/ramellose/manta/blob/master/manta/cyjson.py
+
+    Small utility function for reading Cytoscape json files generated with CoNet.
+    In our case, it also gets the layout and adds it as part of the node data.
+
+    Parameters
+    ----------
+    :param filename: Filepath to location of cyjs file.
+    :param direction: If true, graph is imported as a NetworkX DiGraph
+    :return: NetworkX graph.
+    """
+    with open(filename) as f:
+        data = json.load(f)
+    name = 'name'
+    ident = 'id'
+    if len(set([ident, name])) < 2:
+        raise nx.NetworkXError('Attribute names are not unique.')
+    if direction:
+        graph = nx.DiGraph()
+    else:
+        graph = nx.Graph()
+    graph.graph = dict(data.get('data'))
+    i = 0
+    for d in data["elements"]["nodes"]:
+        # only modification: 'value' key is not included in CoNet output
+        # now graph only needs ID and name values
+        node_data = d["data"].copy()
+        position = d["position"]
+        node_data["position"] = position
+        try:
+            node = d["data"].get(ident)
+        except KeyError:
+            # if no index is found, one is generated
+            node = i
+            i += 1
+        if d["data"].get(name):
+            node_data[name] = d["data"].get(name)
+
+        graph.add_node(node)
+        graph.nodes[node].update(node_data)
+    for d in data["elements"]["edges"]:
+        edge_data = d["data"].copy()
+        sour = d["data"].pop("source")
+        targ = d["data"].pop("target")
+        graph.add_edge(sour, targ)
+        graph.edges[sour, targ].update(edge_data)
+    return graph
+
+
+def build_base_graph(edgelist_as_a_list_of_dicts, microb_id_taxonomy, cfg):
+    """
+    Runs if manta has been asked for from the user.
+    manta gets a .cyjs input file.
+    This function builds an non-annotated graph using only the scores and the taxonomies of the taxa of the network.
+    It get a list of dictionaries where each dictionary is an edge and returns the basenetwork in a .cyjs format.
+    """
+    base_network = {}
+    base_network["elements"] = {}
+    nodes = []
+    edges = []
+    processed_nodes = set()
+    counter = 1
+    for edge in edgelist_as_a_list_of_dicts:
+        taxon_a = edge["node_a"]  # microbetag_id
+        taxonomy_a = microb_id_taxonomy.loc[microb_id_taxonomy['microbetag_id'] == taxon_a, 'taxonomy'].item()
+        if taxon_a not in processed_nodes:
+            processed_nodes.add(taxon_a)
+            node_a = build_a_base_node(taxon_a, microb_id_taxonomy, cfg)
+            nodes.append(node_a)
+        taxon_b = edge["node_b"]
+        taxonomy_b = microb_id_taxonomy.loc[microb_id_taxonomy['microbetag_id'] == taxon_b, 'taxonomy'].item()
+        if taxon_b not in processed_nodes:
+            processed_nodes.add(taxon_b)
+            node_b = build_a_base_node(taxon_b, microb_id_taxonomy, cfg)
+            nodes.append(node_b)
+        new_edge = {}
+        new_edge["data"] = {}
+        new_edge["data"]["id"] = str(counter)
+        new_edge["data"]["source"] = taxon_a
+        new_edge["data"]["source-ncbi-tax-id"] = microb_id_taxonomy[microb_id_taxonomy["seqId"] == taxon_a]["ncbi_tax_id"]
+        new_edge["data"]["target"] = taxon_b
+        new_edge["data"]["target-ncbi-tax-id"] = microb_id_taxonomy[microb_id_taxonomy["seqId"] == taxon_b]["ncbi_tax_id"]
+        new_edge["data"]["selected"] = False
+        new_edge["data"]["shared_name"] = taxonomy_a.split(";")[-1] + "-" + taxonomy_b.split(";")[-1]
+        new_edge["data"]["SUID"] = str(counter)
+        new_edge["data"]["name"] = "co-occurrence"
+        new_edge["data"]["weight"] = float(edge["score"])
+        new_edge["selected"] = False
+        edges.append(new_edge)
+        counter += 1
+    # Ensure .cyjs format
+    base_network["elements"]["nodes"] = nodes
+    base_network["elements"]["edges"] = edges
+    base_network["data"] = {}
+    base_network["data"]["title"] = "microbetag annotated microbial co-occurrence network"
+    base_network["data"]["tags"] = ["v1.0"]
+    return base_network
+
+
+def build_a_base_node(taxon, map_seq, cfg):
+    """
+    Builds a node for the base network.
+    [TODO] Remove not necessary entries.
+    """
+    case = map_seq[map_seq["seqId"] == taxon]
+    node = {}
+    node["data"] = {}
+    node["data"]["id"] = taxon
+    node["data"]["selected"] = False
+    node["data"]["taxonomy"] = case["taxonomy"].item()
+    node["data"]["degree_layout"] = 1
+    node["data"]["name"] = case["taxonomy"].item().split(cfg["delimiter"])[-1]
+    node["data"]["GTDB-representative"] = case["gtdb_gen_repr"]
+    node["data"]["taxonomy-level"] = case["ncbi_tax_level"].item()
+    return node
+
+
+def convert_to_json_serializable(obj):
+    """
+    Recursively serializes entries of an object, i.e. a set is converted to a list, a list is split to its items
+    and a dictionary keeps its key and their values get serialized
+    """
+    if isinstance(obj, (int, float, str, bool, type(None))):
+        return obj
+    elif isinstance(obj, set):
+        return list(obj)
+    elif isinstance(obj, list):
+        return [convert_to_json_serializable(item) for item in obj]
+    elif isinstance(obj, dict):
+        return {key: convert_to_json_serializable(value) for key, value in obj.items()}
+    else:
+        try:
+            return json.dumps(obj)
+        except TypeError:
+            return str(obj)
+

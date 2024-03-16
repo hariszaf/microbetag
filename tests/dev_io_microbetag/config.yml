@@ -60,9 +60,25 @@ gapfill_media:
 
 
 
+max_length_for_complement_from_scratch:
+  value: 3
+  description: There are cases where a species has no KO related with a module but may get a complete alternative from the donor species. However, there are cases where a KEGG module consists of just 1-2 terms and other where dozins of KOs are required. Set the max length of a module that can be exchanged when no module related KO is present in the beneficiary in the first place.
+  required: False
+  type: Integer
 
 
+pathway_complement_percentage:
+  value: 0.35
+  description: Per centage of the module (i.e., number of KO terms) up to which a potential donor may provide a beneficiary with. For example, if a module consists of 5 KOs and the beneficiary can share 4 missing from the donor, this is rather unlikely to happen. If no value is given all complementes will be returned.
+  required: False
+  type: float
 
+
+network_clustering:
+  value: False
+  description:
+  type: bool
+  required: False
 
 
 
@@ -79,12 +95,10 @@ metadata_file:
   description: 
   type:
 
-
-
-build_network:
-  value: True
-  description: A co-occurrence network will be built using your abundance table, your metadata file (if provided) and FlashWeave. If selected, make sure you also set the FlashWeave arguments.
-  type: bool
+# build_network:
+#   value: True
+#   description: A co-occurrence network will be built using your abundance table, your metadata file (if provided) and FlashWeave. If selected, make sure you also set the FlashWeave arguments.
+#   type: bool
 
 flashweave_sensitive:
   value: True

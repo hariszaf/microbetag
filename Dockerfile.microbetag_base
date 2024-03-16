@@ -148,7 +148,7 @@ ENV PATH="/opt/julia-1.7.1/bin:${PATH}"
 RUN /opt/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
 
 # FAPRTOTAX
-WORKDIR /opt
+WORKDIR /microbetag/microbetagDB/ref-dbs
 RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Download/MODULE_Downloads/CLASS_Latest%20release/UNIT_FAPROTAX_1.2.7/FAPROTAX_1.2.7.zip &&\
     unzip FAPROTAX_1.2.7.zip &&\
     rm FAPROTAX_1.2.7.zip
@@ -156,15 +156,9 @@ RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Down
 RUN pip install pytest-shutil &&\
     pip install biom-format
 
+RUN pip install scikit-learn==1.3.2
 
-# RUN apt install python3.8-venv
-
-# # Install scikit-learn 0.23.2 in one virtual environment
-# RUN python3 -m venv /modelseedpyenv && \
-#     /modelseedpyenv/bin/pip install "scikit-learn==1.2.0" "scipy>=1.5.4"
-
-# RUN python3 -m venv /phenotrexenv && \
-#     /phenotrexenv/bin/pip install "scikit-learn>=0.22,<=0.23.2"
+RUN python -m pip install git+https://github.com/hariszaf/manta.git@scipy-version 
 
 
 # modelseedpy:  
@@ -174,54 +168,6 @@ RUN pip install pytest-shutil &&\
 # yet: python3 -m pip install scikit-learn==0.24.2 is the only working to load pickle.... 
 
 # phenotrex: scikit-learn>=0.22,<=0.23.2   https://github.com/univieCUBE/phenotrex/blob/master/requirements/prod.txt
-
-
-
-
-
-
-
-
-
-# ....................................................
-# cpan install LWP::UserAgent
-# cpan install YAML
-# apt-get install libdb-dev
-
-
-# cpan install DB_File
-
-
-# wget http://blog.theseed.org/downloads/sas.tgz
-# mkdir sas
-# cp ~/Downloads/sas.tar sas
-# cd sas
-# TOP=`pwd`
-# tar -xvf sas.tar
-# cd modules
-# ./BUILD_MODULES
-# export PERL5LIB=$PERL5LIB:$TOP/lib:$TOP/modules/lib
-# export PATH=$PATH:$TOP/bin
-
-
-
-
-
-
-
-
-
-
-
-# sklearn.neighbors._dist_metrics 
-
-
-
-
-
-
-
-
 
 # ==============================================================  to be added
 
@@ -240,7 +186,6 @@ RUN pip install pytest-shutil &&\
 # RUN /bin/bash bootstrap
 # RUN make -j$(nproc) 
 # RUN make install
-
 
 # ----------------------------------------------------------------
 
@@ -294,10 +239,6 @@ RUN pip install pytest-shutil &&\
 # RUN ./configure &&\
 #     make &&\
 #     make install
-
-
-# ==========================================================================================================
-
 
 # ==========================================================================================================
 

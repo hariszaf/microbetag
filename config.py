@@ -28,10 +28,11 @@ class Config:
 
         self.bin_filenames = os.listdir(self.bins_path)
 
-
         # Check whethere bin names are the same in both abundance and edgelist files
         bins = [ os.path.splitext(gbin)[0] for gbin in self.bin_filenames  ]
         f = pd.read_csv(self.abundance_table, sep="\t")
+        self.taxonomy_column_name = list(f.columns)[-1]
+        self.sequence_column_name = list(f.columns)[0]
         bins_in_abundance_file = list(f.iloc[:,0])
 
         if not all(elem in bins_in_abundance_file for elem in bins):
@@ -40,13 +41,15 @@ class Config:
             raise ValueError(f"Bin names do not match with those in the abundance table: {not_in_second_list_str}")
 
         if self.network:
+            self.flashweave = False
             f = pd.read_csv(self.network, sep="\t")
             bins_in_net = set(list(f.iloc[:,0]) + list(f.iloc[:,1]))
             if not all(elem in bins_in_abundance_file for elem in bins_in_net) or not all(elem in bins_in_net for elem in bins):
                 raise ValueError(f"Bin names in the edgelist file do not match with those in the abundance table and/or in the bins.")
         else:
             self.flashweave_script = os.path.join(self.cwd, "microbetagDB/scripts/flashweave.jl")
-
+            self.network = os.path.join(self.mount, "network_output.edgelist")
+            self.flashweave = True
 
         # Build output dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -75,7 +78,7 @@ class Config:
         self.gapfill_media = conf["gapfill_media"]["value"]
 
         # Flashweave arguments
-        self.build_network = conf["build_network"]["value"]
+        # self.build_network = conf["build_network"]["value"]
         self.metadata = "false" if self.metadata_file == "false" else "true"
         self.sensitive = "true" if conf["flashweave_sensitive"]["value"] else "false"
         self.heterogeneous = "true" if conf["flashweave_heterogeneous"]["value"] else "false"
@@ -86,10 +89,34 @@ class Config:
 
         self.phylomint_scores = os.path.join(self.seeds, "phylomint_scores.tsv")
 
-        self.ko_terms_per_module_definition = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/kegg_terms_per_module.tsv")
-        self.modules_definitions_json_map = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_definition_map.json")
-        self.kegg_modules_to_maps = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/module_map_pairs.tsv")
-        self.seed_ko_mo = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/seedId_keggId_module.tsv")
+        self.kegg_mappings = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/")
+        self.ko_terms_per_module_definition = os.path.join(self.kegg_mappings, "kegg_terms_per_module.tsv")
+        self.modules_definitions_json_map = os.path.join(self.kegg_mappings, "module_definition_map.json")
+        self.kegg_modules_to_maps = os.path.join(self.kegg_mappings, "module_map_pairs.tsv")
+        self.seed_ko_mo = os.path.join(self.kegg_mappings, "seedId_keggId_module.tsv")
+        self.module_descriptions = os.path.join(self.kegg_mappings, "module_descriptions")
+
+        # FAPROTAX
+        self.faprotax_txt = os.path.join(self.cwd, "microbetagDB/ref-dbs/FAPROTAX_1.2.7/FAPROTAX.txt")
+        self.faprotax_script = os.path.join(self.cwd, "microbetagDB/ref-dbs/FAPROTAX_1.2.7/collapse_table.py")
+        self.faprotax_output_dir = os.path.join(self.output_dir, "faprotax")
+        self.faprotax_funct_table = os.path.join(self.faprotax_output_dir, "functional_otu_table.tsv")
+        self.faprotax_sub_tables = os.path.join(self.faprotax_output_dir, "sub_tables")
+        os.makedirs(self.faprotax_output_dir, exist_ok=True)
+        os.makedirs(self.faprotax_sub_tables, exist_ok=True)
+
+        self.alts_file = os.path.join(self.output_dir, "alts.json")
+        self.compl_file = os.path.join(self.output_dir, "pathCompls.json")
+        self.pathway_complement_percentage = conf["pathway_complement_percentage"]["value"] if conf["pathway_complement_percentage"]["value"] is not None else 0
+
+        self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
+        self.module_related_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
+
+        self.network_clustering = conf["network_clustering"]["value"] if conf["network_clustering"]["value"] else False
+
+        self.max_scratch_alt = conf["max_length_for_complement_from_scratch"]["value"] if conf["max_length_for_complement_from_scratch"]["value"] else 1
+
+        self.microbetag_annotated_network_file = os.path.join(self.output_dir, "microbetag_annotated_network.cx")
 
         # ==========
         # Init torch

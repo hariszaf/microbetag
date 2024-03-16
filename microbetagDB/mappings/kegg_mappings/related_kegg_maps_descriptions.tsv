@@ -1,0 +1,122 @@
+map00010	Glycolysis / Gluconeogenesis	Carbohydrate metabolism
+map00020	Citrate cycle (TCA cycle)	Carbohydrate metabolism
+map00030	Pentose phosphate pathway	Carbohydrate metabolism
+map00040	Pentose and glucuronate interconversions	Carbohydrate metabolism
+map00051	Fructose and mannose metabolism	Carbohydrate metabolism
+map00052	Galactose metabolism	Carbohydrate metabolism
+map00053	Ascorbate and aldarate metabolism	Carbohydrate metabolism
+map00500	Starch and sucrose metabolism	Carbohydrate metabolism
+map00520	Amino sugar and nucleotide sugar metabolism	Carbohydrate metabolism
+map00620	Pyruvate metabolism	Energy metabolism
+map00630	Glyoxylate and dicarboxylate metabolism	Carbohydrate metabolism
+map00650	Butanoate metabolism	Lipid metabolism
+map00562	Inositol phosphate metabolism	Carbohydrate metabolism
+map00190	Oxidative phosphorylation	Energy metabolism
+map00195	Energy metabolism	Energy metabolism
+map00710	Energy metabolism in photosynthetic organisms	Energy metabolism
+map00720	Energy metabolism pathways in prokaryotes	Energy metabolism
+map00680	Energy metabolism	Energy metabolism
+map00910	Energy metabolismi	Energy metabolism
+map00920	Energy metabolism	Energy metabolism
+map00061	Fatty acid biosynthesis	Lipid metabolism
+map00062	Fatty acid elongation	Lipid metabolism
+map00071	Fatty acid degradation	Lipid metabolism
+map00100	Steroid biosynthesis	Lipid metabolism
+map00120	Primary bile acid biosynthesis	Lipid metabolism
+map00140	Steroid hormone biosynthesis	Lipid metabolism
+map00561	Glycerolipid metabolism	Lipid metabolism
+map00564	Glycerophospholipid metabolism	Lipid metabolism
+map00600	Sphingolipid metabolism	Lipid metabolism
+map00592	alpha-Linolenic acid metabolism	Lipid metabolism
+map01040	Biosynthesis of unsaturated fatty acids	Lipid metabolism
+map00230	Purine metabolism	Nucleotide metabolism
+map00240	Pyrimidine metabolism	Nucleotide metabolism
+map00250	Alanine, aspartate and glutamate metabolism	Amino acid metabolism
+map00260	Glycine, serine and threonine metabolism	Amino acid metabolism
+map00270	Cysteine and methionine metabolism	Amino acid metabolism
+map00280	Valine, leucine and isoleucine degradation	Amino acid metabolism
+map00290	Valine, leucine and isoleucine biosynthesis	Amino acid metabolism
+map00300	Lysine biosynthesis	Amino acid metabolism
+map00310	Lysine degradation	Amino acid metabolism
+map00220	Arginine biosynthesis	Amino acid metabolism
+map00330	Arginine and proline metabolism	Amino acid metabolism
+map00340	Histidine metabolism	Amino acid metabolism
+map00350	Tyrosine metabolism	Amino acid metabolism
+map00360	Phenylalanine metabolism	Xenobiotics biodegradation
+map00380	Tryptophan metabolism	Amino acid metabolism
+map00400	Phenylalanine, tyrosine and tryptophan biosynthesis	Amino acid metabolism
+map00410	beta-Alanine metabolism	Carbohydrate metabolism
+map00430	Taurine and hypotaurine metabolism	Energy metabolism
+map00460	Cyanoamino acid metabolism	Amino acid metabolism
+map00470	D-Amino acid metabolism	Amino acid metabolism
+map00480	Glutathione metabolism	Amino acid metabolism
+map00510	N-Glycan biosynthesis	Glycan metabolism
+map00512	Mucin type O-glycan biosynthesis	Glycan metabolism
+map00515	Mannose type O-glycan biosynthesis	Glycan metabolism
+map00532	Glycosaminoglycan biosynthesis - chondroitin sulfate / dermatan sulfate	Glycan metabolism
+map00534	Glycosaminoglycan biosynthesis - heparan sulfate / heparin	Glycan metabolism
+map00531	Glycosaminoglycan degradation	Glycan metabolism
+map00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis	Glycan metabolism
+map00601	Glycosphingolipid biosynthesis - lacto and neolacto series	Glycan metabolism
+map00603	Glycosphingolipid biosynthesis - globo and isoglobo series	Glycan metabolism
+map00604	Glycosphingolipid biosynthesis - ganglio series	Glycan metabolism
+map00540	Lipopolysaccharide biosynthesis	Glycan metabolism
+map00541	O-Antigen nucleotide sugar biosynthesis	Glycan metabolism
+map00730	Thiamine metabolism	Metabolism of cofactors and vitamins
+map00740	Riboflavin metabolism	Metabolism of cofactors and vitamins
+map00750	Vitamin B6 metabolism	Metabolism of cofactors and vitamins
+map00760	Nicotinate and nicotinamide metabolism	Metabolism of cofactors and vitamins
+map00770	Pantothenate and CoA biosynthesis	Metabolism of cofactors and vitamins
+map00780	Biotin metabolism	Metabolism of cofactors and vitamins
+map00785	Lipoic acid metabolism	Metabolism of cofactors and vitamins
+map00790	Folate biosynthesis	Metabolism of cofactors and vitamins
+map00670	One carbon pool by folate	Metabolism of cofactors and vitamins
+map00860	Porphyrin metabolism	Metabolism of cofactors and vitamins
+map00130	Ubiquinone and other terpenoid-quinone biosynthesis	Metabolism of cofactors and vitamins
+map00900	Terpenoid backbone biosynthesis	Biosynthesis of other secondary metabolites
+map00904	Diterpenoid biosynthesis	Biosynthesis of terpenoids and polyketides
+map00906	Carotenoid biosynthesis	Biosynthesis of terpenoids and polyketides
+map00905	Brassinosteroid biosynthesis	Biosynthesis of terpenoids and polyketides
+map00522	Biosynthesis of 12-, 14- and 16-membered macrolides	Biosynthesis of terpenoids and polyketides
+map01059	Biosynthesis of enediyne antibiotics	Biosynthesis of terpenoids and polyketides
+map01056	Biosynthesis of type II polyketide backbone	Biosynthesis of terpenoids and polyketides
+map01057	Biosynthesis of type II polyketide products	Biosynthesis of terpenoids and polyketides
+map00253	Tetracycline biosynthesis	Biosynthesis of terpenoids and polyketides
+map00523	Polyketide sugar unit biosynthesis	Biosynthesis of terpenoids and polyketides
+map00940	Phenylpropanoid biosynthesis	Biosynthesis of other secondary metabolites
+map00941	Flavonoid biosynthesis	Biosynthesis of other secondary metabolites
+map00943	Isoflavonoid biosynthesis	Biosynthesis of other secondary metabolites
+map00946	Degradation of flavonoids	Biosynthesis of other secondary metabolites
+map00901	Indole alkaloid biosynthesis	Biosynthesis of other secondary metabolites
+map00403	Indole diterpene alkaloid biosynthesis	Biosynthesis of other secondary metabolites
+map00950	Isoquinoline alkaloid biosynthesis	Biosynthesis of other secondary metabolites
+map00232	Caffeine metabolism	Xenobiotics biodegradation
+map00965	Betalain biosynthesis	Biosynthesis of other secondary metabolites
+map00311	Penicillin and cephalosporin biosynthesis	Biosynthesis of other secondary metabolites
+map00332	Carbapenem biosynthesis	Biosynthesis of other secondary metabolites
+map00261	Monobactam biosynthesis	Biosynthesis of other secondary metabolites
+map00331	Clavulanic acid biosynthesis	Biosynthesis of other secondary metabolites
+map00521	Streptomycin biosynthesis	Biosynthesis of terpenoids and polyketides
+map00525	Acarbose and validamycin biosynthesis	Biosynthesis of other secondary metabolites
+map00404	Staurosporine biosynthesis	Biosynthesis of other secondary metabolites
+map00405	Phenazine biosynthesis	Biosynthesis of other secondary metabolites
+map00333	Prodigiosin biosynthesis	Biosynthesis of other secondary metabolites
+map00254	Aflatoxin biosynthesis	Biosynthesis of other secondary metabolites
+map00998	Biosynthesis of various antibiotics	Biosynthesis of other secondary metabolites
+map00999	Biosynthesis of various plant secondary metabolites	Biosynthesis of other secondary metabolites
+map00997	Biosynthesis of various other secondary metabolites	Biosynthesis of other secondary metabolites
+map00362	Benzoate degradation	Xenobiotics biodegradation
+map00627	Aminobenzoate degradation	Xenobiotics biodegradation
+map00361	Chlorocyclohexane and chlorobenzene degradation	Xenobiotics biodegradation
+map00623	Toluene degradation	Xenobiotics biodegradation
+map00622	Xylene degradation	Xenobiotics biodegradation
+map00621	Dioxin degradation	Xenobiotics biodegradation
+map00626	Naphthalene degradation	Xenobiotics biodegradation
+map00624	Polycyclic aromatic hydrocarbon degradation	Xenobiotics biodegradation
+map05133	Pertussis	Pathogenicity
+map05110	Vibrio cholerae infection	Pathogenicity
+map05130	Pathogenic Escherichia coli infection	Pathogenicity
+map05120	Epithelial cell signaling in Helicobacter pylori infection	Pathogenicity
+map01501	beta-Lactam resistance	Drug resistance
+map01502	Vancomycin resistance	Drug resistance
+

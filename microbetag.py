@@ -18,8 +18,10 @@ Author:
 import os
 import sys
 import yaml
-from config import Config
+import subprocess
 from utils import *
+from config import Config
+from build_cx_annotated_graph import *
 
 config_file = sys.argv[1]
 
@@ -30,7 +32,26 @@ if config.bins_path is None:
     raise ValueError
 
 # ----------------
-# STEP1: phen annotations
+# FAPROTAX
+# ----------------
+faprotax_params = [
+    "python3", config.faprotax_script,
+    "-i", config.abundance_table,
+    "-o", config.faprotax_funct_table,
+    "-g", config.faprotax_txt,
+    "-c", '"' + "#" + '"',
+    "-d", '"' + config.taxonomy_column_name + '"',
+    "-v",
+    "--force",
+    "-s", config.faprotax_sub_tables,
+]
+
+faprotax_command = " ".join(faprotax_params)
+process = subprocess.Popen(faprotax_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+stdout, stderr = process.communicate()
+
+# ----------------
+# phen annotations
 # ----------------
 print("\n PREDICTING PHENOTYPIC TRAITS \n")
 suffixes = [".fa", ".fasta", ".gz"]
@@ -38,6 +59,8 @@ bin_files = get_files_with_suffixes(config.bins_path, suffixes)
 bin_files_in_a_row = " ".join(bin_files)
 
 # Build genotypes
+if get_library_version("scikit-learn") != "1.3.2":
+    os.system("python3 -m pip install scikit-learn==1.3.2")
 compute_genotype_params = [ "phenotrex",
                             "compute-genotype",
                             "--out",
@@ -86,7 +109,7 @@ for model in phen_models:
             raise ValueError
 
 # ----------------
-# STEP 2: prodigal - using diting interface
+# prodigal - using diting interface
 # ----------------
 print("\n PREDICTING ORFs \n")
 for bin_fa in bin_files:
@@ -95,7 +118,7 @@ for bin_fa in bin_files:
     run_prodigal(bin_fa, bin_id, config.prodigal)
 
 # ----------------
-# STEP 3: KEGG annotation - using diting interface
+# KEGG annotation - using diting interface
 # ----------------
 print("\n KEGG ANNOTATION \n")
 ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
@@ -110,7 +133,7 @@ ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
 bins_kos, pivot_df = merge_ko(config.kegg_pieces_dir, ko_merged_tab)
 
 # ----------------
-# STEP 4: Extract pathway complementarities
+# Extract pathway complementarities
 # ----------------
 print("Exporting path complements....")
 bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
@@ -118,26 +141,24 @@ bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementariti
     pivot_df
     )
 
-alts_file = os.path.join(config.output_dir, "alts.json")
-compl_file = os.path.join(config.output_dir, "pathCompls.json")
-if not os.path.exists(alts_file):
-    with open(alts_file, "w") as file:
+if not os.path.exists(config.alts_file):
+    with open(config.alts_file, "w") as file:
         json.dump(alt_to_gapfill, file, cls=SetEncoder)
-if not os.path.exists(compl_file):
-    with open(compl_file, "w") as file:
+
+if not os.path.exists(config.compl_file):
+    with open(config.compl_file, "w") as file:
         json.dump(complements, file, cls=SetEncoder)
 
 # ----------------
-# STEP 5: Build GENREs
+# Build GENREs
 # ----------------
 print("\n BUILDING RECONSTRUCTIONS \n")
 build_genres = build_genres(config)
 build_genres.rast_annotate_genomes()
 build_genres.modelseed_reconstructions()
 
-
 # ----------------
-# STEP 6: Phylomint
+# Phylomint
 # ----------------
 print("\n COMPUTING SEED SETS AND SCORES \n")
 if not os.path.exists(config.phylomint_scores):
@@ -146,7 +167,7 @@ else:
     print("Seed scores already computed.")
 
 # ----------------
-# STEP 7: Export seed complementarities
+# Export seed complementarities
 # ----------------
 print("\n EXORTING SEED COMPLEMENTS \n")
 seed_complements = export_seed_complementarities(config)
@@ -171,11 +192,9 @@ if not os.path.exists(seed_complements.seed_complements):
 else:
     print("Seed complements already exported.")
 
-
 # ----------------
-# STEP 8: Build network if not available
+# Build network if not available
 # ----------------
-
 if config.network is None:
     ensure_flashweave_format(conf=config)
     flashweave_params = [
@@ -189,9 +208,7 @@ if config.network is None:
         config.metadata_file
     ]
     flashweave_command = " ".join(flashweave_params)
-
     print("Run FlashWeave")
-    print(flashweave_command)
     if os.system(flashweave_command) != 0:
         e = """ \
             FlashWeave failed.
@@ -202,9 +219,10 @@ if config.network is None:
         """
         raise ValueError(e)
 
-
-
-
-
-
-
+# ----------------
+# Annotate network in .cx format
+# ----------------
+annotated_network = build_cx_annotated_graph(config)
+with open(config.microbetag_annotated_network_file, "w") as f:
+        annotated_network2file = convert_to_json_serializable(annotated_network)
+        json.dump(annotated_network2file, f)

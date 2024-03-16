@@ -21,7 +21,7 @@ ADD microbetagDB/scripts/flashweave.jl ./microbetagDB/scripts/flashweave.jl
 ADD utils.py ./
 ADD microbetag.py  ./
 ADD config.py ./
-
+ADD build_cx_annotated_graph.py ./
 
 ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
 
