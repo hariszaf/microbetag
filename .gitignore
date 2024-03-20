@@ -22,6 +22,8 @@ bin-release/
 # Backups tmp
 *.bck
 
+*.lic
+
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
@@ -51,7 +53,7 @@ microbetagDB/ref-dbs/all_genome_modules/
 
 
 tools/BugBase/
-
+diamond/
 
 # Ignore software
 tools/phenotrex/
@@ -95,6 +97,7 @@ kofam_database/
 microbetag_run/
 
 PhyloMint/
+MetaNetX/
 
 microbetagDB/mappings/gtdb_ncbi/
 .vscode/

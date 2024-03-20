@@ -367,6 +367,7 @@ def build_cx_annotated_graph(conf):
 
     return annotated_cx
 
+
 def seqId_faprotax_functions_assignment(path_to_subtables):
     """
     Parse the sub tables of the faprotax analysis
@@ -416,6 +417,7 @@ def add_edge_pathway_complements(id_x, id_y, complements_dict_ext, edges, edgeAt
         check = True
     return check
 
+
 def add_edge_seed_complements(id_x, id_y, complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements):
     check = False
     if id_x in complements_dict and id_y in complements_dict[id_x]:
@@ -449,7 +451,6 @@ def add_edge_seed_complements(id_x, id_y, complements_dict, edges, edgeAttribute
         edgeAttributes["edgeAttributes"].append({"po": edge_counter, "n": attr, "v": merged_compl, "d": "list_of_string"})
         check = True
     return check
-
 
 
 def add_seed_edge_attributes(id_x, id_y, seed_scores, edgeAttributes, edge_counter):

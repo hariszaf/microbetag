@@ -17,6 +17,7 @@ LABEL version    = "v.1.0"
 # Copy microbetag utils 
 WORKDIR /microbetag
 ADD microbetagDB/mappings/kegg_mappings/*  ./microbetagDB/mappings/kegg_mappings/
+ADD microbetagDB/mappings/MetaNetX/chem_xref.tsv ./microbetagDB/mappings/MetaNetX/chem_xref.tsv
 ADD microbetagDB/scripts/flashweave.jl ./microbetagDB/scripts/flashweave.jl
 ADD utils.py ./
 ADD microbetag.py  ./

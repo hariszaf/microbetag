@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import ast
 import json
 import time
@@ -16,6 +17,7 @@ from joblib import Parallel, delayed
 from modelseedpy import MSBuilder, MSGenome
 
 
+# Handling data related
 def get_library_version(library_name):
     try:
         version = pkg_resources.get_distribution(library_name).version
@@ -67,6 +69,121 @@ def get_files_with_suffixes(directory, suffixes):
     return matching_files
 
 
+def flatten(list_of_lists):
+   """
+   This function takes a list of lists and flattens it until it returns a list with
+   all the components of the initial one.
+   """
+   if len(list_of_lists) == 0:
+      return list_of_lists
+   if isinstance(list_of_lists[0], list):
+      return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
+   return list_of_lists[:1] + flatten(list_of_lists[1:])
+
+
+def run_until_done(command):
+    """
+    Function to run recursively a command until
+    """
+    if os.system(command) == 0:
+        return 1
+    else:
+        time.sleep(random.randint(2, 10))
+        print("recurscive run of:", command)
+        run_until_done(command)
+
+
+def file_exists_and_nonzero(filename):
+    """
+    Check if a file exists and its size is nonzero.
+
+    Args:
+        filename (str): The path to the file.
+
+    Returns:
+        bool: True if the file exists and its size is nonzero, False otherwise.
+    """
+    return os.path.exists(filename) and os.path.getsize(filename) > 0
+
+
+def split_list(input_list, chunk_size):
+    """
+    Split a list to sublists of a size.
+    """
+    return [input_list[i:i + chunk_size] for i in range(0, len(input_list), chunk_size)]
+
+
+# FlashWeave related
+def ensure_flashweave_format(conf):
+    """
+    Build an OTU table that will be in a FlashWeave-based format.
+    """
+
+    flashweave_table = pd.read_csv(conf.abundance_table, sep="\t").iloc[:, :-1]
+    float_col = flashweave_table.select_dtypes(include=['float64'])
+
+    for col in float_col.columns.values:
+        flashweave_table[col] = flashweave_table[col].astype('int64')
+
+    flashweave_table.iloc[:, 0] = flashweave_table.iloc[:, 0].astype(str)
+    flashweave_table.to_csv(conf.flashweave_abd_table, sep='\t', index=False)
+
+    return 1
+
+
+def ensure_same_namespace_after_fw(conf):
+    """
+    [TODO] can be removed but let's wait
+    Inconsistencies from D300244:bin_000023 in the abundance table to D300244.bin_000023 in FlashWeave.
+    Keep the routine in general along with the find_id_differences().
+    """
+    abd = pd.read_csv(conf.flashweave_abd_table, sep="\t")
+    bin_names = abd.iloc[:,0]
+    df1 = pd.DataFrame(bin_names.to_list(), columns=["bin_names"])
+    net = pd.read_csv(conf.network, sep="\t", skiprows=2, header = None)
+    bin_names_in_net = net.iloc[:,0]
+    df2 = pd.DataFrame(bin_names_in_net.to_list(), columns=["bin_names_in_net"])
+    diff_chars = set()
+    for index, row in df1.iterrows():
+        try:
+            id1 = row['bin_names']
+            id2 = df2.loc[index, 'bin_names_in_net']
+        except:
+            continue
+        if id1 != id2:
+            diff_chars = find_id_differences(id1, id2)
+            if diff_chars:
+                print(f"Difference found: '{diff_chars}'")
+            else:
+                print(f"IDs '{id1}' and '{id2}' are identical")
+    # We need to replace the bin names network file with the delimiter of the abundance table file
+    if len(diff_chars) > 0:
+        for case in diff_chars:
+            os.system('sed -i "s/{}/{} /g" {}'.format(case[1], case[0], conf.network))
+    return 1
+
+
+def find_id_differences(id1, id2):
+    """
+    Gets:
+        id1: bin name in the abundance table
+        id2: bin name in the network file
+    Returns:
+        diff_chars: (character_in_abundance_table, character_in_network_file)
+    """
+    # Find indices where the IDs differ
+    diff_indices = [i for i, (c1, c2) in enumerate(zip(id1, id2)) if c1 != c2]
+    # Split IDs based on the differing indices
+    id1_parts = [id1[:i] for i in diff_indices + [len(id1)]]
+    id2_parts = [id2[:i] for i in diff_indices + [len(id2)]]
+    # Check if the parts are the same
+    if id1_parts[:-1] == id2_parts[:-1]:
+        diff_chars = [(c1, c2) for c1, c2 in zip(id1_parts[-1], id2_parts[-1]) if c1 != c2]
+        return diff_chars
+    return None  # IDs are identical
+
+
+# Annotation related
 def run_prodigal(fasta, basename, outdir):
     """
     Function to predict ORFs using Prodigal.
@@ -222,18 +339,7 @@ def merge_ko(hmmout_dir, output):
     return bins_kos, pivot_df  # keep one
 
 
-def flatten(list_of_lists):
-   """
-   This function takes a list of lists and flattens it until it returns a list with
-   all the components of the initial one.
-   """
-   if len(list_of_lists) == 0:
-      return list_of_lists
-   if isinstance(list_of_lists[0], list):
-      return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
-   return list_of_lists[:1] + flatten(list_of_lists[1:])
-
-
+# Pathway complementarity related
 def build_kegg_url(kegg_map, clean_path, missing_kos):
    """
    Build url to colorify the related to the module kegg map based on the KO terms
@@ -379,38 +485,7 @@ def export_pathway_complementarities(config, bins_kos_df):
     return bin_kos_per_module, bins_alternatives, complements
 
 
-def split_list(input_list, chunk_size):
-    """
-    Split a list to sublists of a size.
-    """
-    return [input_list[i:i + chunk_size] for i in range(0, len(input_list), chunk_size)]
-
-
-def run_until_done(command):
-    """
-    Function to run recursively a command until
-    """
-    if os.system(command) == 0:
-        return 1
-    else:
-        time.sleep(random.randint(2, 10))
-        print("recurscive run of:", command)
-        run_until_done(command)
-
-
-def file_exists_and_nonzero(filename):
-    """
-    Check if a file exists and its size is nonzero.
-
-    Args:
-        filename (str): The path to the file.
-
-    Returns:
-        bool: True if the file exists and its size is nonzero, False otherwise.
-    """
-    return os.path.exists(filename) and os.path.getsize(filename) > 0
-
-
+# GENRE related
 class build_genres():
     """
     Class to first RAST annotate and the build Genome Scale Metabolic Reconstructions
@@ -440,22 +515,20 @@ class build_genres():
             pool.join()
             counter += chunk_size
             print(
-                "We now have annotated",
-                str(counter),
-                "genomes out of the",
-                str(len(self.config.bin_filenames))
+                "We now have annotated", str(counter), "genomes out of the", str(len(self.config.bin_filenames))
             )
 
     def rast_annotate_a_genome(self, bin_filename):
         """
-        RAST annotate a user's bin
+        RAST annotate a user's bin based on:
+        https://www.bv-brc.org/docs/cli_tutorial/rasttk_getting_started.html#the-concept-of-the-genome-typed-object
         """
         bin_file = os.path.join(self.config.bins_path, bin_filename)
         name, _ = os.path.splitext(bin_filename)
         genome = name
         gto_filename = os.path.join(self.config.reconstructions, "".join([name, ".gto"]))
 
-        # rast_create_genome_command
+        # rast_create_genome_command: create a GTO for the bin's contig
         rast_create_genome_command = " ".join([
             "rast-create-genome", "--scientific-name", name,
             "--genetic-code", "11", "--domain", "Bacteria",
@@ -463,19 +536,21 @@ class build_genres():
             "--genome-id", genome, ">", gto_filename
             ])
         if not file_exists_and_nonzero(gto_filename):
+            rast_create_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_create_genome_command])
             print("rast_create_genome_command:", rast_create_genome_command)
             run_until_done(rast_create_genome_command)
 
-        # rast-process-genome
+        # rast-process-genome: run the default RASTtk pipeline tool
         gto_filename_2 = "".join([gto_filename, "_2"])
         rast_process_genome_command = " ".join([
             "rast-process-genome", "<", gto_filename, ">", gto_filename_2
             ])
         if not file_exists_and_nonzero(gto_filename_2):
+            rast_process_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_process_genome_command])
             print("\nrast_process_genome_command: ", rast_process_genome_command)
             run_until_done(rast_process_genome_command)
 
-        # rast-export-genome protein_fasta
+        # rast-export-genome protein_fasta: export the genome in a desired format
         faa_filename = "".join([gto_filename[:-4], ".faa"])
         rast_export_genome_command = " ".join([
             "rast-export-genome",
@@ -484,6 +559,7 @@ class build_genres():
             faa_filename
             ])
         if not file_exists_and_nonzero(faa_filename):
+            rast_export_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_export_genome_command])
             print("\nrast_export_genome_command: ", rast_export_genome_command)
             run_until_done(rast_export_genome_command)
 
@@ -536,10 +612,132 @@ class build_genres():
             return model
         except:
             time.sleep(random.randint(20, 40))
-            print("recursive run for model_id:", model_id)
+            print("Recursive run for model_id:", model_id)
             return self.recursive_build(model_id, msgenome)
 
+    def carve_reconstructions(self):
+        """
+        Reconstruct a GENRE using CarveMe and a .faa as input.
+        You can get such a file after running RAST annotation or after any gene prediction tool such as Prodigal, FragenScan etc.
+        """
+        # if self.config.input_for_recon_type == "bins_fasta":
+        #     if self.config.gene_predictor == "prodigal":
+        #         faa_files = [
+        #             os.path.join(self.config.prodigal, file)
+        #             for file in os.listdir(self.config.prodigal)
+        #             if file.endswith("faa")
+        #         ]
+        #     elif self.config.gene_predictor == "fragGeneScan":
+        #         faa_files = [
+        #             os.path.join(self.config.reconstructions, file)
+        #             for file in os.listdir(self.config.reconstructions)
+        #             if file.endswith("faa")
+        #         ]
+        #     else:
+        #         print("CarveMe is currently ") ; sys.exit(0)
 
+        #     for faa in faa_files:
+        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
+        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]))
+        #         carve_params = [
+        #             "carve", "--solver", "gurobi", "-o", xml, faa
+        #         ]
+        #         carve_command = " ".join(carve_params)
+        #         print(carve_command)
+        #         os.system(carve_command)
+
+        # elif self.config.input_for_recon_type == "coding_regions":
+        #     faa_files = [
+        #         os.path.join(self.config.sequence_files_for_reconstructions, file)
+        #         for file in os.listdir(self.config.sequence_files_for_reconstructions)
+        #     ]
+        #     for faa in faa_files:
+        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
+        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]))
+        #         carve_params = [
+        #             "carve", "--dna", "--solver", "gurobi", "-o", xml, faa
+        #         ]
+        #         carve_command = " ".join(carve_params)
+        #         print(carve_command)
+        #         os.system(carve_command)
+
+        # elif self.config.input_for_recon_type == "proteins_faa":
+        #     faa_files = [
+        #         os.path.join(self.config.sequence_files_for_reconstructions, file)
+        #         for file in os.listdir(self.config.sequence_files_for_reconstructions)
+        #     ]
+        #     for faa in faa_files:
+        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
+        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]) )
+        #         carve_params = [
+        #             "carve", "--solver", "gurobi", "-o", xml, faa
+        #         ]
+        #         carve_command = " ".join(carve_params)
+        #         print(carve_command)
+        #         os.system(carve_command)
+
+
+        if self.config.input_for_recon_type == "bins_fasta":
+            gene_predictor_path = self.config.prodigal if self.config.gene_predictor == "prodigal" else self.config.reconstructions
+            faa_files = [
+                os.path.join(gene_predictor_path, file)
+                for file in os.listdir(gene_predictor_path)
+                if file.endswith("faa")
+            ]
+            self.run_carve(faa_files)
+
+        elif self.config.input_for_recon_type in ["coding_regions", "proteins_faa"]:
+            faa_files = [
+                os.path.join(self.config.sequence_files_for_reconstructions, file)
+                for file in os.listdir(self.config.sequence_files_for_reconstructions)
+            ]
+            self.run_carve(faa_files, dna=self.config.input_for_recon_type == "coding_regions")
+
+    def run_carve(self, faa_files, dna=False):
+        for faa in faa_files:
+            bin_id = os.path.splitext(os.path.basename(faa))[0]
+            xml = os.path.join(self.config.genres, f"{bin_id}.xml")
+            carve_params = ["carve", "--solver", "gurobi", "-o", xml]
+            if os.path.exists(xml) and os.path.getsize(xml) > 0:
+                print("An .xml file for this bin is already available. This will be used for seed complementarities and carve step will be skiped.")
+                continue
+            if dna:
+                carve_params.append("--dna")
+            carve_params.append(faa)
+            carve_command = " ".join(carve_params)
+            print(carve_command)
+            os.system(carve_command)
+
+    def fgs_annotate_genomes(self):
+        """
+        Use FragGeneScan to get .faa files.
+        """
+        cwd = os.getcwd()
+        if self.config.on_container:
+            os.chdir("/opt/FragGeneScan")
+        else:
+            os.chdir("path_To_Frag")
+        for bin_filename in self.config.bin_filenames:
+            bin_file = os.path.join(self.config.bins_path, bin_filename)
+            bin_id, _ = os.path.splitext(bin_filename)
+            faa = os.path.join(self.config.reconstructions, bin_id)
+            if file_exists_and_nonzero(faa) is False:
+                print("Bin {bin_filename} already gene annotated.")
+                continue
+            fgs_params = [
+                "./FragGeneScan",
+                "-s",  bin_file,
+                " -o", faa,
+                "-w  1",
+                "-p", str(self.config.threads),
+                "-t complete"
+            ]
+            fgs_command = " ".join(fgs_params)
+            os.system(fgs_command)
+        os.chdir(cwd)
+
+
+# Seed complementarity related
 def run_phylomint(config):
     """
     Invoke PhyloMInt as edited from microbetag team to support parallel calculation of the seed and non seed sets
@@ -579,6 +777,7 @@ class export_seed_complementarities():
         self.module_seeds = os.path.join(self.seeds, "module_related_seeds.pckl")
         self.module_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
         self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
+        self.metanetx_compounds = config.metanetx_compounds
 
     def update(self):
         """
@@ -655,7 +854,6 @@ class export_seed_complementarities():
         with open(self.updated_non_seed_sets, "w") as f:
             json.dump(updated_nonSeeds, f)
 
-
     def module_related_seeds(self):
         """
         Get seed and non seed sets with terms related to KEGG MODULES.
@@ -724,7 +922,6 @@ class export_seed_complementarities():
         with open( self.module_non_seeds,"wb") as f:
             pickle.dump(df2, f)
 
-
     def export_seed_complements(self):
         """
         Export pairwise seed complmenents.
@@ -774,28 +971,64 @@ class export_seed_complementarities():
 
         del results
 
+    def map_carveme_seeds(self):
+        """
+        https://www.metanetx.org/mnxdoc/mnxref.html
+        map to modelseed and/or kegg..
+        [REMEMBER] MGG points to modelseed ids
+        We will map
+        """
+        with open(self.updated_seed_sets) as f:
+            updated_seeds = json.load(f)
+        with open(self.updated_non_seed_sets) as f:
+            updated_non_seeds = json.load(f)
+        bigg_seeds = os.path.join(self.seeds, "updatedBiggSeedsDic.json")
+        bigg_non_seeds = os.path.join(self.seeds, "updatedBiggNonSeedsDic.json")
 
-def ensure_flashweave_format(conf):
-    """
-    Build an OTU table that will be in a FlashWeave-based format.
-    """
+        shutil.move(self.updated_seed_sets, bigg_seeds)
+        shutil.move(self.updated_non_seed_sets, bigg_non_seeds)
 
-    flashweave_table = pd.read_csv(conf.abundance_table, sep="\t").iloc[:, :-1]
-    float_col = flashweave_table.select_dtypes(include=['float64'])
+        metanetx = pd.read_csv(self.metanetx_compounds, sep="\t", skiprows=353, header=None)
+        metanetx.columns = ["source", "id", "description"]
+        metanetx[['source_namespace', 'source_id']] = metanetx['source'].str.split(pat=':', n=1, expand=True)
+        metanetx.drop(columns=['source'], inplace=True)
+        metanetx = metanetx[metanetx['source_namespace'].isin(["bigg.metabolite", "seed.compound"])]
 
-    for col in float_col.columns.values:
-        flashweave_table[col] = flashweave_table[col].astype('int64')
+        metanetx_bigg_metabolite = metanetx[metanetx["source_namespace"] == "bigg.metabolite"]
+        metanetx_seed_compound = metanetx[metanetx["source_namespace"] == "seed.compound"]
+        merged_df = pd.merge(metanetx_bigg_metabolite, metanetx_seed_compound, on="id", how="left")
+        bigg2seed = merged_df.groupby("source_id_x")["source_id_y"].apply(list).to_dict()
 
-    flashweave_table.iloc[:, 0] = flashweave_table.iloc[:, 0].astype(str)
-    flashweave_table.to_csv(conf.flashweave_abd_table, sep='\t', index=False)
+        updated_seeds_biggIds, _ = process_seeds(updated_seeds, bigg2seed)
+        updated_non_seeds_biggIds, _ = process_seeds(updated_non_seeds, bigg2seed)
 
-    return 1
+        with open(self.updated_seed_sets, "w") as f:
+            json.dump(updated_seeds_biggIds, f)
+        with open(self.updated_non_seed_sets, "w") as f:
+            json.dump(updated_non_seeds_biggIds, f)
 
-# from modelseedpy import MSBuilder, MSGenome ; msgenome = MSGenome.from_fasta("bin_101.faa", split=' ') ; model = MSBuilder.build_metabolic_model(model_id = "bin45", genome = msgenome, index = "0", gapfill_model = True, gapfill_media = None, annotate_with_rast = True, allow_all_non_grp_reactions = True)
 
-
-
-
+def process_seeds(seeds_dict, bigg2seed):
+    updated_biggIds = {}
+    bigg_ids_not_mapped_to_seed = {}
+    for bin_id, seeds in seeds_dict.items():
+        updated_biggIds[bin_id] = []
+        for seed_id in seeds:
+            seed_id_part = "_".join(seed_id.split("_")[1:-1])
+            if seed_id_part not in bigg2seed:
+                print("not found:", seed_id)
+                bigg_ids_not_mapped_to_seed.setdefault(bin_id, []).append(seed_id)
+                continue
+            updated_biggIds[bin_id].append(bigg2seed[seed_id_part])
+        flat_list = [
+            "".join(["M_", item, "_c0"])
+            for sublist in updated_biggIds[bin_id]
+            if sublist
+            for item in sublist
+            if not pd.isna(item)
+        ]
+        updated_biggIds[bin_id] = flat_list
+    return updated_biggIds, bigg_ids_not_mapped_to_seed
 
 
 def load_seed_complement_files(path_to_kegg_seed_mappings):
@@ -861,6 +1094,8 @@ def build_url_with_seed_complements(seed_complements, nonseeds, kmap):
     return url
 
 
+
+# Annotated .cx network related
 def read_cyjson(filename, direction=False):
     """
     Function based on the corresponding of the manta library:

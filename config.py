@@ -1,6 +1,7 @@
 
 import os
 import pandas as pd
+import sys
 
 class Config:
     """
@@ -18,15 +19,23 @@ class Config:
         self.kegg_db_dir = os.path.join(self.cwd, "microbetagDB/ref-dbs/kofam_database/")
         self.threads = conf["threads"]["value"]
 
+        self.on_container = True if conf["on_container"]["value"] else False
         self.mount = "/data" if conf["on_container"]["value"] else self.io_path
         self.bins_path = os.path.join(self.mount, conf["bins_fasta"]["folderName"])
         self.abundance_table = os.path.join(self.mount, conf["abundance_table_file"]["fileName"])
         self.output_dir = os.path.join(self.mount, conf["output_directory"]["folderName"])
         self.network = os.path.join(self.mount, conf["edge_list"]["value"]) if conf["edge_list"]["value"] else None
-        self.metadata_file = os.path.join(self.mount, conf["metadata_file"]["fileName"]) if conf["metadata_file"]["fileName"] else "false"
+        self.metadata_file = os.path.join(self.mount, conf["metadata_file"]["fileName"]) if conf["metadata_file"]["fileName"] and os.path.exists(os.path.join(self.mount, conf["metadata_file"]["fileName"])) else None
         self.flashweave_abd_table = os.path.join(self.mount, "abd_table_for_flashweave.tsv")
 
         self.bin_filenames = os.listdir(self.bins_path)
+        # self.input_for_recon_type = conf["input_type_for_seed_complementarities"]["value"] if conf["input_type_for_seed_complementarities"]["value"] in conf["input_type_for_seed_complementarities"]["value_from"]  else print("helpp") ;  sys.exit(0)
+        input_value = conf["input_type_for_seed_complementarities"]["value"]
+        allowed_values = conf["input_type_for_seed_complementarities"]["value_from"]
+        self.input_for_recon_type = input_value if input_value in allowed_values else (print("Error: Input value is not among the allowed values:", allowed_values) or sys.exit(1))
+
+        self.users_models = True if conf["input_type_for_seed_complementarities"]["value"] == "models" else False
+        self.for_reconstructions = os.path.join(self.mount, conf["sequence_files_for_reconstructions"]["folderName"])
 
         # Check whethere bin names are the same in both abundance and edgelist files
         bins = [ os.path.splitext(gbin)[0] for gbin in self.bin_filenames  ]
@@ -48,7 +57,7 @@ class Config:
                 raise ValueError(f"Bin names in the edgelist file do not match with those in the abundance table and/or in the bins.")
         else:
             self.flashweave_script = os.path.join(self.cwd, "microbetagDB/scripts/flashweave.jl")
-            self.network = os.path.join(self.mount, "network_output.edgelist")
+            self.network = os.path.join(self.output_dir, "network_output.edgelist")
             self.flashweave = True
 
         # Build output dir
@@ -60,41 +69,52 @@ class Config:
         self.prodigal = os.path.join(self.output_dir, "ORFs")
         os.makedirs(self.prodigal, exist_ok=True)
 
-        self.reconstructions = os.path.join(self.output_dir, "reconstructions")
-        self.genres = os.path.join(self.reconstructions, "GENREs")
-        os.makedirs(self.reconstructions, exist_ok=True)
-        os.makedirs(self.genres, exist_ok=True)
-
         self.kegg_annotations = os.path.join(self.output_dir, "KEGG_annotations")
         self.kegg_pieces_dir = os.path.join(self.kegg_annotations, 'hmmout')
         os.makedirs(self.kegg_annotations, exist_ok=True)
         os.makedirs(self.kegg_pieces_dir, exist_ok=True)
 
-        self.seeds = os.path.join(self.output_dir, "seeds")
+
+        self.reconstructions = os.path.join(self.output_dir, "reconstructions")
+        self.genres = os.path.join(self.reconstructions, "GENREs")
+        os.makedirs(self.reconstructions, exist_ok=True)
+        os.makedirs(self.genres, exist_ok=True)
+
+        self.gene_predictor = conf["gene_predictor"]["value"]
+        self.genre_reconstruction_with = conf["genre_reconstruction_with"]["value"]
+
+        self.seeds = os.path.join(self.output_dir, "seeds_complementarity")
         os.makedirs(self.seeds, exist_ok=True)
+        self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
+        self.module_related_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
+        self.phylomint_scores = os.path.join(self.seeds, "phylomint_scores.tsv")
+
+        self.pathway_complements_dir = os.path.join(self.output_dir, "pathway_complementarity")
+        os.makedirs(self.pathway_complements_dir, exist_ok=True)
+        self.alts_file = os.path.join(self.pathway_complements_dir, "alts.json")
+        self.compl_file = os.path.join(self.pathway_complements_dir, "pathCompls.json")
+        self.pathway_complement_percentage = conf["pathway_complement_percentage"]["value"] if conf["pathway_complement_percentage"]["value"] is not None else 0
 
         # ModelSEEDpy arguments
         self.gapfill_model = conf["gapfill_model"]["value"]
         self.gapfill_media = conf["gapfill_media"]["value"]
 
         # Flashweave arguments
-        # self.build_network = conf["build_network"]["value"]
         self.metadata = "false" if self.metadata_file == "false" else "true"
-        self.sensitive = "true" if conf["flashweave_sensitive"]["value"] else "false"
-        self.heterogeneous = "true" if conf["flashweave_heterogeneous"]["value"] else "false"
+        self.flashweave_args = conf["flashweave_args"]
 
         # Phenotrex
         self.genotypes_file = os.path.join(self.output_dir, "train.genotype")
         self.min_proba = conf["min_proba"]["value"]
 
-        self.phylomint_scores = os.path.join(self.seeds, "phylomint_scores.tsv")
-
+        # Mappings
         self.kegg_mappings = os.path.join(self.cwd, "microbetagDB/mappings/kegg_mappings/")
         self.ko_terms_per_module_definition = os.path.join(self.kegg_mappings, "kegg_terms_per_module.tsv")
         self.modules_definitions_json_map = os.path.join(self.kegg_mappings, "module_definition_map.json")
         self.kegg_modules_to_maps = os.path.join(self.kegg_mappings, "module_map_pairs.tsv")
         self.seed_ko_mo = os.path.join(self.kegg_mappings, "seedId_keggId_module.tsv")
         self.module_descriptions = os.path.join(self.kegg_mappings, "module_descriptions")
+        self.metanetx_compounds = os.path.join(self.cwd, "microbetagDB/mappings/MetaNetX/chem_xref.tsv")
 
         # FAPROTAX
         self.faprotax_txt = os.path.join(self.cwd, "microbetagDB/ref-dbs/FAPROTAX_1.2.7/FAPROTAX.txt")
@@ -105,18 +125,17 @@ class Config:
         os.makedirs(self.faprotax_output_dir, exist_ok=True)
         os.makedirs(self.faprotax_sub_tables, exist_ok=True)
 
-        self.alts_file = os.path.join(self.output_dir, "alts.json")
-        self.compl_file = os.path.join(self.output_dir, "pathCompls.json")
-        self.pathway_complement_percentage = conf["pathway_complement_percentage"]["value"] if conf["pathway_complement_percentage"]["value"] is not None else 0
 
-        self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
-        self.module_related_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
+
+
+
 
         self.network_clustering = conf["network_clustering"]["value"] if conf["network_clustering"]["value"] else False
 
         self.max_scratch_alt = conf["max_length_for_complement_from_scratch"]["value"] if conf["max_length_for_complement_from_scratch"]["value"] else 1
 
         self.microbetag_annotated_network_file = os.path.join(self.output_dir, "microbetag_annotated_network.cx")
+
 
         # ==========
         # Init torch

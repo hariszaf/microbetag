@@ -22,6 +22,7 @@ import subprocess
 from utils import *
 from config import Config
 from build_cx_annotated_graph import *
+from julia.api import Julia
 
 config_file = sys.argv[1]
 
@@ -32,8 +33,42 @@ if config.bins_path is None:
     raise ValueError
 
 # ----------------
+# Build network if not available
+# ----------------
+if not os.path.exists(config.network) or os.path.getsize(config.network) == 0:
+    print("\n >> NETWORK INFERENCE WITH FLASHWEAVE \n")
+    ensure_flashweave_format(conf=config)
+    pair_args = set()
+    for arg, values in config.flashweave_args.items():
+        if values["required"]:
+            if isinstance(values["value"], bool):
+                pair_args.add( ( arg, str(values["value"]).lower()) )
+            else:
+                print(f'You need to provide values for "{arg}" argument of FlashWeave.') ; sys.exit(0)
+        else:
+            if values["value"] is not None:
+                if values["type"] == "Bool":
+                    pair_args.add( (arg, str(values["value"]).lower()) )
+                else:
+                    pair_args.add( (arg, values["value"]) )
+
+    pair_args.add(("transposed", "true"))
+    learn_in = ",".join(f"{arg[0]}={arg[1]}" for arg in pair_args)
+
+    jl = Julia(compiled_modules=False)
+    jl.using("FlashWeave")
+    if config.metadata_file:
+        jl.eval(f'save_network("{config.network}", "{config.metadata_file}", \
+            learn_network("{config.flashweave_abd_table}", {learn_in}))')
+    else:
+        jl.eval(f'save_network("{config.network}", learn_network("{config.flashweave_abd_table}", {learn_in}))')
+
+    ensure_same_namespace_after_fw(config)
+
+# ----------------
 # FAPROTAX
 # ----------------
+print("\n >> LITERATURE ANNOTATION WITH FAPROTAX  \n")
 faprotax_params = [
     "python3", config.faprotax_script,
     "-i", config.abundance_table,
@@ -45,7 +80,6 @@ faprotax_params = [
     "--force",
     "-s", config.faprotax_sub_tables,
 ]
-
 faprotax_command = " ".join(faprotax_params)
 process = subprocess.Popen(faprotax_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 stdout, stderr = process.communicate()
@@ -53,7 +87,7 @@ stdout, stderr = process.communicate()
 # ----------------
 # phen annotations
 # ----------------
-print("\n PREDICTING PHENOTYPIC TRAITS \n")
+print("\n >> PREDICTING PHENOTYPIC TRAITS \n")
 suffixes = [".fa", ".fasta", ".gz"]
 bin_files = get_files_with_suffixes(config.bins_path, suffixes)
 bin_files_in_a_row = " ".join(bin_files)
@@ -72,13 +106,10 @@ compute_genotype_params = [ "phenotrex",
 compute_genotype_command = " ".join(compute_genotype_params)
 
 if not os.path.exists(config.genotypes_file):
-    print("Phenotrex genotype for the first time.")
     if os.system(compute_genotype_command) != 0:
         print("Try phenotrex genotype for the second time.")
         if os.system(compute_genotype_command) != 0:
             raise ValueError
-else:
-    print("Genotypes already computed.")
 
 # Get predictions
 folder_path = "microbetagDB/ref-dbs/phenDB/classes/"
@@ -109,37 +140,38 @@ for model in phen_models:
             raise ValueError
 
 # ----------------
-# prodigal - using diting interface
+# prodigal - using DiTing interface
 # ----------------
-print("\n PREDICTING ORFs \n")
+print("\n >> PREDICTING ORFs \n")
 for bin_fa in bin_files:
     bin_filename = os.path.basename(bin_fa)
     bin_id, extension = os.path.splitext(bin_filename)
     run_prodigal(bin_fa, bin_id, config.prodigal)
 
 # ----------------
-# KEGG annotation - using diting interface
+# KEGG annotation - using DiTing interface
 # ----------------
-print("\n KEGG ANNOTATION \n")
+print("\n >> KEGG ANNOTATION OF THE PRODIGAL ORFs \n")
 ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
 ko_dic = ko_list_parser(ko_list)
 
-for bn in config.bin_filenames:
-    bin_id, extension = os.path.splitext(bn)
-    faa = os.path.join(config.prodigal, bin_id + '.faa')
-    kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
-
 ko_merged_tab = os.path.join(config.kegg_annotations, 'ko_merged.txt')
+if not os.path.exists(ko_merged_tab):
+    for bn in config.bin_filenames:
+        bin_id, extension = os.path.splitext(bn)
+        faa = os.path.join(config.prodigal, bin_id + '.faa')
+        kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
+
 bins_kos, pivot_df = merge_ko(config.kegg_pieces_dir, ko_merged_tab)
 
 # ----------------
 # Extract pathway complementarities
 # ----------------
-print("Exporting path complements....")
+print("\n>> GET PATHWAY COMPLEMENTS ")
 bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
     config,
     pivot_df
-    )
+)
 
 if not os.path.exists(config.alts_file):
     with open(config.alts_file, "w") as file:
@@ -152,24 +184,54 @@ if not os.path.exists(config.compl_file):
 # ----------------
 # Build GENREs
 # ----------------
-print("\n BUILDING RECONSTRUCTIONS \n")
-build_genres = build_genres(config)
-build_genres.rast_annotate_genomes()
-build_genres.modelseed_reconstructions()
+print("\n >> GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS \n")
+
+if config.users_models is False:
+
+    build_genres = build_genres(config)
+
+    # Annotate step
+    if config.input_for_recon_type == "bins_fasta":
+
+        if config.genre_reconstruction_with == "modelseedpy":
+            build_genres.rast_annotate_genomes()
+        elif config.gene_predictor == "prodigal":
+            print("DiTing .faa files will be used")  # go to the .faa case
+        elif config.gene_predictor == "fragGeneScan":
+            print("Get annotations with FragGeneScan.")
+            build_genres.fgs_annotate_genomes()
+
+    elif config.input_for_recon_type == "coding_regions":
+        print("CarveMe will be used with the users .ffn-like files.")
+
+    else:
+        print(f"The combination of gene_predictor: {config.gene_predictor} \
+            \nand genre_reconstruction_with: {config.genre_reconstruction_with}, are not supported")
+
+    # Reconstruct step
+    if config.genre_reconstruction_with == "modelseedpy":
+        build_genres.modelseed_reconstructions()
+    elif config.genre_reconstruction_with == "carveme":
+        build_genres.carve_reconstructions()
+
+else:
+    print("User models to be used for the seed complementarity step.")
+
 
 # ----------------
 # Phylomint
 # ----------------
-print("\n COMPUTING SEED SETS AND SCORES \n")
+print("\n >> COMPUTING SEED SETS AND SCORES \n")
 if not os.path.exists(config.phylomint_scores):
     run_phylomint(config)
 else:
     print("Seed scores already computed.")
 
+
 # ----------------
 # Export seed complementarities
 # ----------------
-print("\n EXORTING SEED COMPLEMENTS \n")
+print("\n >> EXPORTING SEED COMPLEMENTS \n")
 seed_complements = export_seed_complementarities(config)
 
 """
@@ -182,6 +244,11 @@ if not os.path.exists(seed_complements.updated_seed_sets):
 else:
     print("Seed sets already updated.")
 
+if config.genre_reconstruction_with == "carveme":
+    print("We will map the BIGG compounds to ModelSEED ones.\
+          \nIn the future, we will map BiGG ids to KEGG so we do not have to go through ModelSEED in this scenario.")
+    seed_complements.map_carveme_seeds()
+
 if not os.path.exists(seed_complements.module_seeds):
     seed_complements.module_related_seeds()
 else:
@@ -192,36 +259,11 @@ if not os.path.exists(seed_complements.seed_complements):
 else:
     print("Seed complements already exported.")
 
-# ----------------
-# Build network if not available
-# ----------------
-if config.network is None:
-    ensure_flashweave_format(conf=config)
-    flashweave_params = [
-        "julia",
-        config.flashweave_script,
-        config.mount,
-        config.flashweave_abd_table,
-        config.sensitive,
-        config.heterogeneous,
-        config.metadata,
-        config.metadata_file
-    ]
-    flashweave_command = " ".join(flashweave_params)
-    print("Run FlashWeave")
-    if os.system(flashweave_command) != 0:
-        e = """ \
-            FlashWeave failed.
-            Please check on the content of your abundance table and the format of your metadata file if one provided.
-            We suggest you use FlashWeave or any other software to get the network and then perform microbetag providing the network returned.
-            You may find an implementation of FlashWeave in a Docker image in microbetag's preprocessing image:
-            https://hub.docker.com/r/hariszaf/microbetag_prep
-        """
-        raise ValueError(e)
 
 # ----------------
 # Annotate network in .cx format
 # ----------------
+print("\n >> ANNOTATE NETWORK \n")
 annotated_network = build_cx_annotated_graph(config)
 with open(config.microbetag_annotated_network_file, "w") as f:
         annotated_network2file = convert_to_json_serializable(annotated_network)
