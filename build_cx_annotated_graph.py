@@ -156,31 +156,31 @@ def build_cx_annotated_graph(conf):
         cyTableColumns.append(edge_col)
 
     """SEED complements"""
+    if conf.seed_complementarity:
+        kmap = load_seed_complement_files(conf.kegg_mappings)
+        with open(conf.module_related_non_seeds, "rb") as f:
+            non_seed_sets = pickle.load(f)
 
-    kmap = load_seed_complement_files(conf.kegg_mappings)
-    with open(conf.module_related_non_seeds, "rb") as f:
-        non_seed_sets = pickle.load(f)
+        with open(conf.seed_complements, "rb") as f:
+            seed_complements = pickle.load(f)
+        seed_complements_dict = seed_complements.to_dict(orient="index")
 
-    with open(conf.seed_complements, "rb") as f:
-        seed_complements = pickle.load(f)
-    seed_complements_dict = seed_complements.to_dict(orient="index")
+        for beneficiary, donors in seed_complements_dict.items():
+            for donor, complements in donors.items():
+                if len(complements) > 0:
+                    cyTableColumns.append(
+                        {"applies_to": "edge_table",
+                            "n": "".join(["seedCompl::", beneficiary, ":", donor]),
+                            "d": "list_of_string"}
+                    )
 
-    for beneficiary, donors in seed_complements_dict.items():
-        for donor, complements in donors.items():
-            if len(complements) > 0:
-                cyTableColumns.append(
-                    {"applies_to": "edge_table",
-                        "n": "".join(["seedCompl::", beneficiary, ":", donor]),
-                        "d": "list_of_string"}
-                )
-
-    """SEED scores"""
-    cyTableColumns.extend([
-        {"applies_to": "edge_table", "n": "::".join(["seed", "competition"]), "d": "double"},
-        {"applies_to": "edge_table", "n": "::".join(["seed", "cooperation"]), "d": "double"}
-    ])
-    seed_scores =pd.read_csv(conf.phylomint_scores, sep="\t", header=None, skiprows=1)
-    seed_scores.columns = ["A", "B", "Competition", "Complementarity"]
+        """SEED scores"""
+        cyTableColumns.extend([
+            {"applies_to": "edge_table", "n": "::".join(["seed", "competition"]), "d": "double"},
+            {"applies_to": "edge_table", "n": "::".join(["seed", "cooperation"]), "d": "double"}
+        ])
+        seed_scores =pd.read_csv(conf.phylomint_scores, sep="\t", header=None, skiprows=1)
+        seed_scores.columns = ["A", "B", "Competition", "Complementarity"]
 
     """MANTA CLUSTERS"""
     if conf.network_clustering:
@@ -311,11 +311,14 @@ def build_cx_annotated_graph(conf):
         # Path complements A -> B
         check1 = add_edge_pathway_complements(id_a, id_b, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
 
-        # Seed complements A -> B
-        check2 = add_edge_seed_complements(id_a, id_b, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+        check2 = False
+        if conf.seed_complementarity:
 
-        # Seed scores A -> B
-        add_seed_edge_attributes(id_a, id_b, seed_scores, edgeAttributes, edge_counter)
+            # Seed complements A -> B
+            check2 = add_edge_seed_complements(id_a, id_b, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+
+            # Seed scores A -> B
+            add_seed_edge_attributes(id_a, id_b, seed_scores, edgeAttributes, edge_counter)
 
         if check1 or check2:
             edge_counter += 1
@@ -328,11 +331,14 @@ def build_cx_annotated_graph(conf):
         # Path complements B -> A
         check1 = add_edge_pathway_complements(id_b, id_a, complements_dict_ext, edges, edgeAttributes, pot_edge, edge_counter)
 
-        # Seed complements B -> A
-        check2 = add_edge_seed_complements(id_b, id_a, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+        check2 = False
+        if conf.seed_complementarity:
 
-        # Seed scores B -> A
-        add_seed_edge_attributes(id_b, id_a, seed_scores, edgeAttributes, edge_counter)
+            # Seed complements B -> A
+            check2 = add_edge_seed_complements(id_b, id_a, seed_complements_dict, edges, edgeAttributes, pot_edge, edge_counter, kmap, non_seed_sets, seed_complements)
+
+            # Seed scores B -> A
+            add_seed_edge_attributes(id_b, id_a, seed_scores, edgeAttributes, edge_counter)
 
         if check1 or check2:
             edge_counter += 1

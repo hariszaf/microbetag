@@ -570,10 +570,16 @@ class build_genres():
         [NOTE] Not to be used for now as the RAST server seems not that stable to have several queries..
         """
         # Make sure of the scikit version being used
-        faa_files = [file
-                     for file in os.listdir(self.config.reconstructions)
-                     if file.endswith(".faa")
-                    ]
+        if self.config.input_type_for_seed_complementarities == "proteins_faa":
+            faa_files = [
+                os.path.join(self.config.for_reconstructions, file)
+                for file in self.config.for_reconstructions
+            ]
+        else:
+            faa_files = [file
+                        for file in os.listdir(self.config.reconstructions)
+                        if file.endswith(".faa")
+                        ]
         if get_library_version("scikit-learn") != "0.24.2":
             os.system("python3 -m pip install scikit-learn==0.24.2")
         for faa_file in faa_files:
@@ -620,63 +626,6 @@ class build_genres():
         Reconstruct a GENRE using CarveMe and a .faa as input.
         You can get such a file after running RAST annotation or after any gene prediction tool such as Prodigal, FragenScan etc.
         """
-        # if self.config.input_for_recon_type == "bins_fasta":
-        #     if self.config.gene_predictor == "prodigal":
-        #         faa_files = [
-        #             os.path.join(self.config.prodigal, file)
-        #             for file in os.listdir(self.config.prodigal)
-        #             if file.endswith("faa")
-        #         ]
-        #     elif self.config.gene_predictor == "fragGeneScan":
-        #         faa_files = [
-        #             os.path.join(self.config.reconstructions, file)
-        #             for file in os.listdir(self.config.reconstructions)
-        #             if file.endswith("faa")
-        #         ]
-        #     else:
-        #         print("CarveMe is currently ") ; sys.exit(0)
-
-        #     for faa in faa_files:
-        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
-        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]))
-        #         carve_params = [
-        #             "carve", "--solver", "gurobi", "-o", xml, faa
-        #         ]
-        #         carve_command = " ".join(carve_params)
-        #         print(carve_command)
-        #         os.system(carve_command)
-
-        # elif self.config.input_for_recon_type == "coding_regions":
-        #     faa_files = [
-        #         os.path.join(self.config.sequence_files_for_reconstructions, file)
-        #         for file in os.listdir(self.config.sequence_files_for_reconstructions)
-        #     ]
-        #     for faa in faa_files:
-        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
-        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]))
-        #         carve_params = [
-        #             "carve", "--dna", "--solver", "gurobi", "-o", xml, faa
-        #         ]
-        #         carve_command = " ".join(carve_params)
-        #         print(carve_command)
-        #         os.system(carve_command)
-
-        # elif self.config.input_for_recon_type == "proteins_faa":
-        #     faa_files = [
-        #         os.path.join(self.config.sequence_files_for_reconstructions, file)
-        #         for file in os.listdir(self.config.sequence_files_for_reconstructions)
-        #     ]
-        #     for faa in faa_files:
-        #         bin_id = os.path.splitext(os.path.basename(faa))[0]
-        #         xml = os.path.join(self.config.genres, ".".join([bin_id, "xml"]) )
-        #         carve_params = [
-        #             "carve", "--solver", "gurobi", "-o", xml, faa
-        #         ]
-        #         carve_command = " ".join(carve_params)
-        #         print(carve_command)
-        #         os.system(carve_command)
-
-
         if self.config.input_for_recon_type == "bins_fasta":
             gene_predictor_path = self.config.prodigal if self.config.gene_predictor == "prodigal" else self.config.reconstructions
             faa_files = [
@@ -688,8 +637,8 @@ class build_genres():
 
         elif self.config.input_for_recon_type in ["coding_regions", "proteins_faa"]:
             faa_files = [
-                os.path.join(self.config.sequence_files_for_reconstructions, file)
-                for file in os.listdir(self.config.sequence_files_for_reconstructions)
+                os.path.join(self.config.for_reconstructions, file)
+                for file in os.listdir(self.config.for_reconstructions)
             ]
             self.run_carve(faa_files, dna=self.config.input_for_recon_type == "coding_regions")
 
@@ -743,11 +692,23 @@ def run_phylomint(config):
     Invoke PhyloMInt as edited from microbetag team to support parallel calculation of the seed and non seed sets
     and save corresponding sets to json files.
     """
-    all_genres_files = [os.path.join(config.reconstructions, file) for file in os.listdir(config.reconstructions)]
-    genre_files = [file for file in all_genres_files if file.startswith(".xml")]
-    for file in genre_files:
-        dest_path = os.path.join(config.genres, os.path.basename(file))
-        shutil.move(file, dest_path)
+    if config.users_models:
+        genre_files = [
+        os.path.join(config.for_reconstructions, file)
+                for file in os.listdir(config.for_reconstructions)
+        ]
+        for file in genre_files:
+            dest_path = os.path.join(config.genres, os.path.basename(file))
+            shutil.copy(file, dest_path)
+    else:
+        all_files = [
+            os.path.join(config.reconstructions, file)
+            for file in os.listdir(config.reconstructions)
+        ]
+        genre_files = [file for file in all_files if file.startswith(".xml")]
+        for file in genre_files:
+            dest_path = os.path.join(config.genres, os.path.basename(file))
+            shutil.move(file, dest_path)
 
     phylomint_params = ["./PhyloMint/PhyloMInt",
                         "-d", config.genres,
@@ -756,7 +717,9 @@ def run_phylomint(config):
                         "--dics", "True",
                         "--threads", str(config.threads)
                         ]
+
     phylomint_cmd = " ".join(phylomint_params)
+
     os.system(phylomint_cmd)
 
 
@@ -778,6 +741,21 @@ class export_seed_complementarities():
         self.module_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
         self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
         self.metanetx_compounds = config.metanetx_compounds
+        self.genre_reconstruction_with = config.genre_reconstruction_with
+
+        self.ex_suffix = "_e" if self.genre_reconstruction_with == "carveme" else "_e0"
+        self.int_suffix = "_c" if self.genre_reconstruction_with == "carveme" else "_c0"
+        self.compound_prefix = "M_"
+
+        if config.users_models:
+            if len(os.listdir(config.genres)) != len(os.listdir(config.for_reconstructions)):
+                genre_files = [
+                os.path.join(config.for_reconstructions, file)
+                        for file in os.listdir(config.for_reconstructions)
+                ]
+                for file in genre_files:
+                    dest_path = os.path.join(config.genres, os.path.basename(file))
+                    shutil.copy(file, dest_path)
 
     def update(self):
         """
@@ -786,8 +764,6 @@ class export_seed_complementarities():
         - removing compounds from seed sets that are related to environmental metabolites that can be produced in several ways within the cell.
         - removing from non seed sets compounds that cannot be produced in any other way than from entering the cell from the environment.
         """
-        if os.path.exists(self.updated_seed_sets) and os.path.exists(self.updated_non_seed_sets):
-            return 1
 
         f = open(self.logfile , "w")
 
@@ -805,6 +781,7 @@ class export_seed_complementarities():
 
             s1 = time.time()
             counter = 0; counter2 = 0
+
             xml_path =  os.path.join(self.genres, xml)
 
             model_id, _ = os.path.splitext(xml)
@@ -814,19 +791,28 @@ class export_seed_complementarities():
             models_tmp_non_seeds = current_nonSeeds[model_id]
             models_tmp_seeds = current_seeds[model_id]
             models_seeds = []; models_nonSeeds = models_tmp_non_seeds.copy()
+
             for pot_seed in models_tmp_seeds:
                 check = True
-                if "_e0" in pot_seed:
+                if pot_seed.endswith(self.ex_suffix):
+
                     counter += 1
-                    cor_in_met = pot_seed[:-3] + "_c0"
+                    main_seed_id = pot_seed.rsplit(self.ex_suffix, 1)
+                    cor_in_met = main_seed_id[0] + self.int_suffix
+
                     if cor_in_met in models_tmp_seeds:
                         # Both _c0 and _e0 among the potential seed set.
                         models_seeds.append(pot_seed)
+
                     else:
-                        cor_in_met = cor_in_met[2:]
+
+                        if cor_in_met.startswith == self.compound_prefix:
+                            cor_in_met = cor_in_met[2:]
+
                         if cor_in_met not in model_mets:
                             # The _c0 case is not among the model's metabolites.
                             models_seeds.append(pot_seed)
+
                         else:
                             for rxn in model.metabolites.get_by_id(cor_in_met).reactions:
                                 if cor_in_met in [met.id for met in rxn.products]:
@@ -836,18 +822,23 @@ class export_seed_complementarities():
                                         break
                             if check:
                                 models_seeds.append(pot_seed)
-                                models_nonSeeds.remove("M_"+cor_in_met)
+                                models_nonSeeds.remove(self.compound_prefix + cor_in_met)  # [ATTENTION]!
                 else:
                     counter2 += 1
                     models_seeds.append(pot_seed)
 
             with open(self.logfile, "a") as f:
-                f.write(model_id + "\t" + str(counter) + "\t" + str(counter2) + "\t" + str(len(models_tmp_seeds)) + "\t" + str(len(models_seeds)) + "\t" + str(len(models_tmp_non_seeds)) + "\t" + str(len(models_nonSeeds)) + "\n")
+                f.write(model_id + "\t" + str(counter) + "\t" + str(counter2) + "\t" +
+                        str(len(models_tmp_seeds)) + "\t" + str(len(models_seeds)) + "\t" +
+                        str(len(models_tmp_non_seeds)) + "\t" + str(len(models_nonSeeds)) + "\n"
+                )
             updated_seeds[model_id] = models_seeds
             updated_nonSeeds[model_id] = models_nonSeeds
 
             s2 = time.time()
             print(str(s2-s1), "seconds for a .xml")
+
+        print("Update function is done and about to save updated json files.")
 
         with open(self.updated_seed_sets, "w") as f:
             json.dump(updated_seeds, f)
@@ -874,12 +865,14 @@ class export_seed_complementarities():
 
         for smodel_name in model_names:
             non_seedset = set( [x[2:] for x in non_seedset_file[smodel_name]] )
-            non_seedset_no_compartments = set( [x[2:-3]  for x in non_seedset_file[smodel_name] ])
+            non_seedset_no_compartments = set( [x[2:].rsplit("_", 1)[0] for x in non_seedset_file[smodel_name] ])
             non_seeds_of_interest = non_seedset_no_compartments.intersection(modelseed_compounds_of_interest)
             mean_non_seedset_length += len(non_seedset)
             patricId_to_non_seeds_of_interest[smodel_name] = non_seeds_of_interest
             mean_non_seedset_of_interest += len(non_seeds_of_interest)
+
         # --------------------------
+
         mean_seedset_length = 0
         mean_seedset_of_interest = 0
         seedset_file = json.load(open(self.updated_seed_sets, "r"))
@@ -888,23 +881,25 @@ class export_seed_complementarities():
         for model_name in model_names:
             number_of_models += 1
             # Get seeds with and without their compartment specific part
-            seedset = set([x[2:]  for x in seedset_file[model_name]])  # x[2:-3] seedset_file[model_name].keys()
-            seedset_no_compartments = set([x[2:-3]  for x in seedset_file[model_name]])  # seedset_file[model_name].keys()
+            seedset = set([x[2:]  for x in seedset_file[model_name]])
+            seedset_no_compartments = set([
+                x[2:].rsplit("_", 1)[0]  for x in seedset_file[model_name]
+            ])
             mean_seedset_length += len(seedset)
-            # Using the list with the compounds without their compartment, find which are potentlially of interest
+
             seeds_of_interest = seedset_no_compartments.intersection(modelseed_compounds_of_interest)
+
             seeds_of_interest_tmp = list(seeds_of_interest.copy())
             for pot_seed in seeds_of_interest:
                 if pot_seed in patricId_to_non_seeds_of_interest[model_name]:
                     seeds_of_interest_tmp.remove(pot_seed)
             patricId_to_seeds_of_interest[model_name] = set(seeds_of_interest_tmp)
             mean_seedset_of_interest += len(set(seeds_of_interest_tmp))
-        # --------------------------
-        print("mean length of initial seedset:", str(mean_seedset_length/number_of_models))
-        print("mean length of seedsets of interest:", str(mean_seedset_of_interest/number_of_models))
-        print("~~")
-        print("mean of initial length of non seed sets:", str(mean_non_seedset_length/number_of_models))
-        print("mean of non seed sets of interest:", str(mean_non_seedset_of_interest/number_of_models))
+
+        print("Mean length of initial seedset:", str(mean_seedset_length/number_of_models))
+        print("Mean length of seedsets of interest:", str(mean_seedset_of_interest/number_of_models))
+        print("Mean of initial length of non seed sets:", str(mean_non_seedset_length/number_of_models))
+        print("Mean of non seed sets of interest:", str(mean_non_seedset_of_interest/number_of_models))
 
         tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
         df1 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'SeedSet'])
@@ -999,8 +994,8 @@ class export_seed_complementarities():
         merged_df = pd.merge(metanetx_bigg_metabolite, metanetx_seed_compound, on="id", how="left")
         bigg2seed = merged_df.groupby("source_id_x")["source_id_y"].apply(list).to_dict()
 
-        updated_seeds_biggIds, _ = process_seeds(updated_seeds, bigg2seed)
-        updated_non_seeds_biggIds, _ = process_seeds(updated_non_seeds, bigg2seed)
+        updated_seeds_biggIds, _ = process_seeds(updated_seeds, bigg2seed, self.int_suffix)
+        updated_non_seeds_biggIds, _ = process_seeds(updated_non_seeds, bigg2seed, self.int_suffix)
 
         with open(self.updated_seed_sets, "w") as f:
             json.dump(updated_seeds_biggIds, f)
@@ -1008,7 +1003,7 @@ class export_seed_complementarities():
             json.dump(updated_non_seeds_biggIds, f)
 
 
-def process_seeds(seeds_dict, bigg2seed):
+def process_seeds(seeds_dict, bigg2seed, int_suffix):
     updated_biggIds = {}
     bigg_ids_not_mapped_to_seed = {}
     for bin_id, seeds in seeds_dict.items():
@@ -1021,7 +1016,7 @@ def process_seeds(seeds_dict, bigg2seed):
                 continue
             updated_biggIds[bin_id].append(bigg2seed[seed_id_part])
         flat_list = [
-            "".join(["M_", item, "_c0"])
+            "".join(["M_", item, int_suffix])
             for sublist in updated_biggIds[bin_id]
             if sublist
             for item in sublist
@@ -1092,7 +1087,6 @@ def build_url_with_seed_complements(seed_complements, nonseeds, kmap):
     for compound in seed_complements:
         url += compound + complemet_compounds_color
     return url
-
 
 
 # Annotated .cx network related

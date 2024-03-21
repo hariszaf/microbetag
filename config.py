@@ -2,6 +2,7 @@
 import os
 import pandas as pd
 import sys
+import cobra
 
 class Config:
     """
@@ -29,7 +30,14 @@ class Config:
         self.flashweave_abd_table = os.path.join(self.mount, "abd_table_for_flashweave.tsv")
 
         self.bin_filenames = os.listdir(self.bins_path)
-        # self.input_for_recon_type = conf["input_type_for_seed_complementarities"]["value"] if conf["input_type_for_seed_complementarities"]["value"] in conf["input_type_for_seed_complementarities"]["value_from"]  else print("helpp") ;  sys.exit(0)
+
+        self.input_for_recon_type = conf["input_type_for_seed_complementarities"]["value"] \
+            if conf["input_type_for_seed_complementarities"]["value"] in conf["input_type_for_seed_complementarities"]["value_from"] \
+            else sys.exit("Invalid input_type_for_seed_complementarities specified.")
+
+
+        self.seed_complementarity = conf["seed_complementarity"]["value"]
+
         input_value = conf["input_type_for_seed_complementarities"]["value"]
         allowed_values = conf["input_type_for_seed_complementarities"]["value_from"]
         self.input_for_recon_type = input_value if input_value in allowed_values else (print("Error: Input value is not among the allowed values:", allowed_values) or sys.exit(1))
@@ -126,10 +134,6 @@ class Config:
         os.makedirs(self.faprotax_sub_tables, exist_ok=True)
 
 
-
-
-
-
         self.network_clustering = conf["network_clustering"]["value"] if conf["network_clustering"]["value"] else False
 
         self.max_scratch_alt = conf["max_length_for_complement_from_scratch"]["value"] if conf["max_length_for_complement_from_scratch"]["value"] else 1
@@ -151,3 +155,19 @@ class Config:
         )
         model_dict = torch.load(weights_path, map_location=device)
 
+        # Tests
+        if self.users_models:
+            random_model = os.path.join(self.for_reconstructions, os.listdir(self.for_reconstructions)[0])
+            model = cobra.io.read_sbml_model(random_model)
+            if model.metabolites[0].id[:3] == "cpd" and self.genre_reconstruction_with == "carveme":
+                print("Based on the genre_reconstruction_with argument, your model are expected to have been built using the BiGG namespace\
+                    \nyet, they are using the ModelSEED one. Please make sure you set those arguments in line or use another set of models that use the BiGG namespace indeed.");sys.exit(0)
+            elif model.metabolites[0].id[:3] == "cpd" and self.genre_reconstruction_with != "modelseedpy":
+                self.genre_reconstruction_with = "modelseedpy"
+                print("WARNING. Var was reset")
+            elif model.metabolites[0].id[:3] != "cpd" and self.genre_reconstruction_with == "modelseedpy":
+                print("Based on the genre_reconstruction_with argument, your model are expected to have been built\
+                      \nusing ModelSEED but their namespace does not aggre. Make sure the genre_reconstruction_with variable aggree with your models format.");sys.exit(0)
+            elif model.metabolites[0].id[:3] != "cpd" and self.genre_reconstruction_with != "carveme":
+                print("WARNING! The models are assumed to use the BiGG namespace.")
+                self.genre_reconstruction_with = "carveme"

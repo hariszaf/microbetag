@@ -140,9 +140,10 @@ for model in phen_models:
             raise ValueError
 
 # ----------------
-# prodigal - using DiTing interface
+# Prodigal - using DiTing interface
 # ----------------
 print("\n >> PREDICTING ORFs \n")
+# [TODO] Avoid double - prodigal run if user can provide it
 for bin_fa in bin_files:
     bin_filename = os.path.basename(bin_fa)
     bin_id, extension = os.path.splitext(bin_filename)
@@ -184,9 +185,8 @@ if not os.path.exists(config.compl_file):
 # ----------------
 # Build GENREs
 # ----------------
-print("\n >> GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS \n")
-
-if config.users_models is False:
+if config.users_models is False and config.seed_complementarity:
+    print("\n >> GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS \n")
 
     build_genres = build_genres(config)
 
@@ -213,51 +213,51 @@ if config.users_models is False:
         build_genres.modelseed_reconstructions()
     elif config.genre_reconstruction_with == "carveme":
         build_genres.carve_reconstructions()
-
-else:
-    print("User models to be used for the seed complementarity step.")
+    else:
+        print("User models to be used for the seed complementarity step.")
 
 
 # ----------------
 # Phylomint
 # ----------------
-print("\n >> COMPUTING SEED SETS AND SCORES \n")
-if not os.path.exists(config.phylomint_scores):
-    run_phylomint(config)
-else:
-    print("Seed scores already computed.")
-
+if config.seed_complementarity:
+    print("\n >> COMPUTING SEED SETS AND SCORES \n")
+    if not os.path.exists(config.phylomint_scores):
+        run_phylomint(config)
+    else:
+        print("Seed scores already computed.")
 
 # ----------------
 # Export seed complementarities
 # ----------------
-print("\n >> EXPORTING SEED COMPLEMENTS \n")
-seed_complements = export_seed_complementarities(config)
+if config.seed_complementarity:
+    print("\n >> EXPORTING SEED COMPLEMENTS \n")
+    seed_complements = export_seed_complementarities(config)
+    """
+    [NOTE]:consider running again "seed scores" (PhyloMint) using update seed sets
+    in this case, we should also edit the ConfidenceScore dictionary
+    by removing seeds that were removed in the update()
+    """
+    if not os.path.exists(seed_complements.updated_seed_sets):
+        print("!!! Updating seed and non seed sets !!! ")
+        seed_complements.update()
+    else:
+        print("Seed sets already updated.")
 
-"""
-[NOTE]:consider running again "seed scores" (PhyloMint) using update seed sets
-in this case, we should also edit the ConfidenceScore dictionary
-by removing seeds that were removed in the update()
-"""
-if not os.path.exists(seed_complements.updated_seed_sets):
-    seed_complements.update()
-else:
-    print("Seed sets already updated.")
+    if config.genre_reconstruction_with == "carveme":
+        print("We will map the BIGG compounds to ModelSEED ones.\
+            \nIn the future, we will map BiGG ids to KEGG so we do not have to go through ModelSEED in this scenario.")
+        seed_complements.map_carveme_seeds()
 
-if config.genre_reconstruction_with == "carveme":
-    print("We will map the BIGG compounds to ModelSEED ones.\
-          \nIn the future, we will map BiGG ids to KEGG so we do not have to go through ModelSEED in this scenario.")
-    seed_complements.map_carveme_seeds()
+    if not os.path.exists(seed_complements.module_seeds):
+        seed_complements.module_related_seeds()
+    else:
+        print("Seed and non seed sets with compounds related to KEGG modules already retrieved.")
 
-if not os.path.exists(seed_complements.module_seeds):
-    seed_complements.module_related_seeds()
-else:
-    print("Seed and non seed sets with compounds related to KEGG modules already retrieved.")
-
-if not os.path.exists(seed_complements.seed_complements):
-    seed_complements.export_seed_complements()
-else:
-    print("Seed complements already exported.")
+    if not os.path.exists(seed_complements.seed_complements):
+        seed_complements.export_seed_complements()
+    else:
+        print("Seed complements already exported.")
 
 
 # ----------------
