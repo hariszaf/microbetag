@@ -148,7 +148,8 @@ def build_cx_annotated_graph(conf):
                     triplet = descrps[descrps["moduleId"] == module_id].values.tolist()[0]
                     complements_dict_ext[beneficiary_bin][potential_donor][len(complements_dict_ext[beneficiary_bin][potential_donor])] = triplet + compl_str
 
-    with open("pathway_complements_extended.json","w") as f:
+    extended_path_compl_json = os.path.join(conf.pathway_complements_dir, "pathway_complements_extended.json")
+    with open(extended_path_compl_json,"w") as f:
         json.dump(complements_dict_ext, f)
 
     for edge in unique_associated_pairs:

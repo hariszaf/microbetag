@@ -63,7 +63,7 @@ edge_list:
   type: String
 
 output_directory: 
-  folderName: microbetag_run_no_seed_step
+  folderName: microbetag_run_singularity
   description: Name of the output folder that will be built inside the io_path directory.
   required: True
   type: String
