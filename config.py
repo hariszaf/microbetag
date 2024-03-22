@@ -35,7 +35,6 @@ class Config:
             if conf["input_type_for_seed_complementarities"]["value"] in conf["input_type_for_seed_complementarities"]["value_from"] \
             else sys.exit("Invalid input_type_for_seed_complementarities specified.")
 
-
         self.seed_complementarity = conf["seed_complementarity"]["value"]
 
         input_value = conf["input_type_for_seed_complementarities"]["value"]
