@@ -23,8 +23,6 @@ ADD utils.py ./
 ADD microbetag.py  ./
 ADD config.py ./
 ADD build_cx_annotated_graph.py ./
+ADD LICENSE ./
 
 ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
-
-
-
