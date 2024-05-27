@@ -1,0 +1,1108 @@
+id,P-006,P-015,P-027,P-031,P-032,P-043,P-045,P-050,P-055,P-065,P-070,P-074,Genus
+ASV0001,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0002,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0003,619,387,300,616,451,385,406,576,679,3,671,5789,Bifidobacterium
+ASV0004,1201,959,804,73,1066,160,302,1006,1338,5,346,85,Lactococcus
+ASV0005,1339,1043,1371,1838,1482,1928,1611,1394,1757,13,2417,27582,Collinsella
+ASV0006,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0007,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0008,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0009,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0010,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0011,0,0,0,0,0,0,0,0,0,0,0,0,Olsenella
+ASV0012,403,225,344,456,216,380,332,385,495,1,516,5372,Flavonifractor
+ASV0013,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0014,1341,709,653,538,881,427,788,1057,1215,2,760,5985,Veillonella
+ASV0015,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0016,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0017,1640,761,1037,721,844,1430,810,1538,2078,9,1345,18656,Bacteroides
+ASV0018,0,0,0,0,0,0,0,0,0,0,0,0,Hungatella
+ASV0019,0,0,0,0,0,0,0,0,0,0,0,0,Murdochiella
+ASV0020,3,25,64,83,45,50,89,5,50,0,107,609,Escherichia-Shigella
+ASV0021,0,107,0,153,94,1,127,0,2,0,308,5,Clostridioides
+ASV0022,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0023,233,274,130,542,642,253,726,219,477,3,679,5090,Proteus
+ASV0024,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0025,29,51,58,216,38,77,151,14,126,1,119,1280,[Ruminococcus] gnavus group
+ASV0026,3,81,0,218,108,0,138,1,0,0,199,89,unknown
+ASV0027,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0028,540,84,11,174,290,11,435,357,216,1,210,549,Lacticaseibacillus
+ASV0029,6,12,2,6,2,3,16,7,9,0,19,12,Clostridium sensu stricto 1
+ASV0030,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0031,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV0032,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0033,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0034,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0035,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0036,1,0,0,0,0,0,0,1,0,0,0,2,Stenotrophomonas
+ASV0037,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0038,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0039,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0040,6,7,0,2,0,0,0,2,11,0,10,8,Lactobacillus
+ASV0041,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0042,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0043,294,126,138,109,208,72,170,262,255,0,199,1446,Veillonella
+ASV0044,16,4,13,19,11,61,10,11,10,0,18,483,Erysipelatoclostridium
+ASV0045,693,506,206,381,707,160,261,342,511,0,1581,4577,Acinetobacter
+ASV0046,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0047,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0048,20,8,17,67,15,11,19,23,34,0,31,212,Bifidobacterium
+ASV0049,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0050,5,2,206,29,0,205,150,12,12,0,4,367,Enterococcus
+ASV0051,4,0,1,0,0,0,0,1,0,0,0,0,Negativicoccus
+ASV0052,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV0053,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0054,0,0,0,0,0,0,0,0,0,0,0,0,Morganella
+ASV0055,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0056,0,72,0,40,57,0,20,1,0,0,327,0,Clostridium sensu stricto 1
+ASV0057,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0058,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0059,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0060,0,0,0,1,2,0,2,0,0,0,0,0,Veillonella
+ASV0061,0,0,36,0,0,188,0,2,13,0,0,1803,Pseudomonas
+ASV0062,0,0,0,0,0,0,0,0,0,0,0,0,Finegoldia
+ASV0063,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0064,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0065,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0066,0,41,0,39,84,0,47,0,1,0,103,3,Eubacterium
+ASV0067,0,0,0,0,0,0,0,0,0,0,0,0,Intestinibacter
+ASV0068,10,0,5,12,0,2,16,6,15,0,0,41,Clostridium sensu stricto 1
+ASV0069,0,62,0,101,55,0,100,0,0,0,146,735,Lachnoclostridium
+ASV0070,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK3A20 group
+ASV0071,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0072,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0073,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0074,0,0,0,0,0,0,0,0,0,0,0,0,Citrobacter
+ASV0075,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0076,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0077,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0078,0,0,0,0,0,0,0,0,0,0,0,0,Varibaculum
+ASV0079,51,4,27,12,4,37,6,33,56,0,32,778,Enterococcus
+ASV0080,0,0,0,0,0,0,0,0,0,0,0,0,Deinococcus
+ASV0081,0,0,0,0,0,0,0,0,0,0,0,0,Pseudoflavonifractor
+ASV0082,0,0,0,0,0,0,0,0,0,0,0,0,Bacillus
+ASV0083,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0084,1,34,0,62,34,0,49,0,0,0,67,455,Lachnoclostridium
+ASV0085,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0086,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV0087,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0088,0,0,0,0,0,0,0,0,0,0,0,0,Alloprevotella
+ASV0089,0,0,0,0,0,0,0,0,0,0,0,0,Weissella
+ASV0090,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0091,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0092,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0093,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0094,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0095,0,0,0,0,0,0,0,0,0,0,0,0,Paraprevotella
+ASV0096,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0097,0,0,0,0,0,0,0,0,0,0,0,6,unknown
+ASV0098,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0099,0,0,0,0,0,0,0,0,0,0,0,0,Staphylococcus
+ASV0100,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0101,0,0,0,0,0,0,0,0,0,0,0,0,Lactiplantibacillus
+ASV0102,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0103,0,2,0,29,14,0,32,0,0,0,15,0,Lysinibacillus
+ASV0104,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0105,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0106,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0107,39,17,26,14,13,12,14,40,57,0,32,335,Eggerthella
+ASV0108,0,0,0,0,0,0,0,0,0,0,0,0,Eggerthella
+ASV0109,0,0,0,0,0,0,0,0,0,0,0,0,Levilactobacillus
+ASV0110,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0111,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0112,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0113,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0114,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0115,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0116,0,0,0,0,0,0,0,0,0,0,0,0,Sellimonas
+ASV0117,0,0,0,0,0,0,0,0,0,0,2,19,Enterococcus
+ASV0118,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0119,3,4,0,8,3,3,11,0,17,0,0,46,[Ruminococcus] gnavus group
+ASV0120,0,0,0,0,0,0,0,0,0,0,0,0,Negativicoccus
+ASV0121,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0122,0,3,3,9,7,5,6,2,8,0,8,41,[Ruminococcus] gnavus group
+ASV0123,0,9,0,5,6,0,7,0,0,0,8,0,Lachnoclostridium
+ASV0124,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0125,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0126,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0127,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0128,0,0,16,0,0,55,0,0,0,0,0,626,Streptococcus
+ASV0129,0,0,0,0,0,0,0,0,0,0,0,0,Lactococcus
+ASV0130,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0131,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0132,0,0,0,0,0,0,0,0,0,0,0,0,Erysipelatoclostridium
+ASV0133,0,5,0,2,2,0,0,2,0,0,5,0,Propionibacterium
+ASV0134,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0135,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0136,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0137,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0138,2,0,0,1,0,0,0,1,3,0,0,5,Limosilactobacillus
+ASV0139,0,5,0,22,11,0,12,2,0,0,33,158,Lachnoclostridium
+ASV0140,0,0,0,0,0,0,2,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0141,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0142,5,10,14,34,5,12,33,0,16,0,28,286,[Ruminococcus] gnavus group
+ASV0143,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0144,0,0,0,0,0,0,0,0,0,0,0,0,Paraprevotella
+ASV0145,0,18,0,24,7,0,19,0,0,0,28,149,Lachnoclostridium
+ASV0146,23,9,19,19,11,16,15,27,21,0,18,337,Libanicoccus
+ASV0147,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0148,0,0,0,0,0,0,0,0,0,0,0,0,UCG-002
+ASV0149,0,9,0,24,15,15,19,0,21,0,25,288,Collinsella
+ASV0150,0,0,0,0,0,0,0,0,0,0,0,0,HT002
+ASV0151,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] gnavus group
+ASV0152,0,0,0,0,0,0,0,0,0,0,0,0,Ligilactobacillus
+ASV0153,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0154,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0155,0,0,0,0,0,0,0,0,0,0,0,0,Stenotrophomonas
+ASV0156,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0157,0,0,0,0,0,0,0,0,0,0,0,0,Staphylococcus
+ASV0158,0,0,43,0,0,360,3,1,1,0,0,4189,Acinetobacter
+ASV0159,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0160,3,0,0,3,0,2,3,0,3,0,1,18,Ligilactobacillus
+ASV0161,0,0,0,0,0,0,0,0,0,0,0,0,[Clostridium] innocuum group
+ASV0162,0,0,0,8,22,0,8,0,0,0,12,0,Eubacterium
+ASV0163,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0164,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0165,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0166,0,0,0,0,0,0,0,0,0,0,0,0,Fusicatenibacter
+ASV0167,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0168,0,0,0,0,0,0,0,0,0,0,0,0,Acidipropionibacterium
+ASV0169,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV0170,0,0,0,0,0,0,0,0,0,0,0,0,Oribacterium
+ASV0171,0,0,0,0,0,0,0,0,0,0,0,0,Proteus
+ASV0172,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0173,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0174,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0175,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0176,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV0177,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0178,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0179,0,0,0,0,0,0,0,0,0,0,0,0,Paraprevotella
+ASV0180,0,0,0,0,0,0,0,0,0,0,0,0,Rhodobacter
+ASV0181,0,0,0,0,0,0,0,0,0,0,0,0,Negativicoccus
+ASV0182,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0183,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0184,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0185,0,0,0,0,0,0,0,0,0,0,0,0,Acidaminococcus
+ASV0186,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-010
+ASV0187,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] siraeum group
+ASV0188,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0189,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0190,150,0,38,0,0,96,0,124,475,0,0,3,Delftia
+ASV0191,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae ND3007 group
+ASV0192,0,0,0,0,0,0,0,0,0,0,0,0,Stenotrophomonas
+ASV0193,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0194,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0195,0,0,4,0,0,81,0,0,5,0,0,66,Pseudomonas
+ASV0196,9,0,0,0,0,6,0,6,0,0,4,47,unknown
+ASV0197,0,0,0,0,0,0,0,0,0,0,0,0,Eggerthella
+ASV0198,0,0,0,0,0,0,0,0,4,0,0,0,Pseudomonas
+ASV0199,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0200,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0201,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0202,0,0,0,0,0,0,0,0,0,0,0,0,Coprococcus
+ASV0203,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0204,0,0,0,0,0,0,0,0,0,0,0,0,Lactiplantibacillus
+ASV0205,0,0,0,0,0,0,0,0,0,0,0,0,Lacticaseibacillus
+ASV0206,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0207,0,0,0,0,0,0,0,8,0,0,0,51,Bifidobacterium
+ASV0208,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0209,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0210,14,10,0,0,14,0,6,12,0,0,0,0,Lactococcus
+ASV0211,0,0,0,0,0,0,2,3,4,0,0,4,Limosilactobacillus
+ASV0212,0,0,0,0,0,0,0,0,0,0,0,0,Agathobacter
+ASV0213,0,9,0,0,0,0,5,0,0,0,41,0,Clostridium sensu stricto 1
+ASV0214,0,0,0,0,0,0,0,0,0,0,0,0,Ligilactobacillus
+ASV0215,0,0,0,0,0,0,0,0,0,0,0,28,Clostridium sensu stricto 1
+ASV0216,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0217,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 18
+ASV0218,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0219,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0220,0,0,0,0,0,0,3,1,0,0,0,0,Lachnoclostridium
+ASV0221,68,1,13,65,0,55,5,84,121,0,3,1730,Clostridium sensu stricto 1
+ASV0222,0,0,0,0,0,0,0,0,0,0,0,0,Solobacterium
+ASV0223,0,0,0,0,0,0,0,0,0,0,0,0,Colidextribacter
+ASV0224,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] torques group
+ASV0225,1,1,1,2,1,2,5,2,3,0,3,9,Senegalimassilia
+ASV0226,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0227,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0228,0,0,0,0,0,0,0,0,0,0,0,0,Leuconostoc
+ASV0229,0,0,0,0,0,0,0,0,0,0,0,0,Brevundimonas
+ASV0230,0,0,0,0,0,0,0,0,0,0,0,0,UCG-003
+ASV0231,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0232,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0233,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0234,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0235,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0236,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0237,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0238,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0239,0,0,0,0,0,0,0,0,0,0,0,0,Haemophilus
+ASV0240,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0241,0,0,0,0,0,0,0,0,0,0,0,0,Propionibacterium
+ASV0242,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0243,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0244,11,0,0,0,7,0,0,11,0,0,0,0,Veillonella
+ASV0245,0,0,60,11,0,45,29,0,6,0,1,71,Enterococcus
+ASV0246,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0247,0,0,0,0,0,0,0,0,0,0,0,0,Robinsoniella
+ASV0248,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0249,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0250,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 13
+ASV0251,0,0,0,0,0,0,0,0,0,0,3,2,Veillonella
+ASV0252,6,6,0,45,2,13,10,6,11,0,27,196,Ligilactobacillus
+ASV0253,0,0,0,0,0,0,0,0,0,0,0,0,Libanicoccus
+ASV0254,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0255,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0256,0,0,0,0,0,0,0,0,0,0,0,0,Catabacter
+ASV0257,18,6,0,6,11,13,8,20,26,0,12,198,Bacteroides
+ASV0258,0,0,0,0,0,0,0,0,0,0,0,0,Acidaminococcus
+ASV0259,0,0,0,0,0,0,0,0,0,0,0,0,Subdoligranulum
+ASV0260,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV0261,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0262,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0263,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0264,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0265,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0266,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0267,0,0,0,0,0,0,0,0,0,0,0,0,Olsenella
+ASV0268,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0269,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0270,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0271,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0272,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0273,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0274,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0275,0,0,0,0,0,0,0,0,0,0,0,0,Coprococcus
+ASV0276,0,0,0,0,0,0,0,0,0,0,0,0,Colidextribacter
+ASV0277,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0278,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0279,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0280,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0281,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0282,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0283,0,0,0,0,0,0,0,0,0,0,0,0,Catenibacterium
+ASV0284,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0285,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0286,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0287,0,0,0,0,0,0,0,0,0,0,0,0,Megamonas
+ASV0288,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0289,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0290,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0291,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0292,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0293,0,0,0,0,0,0,0,0,0,0,0,0,Fournierella
+ASV0294,0,0,0,0,0,0,0,0,0,0,0,0,Anaerostipes
+ASV0295,0,0,0,0,0,0,0,0,0,0,0,0,Olsenella
+ASV0296,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0297,0,0,0,0,0,0,0,0,0,0,0,0,Variovorax
+ASV0298,0,0,0,0,0,0,0,0,0,0,0,0,Gordonibacter
+ASV0299,0,0,0,0,0,0,0,0,0,0,0,0,Erysipelotrichaceae UCG-003
+ASV0300,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0301,0,0,0,0,0,0,0,0,0,0,0,0,Cetobacterium
+ASV0302,0,0,0,0,0,0,0,0,0,0,0,0,Romboutsia
+ASV0303,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0304,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0305,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0306,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0307,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0308,15,0,8,0,0,4,0,8,11,0,7,29,unknown
+ASV0309,0,0,0,0,0,0,0,0,0,0,0,0,Paraclostridium
+ASV0310,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] gauvreauii group
+ASV0311,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospira
+ASV0312,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0313,0,0,0,0,0,0,0,0,0,0,0,0,Intestinimonas
+ASV0314,0,0,0,0,0,0,0,0,0,0,0,0,Oscillibacter
+ASV0315,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0316,0,0,0,0,0,0,0,0,0,0,0,0,Mogibacterium
+ASV0317,0,0,0,0,0,0,0,0,0,0,0,0,Olsenella
+ASV0318,0,0,0,0,0,0,0,0,0,0,0,0,Slackia
+ASV0319,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0320,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0321,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0322,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0323,0,0,0,0,0,0,0,0,0,0,0,0,Allisonella
+ASV0324,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0325,0,0,0,0,0,0,0,0,0,0,0,0,Bilophila
+ASV0326,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0327,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0328,0,0,0,20,0,0,0,0,0,0,0,115,Ligilactobacillus
+ASV0329,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK4A136 group
+ASV0330,0,0,0,0,0,0,0,0,0,0,0,0,Holdemanella
+ASV0331,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0332,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0333,0,0,0,0,0,0,0,0,0,0,0,0,Limosilactobacillus
+ASV0334,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] eligens group
+ASV0335,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0336,0,0,0,0,0,0,0,0,0,0,0,0,Oribacterium
+ASV0337,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0338,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK4A136 group
+ASV0339,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0340,0,0,0,0,0,0,0,0,0,0,0,0,Methanobrevibacter
+ASV0341,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0342,0,0,0,0,0,0,0,0,0,0,0,0,UCG-002
+ASV0343,0,0,0,0,0,0,0,0,0,0,0,0,Hathewaya
+ASV0344,0,0,0,0,0,0,0,0,0,0,0,0,Incertae Sedis
+ASV0345,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0346,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0347,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] torques group
+ASV0348,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0349,0,0,0,0,0,0,0,0,0,0,0,0,Monoglobus
+ASV0350,0,0,0,0,0,0,0,0,0,0,0,0,Marvinbryantia
+ASV0351,0,0,0,0,0,0,0,0,0,0,0,0,Limosilactobacillus
+ASV0352,0,0,0,0,0,0,0,0,0,0,0,0,Alloprevotella
+ASV0353,0,0,0,0,0,0,0,0,0,0,0,0,Bilophila
+ASV0354,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0355,0,0,0,0,0,0,0,0,0,0,0,0,Anaerostipes
+ASV0356,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0357,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0358,0,0,0,0,0,0,0,4,0,0,0,30,Enterococcus
+ASV0359,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0360,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0361,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0362,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0363,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0364,8,2,4,0,1,0,0,4,3,0,4,6,Limosilactobacillus
+ASV0365,0,0,0,0,0,0,0,0,0,0,0,0,Solobacterium
+ASV0366,0,0,0,0,0,0,0,0,0,0,0,0,Prevotellaceae NK3B31 group
+ASV0367,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0368,0,0,0,0,0,0,0,0,0,0,0,0,Ligilactobacillus
+ASV0369,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0370,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0371,0,0,0,0,0,0,0,0,0,0,0,0,Prevotellaceae NK3B31 group
+ASV0372,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0373,0,0,0,0,0,0,0,0,0,0,0,0,Lactobacillus
+ASV0374,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0375,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0376,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0377,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0378,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0379,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0380,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0381,0,0,0,0,0,0,0,0,0,0,0,0,Stenotrophomonas
+ASV0382,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0383,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0384,0,0,0,0,0,0,0,0,0,0,0,0,Enterorhabdus
+ASV0385,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0386,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0387,0,0,0,0,0,0,0,0,0,0,0,0,Dysgonomonas
+ASV0388,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0389,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] torques group
+ASV0390,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0391,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0392,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0393,0,0,0,0,0,0,0,0,0,0,0,0,Chryseobacterium
+ASV0394,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0395,0,0,0,0,0,0,0,0,0,0,0,0,HT002
+ASV0396,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0397,0,0,12,0,0,46,0,0,5,0,0,557,Pseudomonas
+ASV0398,0,0,0,0,0,0,0,0,0,0,0,0,Leuconostoc
+ASV0399,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0400,0,0,0,0,0,0,0,0,0,0,0,0,Marvinbryantia
+ASV0401,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0402,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0403,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0404,0,0,0,0,0,0,0,0,0,0,0,0,Paeniclostridium
+ASV0405,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0406,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0407,0,0,0,0,0,0,0,0,0,0,0,0,Salmonella
+ASV0408,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0409,0,0,0,0,0,0,0,0,0,0,0,0,Erysipelotrichaceae UCG-003
+ASV0410,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0411,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0412,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0413,0,0,0,0,0,0,0,0,0,0,0,0,Mitsuokella
+ASV0414,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV0415,0,0,0,0,0,0,0,0,0,0,0,0,Peptococcus
+ASV0416,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0417,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0418,0,0,0,0,0,0,0,0,0,0,0,0,Slackia
+ASV0419,0,0,0,0,0,0,0,0,0,0,0,0,Ralstonia
+ASV0420,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0421,0,0,0,0,0,0,0,0,0,0,0,0,Rothia
+ASV0422,0,0,0,0,0,0,0,0,0,0,0,0,Terrisporobacter
+ASV0423,0,0,0,0,0,0,0,0,0,0,0,0,Sarcina
+ASV0424,0,0,0,0,0,0,0,0,0,0,0,0,Clostridioides
+ASV0425,0,0,0,0,0,0,0,0,0,0,0,0,HT002
+ASV0426,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0427,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0428,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospira
+ASV0429,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0430,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0431,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0432,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0433,0,0,0,0,0,0,0,0,0,0,0,0,Family XIII UCG-001
+ASV0434,0,0,0,0,0,0,0,0,0,0,0,0,UBA1819
+ASV0435,0,0,0,0,0,0,0,0,0,0,0,0,Providencia
+ASV0436,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0437,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0438,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0439,0,0,0,0,0,0,0,0,0,0,0,0,Intestinimonas
+ASV0440,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0441,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0442,0,0,0,0,0,0,0,0,0,0,0,0,Olsenella
+ASV0443,0,0,0,0,0,0,0,0,0,0,0,0,UBA1819
+ASV0444,0,0,0,0,0,0,0,0,0,0,0,0,Eubacterium
+ASV0445,0,0,0,0,0,0,0,0,0,0,0,156,Clostridium sensu stricto 1
+ASV0446,0,0,0,0,0,0,0,0,0,0,0,0,Anaerostipes
+ASV0447,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0448,0,0,0,0,0,0,0,0,0,0,0,0,Ruminococcus
+ASV0449,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] eligens group
+ASV0450,0,0,0,0,0,0,0,0,0,0,0,0,Ralstonia
+ASV0451,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0452,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0453,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0454,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0455,0,0,0,0,0,0,0,0,0,0,0,0,Ligilactobacillus
+ASV0456,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0457,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0458,0,0,0,0,0,0,0,0,0,0,0,0,Methanosphaera
+ASV0459,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0460,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0461,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0462,0,1,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV0463,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0464,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0465,0,0,0,0,0,0,0,0,0,0,0,0,Lactobacillus
+ASV0466,0,0,0,0,0,0,0,0,0,0,0,0,Pseudoramibacter
+ASV0467,0,0,0,0,0,0,0,0,0,0,0,0,Clostridioides
+ASV0468,0,0,0,0,0,0,0,0,0,0,0,0,Coprococcus
+ASV0469,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0470,0,0,0,0,0,0,0,0,0,0,0,0,Akkermansia
+ASV0471,0,0,0,0,0,0,0,0,0,0,0,0,UCG-003
+ASV0472,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0473,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0474,0,0,0,0,0,0,0,0,0,0,0,0,Clostridioides
+ASV0475,0,0,0,0,0,0,0,0,0,0,0,0,UCG-002
+ASV0476,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0477,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0478,0,0,0,0,0,0,0,0,0,0,0,0,Hungatella
+ASV0479,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0480,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0481,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0482,0,0,0,0,0,0,0,0,0,0,0,0,Anaerostipes
+ASV0483,0,0,0,0,0,0,0,0,0,0,0,0,Ruminococcus
+ASV0484,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0485,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0486,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] ventriosum group
+ASV0487,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0488,0,0,0,0,0,0,0,0,0,0,0,0,Rhodococcus
+ASV0489,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0490,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] ventriosum group
+ASV0491,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0492,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0493,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0494,0,0,0,0,0,0,0,0,0,0,0,0,Rikenellaceae RC9 gut group
+ASV0495,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0496,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0497,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0498,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0499,0,0,0,0,0,0,0,0,0,0,0,0,Haemophilus
+ASV0500,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0501,0,0,0,0,0,0,0,0,0,0,0,0,Enterorhabdus
+ASV0502,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] ruminantium group
+ASV0503,0,0,0,0,0,0,0,0,0,0,0,0,Tissierella
+ASV0504,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0505,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0506,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0507,0,0,0,0,0,0,0,0,0,0,0,0,Granulicatella
+ASV0508,0,0,0,0,0,0,0,0,0,0,0,0,Mitsuokella
+ASV0509,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0510,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae FCS020 group
+ASV0511,0,0,0,0,0,0,0,0,0,0,0,0,Phascolarctobacterium
+ASV0512,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0513,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0514,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0515,0,0,0,0,0,4,0,1,0,0,0,117,Ligilactobacillus
+ASV0516,0,0,0,0,0,0,0,0,0,0,0,0,Gemella
+ASV0517,0,0,0,0,0,0,0,0,0,0,0,0,Actinobacillus
+ASV0518,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0519,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0520,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0521,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0522,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0523,0,0,0,0,0,0,0,0,0,0,0,0,Agathobacter
+ASV0524,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae FCS020 group
+ASV0525,0,0,0,0,0,0,0,0,0,0,0,0,Aeromonas
+ASV0526,0,0,0,0,0,0,0,0,0,0,0,0,Lactococcus
+ASV0527,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0528,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0529,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0530,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0531,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0532,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0533,0,0,0,0,0,0,0,0,0,0,0,0,Holdemanella
+ASV0534,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0535,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0536,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0537,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0538,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0539,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0540,0,0,0,0,0,0,0,0,0,0,0,0,Pseudocitrobacter
+ASV0541,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0542,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0543,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0544,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0545,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0546,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0547,0,0,0,0,0,0,0,0,0,0,0,86,Enterococcus
+ASV0548,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0549,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0550,0,0,0,0,0,0,0,0,0,0,0,0,[Clostridium] innocuum group
+ASV0551,0,0,0,0,0,0,0,0,0,0,0,0,Subdoligranulum
+ASV0552,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0553,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 16
+ASV0554,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0555,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0556,0,0,0,0,0,0,0,0,0,0,0,0,Tyzzerella
+ASV0557,0,0,0,0,0,0,0,0,0,0,0,0,Family XIII AD3011 group
+ASV0558,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0559,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae ND3007 group
+ASV0560,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0561,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0562,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0563,0,0,0,0,0,0,0,0,0,0,0,0,HT002
+ASV0564,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0565,0,0,0,0,0,0,0,0,0,0,0,0,Mitsuokella
+ASV0566,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0567,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0568,0,0,0,0,0,0,0,0,0,0,0,0,Hathewaya
+ASV0569,0,0,0,0,0,0,0,0,0,0,0,0,Libanicoccus
+ASV0570,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0571,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0572,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0573,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0574,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0575,0,0,0,0,0,0,0,0,0,0,0,0,Senegalimassilia
+ASV0576,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0577,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0578,0,0,0,0,0,0,0,0,0,0,0,0,Fructobacillus
+ASV0579,0,0,0,0,0,0,0,0,0,0,0,0,Candidatus Methanomethylophilus
+ASV0580,0,0,0,0,0,0,0,0,0,0,0,0,Subdoligranulum
+ASV0581,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0582,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0583,0,0,0,0,0,0,0,0,0,0,0,0,Brucella
+ASV0584,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0585,0,0,0,0,0,0,0,0,0,0,0,0,[Clostridium] innocuum group
+ASV0586,0,0,0,0,0,0,0,0,0,0,0,0,Catenibacterium
+ASV0587,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0588,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0589,0,0,0,0,0,0,0,0,0,0,0,0,Neisseria
+ASV0590,0,0,0,0,0,0,0,0,0,0,0,0,Senegalimassilia
+ASV0591,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] gauvreauii group
+ASV0592,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0593,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0594,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0595,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0596,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0597,0,0,0,0,0,0,0,0,0,0,0,0,Turicibacter
+ASV0598,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] torques group
+ASV0599,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0600,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0601,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0602,0,0,0,0,0,0,0,0,0,0,0,0,Libanicoccus
+ASV0603,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0604,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0605,0,0,0,0,0,0,0,0,0,0,0,0,UCG-002
+ASV0606,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0607,0,0,0,0,0,0,0,0,0,0,0,0,CAG-56
+ASV0608,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0609,0,0,0,0,0,0,0,0,0,0,0,0,Oscillibacter
+ASV0610,0,0,0,0,0,0,0,0,0,0,0,0,[Ruminococcus] torques group
+ASV0611,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0612,0,0,0,0,0,0,0,0,0,0,0,0,Stenotrophomonas
+ASV0613,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_9
+ASV0614,0,0,0,0,0,0,0,0,0,0,0,0,Phascolarctobacterium
+ASV0615,0,0,0,0,0,0,0,0,0,0,0,0,Levilactobacillus
+ASV0616,0,0,0,0,0,0,0,0,0,0,0,0,Gordonibacter
+ASV0617,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0618,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0619,0,0,0,0,0,0,0,0,0,0,0,0,Tyzzerella
+ASV0620,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0621,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0622,0,0,0,0,0,0,0,0,0,0,0,0,Chungangia
+ASV0623,0,0,0,0,0,0,0,0,0,0,0,0,Burkholderia-Caballeronia-Paraburkholderia
+ASV0624,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0625,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0626,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0627,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0628,0,0,0,0,0,0,0,0,0,0,0,0,Eisenbergiella
+ASV0629,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0630,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0631,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0632,0,0,0,0,0,0,0,0,0,0,0,0,Raoultibacter
+ASV0633,0,0,0,0,0,0,0,0,0,0,0,0,Monoglobus
+ASV0634,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0635,0,0,0,0,0,0,0,0,0,0,0,0,UCG-002
+ASV0636,0,0,0,0,0,0,0,0,0,0,0,0,Eggerthella
+ASV0637,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0638,0,0,0,0,0,0,0,0,0,0,0,0,UCG-005
+ASV0639,0,0,0,0,0,0,0,0,0,0,0,0,Escherichia-Shigella
+ASV0640,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0641,0,0,0,0,0,0,0,0,0,0,0,0,Family XIII AD3011 group
+ASV0642,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0643,0,0,0,0,0,0,0,0,0,0,0,0,Eggerthella
+ASV0644,0,0,0,0,0,0,0,0,0,0,0,0,Anaeroglobus
+ASV0645,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0646,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0647,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0648,0,0,0,0,0,0,0,0,0,0,0,0,Peptostreptococcus
+ASV0649,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0650,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0651,0,0,0,0,0,0,0,0,0,0,0,0,Paenibacillus
+ASV0652,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0653,0,0,0,0,0,0,0,0,0,0,0,0,Erysipelotrichaceae UCG-006
+ASV0654,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0655,0,0,0,0,0,1,0,0,0,0,0,7,Pseudomonas
+ASV0656,0,0,0,0,0,0,0,0,0,0,0,0,Anaerostipes
+ASV0657,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0658,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0659,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0660,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK4A136 group
+ASV0661,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0662,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0663,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0664,0,0,0,0,0,0,0,0,0,0,0,0,UCG-005
+ASV0665,0,0,0,0,0,0,0,0,0,0,0,0,Bacillus
+ASV0666,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0667,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0668,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0669,0,0,0,0,0,0,0,0,0,0,0,0,Haemophilus
+ASV0670,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0671,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0672,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0673,0,0,0,0,0,0,0,0,0,0,0,0,Pseudomonas
+ASV0674,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0675,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0676,0,0,0,0,0,0,0,0,0,0,0,0,Megamonas
+ASV0677,0,0,0,0,0,0,0,0,0,0,0,0,Helicobacter
+ASV0678,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0679,0,0,0,0,0,0,0,0,0,0,0,0,Dorea
+ASV0680,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0681,0,0,0,0,0,0,0,0,0,0,0,0,Hathewaya
+ASV0682,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0683,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0684,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0685,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-010
+ASV0686,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0687,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0688,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0689,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0690,0,0,0,0,0,0,0,0,0,0,0,0,Tuzzerella
+ASV0691,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0692,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0693,0,0,0,0,0,0,0,0,0,0,0,0,Granulicatella
+ASV0694,0,0,0,0,0,0,0,0,0,0,0,0,Fenollaria
+ASV0695,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0696,0,0,0,0,0,0,0,0,0,0,0,0,Xanthobacter
+ASV0697,0,0,0,0,0,0,0,0,0,0,0,0,Anaerobacillus
+ASV0698,0,0,0,0,0,0,0,0,0,0,0,0,UCG-005
+ASV0699,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0700,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0701,0,0,0,0,0,0,0,0,0,0,0,0,Catenibacterium
+ASV0702,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0703,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] xylanophilum group
+ASV0704,0,0,0,0,0,0,0,0,0,0,0,0,Anaerobacillus
+ASV0705,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospira
+ASV0706,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0707,0,0,0,0,0,0,0,0,0,0,0,0,Monoglobus
+ASV0708,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0709,0,0,0,0,0,0,0,0,0,0,0,0,Dolosigranulum
+ASV0710,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0711,0,0,0,0,0,0,0,0,0,0,0,0,Roseburia
+ASV0712,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0713,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0714,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0715,0,0,0,0,0,0,0,0,0,0,0,0,Hymenobacter
+ASV0716,0,0,0,0,0,0,0,0,0,0,0,0,Incertae Sedis
+ASV0717,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0718,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0719,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0720,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0721,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospira
+ASV0722,0,0,0,0,0,0,0,0,0,0,0,0,Burkholderia-Caballeronia-Paraburkholderia
+ASV0723,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0724,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0725,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0726,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0727,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0728,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0729,0,0,0,0,0,0,0,0,0,0,0,0,Oscillospira
+ASV0730,0,0,0,0,0,0,0,0,0,0,0,0,Family XIII AD3011 group
+ASV0731,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0732,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0733,0,0,0,0,0,0,0,0,0,0,0,0,TM7x
+ASV0734,0,0,0,0,0,0,0,0,0,0,0,0,Granulicatella
+ASV0735,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0736,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0737,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0738,0,0,0,0,0,0,0,0,0,0,0,0,Oscillibacter
+ASV0739,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0740,0,0,0,0,0,0,0,0,0,0,0,0,Dysgonomonas
+ASV0741,0,0,0,0,0,0,0,0,0,0,0,0,Bacillus
+ASV0742,0,0,0,0,0,0,0,0,0,0,0,0,GCA-900066575
+ASV0743,0,0,0,0,0,0,0,0,0,0,0,0,Megasphaera
+ASV0744,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV0745,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0746,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0747,0,0,0,0,0,0,0,0,0,0,0,0,Howardella
+ASV0748,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0749,0,0,0,0,0,0,0,0,0,0,0,0,Limosilactobacillus
+ASV0750,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0751,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0752,0,0,0,0,0,0,0,0,0,0,0,0,Brachyspira
+ASV0753,0,0,0,0,0,0,0,0,0,0,0,0,Candidatus Soleaferrea
+ASV0754,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0755,0,0,0,0,0,0,0,0,0,0,0,0,Limosilactobacillus
+ASV0756,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0757,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0758,0,0,0,0,0,0,0,0,0,0,0,0,Romboutsia
+ASV0759,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0760,0,0,0,0,0,0,0,0,0,0,0,0,Agathobacter
+ASV0761,0,0,0,0,0,0,0,0,0,0,0,0,Methylobacterium-Methylorubrum
+ASV0762,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 13
+ASV0763,0,0,0,0,0,0,0,0,0,0,0,0,Weissella
+ASV0764,0,0,0,0,0,0,0,0,0,0,0,0,Marvinbryantia
+ASV0765,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0766,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0767,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0768,0,0,0,0,0,0,0,0,0,0,0,0,[Eubacterium] hallii group
+ASV0769,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0770,0,0,0,0,0,0,0,0,0,0,0,0,Leminorella
+ASV0771,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoanaerobaculum
+ASV0772,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0773,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0774,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-001
+ASV0775,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0776,0,0,0,0,0,0,0,0,0,0,0,0,Allisonella
+ASV0777,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0778,0,0,0,0,0,0,0,0,0,0,0,0,Lachnotalea
+ASV0779,0,0,0,0,0,0,0,0,0,0,0,0,Achromobacter
+ASV0780,0,0,0,0,0,0,0,0,0,0,0,0,[Clostridium] innocuum group
+ASV0781,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0782,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0783,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0784,0,0,0,0,0,0,0,0,0,0,0,0,Eggerthella
+ASV0785,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0786,0,0,0,0,0,0,0,0,0,0,0,0,Cutibacterium
+ASV0787,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0788,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0789,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0790,0,0,0,0,0,0,0,0,0,0,0,0,Blautia
+ASV0791,0,0,0,0,0,0,0,0,0,0,0,0,Butyricicoccus
+ASV0792,0,0,0,0,0,0,0,0,0,0,0,0,Enhydrobacter
+ASV0793,0,0,0,0,0,0,0,0,0,0,0,0,Anaerobacillus
+ASV0794,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae UCG-004
+ASV0795,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0796,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0797,0,0,0,0,0,0,0,0,0,0,0,0,Latilactobacillus
+ASV0798,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0799,0,0,0,0,0,0,0,0,0,0,0,0,Acidaminococcus
+ASV0800,0,0,0,0,0,0,0,0,0,0,0,0,UCG-009
+ASV0801,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0802,0,0,0,0,0,0,0,0,0,0,0,0,Pseudarthrobacter
+ASV0803,0,0,0,0,0,0,0,0,0,0,0,0,Phascolarctobacterium
+ASV0804,0,0,0,0,0,0,0,0,0,0,0,0,Parvimonas
+ASV0805,0,0,0,0,0,0,0,0,0,0,0,0,Odoribacter
+ASV0806,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0807,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0808,0,0,0,0,0,0,0,0,0,0,0,0,Sphingomonas
+ASV0809,0,0,0,0,0,0,0,0,0,0,0,0,Telmatospirillum
+ASV0810,0,0,0,0,0,0,0,0,0,0,0,0,Anaerobacillus
+ASV0811,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0812,0,0,0,0,0,0,0,0,0,0,0,0,Paenisporosarcina
+ASV0813,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0814,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0815,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0816,0,0,0,0,0,0,0,0,0,0,0,0,Pseudomonas
+ASV0817,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0818,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0819,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0820,0,0,0,0,0,0,0,0,0,0,0,0,Candidatus Soleaferrea
+ASV0821,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0822,0,0,0,0,0,0,0,0,0,0,0,0,Faecalibacterium
+ASV0823,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0824,0,0,0,0,0,0,0,0,0,0,0,0,Oscillibacter
+ASV0825,0,0,0,0,0,0,0,0,0,0,0,0,NK4A214 group
+ASV0826,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0827,0,0,0,0,0,0,0,0,0,0,0,0,Bradyrhizobium
+ASV0828,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0829,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0830,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0831,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK4A136 group
+ASV0832,0,0,0,0,0,0,0,0,0,0,0,0,UCG-003
+ASV0833,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0834,0,0,0,0,0,0,0,0,0,0,0,0,Subdoligranulum
+ASV0835,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0836,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0837,0,0,0,0,0,0,0,0,0,0,0,0,Pseudomonas
+ASV0838,0,0,0,0,0,0,0,0,0,0,0,0,[Bacteroides] pectinophilus group
+ASV0839,0,0,0,0,0,0,0,0,0,0,0,0,Leptotrichia
+ASV0840,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0841,0,0,0,0,0,0,0,0,0,0,0,0,Marvinbryantia
+ASV0842,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0843,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0844,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0845,0,0,0,0,0,0,0,0,0,0,0,0,Actinomyces
+ASV0846,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0847,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0848,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0849,0,0,0,0,0,0,0,0,0,0,0,0,UCG-004
+ASV0850,0,0,0,0,0,0,0,0,0,0,0,0,Alistipes
+ASV0851,0,0,0,0,0,0,0,0,0,0,0,0,Intestinimonas
+ASV0852,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0853,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0854,0,0,0,0,0,0,0,0,0,0,0,0,Cutibacterium
+ASV0855,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0856,0,0,0,0,0,0,0,0,0,0,0,0,Propionimicrobium
+ASV0857,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0858,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0859,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0860,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0861,0,0,0,0,0,0,0,0,0,0,0,0,Odoribacter
+ASV0862,0,0,0,0,0,0,0,0,0,0,0,0,Christensenellaceae R-7 group
+ASV0863,0,0,0,0,0,0,0,0,0,0,0,0,Rothia
+ASV0864,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0865,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NK4A136 group
+ASV0866,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0867,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV0868,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0869,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0870,0,0,0,0,0,0,0,0,0,0,0,0,Ruminococcus
+ASV0871,0,0,0,0,0,0,0,0,0,0,0,0,Akkermansia
+ASV0872,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0873,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0874,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0875,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0876,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0877,0,0,0,0,0,0,0,0,0,0,0,0,Gaiella
+ASV0878,0,0,0,0,0,0,0,0,0,0,0,0,Porphyromonas
+ASV0879,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0880,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0881,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0882,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0883,0,0,0,0,0,0,0,0,0,0,0,0,Barnesiella
+ASV0884,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0885,0,0,0,0,0,0,0,0,0,0,0,0,Lachnospiraceae NC2004 group
+ASV0886,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0887,0,0,0,0,0,0,0,0,0,0,0,0,Leuconostoc
+ASV0888,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0889,0,0,0,0,0,0,0,0,0,0,0,0,Micrococcus
+ASV0890,0,0,0,0,0,0,0,0,0,0,0,0,Desulfovibrio
+ASV0891,0,0,0,0,0,0,0,0,0,0,0,0,Peptococcus
+ASV0892,0,0,0,0,0,0,0,0,0,0,0,0,DNF00809
+ASV0893,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0894,0,0,0,0,0,0,0,0,0,0,0,0,Howardella
+ASV0895,0,0,0,0,0,0,0,0,0,0,0,0,Marvinbryantia
+ASV0896,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0897,0,0,0,0,0,0,0,0,0,0,0,0,Granulicatella
+ASV0898,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0899,0,0,0,0,0,0,0,0,0,0,0,0,Microbacterium
+ASV0900,0,0,0,0,0,0,0,0,0,0,0,0,Dongia
+ASV0901,0,0,0,0,0,0,0,0,0,0,0,0,1174-901-12
+ASV0902,0,0,0,0,0,0,0,0,0,0,0,0,Atopobium
+ASV0903,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0904,0,0,0,0,0,0,0,0,0,0,0,0,Burkholderia-Caballeronia-Paraburkholderia
+ASV0905,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0906,0,0,0,0,0,0,0,0,0,0,0,0,Novosphingobium
+ASV0907,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV0908,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV0909,0,0,0,0,0,0,0,0,0,0,0,0,Campylobacter
+ASV0910,0,0,0,0,0,0,0,0,0,0,0,0,Porphyromonas
+ASV0911,0,0,0,0,0,0,0,0,0,0,0,0,Negativicoccus
+ASV0912,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoanaerobaculum
+ASV0913,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0914,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0915,0,0,0,0,0,0,0,0,0,0,0,0,Victivallis
+ASV0916,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0917,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0918,0,0,0,0,0,0,0,0,0,0,0,0,UCG-005
+ASV0919,0,0,0,0,0,0,0,0,0,0,0,0,Holdemania
+ASV0920,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0921,0,0,0,0,0,0,0,0,0,0,0,0,Parvimonas
+ASV0922,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0923,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0924,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0925,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0926,0,0,0,0,0,0,0,0,0,0,0,1,Flavonifractor
+ASV0927,0,0,0,0,0,0,0,0,0,0,0,0,Lactobacillus
+ASV0928,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0929,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0930,0,0,0,0,0,0,0,0,0,0,0,0,Johnsonella
+ASV0931,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0932,0,0,0,0,0,0,0,0,0,0,0,0,Rikenella
+ASV0933,0,0,0,0,0,0,0,0,0,0,0,0,Moryella
+ASV0934,0,0,0,0,0,0,0,0,0,0,0,0,Kocuria
+ASV0935,0,0,0,0,0,0,0,0,0,0,0,0,Novosphingobium
+ASV0936,0,0,0,0,0,0,0,0,0,0,0,0,Curvibacter
+ASV0937,0,0,0,0,0,0,0,0,0,0,0,0,Family XIII AD3011 group
+ASV0938,0,0,0,0,0,0,0,0,0,0,0,0,Colidextribacter
+ASV0939,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0940,0,0,0,0,0,0,0,0,0,0,0,0,Pyramidobacter
+ASV0941,0,0,0,0,0,0,0,0,0,0,0,0,Akkermansia
+ASV0942,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0943,0,0,0,0,0,0,0,0,0,0,0,0,Hungatella
+ASV0944,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0945,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0946,0,0,0,0,0,0,0,0,0,0,0,0,Incertae Sedis
+ASV0947,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0948,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0949,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0950,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0951,0,0,0,0,0,0,0,0,0,0,0,0,Eisenbergiella
+ASV0952,0,0,0,0,0,0,0,0,0,0,0,0,Peptoniphilus
+ASV0953,0,0,0,0,0,0,0,0,0,0,0,0,Gordonibacter
+ASV0954,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0955,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0956,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0957,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0958,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0959,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0960,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0961,0,0,0,0,0,0,0,0,0,0,0,0,Fusobacterium
+ASV0962,0,0,0,0,0,0,0,0,0,0,0,0,Propioniciclava
+ASV0963,0,0,0,0,0,0,0,0,0,0,0,0,Altererythrobacter
+ASV0964,0,0,0,0,0,0,0,0,0,0,0,0,Slackia
+ASV0965,0,0,0,0,0,0,0,0,0,0,0,0,UCG-008
+ASV0966,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV0967,0,0,0,0,0,0,0,0,0,0,0,0,Finegoldia
+ASV0968,0,0,0,0,0,0,0,0,0,0,0,0,Clostridium sensu stricto 1
+ASV0969,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0970,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV0971,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0972,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0973,0,0,0,0,0,0,0,0,0,0,0,0,Lactiplantibacillus
+ASV0974,0,0,0,0,0,0,0,0,0,0,0,0,Sphingomonas
+ASV0975,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0976,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0977,0,0,0,0,0,0,0,0,0,0,0,0,Parabacteroides
+ASV0978,0,0,0,0,0,0,0,0,0,0,0,0,Acidipropionibacterium
+ASV0979,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0980,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV0981,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV0982,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0983,0,0,0,0,0,0,0,0,0,0,0,0,Sphingobacterium
+ASV0984,0,0,0,0,0,0,0,0,0,0,0,0,Bifidobacterium
+ASV0985,0,0,0,0,0,0,0,0,0,0,0,0,Prevotellaceae NK3B31 group
+ASV0986,0,0,0,0,0,0,0,0,0,0,0,0,Anaerococcus
+ASV0987,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0988,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0989,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella
+ASV0990,0,0,0,0,0,0,0,0,0,0,0,0,Rhodanobacter
+ASV0991,0,0,0,0,0,0,0,0,0,0,0,0,Synergistes
+ASV0992,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0993,0,0,0,0,0,0,0,0,0,0,0,0,Rikenella
+ASV0994,0,0,0,0,0,0,0,0,0,0,0,0,Prevotella_7
+ASV0995,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0996,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0997,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV0998,0,0,0,0,0,0,0,0,0,0,0,0,Ruminococcus
+ASV0999,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1000,0,0,0,0,0,0,0,0,0,0,0,0,Acinetobacter
+ASV1001,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1002,0,0,0,0,0,0,0,0,0,0,0,0,Halomonas
+ASV1003,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1004,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1005,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1006,0,0,0,0,0,0,0,0,0,0,0,0,Peptostreptococcus
+ASV1007,0,0,0,0,0,0,0,0,0,0,0,0,Dysgonomonas
+ASV1008,0,0,0,0,0,0,0,0,0,0,0,0,Sutterella
+ASV1009,0,0,0,0,0,0,0,0,0,2,0,0,Veillonella
+ASV1010,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1011,0,0,0,0,0,0,0,0,0,0,0,0,Lactobacillus
+ASV1012,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1013,0,0,0,0,0,0,0,0,0,0,0,0,Methylobacterium-Methylorubrum
+ASV1014,0,0,0,0,0,0,0,0,0,0,0,0,Catabacter
+ASV1015,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1016,0,0,0,0,0,0,0,0,0,0,0,0,Enterococcus
+ASV1017,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV1018,0,0,0,0,0,0,0,0,0,0,0,0,Corynebacterium
+ASV1019,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1020,0,0,0,0,0,0,0,0,0,0,0,0,Cosenzaea
+ASV1021,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1022,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1023,0,0,0,0,0,0,0,0,0,0,0,0,Asaccharospora
+ASV1024,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1025,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1026,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1027,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1028,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1029,0,0,0,0,0,0,0,0,0,0,0,0,Murdochiella
+ASV1030,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1031,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1032,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1033,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1034,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1035,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1036,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1037,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1038,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1039,0,0,0,0,0,0,0,0,0,0,0,0,Murdochiella
+ASV1040,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1041,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1042,0,0,0,0,0,0,0,0,0,0,0,0,Murdochiella
+ASV1043,0,0,0,0,0,0,0,0,0,0,0,0,Incertae Sedis
+ASV1044,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1045,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1046,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV1047,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1048,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1049,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1050,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1051,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV1052,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV1053,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1054,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1055,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1056,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1057,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV1058,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1059,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1060,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1061,0,0,0,0,0,0,0,0,0,0,0,0,Veillonella
+ASV1062,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1063,0,0,0,0,0,0,0,0,0,0,0,0,Streptococcus
+ASV1064,0,0,0,0,0,0,0,0,0,0,0,0,Bacteroides
+ASV1065,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1066,0,0,0,0,0,0,0,0,0,0,0,0,Asaccharospora
+ASV1067,0,0,0,0,0,0,0,0,0,0,0,0,Dialister
+ASV1068,0,0,0,0,0,0,0,0,0,0,0,0,E1B-B3-114
+ASV1069,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1070,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1071,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1072,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1073,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1074,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1075,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1076,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1077,0,0,0,0,0,0,0,0,0,0,0,0,Flavonifractor
+ASV1078,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1079,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1080,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1081,0,0,0,0,0,0,0,0,0,0,0,0,Cosenzaea
+ASV1082,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1083,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1084,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1085,0,0,0,0,0,0,0,0,0,0,0,0,Acidipropionibacterium
+ASV1086,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1087,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1088,0,0,0,0,0,0,0,0,0,0,0,0,Cosenzaea
+ASV1089,0,0,0,0,0,0,0,0,0,0,0,0,Cosenzaea
+ASV1090,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1091,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1092,0,0,0,0,0,0,0,0,0,0,0,0,Asaccharospora
+ASV1093,0,0,0,0,0,0,0,0,0,0,0,0,Collinsella
+ASV1094,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1095,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1096,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1097,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1098,0,0,0,0,0,0,0,0,0,0,0,0,Cosenzaea
+ASV1099,0,0,0,0,0,0,0,0,0,0,0,0,Flavonifractor
+ASV1100,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1101,0,0,0,0,0,0,0,0,0,0,0,0,Eubacterium
+ASV1102,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1103,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1104,0,0,0,0,0,0,0,0,0,0,0,0,Lachnoclostridium
+ASV1105,0,0,0,0,0,0,0,0,0,0,0,0,Stenotrophomonas
+ASV1106,0,0,0,0,0,0,0,0,0,0,0,0,unknown
+ASV1107,0,0,0,0,0,0,0,0,0,0,0,0,Lactococcus
