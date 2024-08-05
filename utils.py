@@ -8,6 +8,7 @@ import cobra
 import shutil
 import pickle
 import random
+import subprocess
 import itertools
 import pandas as pd
 import pkg_resources
@@ -607,7 +608,18 @@ class build_genres():
         [NOTE] We have observed that when MSGenome is initiated in the same function with the MSBuilder, they behave much better!
         """
         if counter >= 20:
-            os.execv(sys.executable, ['python'] + sys.argv)
+            # Run the script again with the given arguments
+            print("""\n\n
+                  ******  \n
+                  microbetag kept calling the recursive function for building modelseedpy GEM.
+                  This function tries to establish a connection with the RAST server that at the moment does not allow it.
+                  microbetag will exit and restart its execution with the exact same settings.
+                  Since previous steps are alredy complete, they will be skipped.
+            """)
+            script_path = "/microbetag/microbetag.py"
+            config_path = "/data/config.yml"
+            subprocess.run([sys.executable, script_path, config_path])
+
         counter += 1
         try:
             msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
