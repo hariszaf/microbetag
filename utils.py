@@ -570,10 +570,10 @@ class build_genres():
         [NOTE] Not to be used for now as the RAST server seems not that stable to have several queries..
         """
         # Make sure of the scikit version being used
-        if self.config.input_type_for_seed_complementarities == "proteins_faa":
+        if self.config.input_for_recon_type == "proteins_faa":
             faa_files = [
                 os.path.join(self.config.for_reconstructions, file)
-                for file in self.config.for_reconstructions
+                for file in os.listdir(self.config.for_reconstructions)
             ]
         else:
             faa_files = [file
@@ -590,23 +590,27 @@ class build_genres():
         Build a Genome Scale reconstruction using ModelSEEDpy and the BIN annotations
         """
         # ModelSEED using the default b.f and complete medium, gapfill with the default algo
-        model_id, _ = os.path.splitext(annotation_faa)
+        model_id, _ = os.path.splitext(annotation_faa.split("/")[-1])
         annotation_faa_path = os.path.join(self.config.reconstructions, annotation_faa)
         model_filename =  os.path.join(self.config.genres, "".join([model_id, ".xml"]))
         if os.path.exists(model_filename):
             return 1
         print("Model to be reconstructed:", model_id)
-        msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
-        model = self.recursive_build(model_id, msgenome)
+        model = self.recursive_build(model_id, annotation_faa_path)
         cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
 
-    def recursive_build(self, model_id, msgenome):
+    def recursive_build(self, model_id, annotation_faa_path, counter=0):
         """
         RAST server usually has issues that lead to fail attempts.
         This recursive function allows the build_metabolic_model() to be performed until the server responses.
+
+        [NOTE] We have observed that when MSGenome is initiated in the same function with the MSBuilder, they behave much better!
         """
+        if counter >= 20:
+            os.execv(sys.executable, ['python'] + sys.argv)
+        counter += 1
         try:
-            # model = MSBuilder.build_metabolic_model(model_id = "bin45", genome = msgenome, index = "0", gapfill_model = True, gapfill_media = None, annotate_with_rast = True, allow_all_non_grp_reactions = True)
+            msgenome = MSGenome.from_fasta(annotation_faa_path, split=' ')
             model = MSBuilder.build_metabolic_model(model_id = model_id,
                                                     genome = msgenome,
                                                     index = "0",
@@ -614,12 +618,12 @@ class build_genres():
                                                     gapfill_media = None,
                                                     annotate_with_rast = True,
                                                     allow_all_non_grp_reactions = True
-                    )
+            )
             return model
         except:
-            time.sleep(random.randint(20, 40))
+            time.sleep(random.randint(1, 20))
             print("Recursive run for model_id:", model_id)
-            return self.recursive_build(model_id, msgenome)
+            return self.recursive_build(model_id, annotation_faa_path, counter)
 
     def carve_reconstructions(self):
         """

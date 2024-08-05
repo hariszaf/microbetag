@@ -31,18 +31,22 @@ class Config:
 
         self.bin_filenames = os.listdir(self.bins_path)
 
-        self.input_for_recon_type = conf["input_type_for_seed_complementarities"]["value"] \
-            if conf["input_type_for_seed_complementarities"]["value"] in conf["input_type_for_seed_complementarities"]["value_from"] \
-            else sys.exit("Invalid input_type_for_seed_complementarities specified.")
-
-        self.seed_complementarity = conf["seed_complementarity"]["value"]
-
         input_value = conf["input_type_for_seed_complementarities"]["value"]
         allowed_values = conf["input_type_for_seed_complementarities"]["value_from"]
         self.input_for_recon_type = input_value if input_value in allowed_values else (print("Error: Input value is not among the allowed values:", allowed_values) or sys.exit(1))
 
+
         self.users_models = True if conf["input_type_for_seed_complementarities"]["value"] == "models" else False
-        self.for_reconstructions = os.path.join(self.mount, conf["sequence_files_for_reconstructions"]["folderName"])
+        self.seed_complementarity = conf["seed_complementarity"]["value"]
+
+        if self.input_for_recon_type == "bins_fasta":
+            self.for_reconstructions = self.bins_path
+        else:
+            try:
+                conf["sequence_files_for_reconstructions"]["folderName"]
+            except:
+                return ValueError(f"Please provide a type that makes sense.")
+            self.for_reconstructions = os.path.join(self.mount, conf["sequence_files_for_reconstructions"]["folderName"])
 
         # Check whethere bin names are the same in both abundance and edgelist files
         bins = [ os.path.splitext(gbin)[0] for gbin in self.bin_filenames  ]
@@ -138,7 +142,6 @@ class Config:
         self.max_scratch_alt = conf["max_length_for_complement_from_scratch"]["value"] if conf["max_length_for_complement_from_scratch"]["value"] else 1
 
         self.microbetag_annotated_network_file = os.path.join(self.output_dir, "microbetag_annotated_network.cx")
-
 
         # ==========
         # Init torch
