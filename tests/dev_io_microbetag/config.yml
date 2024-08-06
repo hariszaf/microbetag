@@ -102,7 +102,7 @@ gene_predictor:
   type: string
 
 genre_reconstruction_with:
-  value: carveme
+  value: modelseedpy
   value_from: 
     - modelseedpy
     - carveme
