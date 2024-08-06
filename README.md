@@ -1,4 +1,4 @@
-# microbetag
+# `microbetag` stand-alone version
 
 ## About
 
@@ -14,9 +14,9 @@ This stand-alone tool is distributed as a Docker and a Singularity image.
 
 ## Dependencies
 
-- [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html)/
-[Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux)
+- [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html) / [Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux)
 - kofam_database
+
 You can do this by running the following chunk of code:
 ```bash
 mkdir kofam_database &&\
@@ -60,7 +60,7 @@ Keep in mind that the seed complementarity step is the most challenging as it re
 most specifically metabolic Genome-Scale Network Reconstructions (GENREs), 
 to be built first.
 Therefore, this step is optional.
-microbetag supports two ways for GENREs reconstruction:
+`microbetag` supports two ways for GENREs reconstruction:
 
 - using [`modelseedpy`](https://github.com/ModelSEED/ModelSEEDpy), that is based on the [ModelSEED](https://modelseed.org) resource, and
 - using the [`carveme`](https://carveme.readthedocs.io/en/latest/) tool, that currently supports only the [BiGG](http://bigg.ucsd.edu) identifiers 

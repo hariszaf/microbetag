@@ -15,8 +15,43 @@ Author:
     Haris Zafeiropoulos
 
 """
+
+__version__ = "v1.0.2"
+
 import os
 import sys
+
+
+def print_help():
+    help_message = """
+    Usage: python microbetag.py <path_to_config_yml>
+
+    Other options:
+      h        Display this help message.
+      v        Display version.
+    """
+    print(help_message)
+
+def print_version():
+    print(__version__)
+
+def print_config_message():
+    conf_message = """
+    The config file you provided cannot be loaded.
+    Please make sure you follow the instructions on the documentation site:
+    https://hariszaf.github.io/microbetag/docs/tutorials/local/#input-and-configyml-files
+    """
+    print(conf_message)
+
+if len(sys.argv) == 1:
+    print_help(); sys.exit()
+
+if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+    print_help(); sys.exit()
+
+if sys.argv[1] == 'v' or sys.argv[1] == 'version':
+    print_version(); sys.exit()
+
 import yaml
 import subprocess
 from utils import *
@@ -27,7 +62,11 @@ from julia.api import Julia
 config_file = sys.argv[1]
 
 with open(config_file, 'r') as yaml_file:
-    config = Config(yaml.safe_load(yaml_file), config_file)
+    try:
+        config = Config(yaml.safe_load(yaml_file), config_file)
+    except:
+        print_config_message()
+        sys.exit(0)
 
 if config.bins_path is None:
     raise ValueError

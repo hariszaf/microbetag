@@ -10,14 +10,14 @@ FROM microbetag_base:latest
 
 LABEL maintainer = "Haris Zafeiropoulos" 
 LABEL contact    = "haris.zafeiropoulos@kuleuven.be"
-LABEL build_date = "2022-12-01"
-LABEL version    = "v.1.0"
+LABEL build_date = "2024-08-06"
+LABEL version    = "v.1.1"
 
 
 # Copy microbetag utils 
 WORKDIR /microbetag
 ADD microbetagDB/mappings/kegg_mappings/*  ./microbetagDB/mappings/kegg_mappings/
-ADD microbetagDB/mappings/MetaNetX/chem_xref.tsv ./microbetagDB/mappings/MetaNetX/chem_xref.tsv
+ADD microbetagDB/mappings/MetaNetX/compounds/chem_xref.tsv ./microbetagDB/mappings/MetaNetX/chem_xref.tsv
 ADD microbetagDB/scripts/flashweave.jl ./microbetagDB/scripts/flashweave.jl
 ADD utils.py ./
 ADD microbetag.py  ./
