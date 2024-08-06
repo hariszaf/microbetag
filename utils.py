@@ -686,19 +686,18 @@ class build_genres():
             bin_file = os.path.join(self.config.bins_path, bin_filename)
             bin_id, _ = os.path.splitext(bin_filename)
             faa = os.path.join(self.config.reconstructions, bin_id)
-            if file_exists_and_nonzero(faa) is False:
-                print("Bin {bin_filename} already gene annotated.")
-                continue
-            fgs_params = [
-                "./FragGeneScan",
-                "-s",  bin_file,
-                " -o", faa,
-                "-w  1",
-                "-p", str(self.config.threads),
-                "-t complete"
-            ]
-            fgs_command = " ".join(fgs_params)
-            os.system(fgs_command)
+            if not file_exists_and_nonzero(faa):
+                print(f"Bin {bin_filename} is being annotated using FGS.")
+                fgs_params = [
+                    "./FragGeneScan",
+                    "-s",  bin_file,
+                    " -o", faa,
+                    "-w  1",
+                    "-p", str(self.config.threads),
+                    "-t complete"
+                ]
+                fgs_command = " ".join(fgs_params)
+                os.system(fgs_command)
         os.chdir(cwd)
 
 
