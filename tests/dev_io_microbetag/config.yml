@@ -14,7 +14,7 @@ io_path:
   type: Path
 
 output_directory: 
-  folderName: microbetag_run
+  folderName: microbetag_run_carve
   description: Name of the output folder that will be built inside the io_path directory.
   required: True
   type: string
@@ -102,7 +102,7 @@ gene_predictor:
   type: string
 
 genre_reconstruction_with:
-  value: modelseedpy
+  value: carveme
   value_from: 
     - modelseedpy
     - carveme

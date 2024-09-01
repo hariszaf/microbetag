@@ -181,7 +181,7 @@ for model in phen_models:
 # ----------------
 # Prodigal - using DiTing interface
 # ----------------
-print("\n >> PREDICTING ORFs \n")
+print("\n >> PREDICTING ORFs WITH PRODIGAL THROUGH DiTing \n")
 # [TODO] Avoid double - prodigal run if user can provide it
 for bin_fa in bin_files:
     bin_filename = os.path.basename(bin_fa)
@@ -225,6 +225,7 @@ if not os.path.exists(config.compl_file):
 # Build GENREs
 # ----------------
 if config.users_models is False and config.seed_complementarity:
+
     print("\n >> GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS \n")
 
     build_genres = build_genres(config)
@@ -233,12 +234,14 @@ if config.users_models is False and config.seed_complementarity:
     if config.input_for_recon_type == "bins_fasta":
 
         if config.genre_reconstruction_with == "modelseedpy":
-            build_genres.rast_annotate_genomes()
+            build_genres.rast_annotate_genomes()  # saves under config.reconstructions
+
         elif config.gene_predictor == "prodigal":
-            print("DiTing .faa files will be used")  # go to the .faa case
+            print("DiTing .faa files will be used")  # go to the .faa case, i.e., the ORFs/
+
         elif config.gene_predictor == "fragGeneScan":
             print("Get annotations with FragGeneScan.")
-            build_genres.fgs_annotate_genomes()
+            build_genres.fgs_annotate_genomes()   # saves under config.reconstructions
 
     elif config.input_for_recon_type == "coding_regions":
         print("CarveMe will be used with the users .ffn-like files.")
@@ -250,8 +253,10 @@ if config.users_models is False and config.seed_complementarity:
     # Reconstruct step
     if config.genre_reconstruction_with == "modelseedpy":
         build_genres.modelseed_reconstructions()
+
     elif config.genre_reconstruction_with == "carveme":
         build_genres.carve_reconstructions()
+
     else:
         print("User models to be used for the seed complementarity step.")
 
