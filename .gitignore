@@ -86,6 +86,7 @@ microbetag_env
 
 # Ignore .json files under the scripts folder udner the microbetagDB
 microbetagDB/scripts/*.json 
+microbetag/microbetagDB/ref-dbs/kofam_database/profiles/
 
 # Ignore the GTDB db with 16S 
 gtdb_16s.RData
