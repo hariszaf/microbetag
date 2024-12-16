@@ -37,6 +37,7 @@ gtdb_genomes/
 *.keg
 
 gtdb_metadata_r202.tsv
+chem_xref.tsv
 
 # Silva - Qiime files 
 qiime2_consensus_taxonomy_7_levels.tsv

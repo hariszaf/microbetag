@@ -45,6 +45,25 @@ edge_list:
     - edgelist.csv
   type: string
 
+
+
+ko_merged_file:
+  path: KEGG_annotations/ko_merged.txt
+  description: A 3-column file with bins, contigs and the annotated KO term. Needs to have a header and keep this order. 
+  required: false
+  type: Path
+
+
+
+
+
+
+
+
+
+
+
+
 input_type_for_seed_complementarities:
   value: bins_fasta
   value_from: 
