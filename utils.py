@@ -11,15 +11,20 @@ import random
 import subprocess
 import itertools
 import pandas as pd
-import pkg_resources
 from tqdm import tqdm
 import multiprocessing
 from joblib import Parallel, delayed
-from modelseedpy import MSBuilder, MSGenome
+import logging
+# Set up custom logging format
+logging.basicConfig(
+    format='%(levelname)s: %(message)s',  # Define the format without "root:"
+    level=logging.WARNING  # Set the logging level
+)
 
 
 # Handling data related
 def get_library_version(library_name):
+    import pkg_resources
     try:
         version = pkg_resources.get_distribution(library_name).version
         return version
@@ -90,7 +95,7 @@ def run_until_done(command):
         return 1
     else:
         time.sleep(random.randint(2, 10))
-        print("recurscive run of:", command)
+        logging.warning("recurscive run of: %s", command)
         run_until_done(command)
 
 
@@ -153,10 +158,10 @@ def ensure_same_namespace_after_fw(conf):
             continue
         if id1 != id2:
             diff_chars = find_id_differences(id1, id2)
-            if diff_chars:
-                print(f"Difference found: '{diff_chars}'")
-            else:
-                print(f"IDs '{id1}' and '{id2}' are identical")
+            # if diff_chars:
+            #     print(f"Difference found: '{diff_chars}'")
+            # else:
+            #     print(f"IDs '{id1}' and '{id2}' are identical")
     # We need to replace the bin names network file with the delimiter of the abundance table file
     if len(diff_chars) > 0:
         for case in diff_chars:
@@ -193,24 +198,31 @@ def run_prodigal(fasta, basename, outdir):
     basename:
     outdir:
     """
+    # By default outdir is the ORFs folder
+    # fna	FASTA nucleic acid	Used generically to specify nucleic acids
+    # ffn	FASTA nucleotide of gene regions	Contains coding regions for a genome
     faa_file = os.path.join(outdir, basename + '.faa')
+    ffn_file = os.path.join(outdir, basename + '.ffn')
+    fna_file = os.path.join(outdir, basename + '.fna')
+    gbk_file = os.path.join(outdir, basename + '.gbk')
+
     cmd_para = [
                 'prodigal', '-q',
                 '-i', fasta,
                 '-p', 'meta',
                 '-a', faa_file,
-                '-d', os.path.join(outdir, basename + '.ffn'),
-                '-o', os.path.join(outdir, basename + '.gbk')
+                '-d', ffn_file,
+                '-o', gbk_file
                 ]
     cmd = ' '.join(cmd_para)
-    if os.path.exists(faa_file):
-        print("ORFs already predicted for bin:", basename)
+    if os.path.exists(faa_file) or os.path.exists(fna_file) or os.path.exists(ffn_file):
+        logging.info("ORFs already predicted for bin: %s", basename)
     else:
-        print("ORFs to be predicted for bin:", basename)
+        logging.info("ORFs to be predicted for bin: %s", basename)
         try:
             os.system(cmd)
         except:
-            print("Something wrong with prodigal annotation!")
+            logging.warning("Something wrong with prodigal annotation!")
 
 
 def kegg_annotation(faa, basename, out_dir, db_dir, ko_dic, threads):
@@ -225,7 +237,7 @@ def kegg_annotation(faa, basename, out_dir, db_dir, ko_dic, threads):
     ko_dic:
     threads:
     """
-    print('KEGG annotation for {}'.format(basename))
+    logging.info('KEGG annotation for %s', basename)
     paras = []
     for knum, info in ko_dic.items():
 
@@ -252,8 +264,7 @@ def kegg_annotation(faa, basename, out_dir, db_dir, ko_dic, threads):
 
         paras.append((threshold_method, info[0], outtype, output, hmm_db, faa))
 
-    print("Number of KEGG processes to be performed:", str(len(paras)))
-
+    logging.info("Number of KEGG processes to be performed: %s", str(len(paras)))
     process = multiprocessing.Pool(threads)
     process.map(hmmsearch, paras)
 
@@ -276,7 +287,7 @@ def hmmsearch(paras):
     try:
         os.system(cmd)
     except:
-        print("Something wrong with KEGG hmmsearch!")
+        logging.warning("Something wrong with KEGG hmmsearch!")
 
 
 def ko_list_parser(ko_list):
@@ -328,16 +339,22 @@ def merge_ko(hmmout_dir, output):
                             with open(output, 'a') as fo:
                                 fo.write(basename + '\t' + gene_id + '\t' + k_number + '\n')
 
-    df = pd.read_csv(output, sep="\t")
 
-    bins_kos = df.groupby('bin_id')['ko_term'].apply(set).to_dict()
+def load_merged_ko_file(merged_ko):
+    """
+    Load the 3-columns KEGG annotations file as built from the merge_ko()
+    """
+    df = pd.read_csv(merged_ko, sep="\t")
+    column_names = df.columns.tolist()
+    bin_id, _, ko = column_names[:3]
+    # bins_kos = df.groupby('bin_id')['ko_term'].apply(set).to_dict()
 
     # Pivot the DataFrame to have 'kegg_id' as rows and 'bin_id' as columns
     unique_combinations = df.drop_duplicates().copy()
     unique_combinations.loc[:, 'presence'] = 1
-    pivot_df = unique_combinations.pivot_table(index='ko_term', columns='bin_id', values='presence', fill_value=0)
+    pivot_df = unique_combinations.pivot_table(index=ko, columns=bin_id, values='presence', fill_value=0)
 
-    return bins_kos, pivot_df  # keep one
+    return pivot_df  # keep one | used to alse return the bins_kos
 
 
 # Pathway complementarity related
@@ -408,12 +425,15 @@ def export_pathway_complementarities(config, bins_kos_df):
             # Get intersection and add the module: kos_present to the dict
             bin_kos_per_module[bin_id][module] = bins_kos.index.intersection(definition_ko_terms.index).tolist()
 
+    logging.info("Step 1, KOs related to a module present on each bin, ran fine.")
+
     # Step 2: list alternatives for a bin's modules to be completed
     mo_map = json.load(open(modules_definitions_json_map))
     structurals = ["md:M00144","md:M00149","md:M00151",
                    "md:M00152","md:M00154","md:M00155",
                    "md:M00153", "md:M00156", "md:M00158",
                    "md:M00160"]
+
     # Iterate through bins
     bins_alternatives = {}
     for bin_id in bin_kos_per_module:
@@ -459,6 +479,8 @@ def export_pathway_complementarities(config, bins_kos_df):
             alternatives_to_gap[module] = tmp
         bins_alternatives[bin_id] = alternatives_to_gap
 
+    logging.info("Step 2, the alternatives of each bin's modules were enumerated.")
+
     # Step 3: extract potential complementarities from other bins
     complements = {}
     for beneficiary_bin_id, all_bin_module_alternatives in bins_alternatives.items():
@@ -483,6 +505,9 @@ def export_pathway_complementarities(config, bins_kos_df):
                                      url
                                      ]
                         complements[beneficiary_bin_id][donor_bin_id].append(pot_compl)
+
+    logging.info("Step 3, the potential complementarities among the bins were enumerated.")
+
     return bin_kos_per_module, bins_alternatives, complements
 
 
@@ -515,8 +540,8 @@ class build_genres():
             pool.close()
             pool.join()
             counter += chunk_size
-            print(
-                "We now have annotated", str(counter), "genomes out of the", str(len(self.config.bin_filenames))
+            logging.info(
+                "We now have annotated %s genomes out of the %s" % (counter, len(self.config.bin_filenames))
             )
 
     def rast_annotate_a_genome(self, bin_filename):
@@ -538,7 +563,7 @@ class build_genres():
             ])
         if not file_exists_and_nonzero(gto_filename):
             rast_create_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_create_genome_command])
-            print("rast_create_genome_command:", rast_create_genome_command)
+            logging.info("rast_create_genome_command: %s", rast_create_genome_command)
             run_until_done(rast_create_genome_command)
 
         # rast-process-genome: run the default RASTtk pipeline tool
@@ -548,7 +573,7 @@ class build_genres():
             ])
         if not file_exists_and_nonzero(gto_filename_2):
             rast_process_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_process_genome_command])
-            print("\nrast_process_genome_command: ", rast_process_genome_command)
+            logging.info("rast_process_genome_command: %s", rast_process_genome_command)
             run_until_done(rast_process_genome_command)
 
         # rast-export-genome protein_fasta: export the genome in a desired format
@@ -561,7 +586,7 @@ class build_genres():
             ])
         if not file_exists_and_nonzero(faa_filename):
             rast_export_genome_command = ''.join(['\\:' if char == ':' else char for char in rast_export_genome_command])
-            print("\nrast_export_genome_command: ", rast_export_genome_command)
+            logging.info("rast_export_genome_command: %s", rast_export_genome_command)
             run_until_done(rast_export_genome_command)
 
     def modelseed_reconstructions(self):
@@ -596,7 +621,7 @@ class build_genres():
         model_filename =  os.path.join(self.config.genres, "".join([model_id, ".xml"]))
         if os.path.exists(model_filename):
             return 1
-        print("Model to be reconstructed:", model_id)
+        logging.info("Model to be reconstructed: %s", model_id)
         model = self.recursive_build(model_id, annotation_faa_path)
         cobra.io.write_sbml_model(cobra_model = model, filename = model_filename)
 
@@ -607,9 +632,10 @@ class build_genres():
 
         [NOTE] We have observed that when MSGenome is initiated in the same function with the MSBuilder, they behave much better!
         """
+        from modelseedpy import MSBuilder, MSGenome
         if counter >= 20:
             # Run the script again with the given arguments
-            print("""\n\n
+            logging.warning("""\n\n
                   ******  \n
                   microbetag kept calling the recursive function for building modelseedpy GEM.
                   This function tries to establish a connection with the RAST server that at the moment does not allow it.
@@ -634,7 +660,7 @@ class build_genres():
             return model
         except:
             time.sleep(random.randint(1, 20))
-            print("Recursive run for model_id:", model_id)
+            logging.info("Recursive run for model_id: %s", model_id)
             return self.recursive_build(model_id, annotation_faa_path, counter)
 
     def carve_reconstructions(self):
@@ -664,13 +690,12 @@ class build_genres():
             xml = os.path.join(self.config.genres, f"{bin_id}.xml")
             carve_params = ["carve", "--solver", "gurobi", "-o", xml]
             if os.path.exists(xml) and os.path.getsize(xml) > 0:
-                print("An .xml file for this bin is already available. This will be used for seed complementarities and carve step will be skiped.")
+                logging.info("An .xml file for this bin is already available. This will be used for seed complementarities and carve step will be skiped.")
                 continue
             if dna:
                 carve_params.append("--dna")
             carve_params.append(faa)
             carve_command = " ".join(carve_params)
-            print(carve_command)
             os.system(carve_command)
 
     def fgs_annotate_genomes(self):
@@ -687,7 +712,7 @@ class build_genres():
             bin_id, _ = os.path.splitext(bin_filename)
             faa = os.path.join(self.config.reconstructions, bin_id)
             if not file_exists_and_nonzero(faa):
-                print(f"Bin {bin_filename} is being annotated using FGS.")
+                logging.info(f"Bin {bin_filename} is being annotated using FGS.")
                 fgs_params = [
                     "./FragGeneScan",
                     "-s",  bin_file,
@@ -851,9 +876,9 @@ class export_seed_complementarities():
             updated_nonSeeds[model_id] = models_nonSeeds
 
             s2 = time.time()
-            print(str(s2-s1), "seconds for a .xml")
+            logging.info(str(s2-s1), "s{% load econds for a .xm_tags %}l")
 
-        print("Update function is done and about to save updated json files.")
+        logging.info("Update function is done and about to save updated json files.")
 
         with open(self.updated_seed_sets, "w") as f:
             json.dump(updated_seeds, f)
@@ -870,7 +895,7 @@ class export_seed_complementarities():
         modules_compounds = pd.read_csv(self.seed_ko_mo, sep="\t")
         modules_compounds.columns = ["modelseed", "kegg", "module"]
         modelseed_compounds_of_interest = set(modules_compounds["modelseed"].unique().tolist())
-        # --------------------------
+
         number_of_models = 0
         patricId_to_seeds_of_interest = {}
         patricId_to_non_seeds_of_interest = {}
@@ -885,8 +910,6 @@ class export_seed_complementarities():
             mean_non_seedset_length += len(non_seedset)
             patricId_to_non_seeds_of_interest[smodel_name] = non_seeds_of_interest
             mean_non_seedset_of_interest += len(non_seeds_of_interest)
-
-        # --------------------------
 
         mean_seedset_length = 0
         mean_seedset_of_interest = 0
@@ -911,10 +934,10 @@ class export_seed_complementarities():
             patricId_to_seeds_of_interest[model_name] = set(seeds_of_interest_tmp)
             mean_seedset_of_interest += len(set(seeds_of_interest_tmp))
 
-        print("Mean length of initial seedset:", str(mean_seedset_length/number_of_models))
-        print("Mean length of seedsets of interest:", str(mean_seedset_of_interest/number_of_models))
-        print("Mean of initial length of non seed sets:", str(mean_non_seedset_length/number_of_models))
-        print("Mean of non seed sets of interest:", str(mean_non_seedset_of_interest/number_of_models))
+        logging.info("Mean length of initial seedset: %s", str(mean_seedset_length/number_of_models))
+        logging.info("Mean length of seedsets of interest: %s", str(mean_seedset_of_interest/number_of_models))
+        logging.info("Mean of initial length of non seed sets: %s", str(mean_non_seedset_length/number_of_models))
+        logging.info("Mean of non seed sets of interest: %s", str(mean_non_seedset_of_interest/number_of_models))
 
         tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
         df1 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'SeedSet'])
@@ -1026,7 +1049,7 @@ def process_seeds(seeds_dict, bigg2seed, int_suffix):
         for seed_id in seeds:
             seed_id_part = "_".join(seed_id.split("_")[1:-1])
             if seed_id_part not in bigg2seed:
-                print("not found:", seed_id)
+                logging.warning("not found: %s", seed_id)
                 bigg_ids_not_mapped_to_seed.setdefault(bin_id, []).append(seed_id)
                 continue
             updated_biggIds[bin_id].append(bigg2seed[seed_id_part])

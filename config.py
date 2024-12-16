@@ -3,6 +3,12 @@ import os
 import pandas as pd
 import sys
 import cobra
+import logging
+# Set up custom logging format
+logging.basicConfig(
+    format='%(levelname)s: %(message)s',  # Define the format without "root:"
+    level=logging.WARNING  # Set the logging level
+)
 
 class Config:
     """
@@ -23,18 +29,35 @@ class Config:
         self.on_container = True if conf["on_container"]["value"] else False
         self.mount = "/data" if conf["on_container"]["value"] else self.io_path
         self.bins_path = os.path.join(self.mount, conf["bins_fasta"]["folderName"])
-        self.abundance_table = os.path.join(self.mount, conf["abundance_table_file"]["fileName"])
+
+        # The abundance table is now optional, if no abundance table and no network provided, then it will only run pre-calculations
+        self.abundance_table = (
+            os.path.join(self.mount, conf["abundance_table_file"]["fileName"])
+            if conf["abundance_table_file"]["fileName"]
+            else None
+        )
         self.output_dir = os.path.join(self.mount, conf["output_directory"]["folderName"])
         self.network = os.path.join(self.mount, conf["edge_list"]["value"]) if conf["edge_list"]["value"] else None
-        self.metadata_file = os.path.join(self.mount, conf["metadata_file"]["fileName"]) if conf["metadata_file"]["fileName"] and os.path.exists(os.path.join(self.mount, conf["metadata_file"]["fileName"])) else None
+        self.precalc_only = (
+            True
+            if self.abundance_table is None and self.network is None
+            else False
+        )
+        self.metadata_file = (
+            os.path.join(self.mount, conf["metadata_file"]["fileName"])
+            if conf["metadata_file"]["fileName"] and os.path.exists(os.path.join(self.mount, conf["metadata_file"]["fileName"]))
+            else None
+        )
         self.flashweave_abd_table = os.path.join(self.mount, "abd_table_for_flashweave.tsv")
-
         self.bin_filenames = os.listdir(self.bins_path)
 
         input_value = conf["input_type_for_seed_complementarities"]["value"]
         allowed_values = conf["input_type_for_seed_complementarities"]["value_from"]
-        self.input_for_recon_type = input_value if input_value in allowed_values else (print("Error: Input value is not among the allowed values:", allowed_values) or sys.exit(1))
-
+        self.input_for_recon_type = (
+            input_value
+            if input_value in allowed_values
+            else (logging.error("Error: Input value is not among the allowed values:", allowed_values) or sys.exit(1))
+        )
 
         self.users_models = True if conf["input_type_for_seed_complementarities"]["value"] == "models" else False
         self.seed_complementarity = conf["seed_complementarity"]["value"]
@@ -50,22 +73,24 @@ class Config:
 
         # Check whethere bin names are the same in both abundance and edgelist files
         bins = [ os.path.splitext(gbin)[0] for gbin in self.bin_filenames  ]
-        f = pd.read_csv(self.abundance_table, sep="\t")
-        self.taxonomy_column_name = list(f.columns)[-1]
-        self.sequence_column_name = list(f.columns)[0]
-        bins_in_abundance_file = list(f.iloc[:,0])
+        if self.abundance_table is not None:
+            f = pd.read_csv(self.abundance_table, sep="\t")
+            self.taxonomy_column_name = list(f.columns)[-1]
+            self.sequence_column_name = list(f.columns)[0]
+            bins_in_abundance_file = list(f.iloc[:,0])
 
-        if not all(elem in bins_in_abundance_file for elem in bins):
-            not_in_second_list = set(bins) - set(bins_in_abundance_file)
-            not_in_second_list_str = ', '.join(not_in_second_list)
-            raise ValueError(f"Bin names do not match with those in the abundance table: {not_in_second_list_str}")
+            if not all(elem in bins_in_abundance_file for elem in bins):
+                not_in_second_list = set(bins) - set(bins_in_abundance_file)
+                not_in_second_list_str = ', '.join(not_in_second_list)
+                raise ValueError(f"Bin names do not match with those in the abundance table: {not_in_second_list_str}")
 
         if self.network:
             self.flashweave = False
             f = pd.read_csv(self.network, sep="\t")
             bins_in_net = set(list(f.iloc[:,0]) + list(f.iloc[:,1]))
-            if not all(elem in bins_in_abundance_file for elem in bins_in_net) or not all(elem in bins_in_net for elem in bins):
-                raise ValueError(f"Bin names in the edgelist file do not match with those in the abundance table and/or in the bins.")
+            if self.abundance_table is not None:
+                if not all(elem in bins_in_abundance_file for elem in bins_in_net) or not all(elem in bins_in_net for elem in bins):
+                    raise ValueError(f"Bin names in the edgelist file do not match with those in the abundance table and/or in the bins.")
         else:
             self.flashweave_script = os.path.join(self.cwd, "microbetagDB/scripts/flashweave.jl")
             self.network = os.path.join(self.output_dir, "network_output.edgelist")
@@ -81,9 +106,16 @@ class Config:
         os.makedirs(self.prodigal, exist_ok=True)
 
         self.kegg_annotations = os.path.join(self.output_dir, "KEGG_annotations")
-        self.kegg_pieces_dir = os.path.join(self.kegg_annotations, 'hmmout')
         os.makedirs(self.kegg_annotations, exist_ok=True)
-        os.makedirs(self.kegg_pieces_dir, exist_ok=True)
+
+        self.ko_merged = (
+            os.path.join(self.output_dir, conf["ko_merged_file"]["path"])
+            if conf["ko_merged_file"]["path"]
+            else None
+        )
+        if self.ko_merged is None:
+            self.kegg_pieces_dir = os.path.join(self.kegg_annotations, 'hmmout')
+            os.makedirs(self.kegg_pieces_dir, exist_ok=True)
 
 
         self.reconstructions = os.path.join(self.output_dir, "reconstructions")
@@ -155,7 +187,7 @@ class Config:
             level=str(2),
             architecture="deepencoding",
         )
-        model_dict = torch.load(weights_path, map_location=device)
+        _ = torch.load(weights_path, map_location=device)
 
         # Tests
         if self.users_models:
