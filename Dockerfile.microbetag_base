@@ -95,7 +95,7 @@ RUN apt-get install infernal infernal-doc
 # To install DRAM (for KEGG annotation of the bins), we need the following
 # pandas [done], networkx[done], scikit-bio[done], prodigal[done], mmseqs2, hmmer and 
 # tRNAscan-SE (for ) === [TODO] CHECK IF ALL NEEDED 
-RUN wget http://lowelab.ucsc.edu/software/trnascan-se-2.0.12.tar.gz &&\ 
+RUN wget --no-check-certificate http://lowelab.ucsc.edu/software/trnascan-se-2.0.12.tar.gz &&\ 
     gunzip trnascan-se-2.0.12.tar.gz  &&\
     tar xf trnascan-se-2.0.12.tar &&\
     cd tRNAscan-SE-2.0/ &&\
@@ -149,7 +149,7 @@ RUN /opt/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("FlashWeave")'
 
 # FAPRTOTAX
 WORKDIR /microbetag/microbetagDB/ref-dbs
-RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Download/MODULE_Downloads/CLASS_Latest%20release/UNIT_FAPROTAX_1.2.7/FAPROTAX_1.2.7.zip &&\
+RUN wget https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/SECTION_Download/MODULE_Downloads/CLASS_Old%20versions/UNIT_FAPROTAX_1.2.7/FAPROTAX_1.2.7.zip &&\
     unzip FAPROTAX_1.2.7.zip &&\
     rm FAPROTAX_1.2.7.zip
 # Install Python dependencies for FAPROTAX script
@@ -190,6 +190,44 @@ RUN git clone https://github.com/gaberoo/FragGeneScan.git &&\
 RUN git clone https://github.com/hyattpd/Prodigal.git &&\
     cd Prodigal &&\
     make install
+
+
+# Set R to enable gapseq
+# Install dependencies and R
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    && apt-get install -y gnupg2 \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
+    && add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/" \
+    && apt-get update \
+    && apt-get install -y \
+    r-base \
+    r-base-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install R packages required for gapseq
+RUN R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))' 
+
+
+# Install further gapseq requirements
+RUN wget https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz && \
+    wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
+
+RUN apt update
+RUN apt install -y ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev  libsbml5-dev bc
+
+RUN R CMD INSTALL sybil_2.2.0.tar.gz
+RUN R CMD INSTALL sybilSBML_3.1.2.tar.gz
+# && rm sybil_2.2.0.tar.gz \
+# && rm sybilSBML_3.1.2.tar.gz
+
+# Download latest gapseq version from github and latest reference sequence database
+RUN git clone https://github.com/jotech/gapseq && cd gapseq && \
+    bash ./src/update_sequences.sh  
+
+RUN R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
+
 
 
 
