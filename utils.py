@@ -1,3 +1,10 @@
+"""
+Aim:
+    Utils for the microbetag pipeline
+Author:
+    - Haris Zafeiropoulos
+"""
+
 import os
 import re
 import sys
@@ -359,30 +366,31 @@ def load_merged_ko_file(merged_ko):
 
 # Pathway complementarity related
 def build_kegg_url(kegg_map, clean_path, missing_kos):
-   """
-   Build url to colorify the related to the module kegg map based on the KO terms
-   of the beneficiary (pink) and those it gets from the donor (green)
-   """
-   # Load the dictionary with the kegg modules and their corresponding maps
-   color_mapp_base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
-   present_kos_color   = "%09%23EAD1DC/"
-   complemet_kos_color = "%09%2300A898/"
-
-   # Make a url pointing at a colored kegg map based on what's on the beneficiary's genome and what it gets as complement from the donor
-   beneficiarys_kos = ""
-   complements_kos  = ""
-   for ko_term in clean_path:
-      if ko_term not in missing_kos:
-         beneficiarys_kos = "".join([beneficiarys_kos, ko_term, present_kos_color])
-      else:
-         complements_kos = "".join([beneficiarys_kos, ko_term, complemet_kos_color])
-   try:
-      """ we do the try as in some rare cases, the module might not have a related map"""
-      url_ko_map_colored = "".join([color_mapp_base_url, kegg_map,  "/", beneficiarys_kos, complements_kos])
-   except:
-      url_ko_map_colored = "N/A"
-
-   return url_ko_map_colored
+    """
+    Build url to colorify the related to the module kegg map based on the KO terms
+    of the beneficiary (pink) and those it gets from the donor (green)
+    """
+    # Load the dictionary with the kegg modules and their corresponding maps
+    color_mapp_base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
+    present_kos_color   = "%09%23EAD1DC/"
+    complemet_kos_color = "%09%2300A898/"
+    print("clean_path:", clean_path)
+    print("missing_path", missing_kos)
+    # Make a url pointing at a colored kegg map based on what's on the beneficiary's genome and what it gets as complement from the donor
+    beneficiarys_kos = ""
+    complements_kos  = ""
+    for ko_term in clean_path:
+        if ko_term not in missing_kos:
+            beneficiarys_kos = "".join([beneficiarys_kos, ko_term, present_kos_color])
+        else:
+            complements_kos = "".join([complements_kos, ko_term, complemet_kos_color])
+    try:
+        # [NOTE] In rare cases, the module might not have a related map, thus kegg_map would be of NoneType and the join() would return an error.
+        url_ko_map_colored = "".join([color_mapp_base_url, kegg_map,  "/", beneficiarys_kos, complements_kos])
+    except:
+        url_ko_map_colored = "N/A"
+    print("url", url_ko_map_colored)
+    return url_ko_map_colored
 
 
 def export_pathway_complementarities(config, bins_kos_df):
@@ -434,79 +442,93 @@ def export_pathway_complementarities(config, bins_kos_df):
                    "md:M00153", "md:M00156", "md:M00158",
                    "md:M00160"]
 
-    # Iterate through bins
-    bins_alternatives = {}
-    for bin_id in bin_kos_per_module:
-        complete_modules = set()
-        alternatives_to_gap = {}
-        for module, kos_on_its_own in bin_kos_per_module[bin_id].items():
-            if module in structurals:
-                continue
-            # Get KOs related to the module under study that are present on the beneficiary's genome
-            list_of_kos_present = set(kos_on_its_own)
-            definition_under_study = mo_map[module]['steps']
-            definition_under_study_proc = [term if isinstance(term, list) else [term] for term in definition_under_study.values()]
-            potential_compl_paths = [list(tup) for tup in itertools.product(*definition_under_study_proc)]
-            flat_potent_compl_paths = [flatten(path) for path in potential_compl_paths]
-            for path in flat_potent_compl_paths:
-                check = all(item in list_of_kos_present for item in path)
-                if check:
-                    if module not in complete_modules:
-                        complete_modules.add(module)
-                else:
-                    gaps = set(x for x in set(path) if x not in set(list_of_kos_present))
-                    if module not in alternatives_to_gap:
-                        alternatives_to_gap[module] = {}
-                        alternatives_to_gap[module][str(path)] = gaps
-                    else:
-                        alternatives_to_gap[module][str(path)] = gaps
-        # Remove complete modules for the alternatived dict
-        for key in complete_modules:
-            if key in alternatives_to_gap:
-                del alternatives_to_gap[key]
-        # Get shortert alternative for each
-        for module, path_gaps in alternatives_to_gap.items():
-            tmp = tmp2 = alternatives_to_gap[module].copy()
-            min_val = min([len(path_gaps[ele]) for ele in path_gaps])
-            values = list(tmp2.values())
-            shortest_alternatives = [list(tmp2.keys())[values.index(s)]
-                                     for s in values
-                                     if not any(s.issuperset(i) and len(s) > len(i) for i in values)
-                                    ]
-            for path, gaps in alternatives_to_gap[module].items():
-                if len(gaps) > min_val + 1 or path not in shortest_alternatives:
-                    del tmp[path]
-            alternatives_to_gap[module] = tmp
-        bins_alternatives[bin_id] = alternatives_to_gap
+    # If alts.json not available
+    if not os.path.exists(config.alts_file):
 
-    logging.info("Step 2, the alternatives of each bin's modules were enumerated.")
+        # Iterate through bins
+        bins_alternatives = {}
+        for bin_id in bin_kos_per_module:
+            complete_modules = set()
+            alternatives_to_gap = {}
+            for module, kos_on_its_own in bin_kos_per_module[bin_id].items():
+                if module in structurals:
+                    continue
+                # Get KOs related to the module under study that are present on the beneficiary's genome
+                list_of_kos_present = set(kos_on_its_own)
+                definition_under_study = mo_map[module]['steps']
+                definition_under_study_proc = [term if isinstance(term, list) else [term] for term in definition_under_study.values()]
+                potential_compl_paths = [list(tup) for tup in itertools.product(*definition_under_study_proc)]
+                flat_potent_compl_paths = [flatten(path) for path in potential_compl_paths]
+                for path in flat_potent_compl_paths:
+                    check = all(item in list_of_kos_present for item in path)
+                    if check:
+                        if module not in complete_modules:
+                            complete_modules.add(module)
+                    else:
+                        gaps = set(x for x in set(path) if x not in set(list_of_kos_present))
+                        if module not in alternatives_to_gap:
+                            alternatives_to_gap[module] = {}
+                            alternatives_to_gap[module][str(path)] = gaps
+                        else:
+                            alternatives_to_gap[module][str(path)] = gaps
+            # Remove complete modules for the alternatived dict
+            for key in complete_modules:
+                if key in alternatives_to_gap:
+                    del alternatives_to_gap[key]
+            # Get shortert alternative for each
+            for module, path_gaps in alternatives_to_gap.items():
+                tmp = tmp2 = alternatives_to_gap[module].copy()
+                min_val = min([len(path_gaps[ele]) for ele in path_gaps])
+                values = list(tmp2.values())
+                shortest_alternatives = [list(tmp2.keys())[values.index(s)]
+                                        for s in values
+                                        if not any(s.issuperset(i) and len(s) > len(i) for i in values)
+                                        ]
+                for path, gaps in alternatives_to_gap[module].items():
+                    if len(gaps) > min_val + 1 or path not in shortest_alternatives:
+                        del tmp[path]
+                alternatives_to_gap[module] = tmp
+            bins_alternatives[bin_id] = alternatives_to_gap
+
+            # Write alts.json file
+            with open(config.alts_file, "w") as file:
+                json.dump(bins_alternatives, file, cls=SetEncoder)
+
+            logging.info("Step 2, the alternatives of each bin's modules were enumerated.")
+    else:
+        with open(config.alts_file, "r") as h:
+            bins_alternatives = json.load(h)
 
     # Step 3: extract potential complementarities from other bins
-    complements = {}
-    for beneficiary_bin_id, all_bin_module_alternatives in bins_alternatives.items():
-        complements[beneficiary_bin_id] = {}
-        for donor_bin_id in bin_kos_per_module:
-            complements[beneficiary_bin_id][donor_bin_id] = []
-            for module, alts in all_bin_module_alternatives.items():
-                donors_kos_relativ_to_module = bin_kos_per_module[donor_bin_id][module]
-                for alternative, missing_kos_for_alternative in alts.items():
-                    is_subset = set(missing_kos_for_alternative).issubset(set(donors_kos_relativ_to_module))
-                    if is_subset:
-                        alternative = ast.literal_eval(alternative)
-                        beneficiarys_kos_for_alt = set(alternative) - set(missing_kos_for_alternative)
-                        try:
-                            module_map = module_to_map[module]
-                            url = build_kegg_url(module_map, alternative, list(beneficiarys_kos_for_alt))
-                        except:
-                            url = ""
-                        pot_compl = [module,
-                                     missing_kos_for_alternative,
-                                     alternative,
-                                     url
-                                     ]
-                        complements[beneficiary_bin_id][donor_bin_id].append(pot_compl)
+    if not os.path.exists(config.compl_file):
 
-    logging.info("Step 3, the potential complementarities among the bins were enumerated.")
+        complements = {}
+        for beneficiary_bin_id, all_bin_module_alternatives in bins_alternatives.items():
+            complements[beneficiary_bin_id] = {}
+            for donor_bin_id in bin_kos_per_module:
+                complements[beneficiary_bin_id][donor_bin_id] = []
+                for module, alts in all_bin_module_alternatives.items():
+                    donors_kos_relativ_to_module = bin_kos_per_module[donor_bin_id][module]
+                    for alternative, missing_kos_for_alternative in alts.items():
+                        is_subset = set(missing_kos_for_alternative).issubset(set(donors_kos_relativ_to_module))
+                        if is_subset:
+                            alternative = ast.literal_eval(alternative)
+                            # beneficiarys_kos_for_alt = set(alternative) - set(missing_kos_for_alternative)
+                            try:
+                                module_map = module_to_map[module]
+                                url = build_kegg_url(module_map, list(alternative), list(set(missing_kos_for_alternative)))  ## used to be: beneficiarys_kos_for_alt
+                            except:
+                                url = ""
+                            pot_compl = [module,
+                                        missing_kos_for_alternative,
+                                        alternative,
+                                        url
+                                        ]
+                            complements[beneficiary_bin_id][donor_bin_id].append(pot_compl)
+        # Write the pathCompls.json file
+        with open(config.compl_file, "w") as file:
+            json.dump(complements, file, cls=SetEncoder)
+        logging.info("Step 3, the potential complementarities among the bins were enumerated.")
 
     return bin_kos_per_module, bins_alternatives, complements
 

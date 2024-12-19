@@ -19,6 +19,7 @@ WORKDIR /microbetag
 ADD microbetagDB/mappings/kegg_mappings/*  ./microbetagDB/mappings/kegg_mappings/
 ADD microbetagDB/mappings/MetaNetX/chem_xref.tsv ./microbetagDB/mappings/MetaNetX/chem_xref.tsv
 ADD microbetagDB/scripts/flashweave.jl ./microbetagDB/scripts/flashweave.jl
+ADD microbetagDB/ref-dbs/kofam_database/ko_list ./microbetagDB/ref-dbs/kofam_database/ko_list
 ADD utils.py ./
 ADD microbetag.py  ./
 ADD config.py ./

@@ -9,7 +9,7 @@ Input:
     - (optional) a co-occurrence network in a three-columns format
 
 Output:
-    -
+    - An annotated network in .cx format
 
 Author:
     Haris Zafeiropoulos
@@ -199,45 +199,42 @@ for bin_fa in bin_files:
     bin_id, extension = os.path.splitext(bin_filename)
     run_prodigal(bin_fa, bin_id, config.prodigal)
 
-# ----------------
-# KEGG annotation - using DiTing interface
-# ----------------
 
-ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
-ko_dic = ko_list_parser(ko_list)
-
-if config.ko_merged is None:
-    config.ko_merged = os.path.join(config.kegg_annotations, 'ko_merged.txt')
-    logging.info("[STEP ] KEGG ANNOTATION OF THE PRODIGAL ORFs \n")
-    for bn in config.bin_filenames:
-        bin_id, extension = os.path.splitext(bn)
-        faa = os.path.join(config.prodigal, bin_id + '.faa')
-        kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
-
-    merge_ko(config.kegg_pieces_dir, config.ko_merged)
-else:
-    logging.info("A 3-col KEGG annotation file already available.")
-
-pivot_df = load_merged_ko_file(config.ko_merged)  # Load ko_merged.txt
 
 # ----------------
-# Extract pathway complementarities
+# Pathway complementarity
 # ----------------
-if not os.path.exists(config.alts_file) or not os.path.exists(config.compl_file):
+if config.pathway_complementarity:
+    # ----------------
+    # KEGG annotation - using DiTing interface // required in case of pathway complementarities
+    # ----------------
+    ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
+    ko_dic = ko_list_parser(ko_list)
 
-    logging.info("[STEP ] GET PATHWAY COMPLEMENTS ")
-    bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
-        config,
-        pivot_df
-    )
+    if config.ko_merged is None:
+        config.ko_merged = os.path.join(config.kegg_annotations, 'ko_merged.txt')
+        logging.info("[STEP ] KEGG ANNOTATION OF THE PRODIGAL ORFs \n")
+        for bn in config.bin_filenames:
+            bin_id, extension = os.path.splitext(bn)
+            faa = os.path.join(config.prodigal, bin_id + '.faa')
+            kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
 
-    if not os.path.exists(config.alts_file):
-        with open(config.alts_file, "w") as file:
-            json.dump(alt_to_gapfill, file, cls=SetEncoder)
+        merge_ko(config.kegg_pieces_dir, config.ko_merged)
+    else:
+        logging.info("A 3-col KEGG annotation file already available.")
 
-    if not os.path.exists(config.compl_file):
-        with open(config.compl_file, "w") as file:
-            json.dump(complements, file, cls=SetEncoder)
+    pivot_df = load_merged_ko_file(config.ko_merged)  # Load ko_merged.txt
+
+    # ----------------
+    # Extract pathway complementarities
+    # ----------------
+    if not os.path.exists(config.alts_file) or not os.path.exists(config.compl_file):
+
+        logging.info("[STEP ] GET PATHWAY COMPLEMENTS ")
+        bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
+            config,
+            pivot_df
+        )
 
 # ----------------
 # Build GENREs

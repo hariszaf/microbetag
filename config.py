@@ -61,6 +61,7 @@ class Config:
 
         self.users_models = True if conf["input_type_for_seed_complementarities"]["value"] == "models" else False
         self.seed_complementarity = conf["seed_complementarity"]["value"]
+        self.pathway_complementarity = conf["pathway_complementarity"]["value"]
 
         if self.input_for_recon_type == "bins_fasta":
             self.for_reconstructions = self.bins_path
