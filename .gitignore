@@ -10,6 +10,22 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 
+
+
+.vscode/
+_site/
+build/
+
+ext_data/
+*.lic
+*.egg-info/
+
+
+# Skip the Silva used for the enriched case -- Qiita
+examined_cases/enrichment/Silva_119_rep_set97.fna
+
+
+
 # Other files and folders
 .settings/
 
