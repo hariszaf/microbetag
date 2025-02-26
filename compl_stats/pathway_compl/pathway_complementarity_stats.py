@@ -1,5 +1,5 @@
 import json
-import pandas as pd 
+import pandas as pd
 import matplotlib.pyplot as plt
 import readline
 import pandas as pd
@@ -27,7 +27,7 @@ for module in defs.keys():
 
 
 log_defs = defs.copy()
-counter = 0 
+counter = 0
 all_alternatives = 0
 for module in defs.keys():
 	print(str(counter), "out of", str(len(defs)))
@@ -52,7 +52,7 @@ for index, row in df.iterrows():
 		if alternative not in log_defs[module]["observed-alternatives"]:
 			log_defs[module]["observed-alternatives"].append(alternative)
 
-counter3 = 0 
+counter3 = 0
 data_points = []
 modules_with_no_complements = []
 for module, data in log_defs.items():
@@ -88,19 +88,25 @@ higher_than_1000 = new_data_points_df[new_data_points_df["alternatives"] > 1000]
 # Create the bar plot
 g2 = (
     ggplot(up_to_10, aes(x="alternatives"))
-    + geom_histogram(binwidth=1, alpha=0.7, fill="#28579E") 
+    + geom_histogram(binwidth=1, alpha=0.7, fill="#28579E")
     + geom_text(
-        aes(label='..count..'), 
-        stat='bin', 
-        binwidth=1, 
-        va='bottom', 
-        size=10, 
+        aes(label='..count..'),
+        stat='bin',
+        binwidth=1,
+        va='bottom',
+        size=16,
         color='black'
     )
     + labs(
-    	title="B. Modules with less than 10 alternatives", 
-    	x="Number of alternatives of a module", 
+    	title="B. Modules with less than 10 alternatives",
+    	x="Number of alternatives of a module",
     	y="Number of modules")
+
+    + theme(
+        plot_title=element_text(size=16, weight="bold"),
+        axis_text=element_text(size=14),   # Adjust axis tick labels font size
+        axis_title=element_text(size=14)   # Adjust axis title font size
+    )
     + scale_x_continuous(breaks=range(1, 11), minor_breaks=[])
 )
 
@@ -109,30 +115,35 @@ min_value, max_value = 10, max(higher_than_11_to_1000["alternatives"])
 step_size = 100
 g3 = (
     ggplot(higher_than_11_to_1000, aes(x="alternatives"))
-    + geom_histogram(binwidth=100, boundary=10, alpha=0.8, fill='#28579E') 
+    + geom_histogram(binwidth=100, boundary=10, alpha=0.8, fill='#28579E')
     + geom_text(
-        aes(label='..count..'), 
-        stat='bin', 
+        aes(label='..count..'),
+        stat='bin',
         binwidth=100,
-        boundary=10, 
-        va='bottom', 
-        size=10, 
+        boundary=10,
+        va='bottom',
+        size=16,
         color='black'
     )
     + labs(
-    	title="C. Modules with more than 10, less than 1000 alternatives", 
-    	x="Number of alternatives of a module", 
+    	title="C. Modules with more than 10, less than 1000 alternatives",
+    	x="Number of alternatives of a module",
     	y="Number of modules")
+    + theme(
+        plot_title=element_text(size=16, weight="bold"),
+        axis_text=element_text(size=14),   # Adjust axis tick labels font size
+        axis_title=element_text(size=14)   # Adjust axis title font size
+    )
     + scale_x_continuous(
-        limits=(min_value, 1001), 
+        limits=(min_value, 1001),
         breaks=range(min_value, 1001, step_size),
         minor_breaks=[]
-    ) 
+    )
 )
 
 
 
-counter3 = 0 
+counter3 = 0
 data_points = []
 modules_with_no_complements = []
 for module, data in log_defs.items():
@@ -148,19 +159,25 @@ data_points_df.columns = ["percentage"]
 
 g1 = (
     ggplot(data_points_df, aes(x="percentage"))
-    + geom_histogram(binwidth=0.1, alpha=0.7, fill="#28579E") 
+    + geom_histogram(binwidth=0.1, alpha=0.7, fill="#28579E")
     + geom_text(
-        aes(label='..count..'), 
-        stat='bin', 
-        binwidth=0.1, 
-        va='bottom', 
-        size=10, 
+        aes(label='..count..'),
+        stat='bin',
+        binwidth=0.1,
+        va='bottom',
+        size=16,
         color='black'
     )
     + labs(
-    	title="A. Histogram of the alternatives percentage coverage", 
-    	x="Percentage of the alternatives completed by any donor", 
+    	title="A. Histogram of the alternatives percentage coverage",
+    	x="Percentage of the alternatives completed by any donor",
     	y="Number of modules")
+
+    + theme(
+        plot_title=element_text(size=16, weight="bold"),
+        axis_text=element_text(size=14),   # Adjust axis tick labels font size
+        axis_title=element_text(size=14)   # Adjust axis title font size
+    )
     #+ scale_x_continuous(breaks=range(0, 1), minor_breaks=[])
 )
 
