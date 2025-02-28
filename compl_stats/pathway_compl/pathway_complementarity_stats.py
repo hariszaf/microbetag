@@ -1,14 +1,13 @@
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
-import readline
 import pandas as pd
 from plotnine import ggplot, aes, geom_histogram, geom_text, labs, scale_x_continuous, theme, element_text, stat_bin, geom_bar
 import patchworklib as pw
 
 
 with open("module_definition_map.json") as f:
-	defs = json.load(f)
+    defs = json.load(f)
 
 def count_subsets(lst):
     n = len(lst)
@@ -30,44 +29,44 @@ log_defs = defs.copy()
 counter = 0
 all_alternatives = 0
 for module in defs.keys():
-	print(str(counter), "out of", str(len(defs)))
-	data = defs[module]["steps"]
-	unique_combinations = 1
-	for key in data:
-	    unique_combinations *= len(data[key])
-	print(module, unique_combinations)
-	log_defs[module]["#-of-alternatives"] = unique_combinations
-	all_alternatives += unique_combinations
-	counter += 1
+    print(str(counter), "out of", str(len(defs)))
+    data = defs[module]["steps"]
+    unique_combinations = 1
+    for key in data:
+        unique_combinations *= len(data[key])
+    print(module, unique_combinations)
+    log_defs[module]["#-of-alternatives"] = unique_combinations
+    all_alternatives += unique_combinations
+    counter += 1
 
 
 df = pd.read_csv("unique_complements.tsv.gz", sep="\t", compression="gzip")
 for index, row in df.iterrows():
-	row = row.to_list()
-	module = "md:" + row[1]
-	alternative = row[-1].split(";")
-	if "observed-alternatives" not in log_defs[module]:
-		log_defs[module]["observed-alternatives"] = [alternative]
-	else:
-		if alternative not in log_defs[module]["observed-alternatives"]:
-			log_defs[module]["observed-alternatives"].append(alternative)
+    row = row.to_list()
+    module = "md:" + row[1]
+    alternative = row[-1].split(";")
+    if "observed-alternatives" not in log_defs[module]:
+        log_defs[module]["observed-alternatives"] = [alternative]
+    else:
+        if alternative not in log_defs[module]["observed-alternatives"]:
+            log_defs[module]["observed-alternatives"].append(alternative)
 
 counter3 = 0
 data_points = []
 modules_with_no_complements = []
 for module, data in log_defs.items():
-	try:
-		data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
-	except:
-		print(module, data.keys())
-		counter3 += 1
-		modules_with_no_complements.append(module)
+    try:
+        data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
+    except:
+        print(module, data.keys())
+        counter3 += 1
+        modules_with_no_complements.append(module)
 
 
 data_points_df = pd.DataFrame(data_points)
 data_points_df.columns = ["percentage"]
 #with open("logged_modules.json","w") as f:
-#	json.dump(log_defs, f)
+#    json.dump(log_defs, f)
 
 
 
@@ -75,7 +74,7 @@ data_points_df.columns = ["percentage"]
 modules = log_defs.copy() # added 09.02
 new_data_points = []
 for module in modules:
-	new_data_points.append(modules[module]["#-of-alternatives"])
+    new_data_points.append(modules[module]["#-of-alternatives"])
 
 new_data_points_df = pd.DataFrame(new_data_points)
 new_data_points_df.columns = ["alternatives"]
@@ -98,9 +97,9 @@ g2 = (
         color='black'
     )
     + labs(
-    	title="B. Modules with less than 10 alternatives",
-    	x="Number of alternatives of a module",
-    	y="Number of modules")
+        title="B. Modules with less than 10 alternatives",
+        x="Number of alternatives of a module",
+        y="Number of modules")
 
     + theme(
         plot_title=element_text(size=16, weight="bold"),
@@ -126,9 +125,9 @@ g3 = (
         color='black'
     )
     + labs(
-    	title="C. Modules with more than 10, less than 1000 alternatives",
-    	x="Number of alternatives of a module",
-    	y="Number of modules")
+        title="C. Modules with more than 10, less than 1000 alternatives",
+        x="Number of alternatives of a module",
+        y="Number of modules")
     + theme(
         plot_title=element_text(size=16, weight="bold"),
         axis_text=element_text(size=14),   # Adjust axis tick labels font size
@@ -147,12 +146,12 @@ counter3 = 0
 data_points = []
 modules_with_no_complements = []
 for module, data in log_defs.items():
-	try:
-		data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
-	except:
-		print(module, data.keys())
-		counter3 += 1
-		modules_with_no_complements.append(module)
+    try:
+        data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
+    except:
+        print(module, data.keys())
+        counter3 += 1
+        modules_with_no_complements.append(module)
 
 data_points_df = pd.DataFrame(data_points)
 data_points_df.columns = ["percentage"]
@@ -169,9 +168,9 @@ g1 = (
         color='black'
     )
     + labs(
-    	title="A. Histogram of the alternatives percentage coverage",
-    	x="Percentage of the alternatives completed by any donor",
-    	y="Number of modules")
+        title="A. Histogram of the alternatives percentage coverage",
+        x="Percentage of the alternatives completed by any donor",
+        y="Number of modules")
 
     + theme(
         plot_title=element_text(size=16, weight="bold"),
