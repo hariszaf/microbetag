@@ -1,10 +1,9 @@
+# %%
 import json
 import pandas as pd
-import matplotlib.pyplot as plt
 import pandas as pd
-from plotnine import ggplot, aes, geom_histogram, geom_text, labs, scale_x_continuous, theme, element_text, stat_bin, geom_bar
+from plotnine import ggplot, aes, geom_histogram, geom_text, labs, scale_x_continuous, theme, element_text
 import patchworklib as pw
-
 
 with open("module_definition_map.json") as f:
     defs = json.load(f)
@@ -39,6 +38,7 @@ for module in defs.keys():
     all_alternatives += unique_combinations
     counter += 1
 
+# %%
 
 df = pd.read_csv("unique_complements.tsv.gz", sep="\t", compression="gzip")
 for index, row in df.iterrows():
@@ -69,7 +69,7 @@ data_points_df.columns = ["percentage"]
 #    json.dump(log_defs, f)
 
 
-
+# %%
 # Second and third plots
 modules = log_defs.copy() # added 09.02
 new_data_points = []
@@ -84,6 +84,7 @@ higher_than_11 = new_data_points_df[new_data_points_df["alternatives"] > 10]
 higher_than_11_to_1000 = higher_than_11[higher_than_11["alternatives"] < 1001]
 higher_than_1000 = new_data_points_df[new_data_points_df["alternatives"] > 1000]
 
+# %%
 # Create the bar plot
 g2 = (
     ggplot(up_to_10, aes(x="alternatives"))
@@ -102,14 +103,15 @@ g2 = (
         y="Number of modules")
 
     + theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
     + scale_x_continuous(breaks=range(1, 11), minor_breaks=[])
 )
 
 
+# %%
 min_value, max_value = 10, max(higher_than_11_to_1000["alternatives"])
 step_size = 100
 g3 = (
@@ -129,9 +131,9 @@ g3 = (
         x="Number of alternatives of a module",
         y="Number of modules")
     + theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
     + scale_x_continuous(
         limits=(min_value, 1001),
@@ -139,9 +141,9 @@ g3 = (
         minor_breaks=[]
     )
 )
+g3 = g3 + theme(figure_size=(14, 6))
 
-
-
+# %%
 counter3 = 0
 data_points = []
 modules_with_no_complements = []
@@ -168,23 +170,24 @@ g1 = (
         color='black'
     )
     + labs(
-        title="A. Histogram of the alternatives percentage coverage",
+        title="A. Alternatives percentage coverage",
         x="Percentage of the alternatives completed by any donor",
         y="Number of modules")
 
     + theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
     #+ scale_x_continuous(breaks=range(0, 1), minor_breaks=[])
 )
 
-
-ax1 = pw.load_ggplot(g1)  # + labs(title='A')  this would overwrite the initial plot title
-ax2 = pw.load_ggplot(g2)
+# %%
+# ax1 = pw.load_ggplot(g1)  # + labs(title='A')  this would overwrite the initial plot title
+# ax2 = pw.load_ggplot(g2)
 ax3 = pw.load_ggplot(g3)
 
-ax123 = ax1|ax2|ax3
+# %%
+ax123 = (ax1|ax2)/ax3
 ax123.savefig("ax123.png")
 

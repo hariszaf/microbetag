@@ -1,3 +1,9 @@
+# Branch specific
+docs/
+microbetag/
+test_data/
+
+
 # Ignore python cache 
 __pycache__/
 

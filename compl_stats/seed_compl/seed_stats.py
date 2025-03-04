@@ -42,13 +42,13 @@ p1 = (
     ggplot(df, aes(x='bins', y='counts')) +
     geom_bar(stat='identity', fill='#28579E', alpha=0.7) +
     labs(
-        title="A. Histogram of number of seeds per genome",
+        title="A. Number of seeds per genome",
         x="Number of seeds",
         y="Number of genomes") +
     theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
 )
 
@@ -66,13 +66,13 @@ p2 = (
     ggplot(df, aes(x='bins', y='counts')) +
     geom_bar(stat='identity', fill='#28579E', alpha=0.7) +
     labs(
-        title="B. Histogram of number of non-seeds per genome",
+        title="B. Number of non-seeds per genome",
         x="Number of non-seeds",
         y="Number of genomes") +
     theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
 )
 
@@ -94,14 +94,14 @@ p3 = (
     ggplot(df, aes(x='bins', y='counts')) +
     geom_bar(stat='identity', fill='#28579E', alpha=0.7) +
     labs(
+        title='C. Distribution of seed compounds coverage',
         x='Percentage of genomes in which metabolite is a seed',
-        y='Number of metabolites',
-        title='C. Distribution of seed compounds coverage'
+        y='Number of metabolites'
     ) +
     theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
 )
 
@@ -121,14 +121,14 @@ p4 = (
     ggplot(df, aes(x='bins', y='counts')) +
     geom_bar(stat='identity', fill='#28579E', alpha=0.7) +
     labs(
+        title='D. Non-seed compounds coverage',
         x='Percentage of genomes in which metabolite is a non-seed',
-        y='Number of metabolites',
-        title='D. Distribution of non-seed compounds coverage'
+        y='Number of metabolites'
     ) +
     theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
 )
 
@@ -189,9 +189,9 @@ q = (
         x="Percentage of potentially total nonseed overlap",
         y="Number of genomes") +
     theme(
-        plot_title=element_text(size=16, weight="bold"),
-        axis_text=element_text(size=14),   # Adjust axis tick labels font size
-        axis_title=element_text(size=14)   # Adjust axis title font size
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
     )
 )
 
@@ -207,7 +207,8 @@ ax5 = pw.load_ggplot(q)
 
 
 # %%
-ax123 = ax1/ax2|ax3/ax4|ax5
+# ax123 = (ax1/ax2|ax3/ax4)/ax5
+ax123 = (ax1/ax2/ax3)|ax4/ax5
 ax123.savefig("seeds_stats.png")
 
 
