@@ -10,20 +10,27 @@ FROM microbetag_base:latest
 
 LABEL maintainer = "Haris Zafeiropoulos" 
 LABEL contact    = "haris.zafeiropoulos@kuleuven.be"
-LABEL build_date = "2024-08-06"
-LABEL version    = "v.1.1"
+LABEL build_date = "2025-02-06"
+LABEL version    = "v1.0.3"
 
+
+# Add lib
+RUN pip install pyshorteners ndex2 
 
 # Copy microbetag utils 
 WORKDIR /microbetag
-ADD microbetagDB/mappings/kegg_mappings/*  ./microbetagDB/mappings/kegg_mappings/
-ADD microbetagDB/mappings/MetaNetX/chem_xref.tsv ./microbetagDB/mappings/MetaNetX/chem_xref.tsv
-ADD microbetagDB/scripts/flashweave.jl ./microbetagDB/scripts/flashweave.jl
-ADD microbetagDB/ref-dbs/kofam_database/ko_list ./microbetagDB/ref-dbs/kofam_database/ko_list
-ADD utils.py ./
-ADD microbetag.py  ./
-ADD config.py ./
-ADD build_cx_annotated_graph.py ./
+ADD ext_data/kofam_database/ko_list ./microbetag/mtg_maps_models/kofam_database/ko_list
+# ADD microbetag/mtg_maps_models/kegg_mappings/*  ./microbetag/mtg_maps_models/kegg_mappings/
+# ADD microbetag/mtg_maps_models/MetaNetX/chem_xref.tar.gz ./microbetag/mtg_maps_models/MetaNetX/chem_xref.tar.gz
+
+
+# Add source code 
+ADD microbetag/ ./microbetag/
+
+COPY microbetag.py  .
+
+# Add addtional 
+ADD tests/ ./tests
 ADD LICENSE ./
 
-ENTRYPOINT [ "python3", "microbetag.py", "/data/config.yml" ]
+ENTRYPOINT [ "python3", "microbetag.py", "/data/*.yml" ]

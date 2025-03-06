@@ -16,10 +16,9 @@ Author:
 
 """
 
-__version__ = "v1.0.2"
+__version__ = "v1.0.3"
 
-import os
-import sys
+import os, sys
 import logging
 
 # Set up custom logging format
@@ -38,7 +37,6 @@ def print_help():
       v        Display version.
     """
     print(help_message)
-
 
 def print_version():
     print(__version__)
@@ -62,176 +60,136 @@ if sys.argv[1] == 'v' or sys.argv[1] == 'version':
     print_version(); sys.exit()
 
 import yaml
-import subprocess
-from utils import *
-from config import Config
-from build_cx_annotated_graph import *
-from julia.api import Julia
+
+from microbetag.utils import *
+from microbetag.tools import *
+from microbetag.config import Config
+from microbetag.genres import GEMSReconstruction
+from microbetag.helpers import manta_input_net
+from microbetag.build_mtg_cx2 import build_pseudo_cx, build_ndex2_net
+from microbetag.pathway_complementarity import export_pathway_complementarities
+from microbetag.seed_complementarity import ExportSeedComplementarities
 
 config_file = sys.argv[1]
 
 with open(config_file, 'r') as yaml_file:
     try:
         config = Config(yaml.safe_load(yaml_file), config_file)
-    except:
+    except yaml.YAMLError as exc:
         print_config_message() ; sys.exit(0)
 
-if config.bins_path is None:
-    raise ValueError
 
 # ----------------
 # Build network if not available
 # ----------------
 if config.precalc_only:
-    logging.warning("No abundance table or network was provided. microbetag will try to run pre-calculations.")
+    logging.info(
+        "microbetag is about to perform the precalculations for your list of bins/MAGs only."
+        "No network will be built."
+    )
 elif not os.path.exists(config.network) or os.path.getsize(config.network) == 0:
-    logging.info("\n >> NETWORK INFERENCE WITH FLASHWEAVE \n")
-    ensure_flashweave_format(conf=config)
-    pair_args = set()
-    for arg, values in config.flashweave_args.items():
-        if values["required"]:
-            if isinstance(values["value"], bool):
-                pair_args.add( ( arg, str(values["value"]).lower()) )
-            else:
-                logging.error(f'You need to provide values for "{arg}" argument of FlashWeave.') ; sys.exit(0)
-        else:
-            if values["value"] is not None:
-                if values["type"] == "Bool":
-                    pair_args.add( (arg, str(values["value"]).lower()) )
-                else:
-                    pair_args.add( (arg, values["value"]) )
-
-    pair_args.add(("transposed", "true"))
-    learn_in = ",".join(f"{arg[0]}={arg[1]}" for arg in pair_args)
-
-    jl = Julia(compiled_modules=False)
-    jl.using("FlashWeave")
-    if config.metadata_file:
-        jl.eval(f'save_network("{config.network}", "{config.metadata_file}", \
-            learn_network("{config.flashweave_abd_table}", {learn_in}))')
-    else:
-        jl.eval(f'save_network("{config.network}", learn_network("{config.flashweave_abd_table}", {learn_in}))')
-
-    ensure_same_namespace_after_fw(config)
+    logging.info(
+        "[STEP] NETWORK INFERENCE WITH FLASHWEAVE"
+        "Using the abundance table provided, microbetag is about to build a co-occurrence network.\n"
+    )
+    run_flashweave(config)
 
 # ----------------
 # FAPROTAX
 # ----------------
 if config.abundance_table is not None:
     logging.info("[STEP] LITERATURE ANNOTATION WITH FAPROTAX")
-    faprotax_params = [
-        "python3", config.faprotax_script,
-        "-i", config.abundance_table,
-        "-o", config.faprotax_funct_table,
-        "-g", config.faprotax_txt,
-        "-c", '"' + "#" + '"',
-        "-d", '"' + config.taxonomy_column_name + '"',
-        "-v",
-        "--force",
-        "-s", config.faprotax_sub_tables,
-    ]
-    faprotax_command = " ".join(faprotax_params)
-    process = subprocess.Popen(faprotax_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
+    run_faprotax(config)
+
 
 # ----------------
 # phen annotations
 # ----------------
-suffixes = [".fa", ".fasta", ".gz"]
-bin_files = get_files_with_suffixes(config.bins_path, suffixes)
-bin_files_in_a_row = " ".join(bin_files)
-
-# Build genotypes
-if get_library_version("scikit-learn") != "1.3.2":
-    os.system("python3 -m pip install scikit-learn==1.3.2")
-compute_genotype_params = [ "phenotrex",
-                            "compute-genotype",
-                            "--out",
-                            config.genotypes_file,
-                            "--threads",
-                            str(config.threads),
-                            bin_files_in_a_row
-]
-compute_genotype_command = " ".join(compute_genotype_params)
-if not os.path.exists(config.genotypes_file):
+if config.bin_filenames is not None:
     logging.info("[STEP] PREDICTING PHENOTYPIC TRAITS")
-    if os.system(compute_genotype_command) != 0:
-        logging.info("Try phenotrex genotype for the second time.")
-        if os.system(compute_genotype_command) != 0:
-            logging.error("asda")
-            sys.exit(0)
+    phenotrex_genotype(config=config)
+    phenotrex_predict(config=config)
 
-# Get predictions
-folder_path = "microbetagDB/ref-dbs/phenDB/classes/"
-phen_models = [os.path.join(folder_path, model) for model in os.listdir(folder_path)]
-
-for model in phen_models:
-    model_name =  os.path.basename(model)
-    model_predictions_output = "".join([
-        config.predictions_path, "/", model_name[:-4], ".prediction.tsv"
-    ])
-    if os.path.exists(model_predictions_output):
-        logging.info("Predictions already exist for model: %s", model_name)
-    else:
-        predict_traits_params = [
-            "phenotrex",
-            "predict",
-            "--genotype",
-            config.genotypes_file,
-            "--classifier",
-            model,
-            "--min_proba",
-            str(config.min_proba),
-            "--verb >",
-            model_predictions_output
-        ]
-        predict_trait_command = " ".join(predict_traits_params)
-        if os.system(predict_trait_command) != 0:
-            logging.error("TSIRIMPIM") ; sys.exit(0)
 
 # ----------------
-# Prodigal - using DiTing interface
+# Prodigal - ORF prediction
 # ----------------
-logging.info("[STEP  ] PREDICTING ORFs WITH PRODIGAL THROUGH DiTing")
-# [TODO] Avoid double - prodigal run if user can provide it
-for bin_fa in bin_files:
-    bin_filename = os.path.basename(bin_fa)
-    bin_id, extension = os.path.splitext(bin_filename)
-    run_prodigal(bin_fa, bin_id, config.prodigal)
+if (config.pathway_complementarity or config.seed_complementarity) and config.ko_merged is None:
+    if len(os.listdir(config.prodigal)) != len(config.bins_ids):
+        logging.info("[STEP  ] PREDICTING ORFs WITH PRODIGAL THROUGH DiTing")
 
+        if config.bin_filenames is None:
+            logging.error(
+                "Bins files have not been provided and they are required for the precalculation steps of microbetag."
+                "Provide the path to the directory with your bins/MAGs under the bins_fasta parameter of the config.yml file."
+            )
 
+        for bin_fa in config.bin_filenames:
+
+            bin_filename = os.path.basename(bin_fa)
+
+            bin_id, extension = os.path.splitext(bin_filename)
+            bin_id = bin_id.split("/")[-1]
+
+            bin_fa = os.path.join(config.bins_path, bin_fa)
+
+            logging.info(f"Running Prodigal for {bin_id}")
+
+            print(bin_fa, bin_id, config.prodigal)          # TODO: check if bin_id is actually only the basename of the whole path until extension
+
+            run_prodigal(bin_fa, bin_id, config.prodigal)
 
 # ----------------
 # Pathway complementarity
 # ----------------
 if config.pathway_complementarity:
     # ----------------
-    # KEGG annotation - using DiTing interface // required in case of pathway complementarities
+    # KEGG annotation - based on the DiTing implementation // required in case of pathway complementarities
     # ----------------
-    ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
-    ko_dic = ko_list_parser(ko_list)
 
     if config.ko_merged is None:
+
+        logging.info("[STEP ] KEGG ANNOTATION OF THE ORFs \n")
+
+        ko_list = os.path.join(config.kegg_db_dir, 'ko_list')
+        ko_dic = ko_list_parser(ko_list)
+
+        hmmout_dir = config.kegg_pieces_dir
         config.ko_merged = os.path.join(config.kegg_annotations, 'ko_merged.txt')
-        logging.info("[STEP ] KEGG ANNOTATION OF THE PRODIGAL ORFs \n")
+
         for bn in config.bin_filenames:
             bin_id, extension = os.path.splitext(bn)
-            faa = os.path.join(config.prodigal, bin_id + '.faa')
-            kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
+            bin_kos_dir = os.path.join(hmmout_dir, bin_id)
+            os.makedirs(bin_kos_dir, exist_ok=True)
 
+            for afile in os.listdir(bin_kos_dir):
+                if afile.endswith(".hmmout.all"):
+                    continue
+
+            for bn in config.bin_filenames:
+                faa = os.path.join(config.prodigal, bin_id + '.faa')
+                # A folder with KO predictions (a single hmmout file for each KO) per bin
+                check = kegg_annotation(faa, bin_id, config.kegg_pieces_dir, config.kegg_db_dir, ko_dic, config.threads)
+                # Out of the 24K hmmout files, make a single one with the predictions as backup and one with the 3-columns
+                if check:
+                    bin_kos_to_file(hmmout_dir=bin_kos_dir , bin_id=bin_id)
+
+        # Make the 3-columns files with all bins and their KOs
         merge_ko(config.kegg_pieces_dir, config.ko_merged)
+
     else:
         logging.info("A 3-col KEGG annotation file already available.")
-
-    pivot_df = load_merged_ko_file(config.ko_merged)  # Load ko_merged.txt
 
     # ----------------
     # Extract pathway complementarities
     # ----------------
+    pivot_df = load_merged_ko_file(config.ko_merged)  # Load ko_merged.txt
+
     if not os.path.exists(config.alts_file) or not os.path.exists(config.compl_file):
 
         logging.info("[STEP ] GET PATHWAY COMPLEMENTS ")
-        bin_kos_per_module, alt_to_gapfill, complements = export_pathway_complementarities(
+        # bin_kos_per_module, alt_to_gapfill, complements =
+        _, _ = export_pathway_complementarities(
             config,
             pivot_df
         )
@@ -239,41 +197,44 @@ if config.pathway_complementarity:
 # ----------------
 # Build GENREs
 # ----------------
-if config.users_models is False and config.seed_complementarity:
+if config.seed_complementarity:
 
-    logging.info("[STEP] GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS")
+    if not config.users_models:
 
-    build_genres = build_genres(config)
+        logging.info("[STEP] GENOME-SCALE METABOLIC NETWORK RECONSTRUCTIONS")
 
-    # Annotate step
-    if config.input_for_recon_type == "bins_fasta":
+        # Init reconstruction class
+        build_genres = GEMSReconstruction(config)
 
+        # Annotate step
+        if config.input_for_recon_type == "bins_fasta":
+
+            if config.genre_reconstruction_with == "modelseedpy":
+                build_genres.rast_annotate_genomes()  # saves under config.reconstructions
+
+            elif config.gene_predictor == "prodigal":
+                logging.info("DiTing .faa files will be used")  # go to the .faa case, i.e., the ORFs/
+
+            elif config.gene_predictor == "fragGeneScan":
+                logging.info("Get annotations with FragGeneScan.")
+                build_genres.fgs_annotate_genomes()   # saves under config.reconstructions
+
+        elif config.input_for_recon_type == "coding_regions":
+            logging.info("CarveMe will be used with the users .ffn-like files.")
+
+        else:
+            logging.warning(f"The combination of gene_predictor: {config.gene_predictor} \
+                \nand genre_reconstruction_with: {config.genre_reconstruction_with}, are not supported")
+
+        # Reconstruct step
         if config.genre_reconstruction_with == "modelseedpy":
-            build_genres.rast_annotate_genomes()  # saves under config.reconstructions
+            build_genres.modelseed_reconstructions()
 
-        elif config.gene_predictor == "prodigal":
-            logging.info("DiTing .faa files will be used")  # go to the .faa case, i.e., the ORFs/
+        elif config.genre_reconstruction_with == "carveme":
+            build_genres.carve_reconstructions()
 
-        elif config.gene_predictor == "fragGeneScan":
-            logging.info("Get annotations with FragGeneScan.")
-            build_genres.fgs_annotate_genomes()   # saves under config.reconstructions
-
-    elif config.input_for_recon_type == "coding_regions":
-        logging.info("CarveMe will be used with the users .ffn-like files.")
-
-    else:
-        logging.warning(f"The combination of gene_predictor: {config.gene_predictor} \
-            \nand genre_reconstruction_with: {config.genre_reconstruction_with}, are not supported")
-
-    # Reconstruct step
-    if config.genre_reconstruction_with == "modelseedpy":
-        build_genres.modelseed_reconstructions()
-
-    elif config.genre_reconstruction_with == "carveme":
-        build_genres.carve_reconstructions()
-
-    else:
-        logging.info("User models to be used for the seed complementarity step.")
+        else:
+            logging.info("User models to be used for the seed complementarity step.")
 
 
 # ----------------
@@ -291,7 +252,7 @@ if config.seed_complementarity:
 # ----------------
 if config.seed_complementarity:
     logging.info("[STEP] EXPORTING SEED COMPLEMENTS")
-    seed_complements = export_seed_complementarities(config)
+    seed_complements = ExportSeedComplementarities(config)
     """
     [NOTE]:consider running again "seed scores" (PhyloMint) using update seed sets
     in this case, we should also edit the ConfidenceScore dictionary
@@ -321,14 +282,41 @@ if config.seed_complementarity:
 
 
 # ----------------
+# Network clustering
+# ----------------
+if config.network_clustering and config.prev_manta_net is None:
+
+    logging.info("""[STEP]: network clustering using manta and the abundance table""")
+    # Build original input file in cyjs format
+    manta_input_net(config)
+
+    logging.info(
+        "Base network has been built and saved."
+        "manta is now clustering your network..."
+    )
+    # Run manta on the cyjs network
+    run_manta(config)
+
+    logging.info("Base network has been built and saved.")
+
+
+# ----------------
 # Annotate network in .cx format
 # ----------------
 if config.precalc_only is False:
     logging.info("[STEP] ANNOTATE NETWORK ")
-    annotated_network = build_cx_annotated_graph(config)
+    annotated_network = build_pseudo_cx(config)
     with open(config.microbetag_annotated_network_file, "w") as f:
             annotated_network2file = convert_to_json_serializable(annotated_network)
             json.dump(annotated_network2file, f)
-    logging.info("A microbetag-annotated network in .cx format was built sucessfully.")
+            logging.info("A microbetag-annotated network in .cx format was built sucessfully.")
+
+    # Build cx2 with ndex2 library
+    if build_ndex2_net(config.microbetag_annotated_network_file):
+        # os.remove(config.microbetag_annotated_network_file)
+        logging.info("The pseudo .cx file was converted to CX2 through NDEx successfully.")
+
+config.export_to_log()
+logging.info("A parameters.log file with the parameters used in this run was built.")
 
 logging.info("microbetag completed.")

@@ -14,6 +14,22 @@ This stand-alone tool is distributed as a Docker and a Singularity image.
 
 ## Dependencies
 
+
+### Running `microbetag` on your host machine
+
+
+
+`microbetag` relies on switching `conda envs`; thus `conda` is a strong pre-requisite.
+First, make sure you do have `conda` on your host machine.
+
+
+
+
+
+
+
+### Running `microbetag` in a container
+
 - [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html) / [Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux)
 - kofam_database
 
@@ -28,6 +44,20 @@ mkdir kofam_database &&\
 ```
 - A Web License Service (WLS) [Gurobi license](https://www.gurobi.com/downloads/) in case you are about to use `carveme`.
     You may find the following [link](https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu) useful on how to do that.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Input files
@@ -155,6 +185,20 @@ https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
 Once `microbetag` has been performed successfully, and the `microbetag_annotated_network.cx` has been built,
 and assuming you have [installed the MGG CytoscapeApp](https://hariszaf.github.io/microbetag/docs/cytoApp/), 
 you can now load the `.cx` file in Cytoscape (`File > Import network from file`) and go through the annotations the same way as you would do when running microbetag from within the app. 
+
+
+## Unit-tests
+
+Remember, `unittest`:
+
+  - requires the testing function to start with the `test_` prefix, e.g. `test_run_flashweave()`
+  - will run your tests in alphabetical order
+  - `setUpClass` is called with the class as the only argument and must be decorated as a `classmethod()`
+
+:warning: Remember also that `microbetag` will use the directory where the configuration files you provide 
+as the base working directory. 
+Therefore, you should place your input/output files within the confi file directory as in the `ext_data/tests_*`.
+
 
 
 ## Funding

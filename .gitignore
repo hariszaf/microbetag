@@ -1,8 +1,15 @@
+# Branch specific
+examined_cases
+
 # Ignore python cache 
 __pycache__/
 
 # Ignore pip install dist/ 
 dist/
+build/
+*.egg-info/
+
+
 
 # Build and Release Folders
 bin-debug/
@@ -13,6 +20,10 @@ bin-release/
 # Other files and folders
 .settings/
 
+# Ignore docs
+_site/
+_build/
+
 # Executables
 *.swf
 *.air
@@ -22,16 +33,25 @@ bin-release/
 # Backups tmp
 *.bck
 
+# Logs
+*.log
+
+# Licenses
 *.lic
+
+*.faa
+*.ffn
+*.out
+*.gto
+*.gto_2
+*.gbk
+
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-
-kegg_genomes/
-mgnify_catalogues/
-gtdb_kofam_scan_per_module/
+faprotax/
 seed_complements/
 gtdb_genomes/
 *.keg
@@ -79,15 +99,9 @@ dada2familiesNcbiIds
 *.contigs.fa
 bins/
 
-elos_bins.tsv
-kos_on_modules_graph.tsv
 
 # Ignore the output of the installation.sh script 
 microbetag_env
-
-# Ignore .json files under the scripts folder udner the microbetagDB
-microbetagDB/scripts/*.json 
-microbetag/microbetagDB/ref-dbs/kofam_database/profiles/
 
 # Ignore the GTDB db with 16S 
 gtdb_16s.RData
@@ -98,7 +112,6 @@ kofam_database/
 # Ignore the output folder of the stand alone tool
 #microbetag_run/
 hmmout/
-
 PhyloMint/
 MetaNetX/
 
