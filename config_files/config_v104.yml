@@ -1,0 +1,494 @@
+# -----------------------------------------------------------------------------------------
+# Template Configuration File for Stand-alone microbetag
+
+# Make sure that you are using the version of this template that matches the version of microbetag you intend to run.
+# For example, if you are running hariszaf/microbetag:v1.0.4, you must use the corresponding config.yml template for version v1.0.4.
+
+# Template version: v1.0.4
+# Author: Haris Zafeiropoulos
+# Date: Feb, 2025
+# -----------------------------------------------------------------------------------------
+
+# ------
+# INPUT/OUTPUT
+# ------
+abundance_table_file: 
+  file_path: 
+  description: >
+    Filename of the abundance table file.
+    The taxonomy scheme is irrelevant in the case of the stand-alone tool.
+    However, ensure that the sequence identifiers in this table match those in your network (if provided) 
+    and in your bins/.faa/.xml files in case you provide relevant input files.
+  required: 
+    value: false
+    when: 
+  examples: 
+    - thirty_Samples.tsv
+    - counts_genomes_taxonomies.tsv
+  type: string
+
+
+bins_fasta:
+  dir_path:
+  description: >
+    Name of the folder with the bins .fasta files.
+  required: 
+    value: false
+    when: 
+  type: string
+
+
+orfs:
+  dir_path: 
+  description: >
+    In case Operating Reading Frames (ORFs) have been already computed (e.g., using Prodigal), 
+    you may provide the path to the folder with the .fna files. 
+  required: 
+    value: false
+    when: 
+  type: Path
+
+
+edge_list:
+  file_path:
+  description: >
+    If co-occurrence network already available, please provide its edge list; a 2 column tab separated file.
+  required: false
+  examples: 
+    - edgelist.csv
+  type: string
+
+
+sequence_id_taxonomy_map:
+  file_path: 
+  description: >
+    A file
+  required: 
+    value: false
+    when: 
+  examples:
+    - bin2taxonomy.tsv
+  type: string
+
+
+output_directory: 
+  dir_path: 
+  description: >
+    Name of the output folder that will be built inside the io_path directory.
+  required: true
+  type: string
+
+
+# -----
+# Annotations types
+# -----
+faprotax_annotation:
+  value: 
+  description: >
+    Runs FAPROTAX on you abundance table and annotate network nodes with its predictions
+  default: true
+  type: bool
+
+
+phenotrex_traits:
+  value:
+  description: >
+    Runs phenotrex on your genomes to annotate them with COGs and then predicts whether they carry a set of phenotypic traits
+    or not, using the microbetagDB set of models 
+  default: true
+  type: bool
+
+
+pathway_complementarity:
+  value:
+  description: >
+    Annotates your genomes with KEGG ORTHOLOGY terms, if ko_merged_file is null and annotates your network with pathway complementarities
+  default: true
+  type: bool
+
+
+seed_complementarity:
+  value:
+  description: >
+    Builds GENREs if not such are provided and annotates your network with seed complementarities
+  default: true
+  type: bool
+
+
+network_clustering:
+  value:
+  description: >
+    Runs manta network clustering algorithm on your network and annotates nodes with their corresponding cluster number
+  default: false
+  type: bool
+
+
+# -----
+# Computing
+# -----
+threads:
+  value: 2
+  description: Number of CPUs to be used.
+  required: false
+  type: integer
+
+
+# -----
+# Precalculations only
+# -----
+precalulations_only:
+  value: false
+  description: >
+    If true, only precalculations will be performed.
+    Neither an abundance table nor an existing network will be considered—only the list of bins/MAGs provided 
+    in the bins_fasta parameter.
+
+    In this mode, microbetag ensures that all required precalculations for the requested annotation steps 
+    are available. If any are missing, they will be performed. Once all necessary precalculations are complete, 
+    the network will be annotated.
+  required: false
+  type: bool
+
+# -----
+# Pathway complementarity: if the pathway_complementarity parameter is set as false, 
+# the rest of the parameters will not be considered. 
+# -----
+pathway_complementarity:
+  value: true
+  description: >
+    Set whether pathway complementarities should be calcuated and then used to annotated the edges of the 
+    co-occurrence network.
+  required: false
+  type: bool
+
+
+complement_max_length:
+  value: 3
+  description: >
+    In some cases, a species may lack KOs related to a module but can acquire a complete alternative from a donor species.
+    However, KEGG modules vary in size—some consist of just a couple of KO terms, while others require dozens.
+    Set the maximun length of a module that can be exchanged when no module related KO is present in the beneficiary in the first place.
+  required: false
+  type: integer
+
+
+pc_percentage:
+  value: 0.35
+  description: >
+    The percentage of a module (i.e., the number of KO terms) that a potential donor can provide to a beneficiary.
+    For example, if a module consists of 5 KOs and the donor can supply 4 missing ones, such an event is unlikely.
+    If no value is specified, all possible complements will be returned.
+  required: false
+  type: float
+
+
+ko_merged_file:
+  file_path: 
+  description: >
+    A merged 3-column file with bins, contigs and the annotated KO term for all your genomes/bins. 
+    Needs to have a header and keep this order. 
+    You may have this from a previous microbetag run, or from annotations outside the microbetag software. 
+    
+    Here is a example: 
+    bin_id	            contig_id	                                                KO
+    D300418:bin_000001	D300418:bin_000001_D300418:bin_000001@contig_00001691_10	K07258
+    D300418:bin_000001	D300418:bin_000001_D300418:bin_000001@contig_00001691_13	K06024
+  required: false
+  example: KEGG_annotations/ko_merged.txt
+  type: Path
+
+
+kofam_database:
+  dir_path: 
+  description: >
+    Provide the path to the kofam directory_database directory.
+    This variable is not required unless `pathway_complementarity` is set to true
+    and `ko_merged_file` is not provided.
+  required: 
+    value: false
+    when: >
+      pc_percentage is true and ko_merged_file is null
+  type: Path
+
+
+prev_calc_path_compl:
+  file_path:
+  description: >
+
+  required: false
+  when: 
+  default: 
+  example: pathCompls.json
+
+
+
+# -----
+# Seed complementarity 
+# -----
+
+seed_complementarity:
+  value: true
+  description: >
+    This is the most time-consuming and challengint step of the workflow. 
+    You may perform microbetag with or without it by setting this argument as true or false correspondinly.
+    In case you are interested in reconstructing GEMs only, you need also to set this true.
+  required: 
+    value: false
+    when: microbetag is to run partially to build GEMs (e.g. test_modelseed.py under `tests/`)
+  type: bool
+
+# ~~~~
+# Seed complementarity I: GENREs 
+# ~~~~
+
+sc_input_type:
+  value:
+  value_from: 
+    - bins_fasta
+    - coding_regions
+    - proteins_faa
+    - models
+  description: >
+    Specifies the type of information included in the input type for seed compplementarity 
+    files for GEM reconstruction.
+    This parameter is closely related to `sequence_files_for_reconstructions`, which defines the path to the files described here.
+
+    - If GEMs are already available, set `sc_input_type` to models 
+    and provide the path to the .xml models via `sequence_files_for_reconstructions`.
+    - If you plan to use ModelSEEDpy for GEM reconstruction and have already annotated your genomes with RAST (i.e., gto, gto_2, 
+    and their corresponding .faa files are available), set this parameter to `proteins_faa` and specify the directory containing 
+    the .faa files in `sequence_files_for_reconstructions`.
+    - If neither of the above is available, set this parameter to bins_fasta and leave `sequence_files_for_reconstructions` blank.
+  type: string
+  required: true
+
+
+sequence_files_for_reconstructions:
+  dir_path: 
+  required: 
+    value: true
+    when: if sc_input_type != "bins_fasta". Could be either .fna or .faa files.
+  description: 
+  type: string
+
+
+gene_predictor:
+  value: fragGeneScan
+  value_from: 
+    - fragGeneScan
+    - prodigal
+    - RAST
+  required: 
+    value: false
+    when: >
+      orfs_per_bin is None or genre_reconstruction_with is carveme
+  description: "RAST annotation is required/strongly suggested* if modelseedpy is going to be used as genre_reconstruction_with.
+  Otherwise, the user may choose among fragGeneScan or prodigal; in the latter, the .faa returned by DiTing will be used."
+  type: string
+
+
+genre_reconstruction_with:
+  value: carveme
+  value_from: 
+    - modelseedpy
+    - carveme
+  required: 
+    value: true
+    when: seed_complementarity == true
+
+gapfill_model:
+  value: true
+  description: "If true, modelseedpy will gapfill the reconstruction."
+  type: bool
+
+
+gapfill_media:
+  file_path: 
+  description: >
+      Tab separated file with the media that will be used to gapfill the model, 
+      If non provided, and `gapfill_model` is true, the model will be gapfilled using a complete medium,
+      meaning all exchange reactions of the draft reconstruction will be considered free to get a high uptake.
+  type: Path
+
+
+# -----
+# Metabolic network reconstruction: there parameters should be considered only in case seed complementarity 
+# is about to be performed and metabolic networks are not already available
+# -----
+prev_calc_seed_sets:
+  dir_path: 
+  required: false 
+  description: >
+    Path to directory with SeedSetDic.json and nonSeedSetDic.json files if previously calculated for the genomes under study
+    Leave empty if no previously calculated dictionaries.
+  type: string
+
+
+prev_conf: 
+
+  file_path:
+  description: >
+
+  required:
+  type:
+
+
+prev_nonseeds:
+
+  file_path:
+  description: >
+    
+  required:
+  type:
+
+
+# -----
+# Phen traits prediction
+# -----
+min_proba:
+  value: 
+  description: >
+    Minimum confidence that a prediction needs to have for keeping the the presence/absence finding.
+  type: float
+  required: false
+  default: 0.6
+
+# -----
+# manta 
+# -----
+prev_clustered_network:
+  file_path: 
+  description: >
+    In case you have performed manta already in a previous run of microbetag or as a stand-alone tool, 
+    you may provide directly its findings in .cyjs format.
+  type: string
+  required: false
+  example: 
+    - microbetag/ext_data/input_data/manta.cyjs
+
+# -----
+# Flashweave
+# -----
+metadata_file:
+  file_path: 
+  description: >
+    Only .tsv files are accepted.
+  required: false
+  default: 
+  type: string
+
+
+flashweave_args:
+    heterogeneous:
+      value: 
+      description: >
+        Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE).
+      required: true
+      default: false
+      type: bool
+    
+    sensitive:
+      value: 
+      description: >
+        Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes 
+        FlashWeave-F or FlashWeaveHE-F.
+      required: true
+      default: true
+      type: bool
+
+    max_k:
+      value:
+      description: >
+        Maximum size of conditioning sets, high values can strongly increase runtime. 
+        max_k=0 results in no conditioning (univariate mode).
+      required: false
+      default: 3
+      type: integer
+
+    alpha:
+      value:
+      description: Threshold used to determine statistical significance.
+      required: false
+      default: 0.01
+      type: 
+
+    conv:
+      value:
+      description: >
+        Convergence threshold, i.e. if conv=0.01 assume convergence if the number of edges increased by only 1% after 100% 
+        more runtime (checked in intervals).
+      required: false
+      default: 0.01
+      type: 
+
+    feed_forward:
+      value:
+      description: Enable feed-forward heuristic
+      required: false
+      default: true
+      type: boolean
+
+    max_tests: 
+      value:
+      description: >
+        Maximum number of conditional tests that should be performed on a variable pair before association is assumed.
+      required: false
+      default: 10e6
+      type: integer
+
+    hps:
+      value:
+      description: Reliability criterion for statistical tests when sensitive=false.
+      required: false
+      default: 5
+      type: integer
+
+    FDR:
+      value: 
+      description: >
+        Perform false Discovery Rate correction (Benjamini-Hochberg method) on pairwise associations.
+      required: false
+      default: true
+      type: boolean
+
+    n_obs_min:
+      value: 
+      desription: >
+        Don't compute associations between variables having less reliable samples (i.e. non-zero if heterogeneous=true) 
+        than this number. 
+        -1  automatically choose a threshold.
+      required: false
+      default: 20 (in case of discrete computer systems)
+      type: integer
+
+    time_limit:
+      value: 
+      description: >
+        If feed-forward heuristic is active, time_limit determines the interval (seconds) at which neighborhood information 
+        is updated.
+        -1.0 set heuristically, 0.0 no time_limit, otherwise time limit in seconds
+      required: false
+      default: -1.0
+      type: float
+
+    normalize:
+      value: 
+      description: Automatically choose and perform data normalization (based on sensitive and heterogeneous)
+      required: false
+      default: true
+      type: bool
+
+    track_rejections:
+      value: 
+      description: >
+        Store for each discarded edge, which variable set lead to its exclusion (can be memory intense for large networks)
+      required: false
+      default: false
+      type: boolean
+
+    verbose:
+      value:
+      description: Print progress information
+      required: false
+      default: true
+      type: bool

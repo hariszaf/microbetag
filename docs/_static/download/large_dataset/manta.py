@@ -7,21 +7,24 @@ from microbetag.tools import run_manta
 from microbetag.config import load_abundance
 
 # Directories
-root_dir   = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(os.path.abspath(__file__))
 output_dir = os.path.join(root_dir, "manta_output")
 os.makedirs(output_dir, exist_ok=True)
 
 # Using abundance table to map sequence ids to taxonomies ==  USED FOR THE MS // TAKES TOO LONG, REPLACE WITH SHORTER FILES
-input_data   = os.path.join(root_dir, "prep_output")
-abd_table    = os.path.join(input_data, "GTDB_tax_assigned_abundance_table.tsv")  # "plaque_abd_tab.tsv"
-net_edgelist = os.path.join(input_data, "network_output.edgelist")    # "plaque_edgelist.tsv"
+input_data = os.path.join(root_dir, "prep_output")
+abd_table = os.path.join(
+    input_data, "GTDB_tax_assigned_abundance_table.tsv"
+)  # "plaque_abd_tab.tsv"
+net_edgelist = os.path.join(
+    input_data, "network_output.edgelist"
+)  # "plaque_edgelist.tsv"
 
 
 class AbdTableConfig:
-
     def __init__(self):
 
-        """ Config-like class for the case an abundance table is being used """
+        """Config-like class for the case an abundance table is being used"""
 
         # Specify case to use
         self.abundance_table = abd_table
@@ -33,7 +36,7 @@ class AbdTableConfig:
             self.seq_to_taxon_df,
             self.sequence_id_column_name,
             self.taxonomy_column_name,
-            _  # delimeter
+            _,  # delimeter
         ) = load_abundance(self.abundance_table)
 
         self.seq_ids = self.seq_to_taxon_df["sequence_id"].unique().tolist()
@@ -41,12 +44,10 @@ class AbdTableConfig:
 
 
 class TestManta(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         # This is called once for the entire class before any test runs
         cls.abd_config = AbdTableConfig()
-
 
     def testMantaAbdTable(self):
 
@@ -59,8 +60,6 @@ class TestManta(unittest.TestCase):
         print("Manta ran successfully")
 
 
-
 if __name__ == "__main__":
 
     unittest.main()
-

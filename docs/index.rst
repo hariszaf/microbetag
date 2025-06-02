@@ -7,14 +7,8 @@ microbetag
    :caption: Welcome
 
    welcome
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Modules
-
    modules/modules
-   .. modules/index
-
+   modes
 
 .. toctree::
    :maxdepth: 2
@@ -25,20 +19,33 @@ microbetag
 
 .. toctree::
    :maxdepth: 2
-   :caption: Tutorials 
+   :caption: Tutorials: core topics
 
-   basic_usage/input
-   basic_usage/mgg_totorials
-   basic_usage/roaming
-   basic_usage/enrichment
+   tutorials_core/overall
+   tutorials_core/input
+   tutorials_core/roaming
+   tutorials_core/enrichment
+   tutorials_core/load
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Tutorials - advanced use
+   :caption: Tutorials: on-the-fly
 
-   advanced_use/tutorials
+   tutorials_otf/abd_only
+   tutorials_otf/abd_and_metadata
+   tutorials_otf/from_net
+   tutorials_otf/prep
+   tutorials_otf/large_data
+   
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials: stand-alone
+
+   tutorials_local/local
+   tutorials_local/config
+   tutorials_local/python
 
 .. toctree::
    :maxdepth: 2

@@ -1,409 +1,635 @@
+# System
 import os
 import json
-import time
-import cobra
-import shutil
+import gzip
 import pickle
-import logging
 import tarfile
+from typing import TYPE_CHECKING, List, Dict, Tuple, Union
+
+# Data
 import pandas as pd
+
+# Multiprocessing
 from tqdm import tqdm
-from joblib import Parallel, delayed
-from .utils import convert_to_json_serializable
+import multiprocessing
 
-class ExportSeedComplementarities():
+# microbetag features
+from .utils import mtg_logger
+from .PhyloMint.lib import BuildGraphNetX
+from .PhyloMint.lib.CalculateIndexes import calculate_scores, extract_complements
+
+if TYPE_CHECKING:
+    from .config import Config
+
+# Build logger
+_logger_ = mtg_logger(__name__)
+
+
+def _generate_fixed_pairwise_comparisons(fixed_item: str, patric_ids_of_interest: List):
+    """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
+
+    fixed_seedset_as_A    = set()
+    fixed_nonseedset_as_A = set()
+
+    # Generate pairs where fixed_item is in the first position
+    for B in patric_ids_of_interest:
+        fixed_seedset_as_A.add((fixed_item, B))
+
+    # Generate pairs where fixed_item is in the second position
+    for A in patric_ids_of_interest:
+        fixed_nonseedset_as_A.add((A, fixed_item))
+
+    return list(fixed_seedset_as_A), list(fixed_nonseedset_as_A)
+
+
+class ExportSeedComplementarities:
     """
-    Class to  export seed complements.
-    Needs a config object to initiate it.
+    Computes seed and non-seed sets and then exports complementarities.
 
-    # conda activate microbetag
-    import yaml
-    from config import Config
-    from utils import ExportSeedComplementarities
+    It saves corresponding sets to json files.
 
-    config_file = "tests/dev_io_microbetag/config.yml"
-    with open(config_file, 'r') as yaml_file:
-        config = Config(yaml.safe_load(yaml_file), config_file)
+    Invokes edited version PhyloMInt modules as edited from microbetag team
+    to support parallel calculation of the seed and non seed sets, and to consider reaction reversibility.
 
-    seed_complements = ExportSeedComplementarities(config)
-    seed_complements.update()
+    Cite:
+        Lam TJ, Stamboulian M, Han W, Ye Y. Model-based and phylogenetically adjusted quantification
+        of metabolic interaction between microbial species. PLoS computational biology. 2020 Oct 30;16(10):e1007951.
+
+    Note:
+        Thanks to the `prev_conf` and the `prev_nonseeds` attributes of the :class:`Config` class,
+        :class:`ExportSeedComplementarities` is able to use pre-calculated seed and non-seed sets.
+        This is how the on-the-fly version of `microbetag` runs the seed complementarity step.
     """
-    def __init__(self, config):
-        self.seeds = config.seeds
-        self.seed_sets = os.path.join(config.seeds, "SeedSetDic.json")
-        self.nonseed_sets = os.path.join(config.seeds, "nonSeedSetDic.json")
-        self.genres = config.genres
-        self.logfile = os.path.join(config.seeds, "log.tsv")
-        self.updated_seed_sets = os.path.join(config.seeds, "updated_SeedsDic.json")
-        self.updated_non_seed_sets = os.path.join(config.seeds, "updated_nonSeedsDic.json")
-        self.seed_ko_mo = config.seed_ko_mo
-        self.module_seeds = os.path.join(self.seeds, "module_related_seeds.pckl")
-        self.module_non_seeds = os.path.join(self.seeds, "module_related_non_seeds.pckl")
-        self.seed_complements = os.path.join(self.seeds, "seed_complements.pckl")
-        self.metanetx_compounds = config.metanetx_compounds
-        self.genre_reconstruction_with = config.genre_reconstruction_with
 
-        self.ex_suffix = "_e" if self.genre_reconstruction_with == "carveme" else "_e0"
-        self.int_suffix = "_c" if self.genre_reconstruction_with == "carveme" else "_c0"
-        self.compound_prefix = "M_"
+    def __init__(self, config: "Config"):
 
-        if config.users_models:
-            if len(os.listdir(config.genres)) != len(os.listdir(config.for_reconstructions)):
-                genre_files = [
-                os.path.join(config.for_reconstructions, file)
-                        for file in os.listdir(config.for_reconstructions)
-                ]
-                for file in genre_files:
-                    dest_path = os.path.join(config.genres, os.path.basename(file))
-                    shutil.copy(file, dest_path)
+        _logger_.info("Initiating Export Seed Complementarities class with params.")
 
-    def update(self):
-        """
-        PhyloMInt does not consider the
-        Update seed sets returned by PhyloMint by:
-        - removing compounds from seed sets that are related to environmental metabolites that can be produced in several ways within the cell.
-        - removing from non seed sets compounds that cannot be produced in any other way than from entering the cell from the environment.
+        self.config = config
 
-        If both _c0 and _e0 exist in the seed list, _e0 is kept.
-        If _c0 is missing from the model, _e0 is kept as a seed.
-        If _c0 can be produced without _e0, _e0 is not a seed.
-        Otherwise, _e0 is kept as a seed and _c0 is removed from non-seeds.
+        self.api      = getattr(config, 'api', False)
+        self.onthefly = getattr(config, 'onthefly', False)
 
-        """
+        self.seed_compls_pckl = getattr(config, 'seed_compl_pckl', None)
 
-        f = open(self.logfile , "w")
+        self.modules_ms_cpd = get_kegg_module_related(config.seed_ko_mo)
 
-        f.write("model_id" + "\t" + "environmental_initial_seeds" +
-                "\t" + "non_environmental_initial_seeds" +  "\t" +  "total_initial_seeds" + "\t" +
-                "updated_seeds" + "\t" +  "initial_non_seeds" + "\t" + "updated_non_seeds" + "\n"
-        )
+        self.module_related = True
+        self.perce_save     = 10
 
-        updated_seeds = {}
-        updated_nonSeeds = {}
-        current_seeds = json.load(open(self.seed_sets, "r"))
-        current_nonSeeds = json.load(open(self.nonseed_sets, "r"))
+        if not self.api:
+            self.scores_outfile   = os.path.join(self.config.seeds_outdir, "phylomint_scores.tsv")
 
-        for xml in os.listdir(self.genres):
+        if self.api or self.onthefly:
 
-            s1 = time.time()
-            counter = 0; counter2 = 0
+            self.get_complements  = getattr(config, 'get_complements', True)
+            self.get_scores       = getattr(config, 'get_scores', True)
 
-            xml_path =  os.path.join(self.genres, xml)
+        else:
 
-            model_id, _ = os.path.splitext(xml)
+            self.user_models = getattr(config, 'user_models', False)
+            self.namespace   = getattr(config, 'namespace', "modelseed")
+            self.switch      = False if self.namespace == "modelseed" else True
 
-            model = cobra.io.read_sbml_model(xml_path)
-            model_mets = [met.id for met in model.metabolites]
-            models_tmp_non_seeds = current_nonSeeds[model_id]
-            models_tmp_seeds = current_seeds[model_id]
+            self.get_scores      = getattr(config, 'get_scores', not os.path.exists(self.scores_outfile))
+            self.get_complements = getattr(config, 'get_complements', not os.path.exists(self.seed_compls_pckl))
 
-            models_seeds = []
-            # NOTE: moldes_tmp_non_seeds would be set by default, but not when loaded by a json file
-            models_nonSeeds = set(models_tmp_non_seeds.copy())
+            if getattr(config, 'genre_reconstruction_with', None) == "carveme":
 
-            # Check if we keep intra- or extracellular compound
-            for pot_seed in models_tmp_seeds:
+                self.namespace = "BiGG"
+                self.bigg2seed = bigg_to_seed_mapping_df(config.metanetx_compounds)
+                self.switch    = getattr(config, 'switch_namespace', True)
 
-                if pot_seed.endswith(self.ex_suffix):  # Check if the metabolite is extracellular (_e0)
-                    counter += 1
-                    main_seed_id = pot_seed.rsplit(self.ex_suffix, 1)[0]
-                    cor_in_met = main_seed_id + self.int_suffix  # Corresponding intracellular metabolite (_c0)
+            self.compound_prefix = "M"
+            self.ex_suffix  = "e" if self.namespace == "BiGG" else "e0"
+            self.int_suffix = "c" if self.namespace == "BiGG" else "c0"
 
-                    if cor_in_met in models_tmp_seeds:
-                        # Both _c0 and _e0 are in the potential seed set
-                        models_seeds.append(pot_seed)
-                        continue
+        if self.config.skip_sets:
 
-                    cor_in_met = cor_in_met.lstrip(self.compound_prefix)  # Remove prefix if present
-
-                    if cor_in_met not in model_mets:
-                        # If the intracellular metabolite is not part of the model
-                        models_seeds.append(pot_seed)
-                        continue
-
-                    # Check if _c0 can be produced without requiring _e0 as a reactant
-                    check = any(
-                        cor_in_met in [met.id for met in rxn.products] and
-                        pot_seed[2:] not in [met.id for met in rxn.reactants]
-                        for rxn in model.metabolites.get_by_id(cor_in_met).reactions
-                    )
-
-                    if not check:
-                        continue  # Skip adding _e0 as a seed if _c0 can be produced independently
-
-                    models_seeds.append(pot_seed)
-                    models_nonSeeds.discard(self.compound_prefix + cor_in_met)  # Remove _c0 from non-seeds
-
-                else:
-                    counter2 += 1
-                    models_seeds.append(pot_seed)  # Directly add non-extracellular metabolites
-
-
-            with open(self.logfile, "a") as f:
-                f.write(model_id + "\t" + str(counter) + "\t" + str(counter2) + "\t" +
-                        str(len(models_tmp_seeds)) + "\t" + str(len(models_seeds)) + "\t" +
-                        str(len(models_tmp_non_seeds)) + "\t" + str(len(models_nonSeeds)) + "\n"
-                )
-            updated_seeds[model_id] = models_seeds
-            updated_nonSeeds[model_id] = models_nonSeeds
-
-            s2 = time.time()
-            logging.info(f"{s2-s1} seconds for a .xm_tags load")
-
-        logging.info("Update function is done and about to save updated json files.")
-
-        with open(self.updated_seed_sets, "w") as f:
-            json.dump(updated_seeds, f)
-
-        with open(self.updated_non_seed_sets, "w") as f:
-            json.dump(convert_to_json_serializable(updated_nonSeeds), f)
-
-    def module_related_seeds(self):
-        """
-        Get seed and non seed sets with terms related to KEGG MODULES.
-                                                       NonSeedSet
-        BIN
-        bin101-contigs  [cpd02817, cpd00344, cpd03123, cpd00482, cpd11...
-        """
-        modules_compounds = pd.read_csv(self.seed_ko_mo, sep="\t")
-        modules_compounds.columns = ["modelseed", "kegg", "module"]
-        modelseed_compounds_of_interest = set(modules_compounds["modelseed"].unique().tolist())
-
-        number_of_models = 0
-        patricId_to_seeds_of_interest = {}
-        patricId_to_non_seeds_of_interest = {}
-        mean_non_seedset_length = 0 ; mean_non_seedset_of_interest = 0
-        non_seedset_file = json.load(open(self.updated_non_seed_sets,"r"))
-        model_names = list(non_seedset_file.keys())
-
-        for smodel_name in model_names:
-            non_seedset = set( [x[2:] for x in non_seedset_file[smodel_name]] )
-            non_seedset_no_compartments = set( [x[2:].rsplit("_", 1)[0] for x in non_seedset_file[smodel_name] ])
-            non_seeds_of_interest = non_seedset_no_compartments.intersection(modelseed_compounds_of_interest)
-            mean_non_seedset_length += len(non_seedset)
-            patricId_to_non_seeds_of_interest[smodel_name] = non_seeds_of_interest
-            mean_non_seedset_of_interest += len(non_seeds_of_interest)
-
-        mean_seedset_length = 0
-        mean_seedset_of_interest = 0
-        seedset_file = json.load(open(self.updated_seed_sets, "r"))
-        model_names = list(seedset_file.keys())
-
-        for model_name in model_names:
-            number_of_models += 1
-            # Get seeds with and without their compartment specific part
-            seedset = set([x[2:]  for x in seedset_file[model_name]])
-            seedset_no_compartments = set([
-                x[2:].rsplit("_", 1)[0]  for x in seedset_file[model_name]
-            ])
-            mean_seedset_length += len(seedset)
-
-            seeds_of_interest = seedset_no_compartments.intersection(modelseed_compounds_of_interest)
-
-            seeds_of_interest_tmp = list(seeds_of_interest.copy())
-            for pot_seed in seeds_of_interest:
-                if pot_seed in patricId_to_non_seeds_of_interest[model_name]:
-                    seeds_of_interest_tmp.remove(pot_seed)
-            patricId_to_seeds_of_interest[model_name] = set(seeds_of_interest_tmp)
-            mean_seedset_of_interest += len(set(seeds_of_interest_tmp))
-
-        logging.info("Mean length of initial seedset: %s", str(mean_seedset_length/number_of_models))
-        logging.info("Mean length of seedsets of interest: %s", str(mean_seedset_of_interest/number_of_models))
-        logging.info("Mean of initial length of non seed sets: %s", str(mean_non_seedset_length/number_of_models))
-        logging.info("Mean of non seed sets of interest: %s", str(mean_non_seedset_of_interest/number_of_models))
-
-        tmp_dict = {key: list(value) for key, value in patricId_to_seeds_of_interest.items()}
-        df1 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'SeedSet'])
-        df1['BIN'] = df1['BIN'].str.replace('.BIN', '')
-        df1.set_index('BIN', inplace=True)
-
-        with open(self.module_seeds,"wb") as f:
-            pickle.dump(df1, f)
-
-        tmp_dict = {key: list(value) for key, value in patricId_to_non_seeds_of_interest.items()}
-        df2 = pd.DataFrame(list(tmp_dict.items()), columns=['BIN', 'NonSeedSet'])
-        df2['BIN'] = df2['BIN'].str.replace('.BIN', '')
-        df2.set_index('BIN', inplace=True)
-
-        with open( self.module_non_seeds,"wb") as f:
-            pickle.dump(df2, f)
-
-    def export_seed_complements(self):
-        """
-        Export pairwise seed complmenents.
-        Returns a df where beneficiary species are in the rows and potential donors in the columns.
-
-        example:
-        BIN                                             bin101-contigs                                     bin151-contigs                                      bin19-contigs                                     bin189-contigs
-        BIN
-        bin101-contigs                                                 []  [cpd02678, cpd00094, cpd02893, cpd00641, cpd00...  [cpd00259, cpd02678, cpd00641, cpd00200, cpd00...  [cpd02678, cpd00641, cpd00200, cpd00142, cpd00...
-        bin151-contigs  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...                                                 []  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...  [cpd03049, cpd00239, cpd03831, cpd11466, cpd00...
-        bin19-contigs   [cpd01777, cpd00055, cpd00121, cpd00482, cpd00...  [cpd01777, cpd00055, cpd00121, cpd00338, cpd00...                                                 []  [cpd00145, cpd21480, cpd01777, cpd02160, cpd00...
-        """
-        # Function to calculate overlap
-        def calculate_overlap(seed_set, non_seed_set):
-            return list(set(seed_set) & set(non_seed_set))
-
-        # Parallelized function to calculate overlap for one row in df1 with all rows in df2
-        def calculate_overlap_parallel(row1, df2):
-            return [calculate_overlap(row1['SeedSet'], row2['NonSeedSet']) for _, row2 in df2.iterrows()]
-
-        # Load my case
-        with open(self.module_seeds, "rb") as f:
-            df1 = pickle.load(f)
-        with open(self.module_non_seeds, "rb") as f:
-            df2 = pickle.load(f)
-
-        # Create a new DataFrame for overlaps
-        overlaps_df = pd.DataFrame(index=df1.index, columns=df2.index)
-
-        # Parallelize the overlap calculation using joblib with tqdm for progress tracking
-        num_cores = -1  # Use all available cores
-
-        results = Parallel(n_jobs=num_cores)(
-            delayed(calculate_overlap_parallel)(row1, df2)
-            for _, row1 in tqdm(df1.iterrows(),
-                                total=len(df1)
-                                )
+            _logger_.info(
+                "Loading default configuration and non-seed sets for running on the fly."
+                if self.onthefly or self.api
+                else
+                "Loading previously computed confidence scores and non-seed sets."
             )
 
-        # Fill in the overlaps DataFrame with calculated values
-        for i, row in enumerate(results):
-            overlaps_df.iloc[i] = row
+            if self.onthefly or self.api:
 
-        with open(self.seed_complements,"wb") as f:
-            pickle.dump(overlaps_df, f)
+                self.ConfidenceDic = load_confidence(self.config.prev_conf, remove_suffix=False)
+                self.nonSeedSetDic = load_nonseeds(self.config.prev_nonseeds, remove_suffix=False)
 
-        del results
+            else:
 
-    def map_carveme_seeds(self):
+                try:
+                    with open(self.config.prev_conf, "r") as f:
+                        raw_conf = json.load(f)
+                    with open(self.config.prev_nonseeds, "r") as f:
+                        raw_nonseeds = json.load(f)
+                except FileExistsError as e:
+                    raise e
+
+                self.ConfidenceDic = {k: self._strip_pre_suff_from_dict(v) for k, v in raw_conf.items()}
+                self.nonSeedSetDic = {k: self._strip_pre_suff_from_list(v) for k, v in raw_nonseeds.items()}
+
+    def get_sets(self):
         """
-        https://www.metanetx.org/mnxdoc/mnxref.html
-        map to modelseed and/or kegg..
-        [REMEMBER] MGG points to modelseed ids
-        We will map
+        Get seed and non-seed sets for each model
         """
-        with open(self.updated_seed_sets) as f:
-            updated_seeds = json.load(f)
-        with open(self.updated_non_seed_sets) as f:
-            updated_non_seeds = json.load(f)
-        bigg_seeds = os.path.join(self.seeds, "updatedBiggSeedsDic.json")
-        bigg_non_seeds = os.path.join(self.seeds, "updatedBiggNonSeedsDic.json")
+        # Build initial dictionaries
+        SeedSetDic    = dict()
+        nonSeedSetDic = dict()
+        ConfidenceDic = dict()
 
-        shutil.move(self.updated_seed_sets, bigg_seeds)
-        shutil.move(self.updated_non_seed_sets, bigg_non_seeds)
+        # Get all XML files in directory
+        _logger_.info("Export seed and non seed sets.")
 
-        # Open the tar.gz file
-        with tarfile.open(self.metanetx_compounds, "r:gz") as tar:
-            # List files in the archive to identify the one you want to read
-            file_names = tar.getnames()  # Returns a list of files in the tar.gz
-            # Extract the file of interest as a file-like object
-            file_to_read = tar.extractfile(file_names[0])
-            if file_to_read:
-                metanetx = pd.read_csv(file_to_read, delimiter="\t", skiprows=353, header=None)  # Adjust delimiter as needed
-
-        metanetx.columns = ["source", "id", "description"]
-        metanetx[['source_namespace', 'source_id']] = metanetx['source'].str.split(pat=':', n=1, expand=True)
-        metanetx.drop(columns=['source'], inplace=True)
-        metanetx = metanetx[metanetx['source_namespace'].isin(["bigg.metabolite", "seed.compound"])]
-
-        metanetx_bigg_metabolite = metanetx[metanetx["source_namespace"] == "bigg.metabolite"]
-        metanetx_seed_compound = metanetx[metanetx["source_namespace"] == "seed.compound"]
-        merged_df = pd.merge(metanetx_bigg_metabolite, metanetx_seed_compound, on="id", how="left")
-        bigg2seed = merged_df.groupby("source_id_x")["source_id_y"].apply(list).to_dict()
-
-        updated_seeds_biggIds, _ = process_seeds(updated_seeds, bigg2seed, self.int_suffix)
-        updated_non_seeds_biggIds, _ = process_seeds(updated_non_seeds, bigg2seed, self.int_suffix)
-
-        with open(self.updated_seed_sets, "w") as f:
-            json.dump(updated_seeds_biggIds, f)
-        with open(self.updated_non_seed_sets, "w") as f:
-            json.dump(updated_non_seeds_biggIds, f)
-
-
-
-def process_seeds(seeds_dict, bigg2seed, int_suffix):
-    """
-
-    """
-    updated_biggIds = {}
-    bigg_ids_not_mapped_to_seed = {}
-    for bin_id, seeds in seeds_dict.items():
-        updated_biggIds[bin_id] = []
-        for seed_id in seeds:
-            seed_id_part = "_".join(seed_id.split("_")[1:-1])
-            if seed_id_part not in bigg2seed:
-                logging.warning("not found: %s", seed_id)
-                bigg_ids_not_mapped_to_seed.setdefault(bin_id, []).append(seed_id)
-                continue
-            updated_biggIds[bin_id].append(bigg2seed[seed_id_part])
-        flat_list = [
-            "".join(["M_", item, int_suffix])
-            for sublist in updated_biggIds[bin_id]
-            if sublist
-            for item in sublist
-            if not pd.isna(item)
+        sbml_files = [
+            os.path.join(self.config.genres, f)
+            for f in os.listdir(self.config.genres)
+            if f.endswith(".xml")
         ]
-        updated_biggIds[bin_id] = flat_list
-    return updated_biggIds, bigg_ids_not_mapped_to_seed
+
+        num_threads = min(len(sbml_files), self.config.threads)
+
+        with multiprocessing.Pool(processes=num_threads) as pool:
+            with tqdm(
+                total=len(sbml_files),
+                desc="Processing SBML files to calculate seed and non-seed sets.",
+            ) as pbar:
+
+                results = []
+
+                # NOTE (Haris Zafeiropoulos, 2025-05-18): Apply the process_sbml() in parallel
+                for result in pool.imap_unordered(self.process_sbml, sbml_files):
+                    results.append(result)
+                    pbar.update(1)  # Update progress bar as soon as a task completes
+
+        # Unpack the results
+        for result in results:
+            try:
+                sbml_base, SeedSet, nonSeedSet, SeedSetConfidence = result
+            except Exception:
+                pass
+
+            tmp = {key: None for key in SeedSet}
+
+            SeedSetDic[sbml_base]    = tmp.keys()
+            nonSeedSetDic[sbml_base] = nonSeedSet
+            ConfidenceDic[sbml_base] = SeedSetConfidence
+
+        pool.close()
+        pool.join()
+
+        self.SeedSetDic, self.nonSeedSetDic, self.ConfidenceDic = (
+            SeedSetDic,
+            nonSeedSetDic,
+            ConfidenceDic,
+        )
+
+        # ---------------
+        # NOTE (Haris Zafeiropoulos, 2025-05-18):
+        # Not sure if the save_dics would not be needed under any circumstances
+
+        # if self.save_dics:
+
+        SeedSetDic_serial = self._serialize_dic(
+            SeedSetDic, os.path.join(self.config.seeds_outdir, "SeedSetDic.json")
+        )
+        nonSeedSetDic_serial = self._serialize_dic(
+            nonSeedSetDic, os.path.join(self.config.seeds_outdir, "nonSeedSetDic.json")
+        )
+
+        with open(os.path.join(self.config.seeds_outdir, "confidenceDic.json"), "w") as out_file:
+            json.dump(ConfidenceDic, out_file)
+
+        # ---------------
+
+        # NOTE (Haris Zafeiropoulos, 2025-03-26):
+        # In the pickle conversion we keep only the KEGG MODULE related - does not make sense to have that with BiGG
+        if not self.switch:
+            self._dict_to_pickle(SeedSetDic_serial, self.config.module_seeds)
+            self._dict_to_pickle(nonSeedSetDic_serial, self.config.module_nonseeds)
+
+        _logger_.info("Seed and non seed sets have been exported.")
+
+    def get_scores_and_compls(self) -> Union[Tuple[pd.DataFrame, dict], None]:
+        """
+        Based on the seed and non-seed sets calculated, get all pairwise competition 
+        and cooperation scores, and the seed complementarities between the models under study.
+
+        Returns the a dictionary in case of the API or builds the the seed_complements.pckl file in the stand-alone.
+        """
+
+        _logger_.info("Exporting seed scores and complementarities.")
+
+        if self.api:
+            self.patric_ids_of_interest = [str(q) for q in list(self.config.patric_ids)]
+
+        elif self.onthefly:
+            self.patric_ids_of_interest = [str(q) for q in list(self.config.gc_to_patric_ids.values())]
+
+        else:
+            self.patric_ids_of_interest = self.ConfidenceDic.keys()
+
+        seed_scores, seed_complements = [], {}
+
+        for species in self.patric_ids_of_interest:
+
+            if self.api:
+
+                scores, compls = self.species_scores_compls(species)
+                seed_scores.append(scores)
+
+            else:
+                # Score are written in a file
+                compls = self.species_scores_compls(species)
+
+            seed_complements[species] = compls
+
+        seed_scores = [s for s in seed_scores if s is not None]
+
+        # Finalize shared dictionary and convert to DataFrame
+        compls_dict = {
+            k: v
+            for k, v in (seed_complements or {}).items()
+            if isinstance(v, dict)
+        }
+
+        # Save the final DataFrame
+        if self.api:
+
+            try:
+
+                scores = [list(entry)[0].strip().split("\t") for entry in seed_scores]
+
+                scores_df = pd.DataFrame(
+                    scores,
+                    columns=[
+                        "PATRIC_A",
+                        "PATRIC_B",
+                        "CompetitionScore",
+                        "CooperationScore",
+                    ],
+                )
+
+            except Exception:
+
+                _logger_.warning("No seed scores found.")
+                scores_df = None
+
+            return scores_df, compls_dict
+
+        else:
+
+            df = pd.DataFrame.from_dict(compls_dict)
+
+            # Identify only the float columns
+            float_cols = df.select_dtypes(include="float").columns
+
+            # Replace NaNs with [] only in those columns
+            df[float_cols] = df[float_cols].where(df[float_cols].notna(), [[]])
+
+            # NOTE (Haris Zafeiropoulos, 2025-06-02): Attention! We need to get df.T.
+            # Otherwise we get the source as target and the other way around !
+            with open(self.seed_compls_pckl, "wb") as f:
+                pickle.dump(df.T, f)
+
+    def species_scores_compls(self, species: str) -> Union[Tuple[set, dict], Dict]:
+        """
+        Get scores and complements for a specific model (species).
+        In the stand-alone version, it writes the seed scores file.
+
+        Note:
+            Since, we get all pairwise combinations, we do not care of using the as_donor case for a species,
+            since it's gonna be calculated when the other species is the beneficiary
+        """
+
+        # Init compls and scores
+        scores, compls = set(), {}
+
+        # Get beneficiary's seed set
+        species_conf = self.ConfidenceDic.get(species)
+
+        if species_conf is None:
+            return None, None
+
+        # Get pairwise
+        as_beneficiary, _ = _generate_fixed_pairwise_comparisons(
+            species, list(self.patric_ids_of_interest)
+        )
+
+        # Get seed set of the other species
+        for partner in [pair[1] for pair in as_beneficiary if pair[1] != species]:
+
+            if (conf := self.ConfidenceDic.get(partner)) is not None and (
+                non_seed := self.nonSeedSetDic.get(partner)
+            ) is not None:
+
+                partner_seedset_confidence, nonSeedB = conf, non_seed
+
+            else:
+                continue
+
+            SeedA, SeedB, nonSeedB = (
+                set(species_conf.keys()),
+                set(partner_seedset_confidence.keys()),
+                set(nonSeedB),
+            )
+
+            # NOTE (Haris Zafeiropoulos, 2025-04-29):
+            # In all cases, in the API and the onthefly version, both scores and complements are computed
+
+            if self.get_scores or self.api:
+
+                mi_coop, mi_comp = calculate_scores(
+                    SeedA, species_conf, SeedB, nonSeedB
+                )
+
+                scores.add(
+                    f"{species}\t{partner}\t{mi_comp}\t{mi_coop}\n"
+                )
+
+            if self.get_complements or self.api:
+
+                B_complements_A = extract_complements(SeedA, nonSeedB)
+
+                if self.module_related:
+                    B_complements_A = kegg_module_related_intersect(
+                        B_complements_A, self.modules_ms_cpd
+                    )
+
+                compls[partner] = B_complements_A
+
+        if self.api:
+
+            return scores, compls
+
+        else:
+            with open(self.scores_outfile, "a") as f:
+                f.writelines(scores)
+
+            return compls
+
+    def process_sbml(self, sbml_path: str, maxcc: int = 2):
+        """
+        For each SBML model file (.xml) extract seeds, non-seeds and confidence scores
+        using the PhyloMint adapted/refined approach of ours, i.e. building a directed graph
+        with only the cytosol reactions, considering for the reversibility of a reaction.
+        """
+        filename  = os.path.basename(sbml_path)
+        sbml_base = filename.rstrip(".xml")
+
+        # calculate SeedSets
+        try:
+            DG_sbml = BuildGraphNetX.buildDG(sbml_path)
+        except Exception as e:
+            _logger_.error("Failed to run build directional graph for:", sbml_path)
+            return e
+
+        # Get sets !
+        # SeedSet: a dict_keys  |  nonSeedSet: a list already  |  SeedSetConfidence: a dict
+        SeedSetConfidence, SeedSet, nonSeedSet = BuildGraphNetX.getSeedSet(
+            DG_sbml, maxComponentSize=maxcc
+        )
+
+        # Remove any prefixes-suffixes
+        SeedSetConfidence, SeedSet, nonSeedSet = (
+            self._strip_pre_suff_from_dict(SeedSetConfidence),
+            self._strip_pre_suff_from_list(SeedSet),
+            self._strip_pre_suff_from_list(nonSeedSet),
+        )
+
+        # If carveme, map compounds to modelseed
+        if self.namespace == "BiGG":
+
+            seedSetBigg           = SeedSet.copy()
+            nonSeedSetBigg        = nonSeedSet.copy()
+            SeedSetConfidenceBigg = SeedSetConfidence.copy()
+
+            if self.switch:
+
+                SeedSet           = _bigg_to_modelseed(seedSetBigg, self.bigg2seed)
+                nonSeedSet        = _bigg_to_modelseed(nonSeedSetBigg, self.bigg2seed)
+                SeedSetConfidence = _bigg_to_modelseed(
+                    SeedSetConfidenceBigg, self.bigg2seed
+                )
+
+        return sbml_base, list(SeedSet), nonSeedSet, SeedSetConfidence
+
+    def _strip_pre_suff_from_list(self, terms):
+        return [
+            term.split("_", 1)[-1] if term.startswith(self.compound_prefix) else term
+            for term in (
+                (
+                    t.rsplit("_", 1)[0]
+                    if t.split("_")[-1] in {self.ex_suffix, self.int_suffix}
+                    else t
+                )
+                for t in terms
+            )
+        ]
+
+    # TODO (Haris Zafeiropoulos, 2025-03-28): check if this could be a static
+    def _strip_pre_suff_from_dict(self, d):
+        d_tmp = {}
+        for k, v in d.items():
+            new_k = self._strip_pre_suff_from_list([k])[0]
+            d_tmp[new_k] = v
+        return d_tmp
+
+    # TODO (Haris Zafeiropoulos, 2025-03-28): like above
+    def _serialize_dic(self, dict, json_file):
+
+        dict_serial = {k: list(v) for k, v in dict.items()}
+        with open(json_file, "w") as out_file:
+            json.dump(dict_serial, out_file)
+        return dict_serial
+
+    def _dict_to_pickle(self, dict, pickle_file):
+        """
+        Saves a dictionary as a pickle file after filtering for KEGG MODULE related cases.
+        """
+        dict_tmp = {}
+        for k, v in dict.items():
+            dict_tmp[k] = [
+                kegg_module_related_intersect(v, self.modules_ms_cpd)
+            ]
+        df = pd.DataFrame.from_dict(dict_tmp)
+        with open(pickle_file, "wb") as f:
+            pickle.dump(df.T, f)
+
+    def _worker_function(self, lock, species, queue, shared_dict):
+        """Wrapper function to process a species and signal completion."""
+        self.species_scores_compls(species, lock, shared_dict)
+        with lock:
+            queue.put(1)  # Signal that one task is completed
+
+
+def kegg_module_related_intersect(intersect, modules_ms_cpd):
+    """Check if KEGG MODULE related"""
+    intersect = list(intersect)
+    tmp_intersect = intersect.copy()
+    for compl in tmp_intersect:
+        if compl not in modules_ms_cpd:
+            intersect.remove(compl)
+    return intersect
+
+
+def get_kegg_module_related(seed_ko_mo):
+    """Load map file with KEGG modules and their terms and return a set with all the KOs there"""
+    modules_compounds = pd.read_csv(seed_ko_mo, sep="\t")
+    modules_compounds.columns = ["modelseed", "kegg", "module"]
+    return set(modules_compounds["modelseed"].unique().tolist())
+
+
+def _bigg_to_modelseed(bigg_obj, bigg2seed):
+    """
+    bigg2seed (pd.DataFrame)
+    """
+    if isinstance(bigg_obj, list):
+        modelseed_seed_list = []
+        for seed_BiggId in bigg_obj:
+            if seed_BiggId not in bigg2seed:
+                # seed_BiggId not found, this should be almost impossible..
+                continue
+            else:
+                # NOTE (Haris Zafeiropoulos, 2025-03-24):
+                # The bigg2seed dictionary has lists for values; if more than 1 modelseed compounds hit to the same BiGG
+                # we keep the one with the lowest cpd since it's probably more involved to key processes
+                mapped_ids = bigg2seed[seed_BiggId]
+                mapped_ids = [x for x in mapped_ids if not isinstance(x, float)]
+                if len(mapped_ids) > 0:
+                    modelseed_ids = sorted(mapped_ids)
+                    modelseed_seed_list.append(modelseed_ids[0])
+                else:
+                    # seed_BiggId not found
+                    modelseed_seed_list.append(seed_BiggId)
+        return modelseed_seed_list
+
+    elif isinstance(bigg_obj, dict):
+        modelseed_seed_dict = {}
+        for seed_BiggId, value in bigg_obj.items():
+            if seed_BiggId not in bigg2seed:
+                # logging.warning("not found in dictionary case: %s", seed_BiggId)
+                continue
+            else:
+                mapped_ids = bigg2seed[seed_BiggId]
+                mapped_ids = [x for x in mapped_ids if not isinstance(x, float)]
+                if len(mapped_ids) > 0:
+                    modelseed_ids = sorted(mapped_ids)
+                    modelseed_seed_dict[modelseed_ids[0]] = value
+                else:
+                    # seed_BiggId not found in dictionary case
+                    modelseed_seed_dict[seed_BiggId] = value
+        return modelseed_seed_dict
+
+
+def progress_tracker(queue, total):
+    """Progress bar updater."""
+    with tqdm(
+        total=total,
+        desc="Calculate cooperation and competition scores as well as complementarities.",
+    ) as pbar:
+        for _ in range(total):
+            queue.get()  # Wait for a task to finish
+            pbar.update(1)
+
+
+def generate_fixed_pairwise_comparisons(fixed_item, reconstruction_filenames):
+    """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
+
+    fixed_seedset_as_A = set()
+    fixed_nonseedset_as_A = set()
+
+    # Generate pairs where fixed_item is in the first position
+    for B in reconstruction_filenames:
+        fixed_seedset_as_A.add((fixed_item, B))
+
+    # Generate pairs where fixed_item is in the second position
+    for A in reconstruction_filenames:
+        fixed_nonseedset_as_A.add((A, fixed_item))
+
+    return list(fixed_seedset_as_A), list(fixed_nonseedset_as_A)
+
+
+def bigg_to_seed_mapping_df(metanetx_compounds):
+
+    # Open the tar.gz file
+    with tarfile.open(metanetx_compounds, "r:gz") as tar:
+
+        # List files in the archive to identify the one you want to read
+        file_names = tar.getnames()  # Returns a list of files in the tar.gz
+
+        # Extract the file of interest as a file-like object
+        file_to_read = tar.extractfile(file_names[0])
+
+        if file_to_read:
+            metanetx = pd.read_csv(
+                file_to_read, delimiter="\t", skiprows=353, header=None
+            )  # Adjust delimiter as needed
+
+    metanetx.columns = ["source", "id", "description"]
+
+    metanetx[["source_namespace", "source_id"]] = metanetx["source"].str.split(
+        pat=":", n=1, expand=True
+    )
+    metanetx.drop(columns=["source"], inplace=True)
+    metanetx = metanetx[
+        metanetx["source_namespace"].isin(["bigg.metabolite", "seed.compound"])
+    ]
+
+    metanetx_bigg_metabolite = metanetx[
+        metanetx["source_namespace"] == "bigg.metabolite"
+    ]
+    metanetx_seed_compound = metanetx[metanetx["source_namespace"] == "seed.compound"]
+
+    merged_df = pd.merge(
+        metanetx_bigg_metabolite, metanetx_seed_compound, on="id", how="left"
+    )
+    bigg2seed = merged_df.groupby("source_id_x")["source_id_y"].apply(list).to_dict()
+
+    return bigg2seed
+
+
+# ---- Utils not related to the extaction but to the assignment of the complements or scores to the net
 
 
 def load_seed_complement_files(path_to_kegg_seed_mappings):
     """
+    Loads mapping files to be used for the building of the cx2 network.
 
     """
-    kmap = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "seedId_keggId_module.tsv"), sep="\t", header=None)
+    kmap = pd.read_csv(
+        os.path.join(path_to_kegg_seed_mappings, "seedId_keggId_module.tsv"),
+        sep="\t",
+        header=None,
+    )
     kmap.columns = ["modelseed", "kegg_compound", "kegg_module"]
 
-    module_to_map = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "module_map_pairs.tsv"), sep="\t", header=None)
+    module_to_map = pd.read_csv(
+        os.path.join(path_to_kegg_seed_mappings, "module_map_pairs.tsv"),
+        sep="\t",
+        header=None,
+    )
     module_to_map.columns = ["module", "map"]
-    module_to_map['module'] = module_to_map['module'].str.replace("md:", '')
-    module_to_map['map'] = module_to_map["map"].str.strip()
+    module_to_map["module"] = module_to_map["module"].str.replace("md:", "")
+    module_to_map["map"] = module_to_map["map"].str.strip()
 
-    module_map_dict = module_to_map.set_index('module')['map'].to_dict()
-    kmap['map'] = kmap['kegg_module'].map(module_map_dict)
-
-    maps_categories_and_descrs = pd.read_csv(os.path.join(path_to_kegg_seed_mappings, "related_kegg_maps_descriptions.tsv"), sep="\t", header=None)
-    maps_categories_and_descrs.columns = ["map", "description", "category"]
-
-    kmap = pd.merge(kmap, maps_categories_and_descrs, on='map', how='left')
+    module_map_dict = module_to_map.set_index("module")["map"].to_dict()
+    kmap["map"] = kmap["kegg_module"].map(module_map_dict)
+    maps_cat_descrs = pd.read_csv(
+        os.path.join(path_to_kegg_seed_mappings, "related_kegg_maps_descriptions.tsv"),
+        sep="\t",
+        header=None,
+    )
+    maps_cat_descrs.columns = ["map", "description", "category"]
+    kmap = pd.merge(kmap, maps_cat_descrs, on="map", how="left")
 
     return kmap
 
 
-def order_seed_complements(r):
-    """
-    Order seed complements so they display based on their metabolism category
-    which have been ranked according to what metabolic interactions we believe most common.
-    """
-    # Define a custom sorting function
-    def custom_sort(item):
-        return category_index.get(item[0], len(order_list))
-
-    # Create a dictionary to map each category to its corresponding index in the order_list
-    order_list = [
-        'Amino acid metabolism',
-        'Metabolism of cofactors and vitamins',
-        'Energy metabolism',
-        'Carbohydrate metabolism',
-        'Nucleotide metabolism',
-        'Biosynthesis of other secondary metabolites',
-        'Biosynthesis of terpenoids and polyketides',
-        'Lipid metabolism',
-        'Glycan metabolism',
-        'Xenobiotics biodegradation'
-    ]
-    category_index = {category: index for index, category in enumerate(order_list)}
-
-    # Sort the data using the custom sorting function
-    sorted_data = sorted(r, key=custom_sort)
-    return sorted_data
-
-
 def build_url_with_seed_complements(seed_complements, nonseeds, kmap, shortener=None):
-    """
-
-    """
+    """ """
     base_url = "https://www.kegg.jp/kegg-bin/show_pathway?"
     url = "".join([base_url, kmap]) + "/"
 
@@ -415,7 +641,27 @@ def build_url_with_seed_complements(seed_complements, nonseeds, kmap, shortener=
     for compound in seed_complements:
         url += compound + complemet_compounds_color
     if shortener is not None:
-        logging.info("Shortening the URL.")
-        url =  shortener.tinyurl.short(url)
+        _logger_.info("Shortening the URL.")
+        url = shortener.tinyurl.short(url)
     return url
 
+
+def load_confidence(confidence, remove_suffix=False):
+    """
+
+    """
+    # confidence: all_conf.json.gz
+    with gzip.open(confidence, "rt", encoding="utf-8") as f:
+        seeds = json.load(f)
+    if remove_suffix:
+        seeds = {k.split(".")[0]: v for k, v in seeds.items()}
+    return seeds
+
+
+def load_nonseeds(nonseeds, remove_suffix=False):
+    # nonseeds: all_nonseeds.json.gz
+    with gzip.open(nonseeds, "rt", encoding="utf-8") as f:
+        nonseeds = json.load(f)
+    if remove_suffix:
+        nonseeds = {k.split(".")[0]: v for k, v in nonseeds.items()}
+    return nonseeds

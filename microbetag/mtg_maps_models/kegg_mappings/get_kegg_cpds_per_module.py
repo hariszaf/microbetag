@@ -78,7 +78,7 @@ Part B:
     cpd00061        C00074      M00001
 """
 modules_file = open("module_map_pairs.tsv", "r")
-modules = [x.split("\t")[0][3:] for x in modules_file.readlines() ]
+modules = [x.split("\t")[0][3:] for x in modules_file.readlines()]
 base_url = "https://rest.kegg.jp/link/cpd/"
 f = open("seedId_keggId_module.tsv", "w")
 counter2 = 0
@@ -102,8 +102,8 @@ for module in modules:
             if ";" in modelseed_compound:
                 modelseed_compounds = modelseed_compound.split(";")
                 for modelseed_compound in modelseed_compounds:
-                    f.write("\t".join( [modelseed_compound, kegg_compound, module]))
+                    f.write("\t".join([modelseed_compound, kegg_compound, module]))
                     f.write("\n")
             else:
-                f.write("\t".join( [modelseed_compound, kegg_compound, module]))
+                f.write("\t".join([modelseed_compound, kegg_compound, module]))
                 f.write("\n")

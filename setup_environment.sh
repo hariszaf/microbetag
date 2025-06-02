@@ -1,17 +1,95 @@
 #!/bin/bash
 
+# Install microbetag's dependencies 
 
 # emojis -- hehe! :)
 # ------
-SMILE="\U0001F60A"
-TADA="\U0001F389"
-ROCKET="\U0001F680"
-GREEN_TICK="\U00002705"
-RED_CROSS="\U0000274C"
-HOURGLASS="\u23F3"
-WHITE_CIRCLE="\26AA"
+       SMILE="\U0001F60A"
+        TADA="\U0001F389"
+      ROCKET="\U0001F680"
+  GREEN_TICK="\U00002705"
+   RED_CROSS="\U0000274C"
+  RED_CIRCLE="\U0001F534"
+   HOURGLASS="\u23F3"
+WHITE_CIRCLE="\u26AA"
 
-SCRIPT_DIR=$(dirname "$(realpath "$0")")
+# Default values
+VERSION_ARG=false
+   HELP_ARG=false
+  KOFAM_ARG=false
+ SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+# Parse options using getopt
+PARSED=$(getopt --options kh --long kofam,help -- "$@")
+if [[ $? -ne 0 ]]; then
+  echo "❌ Failed to parse options." >&2
+  exit 1
+fi
+
+# Reorder arguments so they can be processed
+eval set -- "$PARSED"
+
+# Loop through options
+while true; do
+  case "$1" in
+    -k|--kofam)
+      KOFAM_ARG=true
+      shift
+      ;;
+    -h|--help)
+      HELP_ARG=true
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      echo "Unexpected option: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# 
+echo -e "\n Building conda environment and installing required dependencies to enable microbetag ${ROCKET} \n\n"
+
+if $HELP_ARG; then
+  echo "Usage: bash setup_environment.sh [options]"
+  echo "  -h, --help     Show this help message"
+  echo "  -k, --kofam    kofam database will be downloaded and installed in the ext_data/kofam_database folder"
+  echo ""
+  echo -e "${RED_CIRCLE} Either conda or miniconda is considered to be available. If not, setup_environment.sh will fail."
+  echo -e "${RED_CIRCLE} Make sure you run the script from the root folder of the microbetag repository."
+  exit 0
+fi
+
+
+# ====================================
+# Step 0: kofam database
+# Make sure kofam db is there if needed
+# ====================================
+
+if $KOFAM_ARG; then
+
+    cd ext_data/kofam_database &&\
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
+    gzip -d ko_list.gz &&\
+    tar zxvf profiles.tar.gz 
+    cd $SCRIPT_DIR
+
+else
+
+  echo -e "${RED_CIRCLE} The kofam database will not be downloaded."
+  echo "Yet, it is required in case you wish to get pathway complementarities using custom genomes."
+  echo -e "Thus, you should have already it on your computing system and provide the path to it on the configuration YAML file.\n"
+  echo -e "${WHITE_CIRCLE} Otherwise, add argument --kofam when running setup_environment.sh"
+  echo ""
+  echo -e "bash setup_environment.sh --kofam\n"
+
+
+fi
 
 # ====================================
 # Step 1: Set up Conda environment
@@ -63,6 +141,43 @@ conda deactivate
 
 # -----------------------------------------------------------------------------
 
+ENV_NAME="mtg-modelseed"
+
+# Check if the environment already exists
+if conda info --envs | grep -q "$ENV_NAME"; then
+    echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+else
+    conda create -n $ENV_NAME python=3.9 -y
+    echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+fi
+
+# Install ModelSEEDpy
+conda activate $ENV_NAME
+
+
+pip install -r requirements/modelseedpy.txt
+
+# -----------------------------------------------------------------------------
+
+
+ENV_NAME="mtg-dnngior"
+
+# Check if the environment already exists
+if conda info --envs | grep -q "$ENV_NAME"; then
+    echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+else
+    conda create -n $ENV_NAME python=3.9 -y
+    echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+fi
+
+# Install ModelSEEDpy
+conda activate $ENV_NAME
+
+pip install -r requirements/dnngior.txt
+
+
+# -----------------------------------------------------------------------------
+
 ENV_NAME="microbetag"
 
 if conda info --envs | grep -q "$ENV_NAME"; then
@@ -70,15 +185,19 @@ if conda info --envs | grep -q "$ENV_NAME"; then
 else
 
     # Create the microbetag environment and install dependencies
-    echo -e "$HOURGLASS The primary Conda environment for running microbetag, which shares the same name, is currently under constructio.."
-    # conda create -n microbetag python=3.10 -y
+    echo -e "$HOURGLASS The primary conda environment for running microbetag, " 
+    echo -e "which shares the same name, is currently under constructio.."
+
     conda env create -f environment.yml
+
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
 
 
 # Install microbetag python library dependencies
 conda activate microbetag
+
+# TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
 pip install -r requirements.txt  > /dev/null 2>&1
 echo -e "$TADA All environments and installations are complete!"
@@ -241,132 +360,23 @@ cd $SCRIPT_DIR
 # Install Python-specific tools
 pip install .
 
+# Get MetaNetX namespace
+META_DIR="$SCRIPT_DIR/microbetag/mtg_maps_models/MetaNetX"
+TAR_FILE="$META_DIR/chem_xref.tar.gz"
+
+# Create folder if it doesn't exist
+if [ ! -d "$META_DIR" ]; then
+    mkdir -p "$META_DIR"
+fi
+
+# Download the file only if it's not already there
+if [ ! -f "$TAR_FILE" ]; then
+    echo "Downloading chem_xref.tar.gz..."
+    wget -O "$TAR_FILE" https://zenodo.org/records/15102937/files/chem_xref.tar.gz
+else
+    echo "File already exists: $TAR_FILE"
+fi
+
+
 # Good bye! :)
 echo "microbetag is now good to go! $TADA $ROCKET"
-
-
-
-# # Make sure tRNAscan-SE is installed  -- on Docker we re using 1.4 so far -- TODO: DO WE ACTUALLY NEED THIS?
-# if command -v trnascan-1.4 >/dev/null 2>&1  || [ -x "$INSTALL_DIR/trnascan-1.4" ]; then
-#     echo -e "tRNAscan-SE is already installed. $GREEN_TICK"
-# else
-#     echo -e "tRNAscan-SE is not installed. Installing tRNAscan-SE... $HOURGLASS"
-#     cd $INSTALL_DIR
-#     wget --no-check-certificate http://lowelab.ucsc.edu/software/trnascan-se-2.0.12.tar.gz
-#     gunzip trnascan-se-2.0.12.tar.gz 
-#     tar xf trnascan-se-2.0.12.tar
-#     cd tRNAscan-SE-2.0/
-#     ./configure --prefix=$INSTALL_DIR --bindir=$INSTALL_DIR 
-#     make 
-#     make install
-#     echo -e "tRNAscan-SE was installed. \U0001F389 "
-# fi
-
-
-# # Make sure MMseqs is installed -- TODO: DO WE ACTUALLY NEED THIS?
-# if command -v mmseqs >/dev/null 2>&1 || [ -x "$INSTALL_DIR/mmseqs" ]; then
-#     echo -e "MMseqs is already installed. $GREEN_TICK"
-# else
-#     echo -e "MMseqs is not installed. Installing MMseqs... $HOURGLASS"
-#     cd $INSTALL_DIR
-
-#     FILE="mmseqs-linux-avx2.tar.gz"
-
-#     if [ ! -f "$FILE" ]; then
-#         echo -e "File not found, downloading..."
-#         wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz
-#     else
-#         echo -e "File already exists."
-#     fi
-
-#     tar xvfz mmseqs-linux-avx2.tar.gz
-#     mv mmseqs mmseqs-linux-avx2
-#     mv mmseqs-linux-avx2/bin/mmseqs .
-
-#     echo -e "MMseqs was installed. $TADA"
-# fi
-
-
-
-# # Make sure Gapseq is installed
-# if type gapfill &> /dev/null; then
-#     echo -e "Gapfill is installed."
-# else
-#     echo -e "Gapfill is not installed. Installing Gapfill..."
-
-#     # List of required packages
-#     dependencies=(
-#       "ncbi-blast+"
-#       "git"
-#       "libglpk-dev"
-#       "r-base-core"
-#       "exonerate"
-#       "bedtools"
-#       "barrnap"
-#       "bc"
-#       "parallel"
-#       "curl"
-#       "libcurl4-openssl-dev"
-#       "libssl-dev"
-#       "libsbml5-dev"
-#     )
-#     missing=false
-#     # Function to check if a package is installed
-#     check_package() {
-#         if dpkg -l | grep -qw "$1"; then
-#             echo -e "$1 is installed."
-#         else
-#             echo -e "$1 is missing! Please contact the admin to install it."
-#             missing=true
-#         fi
-#     }
-#     # Iterate over each dependency and check
-#     for pkg in "${dependencies[@]}"; do
-#         check_package "$pkg"
-#     done
-
-#     if [ "$missing" = true ]; then
-#         echo -e "One or more dependencies are missing. Exiting."
-#         exit 1
-#     else
-#         echo -e "All dependencies are installed. Proceeding with the script."
-#     fi
-
-#     # Install R packages
-#     R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))' 
-
-#     wget https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz
-#     wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
-
-#     apt install -y ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev  libsbml5-dev bc
-
-#     R CMD INSTALL sybil_2.2.0.tar.gz
-#     RUN R CMD INSTALL sybilSBML_3.1.2.tar.gz
-
-
-
-# # this should be ONLY for sudo and not sure if it is not necessary
-# rm -rf /var/lib/apt/lists/*
-
-
-
-
-
-# # Step 3: Install non-Conda dependencies
-# # Install barrnap, bedtools, etc., via apt or other package managers
-# sudo apt-get update && sudo apt-get install -y \
-#   infernal infernal-doc \
-#   barrnap bedtools exonerate ncbi-blast+
-
-# # Install Python-specific tools
-# pip install git+https://github.com/hariszaf/manta.git@scipy-version 
-
-# pip install julia
-# /opt/julia-1.7.1/bin/julia -e 'using Pkg;Pkg.add("PyCall")'
-
-
-# # Install R-specific tools
-# R CMD INSTALL sybilSBML_3.1.2.tar.gz
-
-
-

@@ -272,12 +272,13 @@ we get
   }
 }
 ```
-where, in the first case `[0]`, *Streptomyces* is considered as $$ speciesA $$ and *Afpia* as $$ speciesB $$, and in case `[1]` the other way around. 
+
+where, in the first case `[0]`, *Streptomyces* is considered as $speciesA$ and *Afpia* as $speciesB$, and in case `[1]` the other way around. 
 
 
 If I run the same with the reverse order on the Tax Ids,
 ```bash
-https://msysbio.gbiomed.kuleuven.be/seed-scores/883079/1379686/
+https://msysbio.gbiomed.kuleuven.be/seed-scores/883079/1379686
 ```
 then I get the same output only with a different order. 
 
@@ -319,11 +320,17 @@ which returns
 ]
 ```
 
-The function returns pairs of seed scores, the first genome provided is considered as $$ speciesA $$ for the seed metrics and the second one as $$ speciesB $$.
 
-```{warning}
-In its current version, our API is not clear enough, and you need to remember that the first entry considers the first genome as $$ speciesA $$ and the second genome as $$ speciesB $$, while in the second entry it is the other way around. This will be fixed in a future release. 
+```{important}
+The function returns **two pairs of seed scores**, in which:
+* the first genome provided is considered as $speciesA$ for the seed score indices,
+* and the second one as $speciesB$.
 ```
+<!-- In its current version, our API is not clear enough, and you need to remember that 
+the **first entry** considers the first genome as $speciesA$, 
+and the second genome as $speciesB$, 
+while in the **second entry** it is the other way around. 
+This will be fixed in a future release.  -->
 
 ### Get seed complements between a pair of NCBI Taxonomy Ids, NCBI Genome or PATRIC ids
 

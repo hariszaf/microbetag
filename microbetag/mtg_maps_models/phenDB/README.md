@@ -1,10 +1,20 @@
 Before running the prediiction step of phenotrex for the GTDB reference genomes,
-classes were calculated from scratch using the training genomes set as provided by PhenDB as there was a conflict between the eggNOG version phenotrex uses at the prediction step and the one during the training of the classes as provided in the PhenDB site.
+classes were calculated from scratch using the training genomes set as provided by PhenDB as there was a conflict between:
+the eggNOG version phenotrex uses at the prediction step, 
+and the one during the training of the classes as provided in the PhenDB site.
 
 This process was perfromed at the Genius HPC of KU Leuven.
 
 To make easier the matching of the accession ids, all the GCF prefixes. were turned into GCA.
 
+Then, classes were trained like:
+
+```
+phenotrex train xgb --genotype aerobe.train_eval.genotype --phenotype sort_phenotypes_gcf.tsv --weights --out aerobe.pkl
+```
+
+
+```
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_AOB.pkl > PHEN_PREDICTIONS/all_gtdb_AOB.csv
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_ac.pkl > PHEN_PREDICTIONS/all_gtdb_ac.csv
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_a_saccharolytic.pkl > PHEN_PREDICTIONS/all_gtdb_a_saccharolytics.csv
@@ -36,6 +46,7 @@ phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifie
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_sulfate_reducer.pkl > PHEN_PREDICTIONS/all_gtdb_sulfate_reducer.csv
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_T3SS.pkl > PHEN_PREDICTIONS/all_gtdb_T3SS.csv
 phenotrex predict --genotype gtdb_genotypes/merged/all_gtdb.genotype --classifier RE_TRAINED_CLASSES/new_thermophylic.pkl > PHEN_PREDICTIONS/all_gtdb_thermophylic.csv
+```
 
 ```bash
 sed -i '1,2d' < <class>_predictions.csv

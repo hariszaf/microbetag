@@ -1,69 +1,80 @@
-import unittest
 import os
+import unittest
 import pandas as pd
+import shutil
+from pathlib import Path
 
-from microbetag.helpers import manta_input_net
 from microbetag.tools import run_manta
 from microbetag.config import load_abundance
+from microbetag.helpers import manta_input_net
+
 
 # Directories
 root_dir   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 test_data  = os.path.join(root_dir, "test_data", "test_manta")
 output_dir = os.path.join(test_data, "output_files")
 
-# Using abundance table to map sequence ids to taxonomies ==  USED FOR THE MS // TAKES TOO LONG, REPLACE WITH SHORTER FILES
-input_abd_table_dir = os.path.join(test_data, "input_files", "based_on_abd_table")
-abd_table           = os.path.join(input_abd_table_dir, "thirty_Samples.tsv")  # "plaque_abd_tab.tsv"
-net_edgelist        = os.path.join(input_abd_table_dir, "edgelist.csv")    # "plaque_edgelist.tsv"
+# Using abundance table to map sequence ids to taxonomies
+abd_table_dir = os.path.join(test_data, "input_files", "based_on_abd_table")
+abd_table     = os.path.join(abd_table_dir, "thirty_Samples.tsv")  # "plaque_abd_tab.tsv"
+net_edgelist  = os.path.join(abd_table_dir, "edgelist.csv")  # "plaque_edgelist.tsv"
+outdir_abd    = os.path.join(output_dir, "based_on_abd_table")
 
 # Using a sequence to taxonomy file to map sequence ids to taxonomies
 input_net_dir    = os.path.join(test_data, "input_files", "based_on_net")
 edgelist         = os.path.join(input_net_dir, "edgelist.csv")
 seq_tax_map_file = os.path.join(input_net_dir, "seq2taxonomy.tsv")
+outdir_net       = os.path.join(output_dir, "based_on_net")
 
-
+# Remove previous output folder
+prev_run = Path(output_dir)
+if prev_run.exists():
+    print("Removing output folder from previous run.")
+    shutil.rmtree(prev_run)
 
 class NetConfig:
+    """Config-like class for the case a network is being used"""
 
-    def __init__(self):
+    def __init__(self, outdir):
 
-        """ Config-like class for the case a network is being used """
+        os.makedirs(outdir, exist_ok=True)
 
         # Specify case to use
-        self.network = edgelist
+        seq_tax_map          = pd.read_csv(seq_tax_map_file, sep="\t", names=["sequence_id", "taxonomy"])
 
-        seq_tax_map = pd.read_csv(seq_tax_map_file, sep="\t")
-        seq_tax_map.columns = ["sequence_id", "taxonomy"]
+        self.output_dir      = outdir
+        self.network         = edgelist
         self.seq_to_taxon_df = seq_tax_map
-        self.seq_ids = seq_tax_map[seq_tax_map.columns[0]].unique().tolist()
+        self.seq_ids         = seq_tax_map[seq_tax_map.columns[0]].unique().tolist()
 
-        self.output_dir = output_dir
-
-        # Use-case independent but required part of the config
-        self.base_network_file = os.path.join(output_dir, "basenet.cyjs")
-
+        self.base_network_file = os.path.join(outdir, "basenet.cyjs")
 
 class AbdTableConfig:
 
-    def __init__(self):
+    """Config-like class for the case an abundance table is being used"""
 
-        """ Config-like class for the case an abundance table is being used """
+    def __init__(self, outdir):
+
+        os.makedirs(outdir, exist_ok=True)
+        self.output_dir = outdir
 
         # Specify case to use
-        self.abundance_table = abd_table
-        self.network = net_edgelist
-        self.base_network_file = os.path.join(output_dir, "plaque_basenet.cyjs")
+        self.abundance_table   = abd_table
+        self.network           = net_edgelist
 
         # Use-case independent but required part of the config
         (
             self.seq_to_taxon_df,
             self.sequence_id_column_name,
             self.taxonomy_column_name,
-            _  # delimeter
+            _,  # delimeter
         ) = load_abundance(self.abundance_table)
 
         self.seq_ids = self.seq_to_taxon_df["sequence_id"].unique().tolist()
-        self.output_dir = output_dir
+
+        # NOTE (Haris Zafeiropoulos, 2025-05-21):
+        # Special attention to the suffix, needs to be cyjs - not cyjsn or anything else
+        self.base_network_file = os.path.join(outdir, "basenet.cyjs")
 
 
 class TestManta(unittest.TestCase):
@@ -72,35 +83,23 @@ class TestManta(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # This is called once for the entire class before any test runs
-        cls.net_config = NetConfig()
-        cls.abd_config = AbdTableConfig()
+        cls.net_config = NetConfig(outdir_net)
+        cls.abd_config = AbdTableConfig(outdir_abd)
 
-    def testMantaS2T(self):
-        """Test with a user's sequence to taxonomy file"""
+    def test_manta_inputs(self):
+        """Test manta_input_net() with both sequence and abundance configs"""
+        for config, label in [(self.net_config, "sequence-to-taxonomy"), (self.abd_config, "abundance-table")]:
+            with self.subTest(input_type=label):
+                self.assertTrue(manta_input_net(config), f"manta_input_net failed for {label}")
 
-        # This function will create the basenet.cyjs file, which will be then used by the run_manta() function
-        self.assertTrue(manta_input_net(self.net_config))
-
-        run_manta(self.net_config)
-        print("Manta test using sequence to taxonomy file ran successfully")
-
-
-    def testMantaAbdTable(self):
-        """
-        Test with an abundance table as input fille;
-        A network is again required but not a sequence to taxonomy map file, since the abundance table is provided.
-        """
-
-        # Again, the manta_input_net() function will create the basenet.cyjs file
-        self.assertTrue(manta_input_net(self.abd_config))
-
-        run_manta(self.abd_config)
-
-        print("Manta test using abundance table to map sequence id to taxonomy ran successfully")
-
+    def test_run_manta(self):
+        """Test run_manta() with both input configs"""
+        for config, label in [(self.net_config, "sequence-to-taxonomy"), (self.abd_config, "abundance-table")]:
+            with self.subTest(input_type=label):
+                self.assertTrue(manta_input_net(config), f"manta_input_net failed before run_manta for {label}")
+                run_manta(config)
 
 
 if __name__ == "__main__":
 
     unittest.main()
-

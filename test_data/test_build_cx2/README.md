@@ -19,7 +19,7 @@ To this end, it **requires** the architecture of the output folder that `microbe
 For example, if you have set `pathway_complementarity` to `true`, you need to make sure the corresponding output folder 
 **and its data products** (e.g., `alts.json`) they are all included. Otherwise, `microbetag` will fail.
 For example in this test case, if we set the `network_clustering` as `true`, and at the same time, we don't provide a
-`manta_network`, the test would fail.
+`prev_clustered_network`, the test would fail.
 
 
 :eyes: In this test case we are using the 7bins dev dataset and its data products.
