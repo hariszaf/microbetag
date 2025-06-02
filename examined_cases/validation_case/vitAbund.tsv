@@ -1,4 +1,4 @@
-seqId	sample1	sample2	sample3	taxonomy
+seqId	sample1	sample2	taxonomy
 bin_100	77	1	d__Bacteria;p__Bacteroidota;c__Bacteroidia;o__Chitinophagales;f__Chitinophagaceae;g__Terrimonas;s__Terrimonas ferruginea
 bin_101	49	64	d__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Xanthomonadales;f__Rhodanobacteraceae;g__Rudaea;s__Rudaea sp005503555
 bin_106	56	65	d__Bacteria;p__Proteobacteria;c__Alphaproteobacteria;o__Rhizobiales;f__Rhizobiaceae;g__65-79;s__65-79 sp001896885
