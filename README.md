@@ -255,6 +255,22 @@ For example, given you have a set of GEMs, you may [get their seed complementari
 without an abundance table or network. 
 
 
+## RTD
+
+`microbetag` uses ReadTheDocs and Sphinx for its documentation (see `docs/`).
+
+> **For contributors**
+>
+> To test changes locally first, run:
+> ```
+> sphinx-build -b html -d _build/doctrees -D language=en . _build/html -v
+> ```
+> from within the `docs/` directory.
+> 
+
+A new RTD is being produced every time a new _microbetag_ `tag` is released automatically.
+
+
 
 ## Cite
 
