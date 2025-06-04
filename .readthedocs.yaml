@@ -37,4 +37,4 @@ search:
     - 404/index.html
   ranking:
     about/history.html: -10
-    about/history/index.html: -10# .readthedocs.yaml
+    about/history/index.html: -10 # .readthedocs.yaml
