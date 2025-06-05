@@ -1,5 +1,6 @@
 # %% load libraries
-import os, json
+import os
+import json
 import gzip
 import pickle
 import numpy as np
@@ -136,7 +137,7 @@ p3 = (
     + geom_bar(stat="identity", fill="#28579E", alpha=0.7)
     + labs(
         title="C. Distribution of seed compounds coverage",
-        x="Percentage of genomes in which metabolite is a seed",
+        x="Fraction of genomes where the metabolite serves as a seed",
         y="Number of metabolites",
     )
     + theme(
@@ -165,7 +166,7 @@ p4 = (
     + geom_bar(stat="identity", fill="#28579E", alpha=0.7)
     + labs(
         title="D. Non-seed compounds coverage",
-        x="Percentage of genomes in which metabolite is a non-seed",
+        x="Fraction of genomes where the metabolite serves as a non-seed",
         y="Number of metabolites",
     )
     + theme(
@@ -227,7 +228,7 @@ total_potential_hits = seeds.shape[0] * seeds.shape[1]
 total_potential_hits = seeds.sum().sum()
 
 df_perc = df_perce_t / total_potential_hits * 100
-df_perc.columns = ["percentage"]
+df_perc.columns = ["coverage"]
 
 counts, bins = np.histogram(df_perc, bins=30)
 
@@ -294,7 +295,7 @@ arrays = {
     "seeds": df_seeds["number_of_seeds"],
     "seeds ratios": df_seeds_ratios["ratio"],
     "non seeds": df_nonseeds["number_of_nonseeds"],
-    "percentage": df_perc["percentage"],
+    "coverage": df_perc["coverage"],
 }
 
 

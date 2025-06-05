@@ -57,21 +57,45 @@ modules_with_no_complements = []
 for module, data in log_defs.items():
     try:
         data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
-    except:
-        print(module, data.keys())
+    except Exception:
+        # print(module, data.keys())
         counter3 += 1
         modules_with_no_complements.append(module)
 
 
 data_points_df = pd.DataFrame(data_points)
-data_points_df.columns = ["percentage"]
-#with open("logged_modules.json","w") as f:
+data_points_df.columns = ["ratio"]
+# with open("logged_modules.json","w") as f:
 #    json.dump(log_defs, f)
+
+g1 = (
+    ggplot(data_points_df, aes(x="ratio"))
+    + geom_histogram(binwidth=0.1, alpha=0.7, fill="#28579E")
+    + geom_text(
+        aes(label='..count..'),
+        stat='bin',
+        binwidth=0.1,
+        va='bottom',
+        size=16,
+        color='black'
+    )
+    + labs(
+        title="A. Alternatives coverage",
+        x="Fraction of a module's alternatives completed by any donor",
+        y="Number of modules")
+
+    + theme(
+        plot_title=element_text(size=18, weight="bold"),
+        axis_text=element_text(size=16),   # Adjust axis tick labels font size
+        axis_title=element_text(size=16)   # Adjust axis title font size
+    )
+    # + scale_x_continuous(breaks=range(0, 1), minor_breaks=[])
+)
 
 
 # %%
 # Second and third plots
-modules = log_defs.copy() # added 09.02
+modules = log_defs.copy()  # added 09.02
 new_data_points = []
 for module in modules:
     new_data_points.append(modules[module]["#-of-alternatives"])
@@ -144,50 +168,49 @@ g3 = (
 g3 = g3 + theme(figure_size=(14, 6))
 
 # %%
-counter3 = 0
-data_points = []
-modules_with_no_complements = []
-for module, data in log_defs.items():
-    try:
-        data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
-    except:
-        print(module, data.keys())
-        counter3 += 1
-        modules_with_no_complements.append(module)
+# counter3 = 0
+# data_points = []
+# modules_with_no_complements = []
+# for module, data in log_defs.items():
+#     try:
+#         data_points.append(len(data["observed-alternatives"]) / data["#-of-alternatives"])
+#     except:
+#         print(module, data.keys())
+#         counter3 += 1
+#         modules_with_no_complements.append(module)
 
-data_points_df = pd.DataFrame(data_points)
-data_points_df.columns = ["percentage"]
+# data_points_df = pd.DataFrame(data_points)
+# data_points_df.columns = ["ratio"]
 
-g1 = (
-    ggplot(data_points_df, aes(x="percentage"))
-    + geom_histogram(binwidth=0.1, alpha=0.7, fill="#28579E")
-    + geom_text(
-        aes(label='..count..'),
-        stat='bin',
-        binwidth=0.1,
-        va='bottom',
-        size=16,
-        color='black'
-    )
-    + labs(
-        title="A. Alternatives percentage coverage",
-        x="Percentage of the alternatives completed by any donor",
-        y="Number of modules")
+# g1 = (
+#     ggplot(data_points_df, aes(x="ratio"))
+#     + geom_histogram(binwidth=0.1, alpha=0.7, fill="#28579E")
+#     + geom_text(
+#         aes(label='..count..'),
+#         stat='bin',
+#         binwidth=0.1,
+#         va='bottom',
+#         size=16,
+#         color='black'
+#     )
+#     + labs(
+#         title="A. Alternatives coverage",
+#         x="Fraction of a module's alternatives completed by any donor",
+#         y="Number of modules")
 
-    + theme(
-        plot_title=element_text(size=18, weight="bold"),
-        axis_text=element_text(size=16),   # Adjust axis tick labels font size
-        axis_title=element_text(size=16)   # Adjust axis title font size
-    )
-    #+ scale_x_continuous(breaks=range(0, 1), minor_breaks=[])
-)
+#     + theme(
+#         plot_title=element_text(size=18, weight="bold"),
+#         axis_text=element_text(size=16),   # Adjust axis tick labels font size
+#         axis_title=element_text(size=16)   # Adjust axis title font size
+#     )
+#     # + scale_x_continuous(breaks=range(0, 1), minor_breaks=[])
+# )
 
 # %%
-# ax1 = pw.load_ggplot(g1)  # + labs(title='A')  this would overwrite the initial plot title
-# ax2 = pw.load_ggplot(g2)
+ax1 = pw.load_ggplot(g1)  # + labs(title='A')  this would overwrite the initial plot title
+ax2 = pw.load_ggplot(g2)
 ax3 = pw.load_ggplot(g3)
 
 # %%
-ax123 = (ax1|ax2)/ax3
+ax123 = (ax1 | ax2) / ax3
 ax123.savefig("ax123.png")
-
