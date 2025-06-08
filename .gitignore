@@ -9,8 +9,6 @@ dist/
 build/
 *.egg-info/
 
-
-
 # Build and Release Folders
 bin-debug/
 bin-release/
@@ -51,7 +49,6 @@ _build/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-faprotax/
 seed_complements/
 gtdb_genomes/
 *.keg
@@ -68,7 +65,6 @@ mappings/mgnify_mappings/metadata/
 ref-dbs/taxdump/
 ref-dbs/microbetag_genomes/
 microbetagDB/ref-dbs/all_genome_modules/
-
 
 tools/BugBase/
 diamond/
@@ -103,7 +99,6 @@ microbetag_env
 # Ignore the GTDB db with 16S 
 gtdb_16s.RData
 
-<<<<<<< HEAD
 # Ignore the kofam database
 ext_data/kofam_database/profiles/
 ext_data/kofam_database/ko_list

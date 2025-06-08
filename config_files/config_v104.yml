@@ -74,7 +74,7 @@ sequence_id_taxonomy_map:
 output_directory: 
   dir_path: 
   description: >
-    Name of the output folder that will be built inside the io_path directory.
+    Name of the output folder.
   required: true
   type: string
 
@@ -214,13 +214,11 @@ kofam_database:
 prev_calc_path_compl:
   file_path:
   description: >
-
+    Path to previously computed file with pathway complementarities (pathCompls.json)
   required: false
   when: 
   default: 
   example: pathCompls.json
-
-
 
 # -----
 # Seed complementarity 
@@ -289,17 +287,22 @@ gene_predictor:
 
 genre_reconstruction_with:
   value: carveme
+  description: >
+    Software to be used for building Genome Scale Metabolic Network Reconstructions (GENREs)
   value_from: 
     - modelseedpy
     - carveme
   required: 
     value: true
     when: seed_complementarity == true
+  default: modelseedpy
 
 gapfill_model:
   value: true
-  description: "If true, modelseedpy will gapfill the reconstruction."
+  description: > 
+    If true, modelseedpy will gapfill the reconstruction.
   type: bool
+  required: False
 
 
 gapfill_media:
@@ -309,6 +312,7 @@ gapfill_media:
       If non provided, and `gapfill_model` is true, the model will be gapfilled using a complete medium,
       meaning all exchange reactions of the draft reconstruction will be considered free to get a high uptake.
   type: Path
+  required: false
 
 
 # -----
@@ -325,12 +329,12 @@ prev_calc_seed_sets:
 
 
 prev_conf: 
-
   file_path:
   description: >
-
-  required:
-  type:
+    Path to previsously computed confidenceDic.json
+  required: false
+  type: Path
+  default: None
 
 
 prev_nonseeds:
@@ -372,12 +376,18 @@ prev_clustered_network:
 metadata_file:
   file_path: 
   description: >
+    Metadata accompanying your abundance table. If provided, it will be used
+    for the network inference step with FlashWeave.
+    It's format is quite strict and you need to make sure you are following the 
+    instructions you will find here: 
+    https://microbetag.readthedocs.io/en/latest/tutorials_core/input.html#metadata-file
     Only .tsv files are accepted.
   required: false
   default: 
   type: string
 
-
+# From the following long list of arguments, make sure you specify 
+# the ones referring to `sensitive` and `heterogenous` 
 flashweave_args:
     heterogeneous:
       value: 

@@ -36,7 +36,7 @@ from .wrappers import (
     run_otf_prodigal,
 )
 
-from .config import Config
+from .config import load_config, Config
 
 from .build_mtg_cx2 import mtg_annotate_network
 from .helpers import manta_input_net
@@ -346,10 +346,11 @@ def main():
 
     try:
 
-        with open(args.config, "r") as yaml_file:
-            yaml_conf = yaml.safe_load(yaml_file)
+        # with open(args.config, "r") as yaml_file:
+        #     yaml_conf = yaml.safe_load(yaml_file)
 
-        config = Config(yaml_conf, args.config)
+        # config = Config(yaml_conf, args.config)
+        config = Config(load_config(args.config))
 
     except yaml.YAMLError:
         _print_config_message()

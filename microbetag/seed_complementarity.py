@@ -149,6 +149,9 @@ class ExportSeedComplementarities:
             if f.endswith(".xml")
         ]
 
+        _logger_.info(f"\n\n>> {sbml_files}")
+        _logger_.info(self.config.threads)
+
         num_threads = min(len(sbml_files), self.config.threads)
 
         with multiprocessing.Pool(processes=num_threads) as pool:
@@ -204,11 +207,11 @@ class ExportSeedComplementarities:
 
         # ---------------
 
-        # NOTE (Haris Zafeiropoulos, 2025-03-26):
-        # In the pickle conversion we keep only the KEGG MODULE related - does not make sense to have that with BiGG
-        if not self.switch:
-            self._dict_to_pickle(SeedSetDic_serial, self.config.module_seeds)
-            self._dict_to_pickle(nonSeedSetDic_serial, self.config.module_nonseeds)
+        # # NOTE (Haris Zafeiropoulos, 2025-03-26):
+        # # In the pickle conversion we keep only the KEGG MODULE related - does not make sense to have that with BiGG
+        # if not self.switch:
+        self._dict_to_pickle(SeedSetDic_serial, self.config.module_seeds)
+        self._dict_to_pickle(nonSeedSetDic_serial, self.config.module_nonseeds)
 
         _logger_.info("Seed and non seed sets have been exported.")
 

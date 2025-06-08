@@ -251,7 +251,8 @@ https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
 
 🚀 Once setting `microbetag` locally, you can use it as a Python library to a great extent, meaning you can perform a great range 
 of specific tasks out of the main pipeline concept. 
-For example, given you have a set of GEMs, you may [get their seed complementarities](./tests/test_seed_compl.py), 
+For example, given you have a set of GEMs, you may 
+[get their seed complementarities](./tests/test_seed_compl.py), 
 without an abundance table or network. 
 
 
