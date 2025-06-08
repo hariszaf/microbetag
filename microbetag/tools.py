@@ -122,8 +122,8 @@ def run_prodigal(fasta: str, basename: str, outdir: str) -> None:
     ffn	FASTA nucleotide of gene regions	Contains coding regions for a genome
 
     Cite:
-        Hyatt D, Chen GL, LoCascio PF, Land ML, Larimer FW, Hauser LJ. 
-        Prodigal: prokaryotic gene recognition and translation initiation site identification. 
+        Hyatt D, Chen GL, LoCascio PF, Land ML, Larimer FW, Hauser LJ.
+        Prodigal: prokaryotic gene recognition and translation initiation site identification.
         BMC bioinformatics. 2010 Dec;11:1-1.
     """
 
@@ -232,7 +232,7 @@ def phenotrex_genotype(config: "Config") -> None:
     Runs the `compute-genotype` program of phenotrex to get COGs present in the list of genomes under study.
 
     Cite:
-        Feldbauer R, Schulz F, Horn M, Rattei T. Prediction of microbial phenotypes based on comparative genomics. 
+        Feldbauer R, Schulz F, Horn M, Rattei T. Prediction of microbial phenotypes based on comparative genomics.
         BMC bioinformatics. 2015 Dec;16:1-8.
         https://phenotrex.readthedocs.io
     """
@@ -363,7 +363,7 @@ def run_manta(config: "Config") -> None:
     Runs the manta package to perform network clustering.
 
     Cite:
-        Röttjers L, Faust K. Manta: A clustering algorithm for weighted ecological networks. 
+        Röttjers L, Faust K. Manta: A clustering algorithm for weighted ecological networks.
         Msystems. 2020 Feb 25;5(1):10-128.
     """
     # Build the manta command
@@ -439,6 +439,7 @@ def run_flashweave(config: "Config") -> None:
 
     # Checking for Julia instance
     if not hasattr(config, 'julia_instance'):
+
         _logger_.info("Init Julia through Python!")
         config.jl = Julia(compiled_modules=False)
         config.jl.using("FlashWeave")
@@ -449,15 +450,21 @@ def run_flashweave(config: "Config") -> None:
         if config.metadata_file:
 
             _logger_.info("Running FlashWeaeve along with a metadata file.")
-            config.jl.eval(
-                f'save_network("{config.network}", learn_network("{config.flashweave_abd_table}", "{config.metadata_file}", {learn_in}))'
+
+            flashweave_cmd = (
+                f'save_network("{config.network}", '
+                f'learn_network("{config.flashweave_abd_table}", '
+                f'"{config.metadata_file}", {learn_in}))'
             )
+
         else:
             _logger_.info("Running FlashWeaeve.")
 
-            config.jl.eval(
-                f'save_network("{config.network}", learn_network("{config.flashweave_abd_table}", {learn_in}))'
-            )
+            flashweave_cmd = f'save_network("{config.network}", learn_network("{config.flashweave_abd_table}", {learn_in}))'
+
+        # Run flashweave
+        _logger_.info(flashweave_cmd)
+        config.jl.eval(flashweave_cmd)
 
     except Exception:
 

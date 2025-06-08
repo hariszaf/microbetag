@@ -8,9 +8,7 @@ description: "an example case of how to load a previously microbetag-annotated n
 download: "../_static/download/load/network_output.edgelist"
 ---
 
-# Load networks to Cytoscape and `microbetag`
-
-
+# Loading networks 
 
 ```{note}
 **INPUT FILES USED IN THIS TUTORIAL**
@@ -18,8 +16,6 @@ download: "../_static/download/load/network_output.edgelist"
 For this tutorial we will use the output network of the [`microbetag_prep` step](./prep.md) called [`network_output.edgelist`][1]
 and a previously annotated network with `microbetag` called [`microbetag_annotated.cx`][2]
 ```
-
-
 
 ## Load an edge list to be used with `microbetag`
 
@@ -86,8 +82,10 @@ You may now [*"roam"* across your annotated network](../basic_usage/roaming.md#r
 
 ## Load already `microbetag`-annotated networks!
 
-If you have already a `microbetag`-annotated network, that will be a `.cx` file which you can load as any other network on Cytoscape, i.e., by clicking 
-on `File > Import > Network from file`. 
+If you already have a `microbetag`-annotated network, then you most likely have saved the entire session that you were working on
+(see how to save a session [here](./roaming.html#save-your-work)).
+You can load your session (`.cys` file) on Cytoscape by just clicking 
+on `File > Open session` and then jumping to the correct directory where your `.cys` is located. 
 
 Make sure you enable the MGG style and cyPanels:
 
@@ -98,4 +96,4 @@ Make sure you enable the MGG style and cyPanels:
 <!-- Download files -->
 
 [1]:../_static/download/load/network_output.edgelist
-[2]:../_static/download/load/microbetag_annotated.cx
+[2]:../_static/download/load/microbetag_annotated.cx2

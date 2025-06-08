@@ -74,7 +74,7 @@ sequence_id_taxonomy_map:
 # Computing
 # -----
 threads:
-  value:
+  value: 1
   description: >
     Number of CPUs to be used in parallel sections of microbetag.
   default: 2
@@ -201,6 +201,7 @@ sequence_files_for_reconstructions:
     when: if sc_input_type != "bins_fasta". Could be either .fna or .faa files.
   type: string
 
+
 gene_predictor:
   value: fragGeneScan
   value_from:
@@ -215,6 +216,7 @@ gene_predictor:
     Otherwise, the user may choose among fragGeneScan or prodigal; in the latter, the .faa returned by DiTing will be used.
   type: string
 
+
 genre_reconstruction_with:
   value: carveme
   value_from:
@@ -226,6 +228,7 @@ genre_reconstruction_with:
     when: seed_complementarity == true
   type: string
 
+
 gapfill_model:
   value:
   description: >
@@ -233,6 +236,7 @@ gapfill_model:
   dafault: true
   required: false
   type: bool
+
 
 gapfill_media:
   value:

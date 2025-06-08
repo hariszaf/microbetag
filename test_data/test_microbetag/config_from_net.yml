@@ -1,0 +1,220 @@
+# Author: Haris Zafeiropoulos
+# Date: May, 2025
+# Description: configuration file for buliding a microbetag-annotated CX2 format network
+
+# Note:
+# For this test, keep in mind that we provide INPUT for the test, as part of the `output_files` folder
+# This is because microbetag expects annotations to be under specific sub-folders within its main output directory.
+
+# ------
+# INPUT/OUTPUT
+# ------
+
+abundance_table_file:
+  file_path:
+  description: >
+    Path to the abundance table file.
+    The taxonomy scheme in this case is irrelevant.
+    However, you need to make sure that the sequence identifiers used in this table, are the same
+    with those in your network (if one provided) as well as with those in your bins/faa/xml files, again if such provdied."
+  required:
+    value: false
+    when: precalculations_only is false
+  examples:
+    - thirty_Samples.tsv
+    - counts_genomes_taxonomies.tsv
+  type: Path
+
+# This is added for the specific case where no abundance table is provided, only the edgelist
+sequence_id_taxonomy_map:
+  file_path: input_files/bin2taxonomy.tsv
+  description: >
+    A file
+  required:
+    value: false
+    when:
+  examples:
+    - bin2taxonomy.tsv
+  type: string
+
+bins_fasta:
+  dir_path: input_files/my_bins
+  description: >
+    Name of the folder with the bins .fasta files.
+  required: false
+  examples:
+    - test_data/test_microbetag/input_files/my_bins/
+  type: Path
+
+output_directory:
+  dir_path: mtg_complete_output
+  description: Name of the output folder that will be built inside the io_path directory.
+  required: true
+  type: string
+  examples:
+    - test_data/test_microbetag/mtg_complete_output
+
+orfs:
+  dir_path:
+  description: >
+    In case Operating Reading Frames (ORFs) have been already computed (e.g., using Prodigal), 
+    you may provide the path to the folder with the .fna files.
+  required: false
+  type: Path
+
+edge_list:
+  file_path: input_files/hessler_net.csv
+  description: >
+    If co-occurrence network already available, please provide its edge list; a 2 column tab separated file.
+  required: false
+  examples:
+    - edgelist.csv
+  type: string
+
+# -----
+# Computing
+# -----
+threads:
+  value:
+  description: >
+    Number of CPUs to be used in parallel sections of microbetag.
+  default: 2
+  required: false
+  type: integer
+
+# -----
+# LIterature base
+# -----
+faprotax_annotation:
+  value:
+  description: >
+    Runs FAPROTAX on you abundance table and annotate network nodes with its predictions
+  default: true
+  type: bool
+
+# -----
+# Phen traits prediction
+# -----
+
+phenotrex_traits:
+  value: true
+  description: >
+    Runs phenotrex on your genomes to annotate them with COGs and then predicts whether they carry a set of phenotypic traits
+    or not, using the microbetagDB set of models
+  default: true
+  type: bool
+
+min_proba:
+  value: 0.6
+  description: "Minimum confidence that a prediction needs to have for keeping the the presence/absence finding."
+  type: float
+
+# -----
+# Pathway complementarity: if the pathway_complementarity parameter is set as false, the rest of the parameters will not be considered.
+# -----
+# Required, otherwise path to kofam database needed
+ko_merged_file:
+  file_path: input_files/ko_merged.txt
+  description: >
+    "A merged 3-column file with bins, contigs and the annotated KO term for all your genomes/bins. 
+    Needs to have a header and keep this order. You may have this from a previous microbetag run, or from annotations outside the microbetag software. 
+    Here is a example: 
+    bin_id	            contig_id	                                                KO
+    D300418:bin_000001	D300418:bin_000001_D300418:bin_000001@contig_00001691_10	K07258
+    D300418:bin_000001	D300418:bin_000001_D300418:bin_000001@contig_00001691_13	K06024"
+  required: false
+  type: Path
+
+pathway_complementarity:
+  value: true
+  description: >
+    Set whether pathway complementarities should be calcuated and then used to annotated the edges of the co-occurrence network.
+  required: false
+  default: true
+  type: bool
+
+complement_max_length:
+  value:
+  description: >
+    There are cases where a species has no KO related with a module but may get a complete alternative from the donor species. 
+    However, there are cases where a KEGG module consists of just 1-2 terms and other where dozins of KOs are required. 
+    Set the max length of a module that can be exchanged when no module related KO is present in the beneficiary in the first place.
+  default: 3
+  required: false
+  type: integer
+
+pc_percentage:
+  value:
+  description: >
+    Per centage of the module (i.e., number of KO terms) up to which a potential donor may provide a beneficiary with. 
+    For example, if a module consists of 5 KOs and the beneficiary can share 4 missing from the donor, this is rather unlikely to happen. 
+    If no value is given all complementes will be returned.
+  default: 0.35
+  required: false
+  type: float
+
+# IMPORTANT NOTE: To save essential time for this test, we use a previously calculated 3-column KO file. You may run the test_kegg_annotation to make sure this step runs fine
+
+kofam_database:
+  dir_path:
+  description: >
+    After downloading KOfam database from ftp://ftp.genome.jp/pub/db/kofam/ and decompress it. 
+    You will get profile HMMs in profiles/ directory and a ko_list file.
+
+    u0156635@gbw-l-l0074:kofam_database$ ls 
+    ko_list  profiles
+
+    Provide the path to the kofam directory_database directory."
+  type: Path
+
+# -----
+# Seed complementarity
+# -----
+seed_complementarity:
+  value: true
+  description:
+    This is the most time-consuming and challengint step of the workflow. You may perform microbetag with or without it by setting \
+    this argument as true or false correspondinly.
+  required: true
+  type: bool
+
+sc_input_type:
+  value: bins_fasta
+  value_from:
+    - bins_fasta
+    - coding_regions
+    - proteins_faa
+    - models
+  description:
+    "Clarifies what is the information the input files to be used for the GEMs reconstruction include. \
+    This parameter is strongly related to the `sequence_files_for_reconstructions` as it is the last that specifies the path to the files described here. \
+    If GEMs are already available, then you may set the `sc_input_type` as `models` and provide the path to the .xml models through the `sequence_files_for_reconstructions` parameter. \
+    If you intend to use ModelSEEDpy to reconstruct GEMs but you have already RAST annotated your genomes, i.e. gto, gto_2 and their corresponding .faa files are available, then you may set this parameter as `proteins_faa` and \
+    give the directory path to the .faa files in the `sequence_files_for_reconstructions`. \
+    If none of the above is available, then set this parameter as bins_fasta and leave the sequence_files_for_reconstructions blank."
+  type: string
+  required: true
+
+# -----
+# Metabolic network reconstruction: there parameters should be considered only in case seed complementarity is about to be performed and metabolic networks are not already available
+# -----
+
+genre_reconstruction_with:
+  value: carveme
+  value_from:
+    - modelseedpy
+    - carveme
+  default:
+  required:
+    value: true
+    when: seed_complementarity == true
+  type: string
+
+# -----
+# manta
+# -----
+network_clustering:
+  value: true
+  description:
+  type: bool
+  required: false

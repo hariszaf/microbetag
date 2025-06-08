@@ -51,7 +51,7 @@ The network annotation consists of 4 major modules:
   and **competition** {cite:p}`kreimer2012netcmpt` 
   **seed scores** between draft metabolic reconstructions of GTDB representative genomes, 
   mapped to the input taxa using <a href="https://github.com/mgtools/PhyloMint" target="_blank">**PhyloMInt**</a>
-  (see [Seed-based complementarities and scores](#seed-scores-and-complements-based-on-genome-scale-draft-reconstructions-gems) for more)
+  (see [Seed-based complementarities and scores](#seeds-complementarity) for more)
 
 **Nodes (taxa)** that have species or strain taxonomic annotation are mapped to their closest representative GTDB genomes 
 and based on those, they get `phenotrex`-based and FAPROTAX functional annotations. 

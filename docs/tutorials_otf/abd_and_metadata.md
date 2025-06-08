@@ -12,7 +12,7 @@ description: "tutorial using an abundance table and a metadata file as input"
 ```{note}
 **INPUT FILES USED IN THIS TUTORIAL**
 
-We will also do the same but this time considering also metadata ([`metadata.tsv`][4]) accompanying a shorter version of our abundance table ([`testAbundMeta.tsv`][5])
+We will also do the same but this time considering also metadata ([`metadata.tsv`][4]) accompanying a shorter version of our abundance table ([`testAbundMeta.csv`][5])
 ```
 
 In this case, you follow the exact steps as in the previous scenario and once you have loaded your abundance table, you import also the one with your metadata. 
@@ -44,8 +44,4 @@ Here is the annotated network returned:
 
 
 [4]:../_static/download/mgg/metadata.tsv
-[5]:../_static/download/mgg/testAbundMeta.tsv
-
-
-
-
+[5]:../_static/download/mgg/testAbundMeta.csv

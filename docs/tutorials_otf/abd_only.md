@@ -92,7 +92,7 @@ After a few minutes (based on your data and the steps you have asked for) a _mic
 ![annotated_net](../_static/img/app/annotated_net_no_net.png)
 
 
-To explore the annotated network continue with [*Investigating the annotations* tutorial](./roaming.md).
+To explore the annotated network continue with [*Investigating the annotations* tutorial](../tutorials_core/roaming.md).
 
 
 ```{hint}

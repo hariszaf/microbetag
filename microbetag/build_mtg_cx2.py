@@ -114,7 +114,8 @@ def taxonomy_levels_sa(node: Dict) -> None:
 
 
 def init_nodes_and_edges(
-    edgelist: pd.DataFrame, seq_id_to_taxonomy: Dict[str, str], config=None
+    edgelist: pd.DataFrame, seq_id_to_taxonomy: Dict[str, str],
+    onthefly=False, metadata=None, otf_seq_tax_df=None
 ) -> Tuple[List[dict], List[str], List[dict]]:
     """
     Initiates the nodes and edges of the network as dictionaries, in a ndex2-oriented format.
@@ -132,12 +133,18 @@ def init_nodes_and_edges(
     # Extract unique node names efficiently -- sequence ids
     seq_ids_lst = sorted(set(edgelist["node_A"]).union(edgelist["node_B"]))
 
+    kwargs = {}
+
+    if metadata:
+        metavars  = pd.read_csv(metadata, sep="\t", header=None, index_col=0).index.tolist()
+        kwargs['metavars'] = metavars
+
     # Create nodes
-    if not config.onthefly:
+    if not onthefly:
         nodes = [
             {
                 "id": i,
-                "v": get_node_attributes(seq_id, seq_id_to_taxonomy)
+                "v": get_node_attributes(seq_id, seq_id_to_taxonomy, **kwargs)
             }
             for i, seq_id in enumerate(seq_ids_lst)
         ]
@@ -149,12 +156,13 @@ def init_nodes_and_edges(
 
         # NOTE (Haris Zafeiropoulos, 2025-05-04):
         # the otf_seq_tax_df is built on the app.py and not on the config.py - onthefly version only
-        ncbi_ids_dict = load_otf_seq_map(config.otf_seq_tax_df)
+
+        kwargs["ncbi_ids_dict"] = load_otf_seq_map(otf_seq_tax_df)
 
         nodes = [
             {
                 "id": i,
-                "v": get_node_attributes(seq_id, seq_id_to_taxonomy, ncbi_ids_dict)
+                "v": get_node_attributes(seq_id, seq_id_to_taxonomy, **kwargs)
             }
             for i, seq_id in enumerate(seq_ids_lst)
         ]
@@ -177,7 +185,7 @@ def init_nodes_and_edges(
     return nodes, seq_ids_lst, edges
 
 
-def get_node_attributes(seq_id: str, seq_id_to_taxonomy: Dict, ncbi_ids_dict: Dict = None) -> Dict:
+def get_node_attributes(seq_id: str, seq_id_to_taxonomy: Dict, ncbi_ids_dict: Dict = None, metavars=None) -> Dict:
     """
     Using the sequence mapping to their corresponding taxonomies objects, builds a dictionary with the
     node's taxonomy and mapped genomes (in case of on-the-fly) attributes, in a ndex2 and MGG-oriented way.
@@ -202,18 +210,23 @@ def get_node_attributes(seq_id: str, seq_id_to_taxonomy: Dict, ncbi_ids_dict: Di
 
         ncbi_info = ncbi_ids_dict.get(seq_id, {})
 
+        # NCBI Taxon ID
         attrs[_M_TAXON_ID] = (
             ncbi_info.get("ncbi-tax-id")
             if ncbi_info.get("ncbi-tax-id") not in [None, "", []]
             else ["-"]
         )
 
-        attrs[_M_TAX_LEVEL] = (
-            ncbi_info.get("ncbi-tax-level")
-            if ncbi_info.get("ncbi-tax-level") not in [None, "", []]
-            else ["-"]
-        )
+        # TAXONOMY LEVEL
+        tax_level = ncbi_info.get("ncbi-tax-level")
+        if tax_level not in [None, "", []]:
+            attrs[_M_TAX_LEVEL] = tax_level
+        elif metavars and any(seq_id.startswith(prefix) for prefix in metavars):
+            attrs[_M_TAX_LEVEL] = ["metavar"]
+        else:
+            attrs[_M_TAX_LEVEL] = ["-"]
 
+        # GENOMES ASSIGNED
         attrs[_M_GTDB_GENOMES] = (
             ncbi_info.get("gtdb-genomes")
             if ncbi_info.get("gtdb-genomes") not in [None, "", []]
@@ -685,7 +698,6 @@ def seed_complement_edge(
         }
 
     # Edge attributes
-    _logger_.info(edge["v"].keys())
     edge["v"][_SEED_COMP].add(competition)
     edge["v"][_SEED_COOP].add(cooperation)
 
@@ -1025,7 +1037,13 @@ def mtg_annotate_network(config: "Config") -> ndex2.cx2.CX2Network:
 
     # Initialize non-annotated nodes and edges of the network in a format
     # that can be used as input for the ndex2 library
-    nodes, node_names, edges = init_nodes_and_edges(edgelist_df, seqId_taxonomy, config)
+    nodes, node_names, edges = init_nodes_and_edges(
+        edgelist_df,
+        seqId_taxonomy,
+        config.onthefly,
+        getattr(config, 'metadata_file', None),
+        getattr(config, 'otf_seq_tax_df', None)
+    )
 
     # PHENOTREX ANNOTATIONS
     if config.phen_traits and os.listdir(getattr(config, "predictions_path", [])):

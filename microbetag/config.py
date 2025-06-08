@@ -72,7 +72,12 @@ class Config:
             self.mount    = "/data"
             self.base_dir = self.mount
         else:
-            self.base_dir = os.path.dirname(config_file)
+            if config_file is None:
+                self.base_dir = conf.get("__config_dir__", None)
+            else:
+                self.base_dir = os.path.dirname(config_file)
+        if self.base_dir is None:
+            raise SystemError("You need to provide a base directory, where your config is found.")
 
         # Output dir
         output_dir = conf.get("output_directory", {}).get("dir_path")
@@ -89,24 +94,23 @@ class Config:
         self.__dict__.update(vars(mappings))
 
         # Checks whether microbetag is running on the on-the-fly version, by default False
-        self.onthefly = conf.get("onthefly", {}).get("value", False)
-        self.api      = conf.get("api", {}).get("value", False)
+        self.onthefly = get_value(conf, "onthefly", False)
+        self.api      = get_value(conf, "api", False)
 
         # Threads to be used
-        self.threads = conf.get("threads",{}).get("value", 2)
+        self.threads = get_value(conf, "threads", 2)
 
         # Steps
-        self.faprotax    = conf.get("faprotax_annotation", {}).get("value", False)
-        self.phen_traits = conf.get("phenotrex_traits", {}).get("value", False)
-        self.path_compl  = conf.get("pathway_complementarity", {}).get("value", False)
-        self.seed_compl  = conf.get("seed_complementarity", {}).get("value", False)
-        self.net_cluster = conf.get("network_clustering", {}).get("value", False)
+        self.faprotax    = get_value(conf, "faprotax_annotation", False)
+        self.phen_traits = get_value(conf, "phenotrex_traits", False)
+        self.path_compl  = get_value(conf, "pathway_complementarity", False)
+        self.seed_compl  = get_value(conf, "seed_complementarity", False)
+        self.net_cluster = get_value(conf, "network_clustering", False)
 
         # Bins/MAGs/genomes
-        bins_fasta     = conf.get("bins_fasta", {}).get("dir_path")
-        self.bins_path = resolve_file_path(self.base_dir, bins_fasta)
-
-        _logger_.warn("No genomes/bins were provided as input files.")
+        self.bins_path = resolve_file_path(self.base_dir, conf.get("bins_fasta", {}).get("dir_path"))
+        if self.bins_path is None:
+            _logger_.warn("No genomes/bins were provided as input files.")
 
         # The abundance table is now optional, if no abundance table and no network provided,
         # then it will only run pre-calculations
@@ -125,7 +129,7 @@ class Config:
         # for partial/specific tasks of microbetag.
         # -------
 
-        precalc_only      = conf.get("precalculations_only", {}).get("value")
+        precalc_only      = get_value(conf, "precalculations_only", False)
         self.precalc_only = precalc_only if precalc_only in [0, 1] else False
 
         if (
@@ -148,6 +152,8 @@ class Config:
             raise ValueError(
                 "Since an abundance table is not provided, you need to provide a 2-column file "
                 "with the sequence id (e.g bin ids) and their corresponding taxonomy or taxon name."
+                "Thus, you need to include the `sequence_id_taxonomy_map` parameter on your config file."
+                "Check the complete configuration file for that."
             )
 
         # IMPORTANT: Sequence id to taxonomy map
@@ -239,7 +245,7 @@ class Config:
                 self.prodigal = os.path.join(self.base_dir, orfs)
 
         # ModelSEEDpy arguments
-        self.gapfill_model = conf.get("gapfill_model", {}).get("value")
+        self.gapfill_model = get_value(conf, "gapfill_model", False)
         self.gapfill_media = conf.get("gapfill_media", {}).get("value")
 
         # Phenotrex
@@ -279,11 +285,8 @@ class Config:
         self.microbetag_annotated_network_file = os.path.join(
             self.output_dir, "pseudo_cx_annotated_net.cx"
         )
-        self.tinyurl = (
-            conf.get("tinyurl", {}).get("value")
-            if conf.get("tinyurl", {}).get("value")
-            else False
-        )
+        self.tinyurl = get_value(conf, "tinyurl", False)
+
         # ==========
         # Init torch -- machine learning library
         # ==========
@@ -315,6 +318,27 @@ class Config:
         with open(log_file, "w") as f:
             json.dump(args, f)
 
+
+def get_value(conf, key, default=None):
+    """
+    Retrieves the 'value' field for a given key from a nested configuration dictionary.
+
+    Returns:
+    any: The value associated with conf[key]['value'], or the provided default if not found or None.
+    """
+    value = conf.get(key, {}).get("value", default)
+    return default if value is None else value
+
+
+def load_config(yaml_file):
+    import yaml
+    config_path = os.path.abspath(yaml_file)
+    config_dir = os.path.dirname(config_path)
+    with open(yaml_file, "r") as y:
+        yaml_data = yaml.safe_load(y)
+    yaml_data["__config_dir__"] = config_dir
+
+    return yaml_data
 
 def load_abundance(abd_file: str) -> tuple[pd.DataFrame, str, str, str]:
     """

@@ -88,7 +88,9 @@ def get_edgelist(network_file: str) -> pd.DataFrame:
 
 def build_base_graph(conf: "Config") -> dict:  # edgelist_as_a_list_of_dicts, microb_id_taxonomy,
     """
-    Builds a non-annotated graph in a .cyjs format, using only the scores and the taxonomies of the taxa of the network.
+    Builds a non-annotated graph in a .cyjs format, 
+    using only the scores and the taxonomies of the taxa of the network.
+    To be used only when manta clustering has been asked.
 
     Args:
         conf: A utils.Config instance.
@@ -97,7 +99,8 @@ def build_base_graph(conf: "Config") -> dict:  # edgelist_as_a_list_of_dicts, mi
         The base network as a dictionary.
 
     Note:
-        Runs if network clustering has been asked for from the user, converting the initial .csv edgelist to .cyjs
+        Runs if network clustering has been asked for from the user, 
+        converting the initial .csv edgelist to .cyjs
         since `manta` gets a .cyjs input file.
     """
 
@@ -164,22 +167,28 @@ def build_base_graph(conf: "Config") -> dict:  # edgelist_as_a_list_of_dicts, mi
 
 
 def _build_a_base_node(node_name, map_seq, is_taxon: bool) -> dict:
-    """
-    Builds a node for the base network.
-    [TODO] Remove not necessary entries.
-    """
+    """    Builds a node for the base network.    """
     node = {}
     node["data"] = {}
     node["data"]["id"] = node_name
     node["data"]["selected"] = False
 
-    if is_taxon:
-        case = map_seq[map_seq["sequence_id"] == node_name]
-        node["data"]["taxonomy"] = case["taxonomy"].item()
-        node["data"]["name"] = case["taxonomy"].item().split(";")[-1]
-        try:
-            node["data"]["GTDB-representative"] = case["gtdb_gen_repr"]
-        except Exception:
-            pass
+    # if is_taxon:
+    #     case = map_seq[map_seq["sequence_id"] == node_name]
+
+    #     try:
+    #         node["data"]["taxonomy"] = case["taxonomy"].item()
+    #         node["data"]["name"]     = case["taxonomy"].item().split(";")[-1]
+    #     except Exception:
+    #         _logger_.info("I could not get the taxonomy..")
+    #         _logger_.info(case)
+    #         pass
+
+    #     try:
+    #         node["data"]["GTDB-representative"] = case["gtdb_gen_repr"]
+    #     except Exception:
+    #         _logger_.info("I could not get the gtdb regpresentative genome")
+    #         _logger_.info(case)
+    #         pass
 
     return node

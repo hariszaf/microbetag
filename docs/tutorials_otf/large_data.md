@@ -9,32 +9,39 @@ description: "how to run microbetag when MGG is not big enough"
 Large dataset
 ===================
 
+
 ```{Note}
 We define a dataset as large if it is intended for use with `microbetagDB` and contains several thousand taxa (sequence IDs). 
 While the number of samples also influences microbetag's runtime, its impact is significantly smaller.
 
 If you want to annotate a dataset of any size using your own genomes, bins, or MAGs, follow the corresponding tutorial 
-[here](local.md).
-
+[here](../tutorials_local/local.md).
 ```
+
+<!--  -->
 
 In case of large datasets, `microbetag` full on-the-fly run is probably not an option, 
 even if you do run the preprocessing step. 
 
 For example, imagine you have a 16S rRNA marker-gene dataset and a couple of hundreds of samples. 
 
-Based on the [`microbetag_prep` tutorial](prep.md), you have taxonomically annotated them with the 
+Based on the [`microbetag_prep` tutorial](./prep.md), you have taxonomically annotated them with the 
 GTDB-oriented 16S reference database, and you built a co-occurrence network using FlashWeave. 
 
 Now, let's say you wish to perform network clustering on your network. 
 Asking for this on the on-the-fly version of `microbetag` will lead to a `RuntimeError` and your session will probably fail. 
 
+<!--  -->
+
 ```{important}
 When working with large datasets, it is strongly suggested you run as many steps as possible locally. 
 
 In its current version, the `microbetag` stand-alone tool does not support making API queries on `microbetagDB`
-but this is on [top of our to-do list](https://github.com/hariszaf/microbetag/issues/20).
+but this is on 
+<a href="https://github.com/msysbio/microbetag/issues/20" target="_blank">top of our to-do list</a>.
 ```
+<!--  -->
+
 
 In this tutorial, we show how we handled such a large dataset.
 
@@ -42,28 +49,37 @@ In this tutorial, we show how we handled such a large dataset.
 ## 16S rRNA data of hundreds of sub-gingival plaque samples from a Qiita project
 
 <div style="display: flex; gap: 10px;">
-   <a href="https://github.com/hariszaf/microbetag/tree/ms/examined_cases/enrichment" class="btn-purple"> Tutorial files </a>
+   <a href="https://github.com/msysbio/microbetag/tree/ms/examined_cases/enrichment" class="btn-purple"> Tutorial files </a>
 </div>
 
 
-From the record of the Human Microbiome Project (HMP) on [Qiita](https://qiita.ucsd.edu/study/description/1928), 
+From the record of the Human Microbiome Project (HMP) on 
+<a href="https://qiita.ucsd.edu/study/description/1928" target="_blank">Qiita</a>, 
 we first got the `.biom` of the study, and
-using the [biom tols](https://biom-format.org/documentation/biom_conversion.html), we converted the `.biom` file to a `.txt`  
+using the 
+<a href="https://biom-format.org/documentation/biom_conversion.html" target="_blank">biom tols</a>, 
+we converted the `.biom` file to a `.txt`  
 
 ```bash
 biom convert -i otu_table.biom -o hmp_otu_table.txt --to-tsv --header-key taxonomy
 ```
 
-With the [`get_biom.R`](../_static/download/large_dataset/get_biom.R) script of ours, 
+With the 
+[`get_biom.R`](../_static/download/large_dataset/get_biom.R) 
+script of ours, 
 we were able to only collect subgingival plaque samples and get rid of zero abundance taxa,
-building the [`Subgingival_plaque.txt`](../_static/download/large_dataset/Subgingival_plaque.txt) file. 
+building the 
+[`Subgingival_plaque.txt`](../_static/download/large_dataset/Subgingival_plaque.txt) file. 
 
 In Qiita, the first column corresponds to Silva sequence identifiers in which the OTUs of the study were mapped against. 
 Since we cannot get directly the OTUs of the study, we used those identifiers, and with the `Silva_119_release.zip`
-from the [Silva archive](https://www.arb-silva.de/download/archive/qiime), 
+from the <a href="https://www.arb-silva.de/download/archive/qiime" target="_blank">Silva archive</a>, 
 we got their Silva closest ones. 
 This way, we ended up with an abundance table which in its last column had the Silva sequence instead of the taxonomy 
 ([Subgingival_plaque_Silva_seq.csv](../_static/download/large_dataset/Subgingival_plaque_Silva_seq.csv)).
+
+
+<!--  -->
 
 ```{note}
 The code for this part is not included since this is beyond the scope of this tutorial.
@@ -74,8 +90,10 @@ in order to use the `microbetag_prep` tool.
 In case you have your own OTUs/ASVs, you just need to use the abundance table with those along with the `microbetag_prep` tool. 
 ```
 
+<!--  -->
 
-Using the `Subgingival_plaque_taxonomy_Silva_seq.csv`, we used the Docker `microbetag_prep` tool to get 
+Using the `Subgingival_plaque_taxonomy_Silva_seq.csv`, 
+we used the Docker `microbetag_prep` tool to get 
 a GTDB-based taxonomy assignment and a FlashWeave network. 
 To this end, we first created a folder called `subgingival_plaque` where we moved the 
 `Subgingival_plaque_taxonomy_Silva_seq.csv` file. 
@@ -202,9 +220,13 @@ To do this, we had to first export the `manta` annotated node table
 You can find the exported table called `manta_annotated.node.csv` 
 [here](../_static/download/large_dataset/manta_annotated.node.csv)
 
+<!--  -->
+
 ```{hint}
 On the exported `.csv` with the cluster column, make sure you convert the column to **integer**.
 `microbetag` expects the `microbetag::cluster` to be integer, and clustering algorithms may return clusters as float!
+```
+<!--  -->
 
 ![](../_static/img/large_data/float_cluster.png)
 
@@ -215,27 +237,28 @@ First, click on the `Create a New Column ..` option and set it as `Integer`.
 
 Then, **make sure you call the new column** `microbetag::cluster`; this is required for the enrichment analysis to run.
 
-After you create the new column, click on it on the Nodes table, and then click the `Function Builder` buttton.
+After you create the new column, click on it on the Nodes table, and then click the `Function Builder` button.
 
 ![](../_static/img/large_data/BuilderButton.png)
 
 Now, you are about to describe how your new column should be filled in. 
 So, we will ask for the **absolute value** of the `cluster` column of ours. 
 In this case, this is the `manta` outcome, but it could be from any network clustering algorithm.
-Also, this column may be called however.
+This column may be called whatever.
 
 ![](../_static/img/large_data/FormulaBuilder.png)
 
 Make sure you apply the function to the whole column! 
 
-In this example, you may see that it seems there are two *cluster* columns, yet they look different! 
+In this example, you may see that it seems there are two *cluster* columns, 
+yet they look different! 
 One has the Cytoscape logo on its left, while the other has an **M**.
 This is because the new column we created has a different **namespace** than the rest of the columns on the Node table.
-If it was not for this, Cytoscape would not allow us to have two column with the same name! 
+If it was not for this, Cytoscape would not allow us to have two columns with the same name! 
 
-Our new `microbetag::cluster` column is now ready and we are good to go with the next steps! :rocket:
+Our new `microbetag::cluster` column is now ready, and we are good to go with the next steps! :rocket:
 
-```
+
 
 And now, we can load the table with the clusters, by first moving to the network with the FAPROTAX and 
 the phenDB-like annotations
@@ -250,7 +273,7 @@ After selecting the `manta_annotated.node.csv`, we had to specify:
 Now, we have all required elements of the nodes' annotation! 
 We have both FAPROTAX and phenDB annotations, and we also have clusters! 
 Therefore, **after renaming the `cluster` column to `microbetag::cluster`**, we are good to go 
-with the [**enrichment analysis test**](../basic_usage/enrichment.md)!
+with the [**enrichment analysis test**](../tutorials_core/enrichment.md)!
 
 
 ```{hint}

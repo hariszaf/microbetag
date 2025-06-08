@@ -43,9 +43,11 @@ microbetag
    :maxdepth: 2
    :caption: Tutorials: stand-alone
 
+   tutorials_local/python
    tutorials_local/local
    tutorials_local/config
-   tutorials_local/python
+   tutorials_local/genres
+   tutorials_local/containers
 
 .. toctree::
    :maxdepth: 2
