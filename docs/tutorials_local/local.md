@@ -7,57 +7,65 @@ description: "an example case of how to run microbetag using your own bins/MAGs"
 ---
 
 
-# `microbetag` using custom genomes
+# .. using custom genomes
 
 
 This is the main versioning scheme for `microbetag`. 
 The version of this tutorial is in line with the one of the documentation page.
 
 <div style="display: flex; gap: 10px;">
-   <a href="https://hub.docker.com/r/hariszaf/microbetag" class="btn-green"> Docker image </a>
-   <a href="https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag" class="btn-purple"> Tutorial files </a>
+   <a href="https://hub.docker.com/r/hariszaf/microbetag" class="btn-green" target="_blank"> Docker image </a>
+   <a href="https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag" class="btn-purple" target="_blank"> Tutorial files </a>
 </div>
 
 
 
 ```{note}
-This tutorial is for advanced users that have some basic experience working on a terminal. 
+This tutorial is for users that have some basic experience working on a terminal. 
  
 Contrary to previous cases, this scenario is not performed from within the CytoscapeApp.
 
-The user needs to run `microbetag` first on their computing environment (personal computer, HPC etc.) and then load the returned annotated network to Cytoscape.
+The user needs to run `microbetag` first on their computing environment (personal computer, HPC etc.), 
+and then load the returned annotated network to Cytoscape.
 ```
 
-<!-- > You may find the input files we are using for this tutorial in the `user-bins` branch of `microbetag`s GitHub repo, under the [`tests/dev_io_microbetag` folder](https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag).
->  -->
+<!-- 
+You may find the input files we are using for this tutorial in the `user-bins` branch of `microbetag`s GitHub repo, 
+under the [`tests/dev_io_microbetag` folder](https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag).
+-->
 
-In the [Cytoscape App tutorial](../basic_usage//abd_only.md), our sequences were already taxonomically assigned before running `microbetag` and their taxonomies were mapped to representative GTDB genomes.
+In the [Cytoscape App tutorial](../tutorials_otf/abd_only.md), 
+our sequences were already taxonomically assigned before running `microbetag`,
+and their taxonomies were mapped to representative GTDB genomes.
 `microbetag` then used these genomes for the annotation steps.
 
-However, in case of shotgun metagenomics one may end up with their own bins while further refinement of the latter can lead to Metagenome-Assembled Genomes (MAGs).
-In case of high quality MAGs, i.e. high completeness and low contamination, they can be used directly for the annotation steps of `microbetag`. 
+
+However, in case of shotgun metagenomics one may end up with their own bins/ 
+while further refinement of the latter can lead to Metagenome-Assembled Genomes (MAGs).
+Also, one may already use genomes for the communities under study from earlier studies.
+In this case, such local genomes can be used directly for the annotation steps of `microbetag`. 
 Yet, this requires computing resources and time much higher than those that our web-server can support.
 
-Thus, we provide a version of `microbetag` as a stand-alone, containerized tool so that users can annotate a co-occurrence network using their own bins/MAGs.
-To do that, you need first to make sure you have either [Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html)/[Apptainer](https://apptainer.org/docs/user/latest/quick_start.html) in the computing system to be used for running `microbetag`.
-The last is common in HPC systems and if you are about to use such a system, you should ask your admin for more information.
+<!-- 
+that you may get from our 
+[GitHub repo](https://github.com/hariszaf/microbetag/blob/user-bins/tests/dev_io_microbetag/config.yml) 
+or download it directly from [here][1] 
+-->
 
-On top of the abundance table and your genomes/bins/MAGs, to go for this case you need:
-* Docker / Singularity (containerization technology)
-* the `microbetag` image based on the containerization technology you are using (see below for how to get `microbetag` as a [Docker](#using-docker) or a [Singularity](#using-singularityapptainer) image)
-* the `config.yml` file where you set the parameters for how to run `microbetag`
- <!-- that you may get from our [GitHub repo](https://github.com/hariszaf/microbetag/blob/user-bins/tests/dev_io_microbetag/config.yml) or download it directly from [here][1] -->
-
-Running `microbetag` using your own genomes/bins/MAGs requires **significant** computing time and/or resources.
 In this tutorial, we will use a very short number of bins (7) to showcase the various steps `microbetag` implements. 
-Yet, it still gets more than a couple of hours to go through all the different steps to get all the possible supported annotations.
-In our experience, memory (RAM) requirements should not be a challenge; memory would be an issue only with really large networks. 
-`microbetag` is more often than not thread-limited, i.e. it needs computing power to go through the annotation steps. 
+Yet, it still gets more than a couple of hours to go through all the different steps on a personal computer.
+In our experience, memory (RAM) requirements should not be a challenge; 
+memory would be an issue only with really large networks.
+`microbetag` is more often than not thread-limited, i.e. 
+it needs computing power to go through the annotation steps. 
+
 
 ```{important}
 **INPUT FILES USED IN THIS TUTORIAL**
 
- A complete example of running `microbetag` locally using the `modelseedpy` library for GEM reconstruction with all the intermediate files produced can be found in the [`dev_io_microbetag`](https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag) folder of the `user-bins` branch on the GitHub repo.
+ A complete example of running `microbetag` locally using the `modelseedpy` library for GEM reconstruction with all the intermediate files produced can be found in the 
+ [`dev_io_microbetag`](https://github.com/hariszaf/microbetag/tree/user-bins/tests/dev_io_microbetag) folder of the `user-bins` 
+ branch on the GitHub repo.
  
 In the initial run, there are only 3 input files:
  - the <a href="{{ site.url }}/microbetag/download/local/config.yml" download="config.yml"><code>config.yml</code></a> file; allows you to set all the relative parameters for `microbetag` to run
@@ -67,25 +75,18 @@ In the initial run, there are only 3 input files:
 
  **Remember!**
 
- The config and the abundance table files are **mandatory**. 
- Always keep those (and the edge list if available) in the root of your input/output folder; i.e. in the path you set as your `io_path` in the `config.yml` file.
+ The **config** file is **mandatory**. 
 ```
 
+```{hint}
+This tutorial primarily covers the case where your starting input is an **abundance table** 
+along with a list of genomes or bins.
+Alternatively, you may also run `microbetag` using again the list of genomes but this time, 
+a **precomputed network** file and a **two-column taxonomy file**, 
+where the first column contains sequence IDs and the second contains their corresponding taxonomies.
 
-## Install 
-
-
-```{python}
->>> (microbetag) u0156635@gbw-l-l0074:~$ microbetag --help
-usage: microbetag [-h] [--config CONFIG] [-v]
-
-Microbetag CLI
-
-options:
-  -h, --help            show this help message and exit
-  --config CONFIG, -c CONFIG
-                        Path to the configuration yaml file.
-  -v, --version         Show Microbetag version
+For such a case, you may check an example on microbetag's 
+<a href="https://github.com/msysbio/microbetag/tree/develop/test_data/test_microbetag" target="_blank">GitHub</a>.
 ```
 
 
@@ -94,45 +95,79 @@ options:
 ## Input and `config.yml` files
 
 The `config.yml` file is rather important as it is the one that allows you to set your `microbetag` run.
-A number of the parameters there correspond to tools that are invoked while others have to do with alternative routes that `microbetag` can follow for the annotation of the network. 
+A number of the parameters there correspond to tools that are invoked,
+while others have to do with alternative routes that `microbetag` can follow for the annotation of the network.
 Read **carefully** the `description` of each argument before setting a value. 
 Here, we highlight some of them. 
 
 
-- `abundance_table_file`: path to your abundance table; the abundance table needs to follow the instructions for any abundance table to be used with `microbetag`, i.e., sequence identifier in the first column, sample names in the first row and a 7-level taxonomy in the last column; of course, you may provide the output of the[ `microbetag` preprocessing step](./prep.md) as an abundance table. 
+- `abundance_table_file`: path to your abundance table; the abundance table needs to follow the instructions 
+  for any abundance table to be used with `microbetag`, i.e., sequence identifier in the first column, 
+  sample names in the first row and a 7-level taxonomy in the last column; of course, 
+  you may provide the output of the[ `microbetag` preprocessing step](../tutorials_otf/prep.md) as an abundance table. 
 
-- `sc_input_type`: This is a **key parameter** for running `microbetag` locally; based on whether you already have annotated your genomes (either using other software or from previous runs of `microbetag`) you can use different input files as the starting point for getting the seed complementarities. The `sequence_files_for_reconstructions` parameter is strongly related to this. 
-For example, if you have already GEMs reconstructed based on your genomes, you may set this to `sc_input_type` to `models` and then, provide the folder name with your GEMs in the `sequence_files_for_reconstructions` parameter (e.g. `my_xmls`). Likewise, if you do not have GEMs, but you already have RAST annotations, you may set `sc_input_type` to `proteins_faa` and give the path to those in the `sequence_files_for_reconstructions` parameter.
+- `sc_input_type`: This is a **key parameter** for running `microbetag` locally; 
+  based on whether you already have annotated your genomes (either using other software or from previous runs of `microbetag`) 
+  you can use different input files as the starting point for getting the seed complementarities. 
+  The `sequence_files_for_reconstructions` parameter is strongly related to this. 
+  
+  For example, if you have already GEMs reconstructed based on your genomes, you may set this to `sc_input_type` to `models` and then, 
+  provide the folder name with your GEMs in the `sequence_files_for_reconstructions` parameter (e.g. `my_xmls`). 
+  Likewise, if you do not have GEMs, but you already have RAST annotations, you may set `sc_input_type` to `proteins_faa` 
+  and give the path to those in the `sequence_files_for_reconstructions` parameter.
 
-- `seed_complementarity`: since this is the most time and resource consuming step, the user may choose not to go for it. By setting this to `Fasle`, none of the steps for GEMs reconstruction or seed complementarity inference will be performed.
+- `seed_complementarity`: since this is the most time and resource consuming step, the user may choose not to go for it. 
+  By setting this to `Fasle`, none of the steps for GEMs reconstruction or seed complementarity inference will be performed.
+
+- `flashweave_args`: all the arguments under this umbrella term are related to how `FlashWeave` will perform, 
+  check on the [FAQs](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) but also the 
+  <a href="https://github.com/meringlab/FlashWeave.jl" target="_blank">FlashWeave GitHub repo</a> for more.
 
 
-- `flashweave_args`: all the arguments under this umbrella term are related to how `FlashWeave` will perform, check on the [FAQs](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) but also the [FlashWeave GitHub repo](https://github.com/meringlab/FlashWeave.jl) for more.
 
-```{note}
-Please, go through the parameters of the `config.yml` file carefully and make sure you keep this file in your `io_path`.
+```{warning}
+Make sure that the template configuration file you are using is compatible with 
+the version of `microbetag` you have installed.
 ```
+
+```{hint}
+A YAML configuration file is required **only** in case you need to run the whole *microbetag* pipeline.
+
+If you need to run indipendent tasks, you can either build pseudo :class:`microbetag.Config` classes
+or even use directly the `microbetag` features you wish to. 
+
+The example cases we conver under the <a href="https://github.com/msysbio/microbetag/tree/develop/tests" target="_blank">`tests` folder on GitHub</a> they come along with their input/output data you will find on the 
+<a href="https://github.com/msysbio/microbetag/tree/develop/test_data" target="_blank">`test_data`</a> folder.
+Have a look on the <a href="https://github.com/msysbio/microbetag/blob/develop/test_data/README.md" target="_blank">`README`</a>
+for the cases covered and feel free to advise their corresponding pseudo-config classes, or their corresponding
+YAML configuration files.
+```
+
+
 
 ## Output 
 
-In the `config.yml` file, you can set the location of your input files using the `io_path` parameter. 
-Additionally, you can specify the `output_directory`, which is the name of the folder that will be created within the `io_path` to store all the output files generated by `microbetag`.
+In the `config.yml` file, you can specify the `output_directory`.
 Here we discuss the folders and the files you will find under the `output_directory`.
 We dot not always follow the order with which the files are generated. 
 
+### The annotated `.cx2` network file
 
-
-### The annotated `.cx` network file
-
-The main output file (end proudct) of `microbetag` can be found in the `output_directory` you set in your `config.yml` file; the `microbetag`-annotated network called `microbetag_annotated_network.cx`.
-This is the file you need to [load in your Cytoscape](./load.md) and then after enabling the MGG visual style and the MGG results panel you can investigate your annotated network! 
-This file is in [`.cx2`](https://cytoscape.org/cx/cx2/specification/cytoscape-exchange-format-specification-(version-2)/) format. 
+The main output file of `microbetag` can be found in the `output_directory` you set in your `config.yml` file; 
+the `microbetag`-annotated network called `mtag_net_<timestamp>.cx2`.
+This is the file you need to [load in your Cytoscape](../tutorials_otf/prep.md) and then, a
+after enabling the MGG visual style and the MGG results panel, you can investigate your annotated network! 
+This file is in 
+[`.cx2`](https://cytoscape.org/cx/cx2/specification/cytoscape-exchange-format-specification-(version-2)/){target="_blank"} 
+format. 
 
 
 
 ### FAPROTAX
-A folder called `faprotax` is made where there is a subfolder, called `sub_tables` and a file whith the sum of the abundances of the taxa found with a specific process in each sample , called `functional_otu_table.tsv`. 
-In the `sub_tables` folder, a file for each process is available mentioning the genomes/bins found related with the process udner study and their relative abundance per sample. 
+A folder called `faprotax` is made where there is a subfolder, called `sub_tables` 
+and a file with the sum of the abundances of the taxa found with a specific process in each sample, called `functional_otu_table.tsv`. 
+In the `sub_tables` folder, a file for each process is available mentioning the genomes/bins found 
+related with the process under study and their relative abundance per sample. 
 
 For example, the `aerobic_nitrite_oxidation.txt` looks like: 
 
@@ -143,7 +178,7 @@ For example, the `aerobic_nitrite_oxidation.txt` looks like:
 
 
 
-### phenDB-like
+### genome-based trait predictions
 
 - `train.genotype` file: this is the output of the `phenotrex` program annotating your genomes/bins with COG families using the latest 
 
@@ -244,80 +279,6 @@ Running the complete workflow could get up to 6-7 hours based on the approach yo
 ```
 
 
-## GEM reconstruction step
-
-`microbetag` supports 2 ways to reconstruct GEMs based on the user's genomes/bins: 
-1. using the [`modelseedpy`](https://github.com/ModelSEED/ModelSEEDpy) Python library
-2. using the [`CarveMe`](https://carveme.readthedocs.io/en/latest/) tool 
-
-
-In the first case, `modelseedpy` requires [RAST](https://rast.nmpdr.org)-annotated genomes.
-`microbetag` can do that on its own starting from your genome sequences; alternative, you may provide these to be used for the GEM reconstruction directly if you already have them
-(either from previous `microbetag` runs or from other software).
-
-```{note}
-`modelseedpy` needs to establish a connection to the RAST server (`RastClient()`)
-In some cases, based on the status of the RAST server, we have observed that time errors may occur. 
-In this case, `microbetag` will exit and force a restart of its running on its own! 
-Yet, it is a good practice to also check its status when the `modelseed` reconstruction step is running.
-```
-In the following paragraphs, we highlight how to go for different scenarios of GEMs reconstruction using different file types as initial starting points. 
-One need to combine 2 parameters of the `config.yml` file to specify those scenarios: the `sc_input_type` where one specifies the file type and the `sequence_files_for_reconstructions` that points to the directory where the files to be used are located.
-
-
-
-### using `modelseedpy` and your bins 
-
-in this case, you have set 
-
-- `sc_input_type` as `bins_fasta`, and 
-- `sequence_files_for_reconstructions` is blank
-- `genre_reconstruction_with` as `modelseedpy`
-
-Then, `microbetag` will use [`RASTtk` programs](https://www.bv-brc.org/docs///cli_tutorial/rasttk_getting_started.html) to RAST annotate the original genomes/bins. 
-In the `output_directory`, a folder called `reconstructions` has been built and in this case, 3 files for each genome/bin are now available:
-
-- `.gto` and `.gto_2`: these are genome typed object, i.e. JSON files that are compatible with KBase. The `.gto_2` is a second genome typed object with all the RAST annotation data.
-- `.faa` includes the same information as the `.gto_2` file, but we export the protein translations in `.fasta` format
-
-```{note}
-For our 7 genomes/bins this step may take about 1 hour depending on your computing system
-```
-
-
-
-### using `modelseedpy` and your already RAST annotated genomes
-
-Assuming you already have the `.faa` files coming from the `rast-tk` package, you may use them directly by setting 
-
-- `sc_input_type` as `proteins_faa`, and 
-- `sequence_files_for_reconstructions` as the path to the folder with your `.faa` files
-- `genre_reconstruction_with` as `modelseedpy`
-
-In this case, `microbetag` will have to establish connections with the RAST client like before. 
-
-```{note}
-If your annotated genomes include the DNA sequences instead of the protein ones (`.fna` files) you may use them by setting the 
-`sc_input_type` as `coding_regions`.
-```
-
-
-### using `carveme`
-
-- `sc_input_type` as `bins_fasta`
-- `sequence_files_for_reconstructions` is blank
-- `genre_reconstruction_with` as `carveme`
-
-In this case, under the `reconstructions` file, we have a `.tsv` file for each genome/bin with the findings of the `diamond` against the internal database of `carveme` with the BiGG reactions. 
-
-|              |                 |       |     |      |     |     |      |    |      |            |        |
-|:------------:|----------------:|------:|----:|-----:|----:|----:|-----:|---:|-----:|-----------:|-------:|
-| bin_151.peg.3 |  iLJ478.TM0057 |  57.9 | 309 | 125  |  3  |  6  | 310  | 2  | 309  | 2.72e-128  |  369   |
-| bin_151.peg.3 |  iLJ478.TM1063 |  55.9 | 311 | 130  |  3  |  7  | 310  | 3  | 313  | 5.36e-124  |  358   |
-
-For a thorough description of each column, you may check this [here](https://github.com/bbuchfink/diamond_docs/blob/master/1%20Tutorial.MD).
-
-
 
 
 ### GEMs already available
@@ -351,147 +312,6 @@ This post process step is necessary since we use a complete medium to gapfill th
 One may come with alternative procedures on how to gap fill in terms of minimising the missing potential cross-feedings, but at the same time not over-predicting such cases.
 ```
 
-
-
-## Using Docker 
-
-Once you have installed Docker locally, you may run 
-
-```bash
-docker pull hariszaf/microbetag:v1.0.2
-```
-
-to get microbetag locally.
-
-```{important}
-**Version is essential!**
- 
-Please, make sure you are aware of the version you are using. 
-Latest versions may fix reported bugs or have new features. 
-It is important to always be aware of the version you are using and report it when you are about to submit any issues. 
-
-```
-Then, you need to get a copy of the `kofam` database to allow the annotation of your sequences with KEGG ORTHOLOGY terms. 
-You may get this by running the following chunk of code: 
-
-
-```bash 
-mkdir kofam_database &&\
-    cd kofam_database &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-    gzip -d ko_list.gz &&\
-    tar zxvf profiles.tar.gz 
-```
-
-
-Now, you need to [download][1] the `config.yml` file that accompanies `microbetag`, to set the values to the required and optional arguments of your choice. 
-
-In this file, each argument has a `required` field that denotes whether it is mandatory to be set or not. 
-
-One may provide just an abundance table and the corresponding bins/MAGs sequence files.
-
-```{hint}
-**FILENAMES**
-
-The filenames of your bins/MAGs need to have the same name, like those in your abundance table.
-For example, if in the abundance table you have bin101, then the corresponding filename of the bin should be bin101.fa or bin101.fasta etc.
-This will soon be changed so a mapping file can be used instead. 
-Until then though `microbetag` will fail if that is not the case. 
-```
-
-
-In case you do not already have GENREs for your bins/MAGs, `microbetag` supports two ways for the reconstruction of metabolic networks: 
-- using `modelseedpy` that required RAST annotation of your bins and are based on the [ModelSEED resource](https://modelseed.org) and identifiers, 
-- using `carveme` that can be performed in both DNA and protein sequences, make use of the [BiGG identifiers](http://bigg.ucsd.edu) and required a Gurobi license (see section [GEM reconstruction step](./local.md#gem-reconstruction-step))
-This can be a rather time-consuming step, especially using `modelseedpy`.
-
-As you may already have gene predictions for your bins/MAGs, or even protein annotations, you may also provide them to `microbetag`, so those steps can be skipped. 
-If you have already built metabolic networks, then in case they are based on either ModelSEED or BiGG identifiers, you may provide them so seed scores and seed complementarities can be 
-computed directly on them.
-
-
-
-```{hint}
-**Input folder**
-
-To conclude, your input folder to be mounted will look like this:
-
-    u0156635@gbw-l-l0074:microbetag$ ls 
-    config.yml
-    my_bins/
-    my_abundance_table.tsv
-
-
-where in the `my_bins` folder you have:
-
-
-    u0156635@gbw-l-l0074:microbetag$ ls bins/
-    bin_101.fa
-    bin_151.fa
-    bin_19.fa
-
-```
-
-Once your input folder is ready, you can mount it on your Docker container and run `microbetag`: 
-
-```bash
-docker run --rm -it  \
-    --volume=./tests/dev_io_microbetag/:/data \
-    --volume=./microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
-    --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-    --entrypoint /bin/bash  \
-    hariszaf/microbetag:v1.0.2
-```
-
-The `--volume` flag allows you to mount a local directory to a specific path in the container.
-It is **essential** that the **right** parts of the volumes are kept as above! 
-For example, when using `carveme`, a gurobi license is required; `microbetag` expects the license unde the `/opt/gurobi` path, so you need to make sure all the right parts of the volumes are as above and that the left parts point to your local paths. 
-
-```{important}
-**Remember!** It is strongly suggested all the files and folders you mount to be part of your root path; meaning the directory from which you initiate your Docker container. 
-
-For example, if you observe the last chunk of code, you will notice that both `kofam_database` and `gurobi.lic` and the input-output folder called `dev_io_microbetag` they are all within my root folder
-`~/github_repos/KU/microbetag` from where I run the `docker run` command.
-
-```
-
-```{note}
-A Web License Service (WLS) [Gurobi license](https://www.gurobi.com/downloads/) in case you are about to use `carveme`.
-You may find the following [link](https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu) useful on how to do that.
-```
-
-Once you have fired a container, you can now run `microbetag` using the following command:
-
-```bash
-root@20510f8400f1:/microbetag# python3 microbetag.py /data/config.yml 
-```
-
-
-
-## Using Singularity/Apptainer
-
-These technologies are widely used in High Performance Computing (HPC) systems. 
-In case you are about to use `microbetag` in such a system, you first need to build a Singularity image (`.simg`) based on the Docker one:
-
-```bash
-sudo singularity build microbetag_v102.simg docker://hariszaf/microbetag:v1.0.2
-```
-
-You will need to have sudo rights to run this command. 
-If you do not have `sudo` rights, you can either ask your admin to do so or run the build command in a similar environment, e.g. your own Linux based laptop and move it to the HPC with a single `scp` command.
-Also, you can ask your admin or check your HPC documentation site how they deal with Docker images and follow their lead. 
-
-Once a `.simg` image is available, you may run `microbetag` again by mounting the necessary paths:
-
-```bash
-singularity exec 
-    -B tests/dev_io_microbetag/:/data  
-    -B microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/
-    -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro  
-    microbetag_v101.simg 
-    python3 /microbetag/microbetag.py /data/config.yml
-```
 
 [1]:../_static/download/local/config.yml
 [2]:../_static/download/local/thirty_Samples.tsv

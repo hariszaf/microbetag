@@ -62,7 +62,7 @@ That is why you need to make sure you denote `microbetag_prep` as the taxonomy d
 
 If you have a taxonomy scheme that "skips" a level, or another one that has more levels, microbetag will either return **fewer annotations** or **fail**.
 You need to make sure you always have a 7-level scheme for all the entries on your table and that the species/strain level if available is in the 7th field.
-Again, it is always a good practice to use the [`microbetag` preparation step](../advanced_use/prep.md) to get the most suited taxonomies for `microbetag`
+Again, it is always a good practice to use the [`microbetag` preparation step](../tutorials_otf/prep.md) to get the most suited taxonomies for `microbetag`
 ```
 
 
@@ -94,16 +94,18 @@ biom convert -i otu_table.biom -o otu_table.csv --to-tsv --header-key taxonomy
 Make sure you have the `biom` tools installed; if not, you may follow the instructions you can find 
 <a href="https://biom-format.org/index.html" target="_blank">here</a>
 how to get them.
+(Link to the _biom format_ may point you at security risk. Last time we checked (2025.06.06), it was ok.)
 <!-- https://www.metagenomics.wiki/tools/16s/qiime/otu-biom-table -->
 
 
 
 ```{important}
-To get the optimal annotations in the more robust way, we **strongly suggest** you first prepare your data using the `microbetag_prep` Docker/Singularity image.
-That will be almost always the case when you have large datasets with more than a few thousands of sequences and no network for them. 
-Yet, even if you have a network, we still **strongly suggest** running the *taxonomy assignment* step, so `microbetag` can map more efficiently the taxa present to their corresponding GTDB genomes. 
+To get the optimal annotations in the more robust way, we **strongly suggest** you first 
+[prepare your data](../tutorials_otf/prep.md) using the `microbetag_prep` Docker/Singularity image.
 
-Have a look at the ["preparation"](../advanced_use/prep.md) section for how to do so! 
+That will be almost always the case when you have large datasets with more than a thousand of sequences and no network for them. 
+Yet, even if you have a network, we still **strongly suggest** running the *taxonomy assignment* step of the preprocessing step, 
+so `microbetag` can map more efficiently the taxa present to their corresponding GTDB genomes. 
 ```
 
 
@@ -119,7 +121,7 @@ instead of having a 7-level taxonomy, you need to provide the sequence.
 ## Metadata file
  
 FlashWeave, the software `microbetag` invokes to build the co-occurrence network, can exploit metadata.
-If you want to run FlashWeave with a metadata file, you need to remember that FlashWeave considers as variables both the sequence ids (i.e., ASVs/OTUs/bins) and the metavariables (e.g. pH, sex, any variable on your metadata file). 
+If you want to run FlashWeave with a metadata file, you need to remember that FlashWeave considers as variables both the sequence IDs (i.e., ASVs/OTUs/bins) and the metavariables (e.g. pH, sex, any variable on your metadata file). 
 Thus, you need to provide them as **rows**, contrary to what we do in most microbiome analyses.
 
 Here is a toy example of how your files should look like: 
@@ -170,7 +172,7 @@ When you are using `microbetag` through Cytoscape then, to the best of our knowl
 That is because you first import then network on Cytoscape and only then you load it on the `MGG` app that will allow its transferring to the `microbetag` server. 
 
 ```{note}
-Make sure to rename the column `microbetag` should treat as the weight of your edges to `microbetag::weight` (see relative [tutorial](load.md#load-already-microbetag-annotated-networks)).
+Make sure to rename the column `microbetag` should treat as the weight of your edges to `microbetag::weight` (see relative [tutorial](./load.md#load-edge-list-coming-from-the-microbetag-preparation-step)).
 ```
 
 However, in case you are using `microbetag` locally, and you already have a network to annotate, then you will have to provide it as a 3-column file (see [example file][2]):
@@ -215,7 +217,7 @@ Then, as you will see in the following two cases, you will have to set the value
 |Network clustering         | `network_clustering`             | return clusters of nodes on the network using the manta package | bool | 
 |Consider children taxa     | `get_children`      | use genomes of children taxa of the taxa in the abundance table based on the NCBI Taxonomy scheme, relevant only if you use `Other` taxonomy | bool |
 |heterogeneous              | `heterogeneous`     | (FlashWeave) enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (`FlashWeaveHE`) | bool | 
-|sensitive                  INPUT FILES USED IN THIS TUTORIAL| `sensitive`         | (FlashWeave) enable fine-grained associations (`FlashWeave-S`, `FlashWeaveHE-S`), sensitive=false results in the fast modes `FlashWeave-F` or `FlashWeaveHE-F` | bool | 
+|sensitive                  | `sensitive`         | (FlashWeave) enable fine-grained associations (`FlashWeave-S`, `FlashWeaveHE-S`), sensitive=false results in the fast modes `FlashWeave-F` or `FlashWeaveHE-F` | bool | 
 
 
 The column `Variables` in the above table provides the variable names you need to use 
@@ -227,7 +229,7 @@ However, in the *Using a network* case, we do use the network of
 Hessler et *al.* (2023) {cite:p}`hessler2023vitamin` who we would like to thank for sharing their data.
 
 
-
+<!-- INPUT FILES USED IN THIS TUTORIAL -->
 
 
 

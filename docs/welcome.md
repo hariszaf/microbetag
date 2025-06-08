@@ -51,7 +51,7 @@ enrichment tests and metabolic complementarity analysis</a>. bioRxiv, 2024-10.
 
 ### Funding
 
-This project was funded by an <a href="https://www.embo.org/funding/fellowships-grants-and-career-support/scientific-exchange-grants/" target="_blank">EMBO Scientific Exchange Grants</a> 
+This project was funded by an <a href="https://www.embo.org/funding/fellowships-grants-and-career-support/scientific-exchange-grants/" target="_blank">EMBO Scientific Exchange Grant</a> 
 and the <a href="https://www.3domics.eu" target="_blank">3D’omics</a> Horizon 2020 project (101000309).
 
 <!-- https://www.embo.org/documents/news/facts_figures/EMBO_facts_figures_2021.pdf -->

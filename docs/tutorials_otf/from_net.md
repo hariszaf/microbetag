@@ -77,10 +77,13 @@ Finally, you can again check your network as loaded on MGG through the `Check Da
 
 
 ```{important}
-If the node names of the network are not included in the sequence identifiers of the abundance table, you will not be able to import your network to MGG.
+If the node names of the network are not included in the sequence identifiers of the abundance table, 
+you will not be able to import your network to MGG.
 ```
 
-Once both your abundance file and your network are imported, you can proceed as in the [*Starting from an abundance table*](./abd_only.md) case by clicking on `Get Annotated Network` on the main menu of the `MGG` app on the `Apps` tab and setting the parameters required.
+Once both your abundance file and your network are imported, you can proceed as in the 
+[*Starting from an abundance table*](./abd_only.md) case, 
+by clicking on `Get Annotated Network` on the main menu of the `MGG` app on the `Apps` tab and setting the parameters required.
 
 ![settings](../_static/img/app/inputNet.png)
 
@@ -93,7 +96,7 @@ This will take significantly less time and here is the returned network:
 ![annotated_net](../_static/img/app/annotatedNetwork.png)
 
 
-Now, you can go through the [*Investigating the annotations*](./roaming.md) tutorial to check how good `microbetag` did with *Variovorax* - related annotations.
+Now, you can go through the [*Investigating the annotations*](../tutorials_core/roaming.md) tutorial to check how good `microbetag` did with *Variovorax*-related annotations.
 
 
 [1]:../_static/download/mgg/vitAbund.tsv

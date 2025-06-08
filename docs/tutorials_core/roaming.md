@@ -16,7 +16,7 @@ description: "tutorial on how to parse the annotated network using the MGG app"
 ```{note}
 **INPUT FILES USED IN THIS TUTORIAL**
 
-We will use the _microbetag_-annogated network of the [network-based example-case](from_net); 
+We will use the _microbetag_-annogated network of the [network-based example-case](../tutorials_otf/from_net.md); 
 you can get directly its corresponding `microbetag` - annotated network from [here][1].
 ```
 
@@ -142,11 +142,11 @@ For example, I was curious about the Nitrite-oxidizing bacteria (NOB) on my netw
 Likewise, you may go through the annotations on the edges of the network.
 
 <!-- <p style="color: rgb(135,206,235)">Welcome to freeCodeCamp!</p> -->
-Edges are either
+<!-- Edges are either
  - <p style="color : Green">green</p> mentioning co-occurrences
  - <p style="color : Red">red</p> suggesting mutual exclusion of the two taxa
  - <p style="color : Black">black</p> representing ***directed*** potential metabolic interactions. 
-
+ -->
 
 
 
@@ -162,7 +162,7 @@ Here is an example:
 ![kegg_seed_map](../_static/img/app/seedComplPanel.png)
 
 
-[*Seed scores*](../modules/modules_background.md#seed-scores-and-complements-based-on-genome-scale-draft-reconstructions-gems) 
+[*Seed scores*](../modules/modules.md#seed-scores-and-complements-based-on-genome-scale-draft-reconstructions-gems) 
 between the two genomes are also shown here. 
 Remember that like the edge under study, seed scores have also *directionality*; 
 
@@ -177,11 +177,28 @@ Thus, on the Edge panel we display their average and their corresponding standar
 ![std](../_static/img/app/seed_std.png)
 
 
-**Seed complements** are then shown on a collapsible table, where each row corresponds to the seeds related to a KEGG MAP (column 2).
-Each KEGG map belongs to a metabolism category in KEGG's hierarchy, with apparently, several maps to belong to the same category.
+**Seed complements** are then shown on a collapsible table, where each row corresponds to the seeds related to a KEGG PATHWAY map. 
+More specifically, each seed complement entry consists of: 
+
+* The metabolism _Category_ the pathway is part of 
+* A KEGG PATHWAY and its corresponding map
+* The seed compounds related to KEGG modules involved in the PATHWAY in the ModelSEED namespace
+* Their corresponding terms in the KEGG COMPOUNDS namespace 
+* A colored URL highlighting the (PATHWAY-related) compounds that the beneficiary species can produce on its own (blue) and the
+  complements that could potentially get from the donor
+
+
+Each KEGG PATHWAY map belongs to a metabolism category in KEGG's hierarchy, with apparently, several maps to belong to the same category.
+
 _microbetag_ returns all seed compounds related to such a map that the beneficiary could potentially get from the donor. 
-Since metabolic models used in _microbetag_ have been reconstructed with ModelSEEDpy, it's the ModelSEED namespace in which 
-the seeds complements are predicted, which are then mapped to their corresponding KEGG COMPOUND ids.
+
+For the on-the-fly version, since metabolic networks used in _microbetag_ have been reconstructed with ModelSEEDpy, it's the ModelSEED namespace in which 
+the seeds complements are predicted, which are then mapped to their corresponding KEGG COMPOUND IDs.
+
+```{note}
+In case you are using _microbetag_ locally, and you reconstruct networks using _carveme_ or provide models in the BiGG namespace, 
+current version of _microbetag_ will still first map them to the ModelSEED namespace.
+```
 
 ```{important}
 The returned complements in the seed complementarity module of `microbetag` are KEGG COMPOUNDs, 

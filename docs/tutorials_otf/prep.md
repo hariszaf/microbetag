@@ -37,29 +37,43 @@ For the `microbetag` preparation tutorial, i.e., the steps you may run to come u
 `microbetag` is a one-stop-shop application as it supports the taxonomic annotation of ASVs/OTUs, the building of the co-occurrence network and its annotation. 
 However, its main goal is the latter and at the same point, the first two tasks can be computationally expensive especially for large datasets.
 To this end, a Docker/Singularity image is available supporting the taxonomy assignment of the ASVs/OTUs with GTDB taxonomies 
-[a taxonomy annotated abundance file with the 16S GTDB (v.207) taxonomies](https://zenodo.org/records/6655692) and the creation of the co-occurrence network if asked. 
+<a href="https://zenodo.org/records/6655692" target="_blank">a taxonomy annotated abundance file with the 16S GTDB (v.207) taxonomies</a> 
+and the creation of the co-occurrence network if asked. 
 
 
-[Docker](https://docs.docker.com/get-docker/) or [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html) needs to be installed. 
+<a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a> or 
+<a href="https://docs.sylabs.io/guides/3.0/user-guide/installation.html" target="_blank">Singularity</a>
+needs to be installed. 
 Then, download the `microbetag_prep` image either by running: 
 
 
 ```bash
-docker pull hariszaf/microbetag_prep:v1.0.0
+docker pull hariszaf/microbetag_prep:<version>
 ```
 
 
 or 
 ```bash
-singularity pull docker://hariszaf/microbetag_prep:v1.0.0
+singularity pull docker://hariszaf/microbetag_prep:<version>
+```
+
+```{note}
+Leaving `<version>` blank will pull the latest version of the image
 ```
 
 
-Then you need to also download the<a href="https://raw.githubusercontent.com/hariszaf/microbetag/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
+Then you need to also download the<a href="https://raw.githubusercontent.com/msysbio/microbetag/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
 
 
-{: .important}
-The `cofing.yml` file and the input files to be used, need to be in the directory to be mounted (see Docker and Singularity commands below).
+```{attention}
+The `cofing.yml` file and the input files to be used, need to be in the directory 
+to be mounted (see Docker and Singularity commands below).
+```
+
+```{attention}
+Do not mistake the configuration file used by the preprocessing tool for the one required by _microbetag_.
+```
+
 
 
 ## I/O folder 
@@ -88,7 +102,7 @@ A thorough description of each argument can be found below as well as in the `co
 |``output_directory``         | Output folder name; it will be created within the mounted folder |
 
 
-### Docker {#docker}
+### Docker
 
 To run directly 
 
@@ -111,8 +125,9 @@ root@69bdeedb582b:/pre_microbetag#
 ```
 
 
-{: .highlight}
+```{highlight}
 This case can be useful when several FlashWeave arguments not included in the basic config file need to be edited. 
+```
 
 You can see what is present under the `/pre_microbetag` directory:
 ```bash
@@ -152,7 +167,8 @@ cd /pre_microbetag/
 
 ## An example case
 
-We will use the findings of a 16S rRNA analysis with [DADA2](https://benjjneb.github.io/dada2/) that we have exported in a `.tsv` file. 
+We will use the findings of a 16S rRNA analysis with <a href="https://benjjneb.github.io/dada2/" target="_blank">DADA2</a> 
+that we have exported in a `.tsv` file. 
 We show how to get a *microbetag*-annotated co-occurrence network with this matrix as your only input.
 More complex scenarios can be the case, however they are all based on the principles described here.
 
@@ -166,7 +182,8 @@ In the framework of microbetag, you can do that by running the pre-processing Do
 You may check the [FAQs](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) 
 for FlashWeave's most essential parameters you can set through the `config.yml` file of the preprocessing image.
 In addition, you can edit the `flashweave.jl` script to adjust it to your needs; you may check for more information the 
-[FlashWeave documentation](https://github.com/meringlab/flashweave.jl) direclty.
+<a href="https://github.com/meringlab/flashweave.jl" target="_blank">FlashWeave documentation</a> 
+direclty.
 ```
 
 
@@ -247,12 +264,13 @@ You may check this [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneou
 In our case, we set `flashweave_sensitive` as `True` and `flashweave_heterogeneous` as `False`.
 
 
-- if available, provide the filename of your metadata file; for instructions on how this file should be formatted, please see [here](https://hariszaf.github.io/microbetag/docs/input/#case-1-all-you-have-is-your-abundance-table-and-your-taxonomies) as well as the [FlashWeave documentation](https://github.com/meringlab/FlashWeave.jl)
+- if available, provide the filename of your metadata file; for instructions on how this file should be formatted, 
+  please see [here](../tutorials_core/input.md#abundance-table) as well as the <a href="https://github.com/meringlab/FlashWeave.jl" target="_blank">FlashWeave documentation</a>
 
 
 Now, based on your container technology you are ready to run the preparation image.
 
-An example of a directory to mount can be seen [here](https://github.com/hariszaf/microbetag/tree/preprocess/test).
+An example of a directory to mount can be seen <a href="https://github.com/msysbio/microbetag/tree/preprocess/test" target="_blank">here</a>.
 The mandatory abundance table file can be provided as a `.tsv` or a `.csv` file and needs to be specified in the `config.yml` file accordingly.
 
 
@@ -265,7 +283,7 @@ docker run --rm -v ./my_microbetag_prep/:/media hariszaf/microbetag_prep
 Make sure you are in the parent folder of the `my_microbetag_prep` directory. 
 
 If you would like to edit the FlashWeave script and add extra argument on it, you can 
-fire a Docker container as explained [above](./prep.md#docker) and edit the script as you wish.
+fire a Docker container as explained [above](#docker) and edit the script as you wish.
 
 
 Once the preprocessing is completed (based on your input this could take up to hours)

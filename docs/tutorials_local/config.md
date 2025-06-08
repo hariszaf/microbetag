@@ -13,7 +13,9 @@ description: >
 # Configuration file
 
 
-A YAML file template 
+A version-specific YAML configuration template file accompanies every `microbetag` release. 
+
+
 
 
 
