@@ -9,8 +9,8 @@ microbetag_main = os.path.join(root_dir, "microbetag/microbetag.py")
 test_data  = os.path.join(root_dir, "test_data", "test_microbetag")
 output_dir = os.path.join(test_data, "mtg_complete_output")
 
-# Config file
-config_file = os.path.join(test_data, "config_mtg.yml")
+# Config file -- config_mtg.yml
+config_file = os.path.join(test_data, "config_from_net.yml")
 
 # If input files are compressed - github
 input_dir = os.path.join(test_data, "input_files")
