@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+
+  # Servise for the application
+  web:
+
+    build:
+      context: ./services/web
+      dockerfile: Dockerfile.prod
+
+    # Start the Gunicorn server:
+    # - Bind it to all network interfaces on port 5000
+    # - Specify the application module and instance (app:app)
+    # - Set the number of worker processes to 5
+    # Keep in mind that the Gunicorn timeout value should be greater than or equal to the Nginx proxy_read_timeout value 
+    # to avoid premature termination of requests by Nginx.
+    command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
+    
+    # For production, add a volume to the web and nginx services in docker-compose.prod.yml 
+    # so that each container will share a directory named "static":
+    volumes:
+      - ./services/db/data:/var/lib/mysql-files/:rw
+      # - ./services/web/static:/var/tmp/:rw
+
+    expose:
+      - 5000
+
+    environment:
+      - DB_HOST=db
+      # - DB_PORT=3306
+      - DB_PORT=3307
+
+    env_file:
+      - ./.env.dev
+
+    ports:
+      - 8080:8080
+
+    depends_on:
+      - db
+
+  # Servise for the database; the database will be built through this 
+  # and a backup will be stored periodically under /data/mysql/data
+  db:
+
+    build:
+      context: ./services/db
+      dockerfile: Dockerfile
+
+    env_file:
+      - ./services/db/.env
+
+    volumes:
+      - ./services/db/data:/var/lib/mysql-files/:rw  # This `data` folder is a sym link to /data/mysql/data/microbetagDB
+      - ./services/db/tmp:/var/tmp:rw
+
+    ports:
+      # - "3306:3306"
+      - "3307:3306"
+
+  # Servise for the server; it will list to the app at port 5000 (through the nginx.conf file)
+  # and it will serve its output through the web at port 1337
+  nginx:
+
+    build: ./services/nginx
+
+    volumes:
+      - ./services/nginx/certs/domain.crt:/etc/nginx/certs/certificate.crt
+      - ./services/nginx/certs/new_domain.key:/etc/nginx/certs/certificate.key
+      - ./services/nginx/certs/domain.csr:/etc/nginx/certs/certificate.csr
+
+    ports:
+      - 1337:80
+      # - 443:443
+
+    depends_on:
+      - web
