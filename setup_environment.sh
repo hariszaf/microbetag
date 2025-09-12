@@ -199,7 +199,7 @@ conda activate microbetag
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
-pip install -r requirements.txt  > /dev/null 2>&1
+pip install -r requirements/requirements.txt
 echo -e "$TADA All environments and installations are complete!"
 
 
@@ -330,9 +330,10 @@ fi
 # Make sure RAST tools is installed -- used to reconstruct GEMs with modelseedpy
 if command rast-create-genome >/dev/null 2>&1 || [ -x "$INSTALL_DIR/rast-create-genome" ]; then
     echo -e "$GREEN_TICK RAST tools is already installed. "
+
 else
     echo -e "$HOURGLASS RAST tools is not installed. Installing RAST tools... "
-    echo -e "WHITE_CIRCLE To download RAST tools, a set of system-wide libraries are required."
+    echo -e "$WHITE_CIRCLE To download RAST tools, a set of system-wide libraries are required."
     echo "First, gdebi: a simple tool to install deb files "
     echo "Then, a set of Perl-related libraries"
     echo "The setup_environment.sh script will let you know which Perl libraries are missing, but you will need your admin (sudo rights) to set them."
@@ -348,7 +349,7 @@ else
         curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/1.040/bvbrc-cli-1.040.deb
     fi
 
-    dpkg --instdir=. -i bvbrc-cli-1.040.deb
+    sudo dpkg --instdir=. -i bvbrc-cli-1.040.deb
 
     # gdebi bvbrc-cli-1.040.deb
     echo -e "$TADA RAST tools was installed. "
