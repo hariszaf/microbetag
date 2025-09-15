@@ -234,6 +234,9 @@ fi
 # Make sure Julia is installed -- used by FlashWeave
 if command -v julia >/dev/null 2>&1  || [ -x "$INSTALL_DIR/julia" ]; then
     echo -e "$GREEN_TICK Julia is already installed."
+    echo -e "Get FlashWeave"
+    julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
+
 else
     echo -e "$HOURGLASS Julia is not installed. Installing Julia..."
     cd $INSTALL_DIR
@@ -242,14 +245,17 @@ else
         echo "Julia tarball already exists."
     else
         echo "Downloading Julia tarball..."
-        wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz
+        wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz
         tar -xvzf julia-1.7.1-linux-x86_64.tar.gz  > /dev/null 2>&1
     fi
-    echo PATH=$(pwd)/julia-1.7.1/bin/:$PATH >> ~/.bashrc
+
+    # Add Julia in PATH
+    echo 'export PATH="$INSTALL_DIR/julia-1.7.1/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
-    conda activate microbetag
+
+    # Get FlashWeave
+    $INSTALL_DIR/julia-1.7.1/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
 fi
-julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
 
 
 # Make sure Prodigal is installed -- to get ORFs
@@ -281,7 +287,7 @@ else
         echo "FragGeneScan repository already exists."
     else
         echo "Cloning FragGeneScan repository..."
-        git clone https://github.com/gaberoo/FragGeneScan.git   > /dev/null 2>&1
+        git clone https://github.com/gaberoo/FragGeneScan.git
     fi
 
     cd FragGeneScan/  
