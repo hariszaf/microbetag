@@ -51,9 +51,7 @@ while true; do
   esac
 done
 
-# 
-echo -e "\n Building conda environment and installing required dependencies to enable microbetag ${ROCKET} \n\n"
-
+# Help message
 if $HELP_ARG; then
   echo "Usage: bash setup_environment.sh [options]"
   echo "  -h, --help     Show this help message"
@@ -99,17 +97,20 @@ fi
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# # Print each command before executing it (for debugging purposes)
-# set -x
-
-# Check if conda is installed
-if ! command -v conda &> /dev/null; then
-    echo -e "Error: Conda is not installed or not in the PATH. $RED_CROSS"
+# --- Detect Conda binary ---
+if [ -x "/opt/miniconda/bin/conda" ]; then
+    CONDA_BIN="/opt/miniconda/bin/conda"
+elif [ -x "$HOME/miniconda3/bin/conda" ]; then
+    CONDA_BIN="$HOME/miniconda3/bin/conda"
+elif command -v conda >/dev/null 2>&1; then
+    CONDA_BIN="$(command -v conda)"
+else
+    echo -e "Error: Conda is not installed. $RED_CROSS"
     exit 1
 fi
 
-# Ensure Conda is initialized for the current shell
-eval "$(conda shell.bash hook)"
+# --- Initialize Conda for this shell ---
+eval "$($CONDA_BIN shell.bash hook)"
 echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
 # -----------------------------------------------------------------------------
@@ -128,12 +129,12 @@ fi
 # Install phenotrex
 conda activate $ENV_NAME
 
-echo -e "$HOURGLASS Install numpy phenotrex required version...."
+echo -e "$HOURGLASS Install numpy phenotrex required version..."
 pip install --upgrade pip setuptools wheel
 pip install --force numpy==1.21.6
 
-echo -e "$HOURGLASS Install phenotrex..."
-pip install phenotrex[fasta]  > /dev/null 2>&1
+echo -e "$HOURGLASS Install phenotrex..!."
+pip --default-timeout=120 install phenotrex[fasta] # > /dev/null 2>&1
 
 
 echo -e "$TADA phenotrex was installed successfully."
@@ -154,11 +155,13 @@ fi
 # Install ModelSEEDpy
 conda activate $ENV_NAME
 
+pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/modelseedpy.txt
 
-pip install -r requirements/modelseedpy.txt
+echo -e "Requirements for modelseedpy environment have been installed sucessfully $TADA"
+
+conda deactivate
 
 # -----------------------------------------------------------------------------
-
 
 ENV_NAME="mtg-dnngior"
 
@@ -173,8 +176,7 @@ fi
 # Install ModelSEEDpy
 conda activate $ENV_NAME
 
-pip install -r requirements/dnngior.txt
-
+pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/dnngior.txt
 
 # -----------------------------------------------------------------------------
 
@@ -186,7 +188,7 @@ else
 
     # Create the microbetag environment and install dependencies
     echo -e "$HOURGLASS The primary conda environment for running microbetag, " 
-    echo -e "which shares the same name, is currently under constructio.."
+    echo -e "which shares the same name, is currently under construction.."
 
     conda env create -f environment.yml
 
@@ -199,7 +201,9 @@ conda activate microbetag
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
-pip install -r requirements/requirements.txt
+
+pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/requirements.txt
+
 echo -e "$TADA All environments and installations are complete!"
 
 
@@ -214,13 +218,13 @@ echo -e "$TADA All environments and installations are complete!"
 
 # Check if the script is being executed as root or with sudo
 if [ "$EUID" -eq 0 ]; then
-    echo -e "$WHITE_CIRCLE The script is being executed as root (or with sudo)."
+    printf "%b The script is being executed as root (or with sudo).\n" "$WHITE_CIRCLE"
     sudo_user=True
     INSTALL_DIR="/usr/local/"
 else
     echo -e "$WHITE_CIRCLE The script is NOT being executed as root (or with sudo)."
     echo -e "$WHITE_CIRCLE A hidden folder called `.microbetag` will be built under your `HOME` directory, where all required software will be installed."
-    sudo_uer=False
+    sudo_user=False
     mkdir -p $HOME/.microbetag/
     INSTALL_DIR=$HOME/.microbetag/
     echo -e "export PATH=\$PATH:$INSTALL_DIR" >> ~/.bashrc
