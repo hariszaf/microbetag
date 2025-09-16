@@ -224,8 +224,6 @@ fi
 
 # -----------------------------------------------------------------------------
 
-exit 1
-
 ENV_NAME="microbetag"
 
 if conda info --envs | grep -q "$ENV_NAME"; then
