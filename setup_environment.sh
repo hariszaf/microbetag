@@ -251,16 +251,13 @@ else
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
 
-
-# Install microbetag python library dependencies
 conda activate $ENV_NAME
 
-# TODO: DO WE NEED THIS ? 
-echo -e "$HOURGLASS Install further Python library dependencies"
-pip install --timeout 120 --retries 10 --resume-retries 5 . 
+# Install microbetag python library
+echo -e "$HOURGLASS Install microbetag library... "
+pip install --timeout 120 --retries 10 . 
 
-
-echo -e "$TADA All environments and installations are complete!"
+echo -e "$TADA microbetag library has been installed!"
 
 # ====================================
 # Step 2: Install non-Conda dependencies
@@ -406,14 +403,10 @@ else
 fi
 
 # ====================================
-# Step 3: Install microbetag lib
+# Step 3: Get Zenodo data
 # ====================================
 
 cd $SCRIPT_DIR
-# conda activate microbetag
-# # Install microbetag library
-
-# pip install .
 
 # Get MetaNetX namespace
 META_DIR="$SCRIPT_DIR/microbetag/mtg_maps_models/MetaNetX"
