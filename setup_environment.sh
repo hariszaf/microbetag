@@ -12,12 +12,16 @@
   RED_CIRCLE="\U0001F534"
    HOURGLASS="\u23F3"
 WHITE_CIRCLE="\u26AA"
+        SKIP="\u23E9"
 
 # Default values
-VERSION_ARG=false
-   HELP_ARG=false
-  KOFAM_ARG=false
- SCRIPT_DIR=$(dirname "$(realpath "$0")")
+ VERSION_ARG=false
+    HELP_ARG=false
+   KOFAM_ARG=false
+   PHENO_ARG=false
+MODESEED_ARG=false
+ DNNGIOR_ARG=false
+  SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
 # Parse options using getopt
 PARSED=$(getopt --options kh --long kofam,help -- "$@")
@@ -34,6 +38,18 @@ while true; do
   case "$1" in
     -k|--kofam)
       KOFAM_ARG=true
+      shift
+      ;;
+    -m|--modelseed)
+      MODESEED_ARG=true
+      shift
+      ;;
+    -d|--dnngior)
+      DNNGIOR_ARG=true
+      shift
+      ;;
+    -p|--phenotrex)
+      PHENO_ARG=true
       shift
       ;;
     -h|--help)
@@ -54,8 +70,11 @@ done
 # Help message
 if $HELP_ARG; then
   echo "Usage: bash setup_environment.sh [options]"
-  echo "  -h, --help     Show this help message"
-  echo "  -k, --kofam    kofam database will be downloaded and installed in the ext_data/kofam_database folder"
+  echo "  -h, --help        Show this help message"
+  echo "  -k, --kofam       kofam database will be downloaded and installed in the ext_data/kofam_database folder (.gz file ~1.5G)"
+  echo "  -m, --modelseed   Install dependencies for GEM reconstruction using ModeSEEDpy (https://modelseedpy.readthedocs.io)."
+  echo "  -p, --phenotrex   Install dependencies for trait prediction with Phenotrex (https://phenotrex.readthedocs.io)."
+  echo "  -d, --dnngior     Install dependencies for gap-filling GEMs using DNNGIOR (DOI: https://doi.org/10.1016/j.isci.2024.111349)"
   echo ""
   echo -e "${RED_CIRCLE} Either conda or miniconda is considered to be available. If not, setup_environment.sh will fail."
   echo -e "${RED_CIRCLE} Make sure you run the script from the root folder of the microbetag repository."
@@ -70,9 +89,9 @@ fi
 
 if $KOFAM_ARG; then
 
-    cd ext_data/kofam_database &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
+    cd ext_data/kofam_database
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz 
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz 
     gzip -d ko_list.gz &&\
     tar zxvf profiles.tar.gz 
     cd $SCRIPT_DIR
@@ -115,75 +134,102 @@ echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
 # -----------------------------------------------------------------------------
 
-# Create and activate the phendb environment
-ENV_NAME="mtg-phenotrex"
 
-# Check if the environment already exists
-if conda info --envs | grep -q "$ENV_NAME"; then
-    echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+if $PHENO_ARG; then
+
+    # Create and activate the phendb environment
+    ENV_NAME="mtg-phenotrex"
+
+    # Check if the environment already exists
+    if conda info --envs | grep -q "$ENV_NAME"; then
+        echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+    else
+        conda create -n $ENV_NAME python=3.8 -y
+        echo -e "$GREEN_TICK A conda environment, named phendb, solely for phenotrex has been built. "
+    fi
+
+    # Install phenotrex
+    conda activate $ENV_NAME
+
+    echo -e "$HOURGLASS Install numpy phenotrex required version..."
+    pip install --upgrade pip setuptools wheel
+    pip install --force numpy==1.21.6
+
+    echo -e "$HOURGLASS Install phenotrex..!."
+    pip --default-timeout=120 install phenotrex[fasta] # > /dev/null 2>&1
+
+
+    echo -e "$TADA phenotrex was installed successfully."
+    conda deactivate
+
 else
-    conda create -n $ENV_NAME python=3.8 -y
-    echo -e "$GREEN_TICK A conda environment, named phendb, solely for phenotrex has been built. "
+
+    echo -e "$SKIP Skip phenotrex dependencies."
+
 fi
-
-# Install phenotrex
-conda activate $ENV_NAME
-
-echo -e "$HOURGLASS Install numpy phenotrex required version..."
-pip install --upgrade pip setuptools wheel
-pip install --force numpy==1.21.6
-
-echo -e "$HOURGLASS Install phenotrex..!."
-pip --default-timeout=120 install phenotrex[fasta] # > /dev/null 2>&1
-
-
-echo -e "$TADA phenotrex was installed successfully."
-conda deactivate
 
 # -----------------------------------------------------------------------------
 
-ENV_NAME="mtg-modelseed"
 
-# Check if the environment already exists
-if conda info --envs | grep -q "$ENV_NAME"; then
-    echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
-else
-    conda create -n $ENV_NAME python=3.9 -y
-    echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+if $MODESEED_ARG; then
+
+    ENV_NAME="mtg-modelseed"
+
+    # Check if the environment already exists
+    if conda info --envs | grep -q "$ENV_NAME"; then
+        echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+    else
+        conda create -n $ENV_NAME python=3.9 -y
+        echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+    fi
+
+    # Install ModelSEEDpy
+    conda activate $ENV_NAME
+
+    pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/modelseedpy.txt
+
+    echo -e "Requirements for modelseedpy environment have been installed sucessfully $TADA"
+
+    conda deactivate
+
+else 
+    echo -e "$SKIP Skip ModeSEEDpy dependencies."
 fi
 
-# Install ModelSEEDpy
-conda activate $ENV_NAME
-
-pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/modelseedpy.txt
-
-echo -e "Requirements for modelseedpy environment have been installed sucessfully $TADA"
-
-conda deactivate
 
 # -----------------------------------------------------------------------------
 
-ENV_NAME="mtg-dnngior"
+if $DNNGIOR_ARG; then
 
-# Check if the environment already exists
-if conda info --envs | grep -q "$ENV_NAME"; then
-    echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+    ENV_NAME="mtg-dnngior"
+
+    # Check if the environment already exists
+    if conda info --envs | grep -q "$ENV_NAME"; then
+        echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+    else
+        conda create -n $ENV_NAME python=3.9 -y
+        echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+    fi
+
+    # Install ModelSEEDpy
+    conda activate $ENV_NAME
+
+    pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/dnngior.txt
+
 else
-    conda create -n $ENV_NAME python=3.9 -y
-    echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
+
+    echo -e "$SKIP Skip installing dependencies regarding DNNGIOR gap-filler."
+
 fi
-
-# Install ModelSEEDpy
-conda activate $ENV_NAME
-
-pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/dnngior.txt
 
 # -----------------------------------------------------------------------------
 
 ENV_NAME="microbetag"
 
 if conda info --envs | grep -q "$ENV_NAME"; then
+
     echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
+
 else
 
     # Create the microbetag environment and install dependencies
@@ -206,21 +252,18 @@ pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/requir
 
 echo -e "$TADA All environments and installations are complete!"
 
-
-# -----------------------------------------------------------------------------
-
 # ====================================
 # Step 2: Install non-Conda dependencies
 # ====================================
 
 # NOTE: Remember the spaces between the brackets and the text in the if statements -- they are required!
 
-
 # Check if the script is being executed as root or with sudo
 if [ "$EUID" -eq 0 ]; then
     printf "%b The script is being executed as root (or with sudo).\n" "$WHITE_CIRCLE"
     sudo_user=True
     INSTALL_DIR="/usr/local/"
+
 else
     echo -e "$WHITE_CIRCLE The script is NOT being executed as root (or with sudo)."
     echo -e "$WHITE_CIRCLE A hidden folder called `.microbetag` will be built under your `HOME` directory, where all required software will be installed."
@@ -229,6 +272,7 @@ else
     INSTALL_DIR=$HOME/.microbetag/
     echo -e "export PATH=\$PATH:$INSTALL_DIR" >> ~/.bashrc
     source ~/.bashrc
+
 fi
 
 # Make sure Julia is installed -- used by FlashWeave
@@ -276,26 +320,26 @@ else
 fi
 
 
-# Make sure FragGeneScan is installed -- alternative to Prodigal -- NOTE: UP TO NOW, WE ACTUALLY DON'T NEED THIS
-if command -v FragGeneScan > /dev/null 2>&1 || [ -x "$INSTALL_DIR/FragGeneScan" ]; then
-    echo -e "$GREEN_TICK FragGeneScan is already installed."
-else
-    echo -e "$HOURGLASS FragGeneScan is not installed. Installing FragGeneScan... "
-    cd $INSTALL_DIR
+# # Make sure FragGeneScan is installed -- alternative to Prodigal -- NOTE: UP TO NOW, WE ACTUALLY DON'T NEED THIS
+# if command -v FragGeneScan > /dev/null 2>&1 || [ -x "$INSTALL_DIR/FragGeneScan" ]; then
+#     echo -e "$GREEN_TICK FragGeneScan is already installed."
+# else
+#     echo -e "$HOURGLASS FragGeneScan is not installed. Installing FragGeneScan... "
+#     cd $INSTALL_DIR
 
-    if [ -d "FragGeneScan/.git" ]; then
-        echo "FragGeneScan repository already exists."
-    else
-        echo "Cloning FragGeneScan repository..."
-        git clone https://github.com/gaberoo/FragGeneScan.git
-    fi
+#     if [ -d "FragGeneScan/.git" ]; then
+#         echo "FragGeneScan repository already exists."
+#     else
+#         echo "Cloning FragGeneScan repository..."
+#         git clone https://github.com/gaberoo/FragGeneScan.git
+#     fi
 
-    cd FragGeneScan/  
-    make  > /dev/null 2>&1
-    make fgs  > /dev/null 2>&1
-    echo -e "$TADA FragGeneScan was installed. "
-fi
-
+#     cd FragGeneScan/  
+#     make  > /dev/null 2>&1
+#     make fgs  > /dev/null 2>&1
+#     echo -e "$TADA FragGeneScan was installed. "
+# fi
+0
 
 # Make sure HMMER is installed -- hmmseach used to annotate KEGG orthologs with kofamscan
 if command -v hmmscan >/dev/null 2>&1 || [ -x "$INSTALL_DIR/hmmscan" ]; then
@@ -338,34 +382,45 @@ fi
 
 
 # Make sure RAST tools is installed -- used to reconstruct GEMs with modelseedpy
-if command rast-create-genome >/dev/null 2>&1 || [ -x "$INSTALL_DIR/rast-create-genome" ]; then
-    echo -e "$GREEN_TICK RAST tools is already installed. "
+if $MODESEED_ARG; then
 
-else
-    echo -e "$HOURGLASS RAST tools is not installed. Installing RAST tools... "
-    echo -e "$WHITE_CIRCLE To download RAST tools, a set of system-wide libraries are required."
-    echo "First, gdebi: a simple tool to install deb files "
-    echo "Then, a set of Perl-related libraries"
-    echo "The setup_environment.sh script will let you know which Perl libraries are missing, but you will need your admin (sudo rights) to set them."
-    echo -e "$EYES In case this step is failing, you may install RAST tools using the instructions you may find here:
-     https://www.bv-brc.org/docs///cli_tutorial/cli_installation.html"
+    if command rast-create-genome >/dev/null 2>&1 || [ -x "$INSTALL_DIR/rast-create-genome" ]; then
+        echo -e "$GREEN_TICK RAST tools is already installed. "
 
-    cd $INSTALL_DIR
-
-    if [ -f "bvbrc-cli-1.040.deb" ]; then
-        echo "RAST tools tarball exists."
     else
-        echo "Downloading RAST tools deb..."
-        curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/1.040/bvbrc-cli-1.040.deb
+        echo -e "$HOURGLASS RAST tools is not installed. Installing RAST tools... "
+        echo -e "$WHITE_CIRCLE To download RAST tools, a set of system-wide libraries are required."
+        echo "First, gdebi: a simple tool to install deb files "
+        echo "Then, a set of Perl-related libraries"
+        echo "The setup_environment.sh script will let you know which Perl libraries are missing, but you will need your admin (sudo rights) to set them."
+        echo -e "$EYES In case this step is failing, you may install RAST tools using the instructions you may find here:
+        https://www.bv-brc.org/docs///cli_tutorial/cli_installation.html"
+
+        cd $INSTALL_DIR
+
+        if [ -f "bvbrc-cli-1.040.deb" ]; then
+            echo "RAST tools tarball exists."
+        else
+            echo "Downloading RAST tools deb..."
+            curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/1.040/bvbrc-cli-1.040.deb
+        fi
+
+        sudo dpkg --instdir=. -i bvbrc-cli-1.040.deb
+
+        # gdebi bvbrc-cli-1.040.deb
+        echo -e "$TADA RAST tools was installed. "
     fi
 
-    sudo dpkg --instdir=. -i bvbrc-cli-1.040.deb
+else 
 
-    # gdebi bvbrc-cli-1.040.deb
-    echo -e "$TADA RAST tools was installed. "
+    echo "$SKIP Using ModelSEEDpy to reconstruct GEMs will not be an option in this microbetag isntallation, so skip installing RAST tools."
+
 fi
 
-# Install microbetag lib
+# ====================================
+# Step 3: Install microbetag lib
+# ====================================
+
 cd $SCRIPT_DIR
 
 # Install Python-specific tools
