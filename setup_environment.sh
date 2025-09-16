@@ -132,21 +132,19 @@ else
 fi
 
 # --- Initialize Conda for this shell ---
+echo -e "Run conda eval"
 eval "$(conda shell.bash hook)"
 echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
-echo -e "Run conda eval"
-eval "$(conda shell.bash hook)"
+# echo -e "Accept conda TOS"
+# conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+# conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
-echo -e "Accept conda TOS"
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-echo -e "Source conda profile"
-source "$HOME/miniconda/etc/profile.d/conda.sh"
+# echo -e "Source conda profile"
+# source "$HOME/miniconda/etc/profile.d/conda.sh"
 conda init
-# -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
 
 if $PHENO_ARG; then
 
@@ -260,7 +258,6 @@ conda activate $ENV_NAME
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
 pip install --timeout 120 --retries 10 --resume-retries 5 . 
-# pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/requirements.txt
 
 
 echo -e "$TADA All environments and installations are complete!"
