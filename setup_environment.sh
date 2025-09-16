@@ -259,8 +259,9 @@ conda activate $ENV_NAME
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
+pip install --timeout 120 --retries 10 --resume-retries 5 . 
+# pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/requirements.txt
 
-pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/requirements.txt
 
 echo -e "$TADA All environments and installations are complete!"
 
@@ -412,9 +413,10 @@ fi
 # ====================================
 
 cd $SCRIPT_DIR
+# conda activate microbetag
+# # Install microbetag library
 
-# Install Python-specific tools
-pip install .
+# pip install .
 
 # Get MetaNetX namespace
 META_DIR="$SCRIPT_DIR/microbetag/mtg_maps_models/MetaNetX"
@@ -428,7 +430,10 @@ fi
 # Download the file only if it's not already there
 if [ ! -f "$TAR_FILE" ]; then
     echo "Downloading chem_xref.tar.gz..."
-    wget -O "$TAR_FILE" https://zenodo.org/records/15102937/files/chem_xref.tar.gz
+    wget -q --show-progress -O "$TAR_FILE" "https://zenodo.org/records/15102937/files/chem_xref.tar.gz" || {
+        echo "❌ Download failed!"
+        exit 1
+    }
 else
     echo "File already exists: $TAR_FILE"
 fi
