@@ -224,6 +224,8 @@ fi
 
 # -----------------------------------------------------------------------------
 
+exit 1
+
 ENV_NAME="microbetag"
 
 if conda info --envs | grep -q "$ENV_NAME"; then
@@ -339,7 +341,6 @@ fi
 #     make fgs  > /dev/null 2>&1
 #     echo -e "$TADA FragGeneScan was installed. "
 # fi
-0
 
 # Make sure HMMER is installed -- hmmseach used to annotate KEGG orthologs with kofamscan
 if command -v hmmscan >/dev/null 2>&1 || [ -x "$INSTALL_DIR/hmmscan" ]; then
