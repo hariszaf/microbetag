@@ -137,8 +137,8 @@ eval "$(conda shell.bash hook)"
 echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
 # echo -e "Accept conda TOS"
-# conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-# conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 # echo -e "Source conda profile"
 # source "$HOME/miniconda/etc/profile.d/conda.sh"
