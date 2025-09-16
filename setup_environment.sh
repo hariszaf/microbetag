@@ -233,17 +233,16 @@ if conda info --envs | grep -q "$ENV_NAME"; then
 else
 
     # Create the microbetag environment and install dependencies
-    echo -e "$HOURGLASS The primary conda environment for running microbetag, " 
-    echo -e "which shares the same name, is currently under construction.."
+    echo -e "$HOURGLASS The primary conda environment for running microbetag is currently under construction.." 
 
-    conda env create -f environment.yml
+    conda env create -n "$ENV_NAME" -f environment.yml
 
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
 
 
 # Install microbetag python library dependencies
-conda activate microbetag
+conda activate $ENV_NAME
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
@@ -318,27 +317,6 @@ else
     make install INSTALLDIR=$INSTALL_DIR 
     echo -e "$TADA Prodigal was installed. "
 fi
-
-
-# # Make sure FragGeneScan is installed -- alternative to Prodigal -- NOTE: UP TO NOW, WE ACTUALLY DON'T NEED THIS
-# if command -v FragGeneScan > /dev/null 2>&1 || [ -x "$INSTALL_DIR/FragGeneScan" ]; then
-#     echo -e "$GREEN_TICK FragGeneScan is already installed."
-# else
-#     echo -e "$HOURGLASS FragGeneScan is not installed. Installing FragGeneScan... "
-#     cd $INSTALL_DIR
-
-#     if [ -d "FragGeneScan/.git" ]; then
-#         echo "FragGeneScan repository already exists."
-#     else
-#         echo "Cloning FragGeneScan repository..."
-#         git clone https://github.com/gaberoo/FragGeneScan.git
-#     fi
-
-#     cd FragGeneScan/  
-#     make  > /dev/null 2>&1
-#     make fgs  > /dev/null 2>&1
-#     echo -e "$TADA FragGeneScan was installed. "
-# fi
 
 # Make sure HMMER is installed -- hmmseach used to annotate KEGG orthologs with kofamscan
 if command -v hmmscan >/dev/null 2>&1 || [ -x "$INSTALL_DIR/hmmscan" ]; then
