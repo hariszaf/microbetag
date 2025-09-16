@@ -12,7 +12,8 @@
   RED_CIRCLE="\U0001F534"
    HOURGLASS="\u23F3"
 WHITE_CIRCLE="\u26AA"
-        SKIP="\u23E9"i
+        SKIP="\u23E9"
+        BACT="\U1F9A0"
 
 # Default values
  VERSION_ARG=false
@@ -23,8 +24,8 @@ MODESEED_ARG=false
  DNNGIOR_ARG=false
   SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
-# Parse options using getopt
-PARSED=$(getopt --options kh --long kofam,help -- "$@")
+# Parse options using getopt -- list with all the potential arguments
+PARSED=$(getopt --options kmdph --long kofam,modelseed,dnngior,phenotrex,help -- "$@")
 if [[ $? -ne 0 ]]; then
   echo "❌ Failed to parse options." >&2
   exit 1
@@ -69,6 +70,7 @@ done
 
 # Help message
 if $HELP_ARG; then
+  echo -e "$BACT Installation script for microbetag's requirements.\n"
   echo "Usage: bash setup_environment.sh [options]"
   echo "  -h, --help        Show this help message"
   echo "  -k, --kofam       kofam database will be downloaded and installed in the ext_data/kofam_database folder (.gz file ~1.5G)"
@@ -130,11 +132,19 @@ else
 fi
 
 # --- Initialize Conda for this shell ---
-eval "$($CONDA_BIN shell.bash hook)"
+eval "$(conda shell.bash hook)"
 echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
-$CONDA_BIN activate base
+echo -e "Run conda eval"
+eval "$(conda shell.bash hook)"
 
+echo -e "Accept conda TOS"
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+echo -e "Source conda profile"
+source "$HOME/miniconda/etc/profile.d/conda.sh"
+conda init
 # -----------------------------------------------------------------------------
 
 
@@ -144,15 +154,15 @@ if $PHENO_ARG; then
     ENV_NAME="mtg-phenotrex"
 
     # Check if the environment already exists
-    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
+    if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        $CONDA_BIN create -n $ENV_NAME python=3.8 -y
+        conda create -n $ENV_NAME python=3.8 -y
         echo -e "$GREEN_TICK A conda environment, named phendb, solely for phenotrex has been built. "
     fi
 
     # Install phenotrex
-    $CONDA_BIN activate $ENV_NAME
+    conda activate $ENV_NAME
 
     echo -e "$HOURGLASS Install numpy phenotrex required version..."
     pip install --upgrade pip setuptools wheel
@@ -163,7 +173,7 @@ if $PHENO_ARG; then
 
 
     echo -e "$TADA phenotrex was installed successfully."
-    $CONDA_BIN deactivate
+    conda deactivate
 
 else
 
@@ -179,21 +189,21 @@ if $MODESEED_ARG; then
     ENV_NAME="mtg-modelseed"
 
     # Check if the environment already exists
-    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
+    if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        $CONDA_BIN create -n $ENV_NAME python=3.9 -y
+        conda create -n $ENV_NAME python=3.9 -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
     # Install ModelSEEDpy
-    $CONDA_BIN activate $ENV_NAME
+    conda activate $ENV_NAME
 
     pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/modelseedpy.txt
 
     echo -e "Requirements for modelseedpy environment have been installed sucessfully $TADA"
 
-    $CONDA_BIN deactivate
+    conda deactivate
 
 else 
     echo -e "$SKIP Skip ModeSEEDpy dependencies."
@@ -207,15 +217,15 @@ if $DNNGIOR_ARG; then
     ENV_NAME="mtg-dnngior"
 
     # Check if the environment already exists
-    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
+    if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        $CONDA_BIN create -n $ENV_NAME python=3.9 -y
+        conda create -n $ENV_NAME python=3.9 -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
     # Install ModelSEEDpy
-    $CONDA_BIN activate $ENV_NAME
+    conda activate $ENV_NAME
 
     pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/dnngior.txt
 
@@ -229,7 +239,7 @@ fi
 
 ENV_NAME="microbetag"
 
-if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
+if conda info --envs | grep -q "$ENV_NAME"; then
 
     echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
 
@@ -238,14 +248,14 @@ else
     # Create the microbetag environment and install dependencies
     echo -e "$HOURGLASS The primary conda environment for running microbetag is currently under construction.." 
 
-    $CONDA_BIN env create -n "$ENV_NAME" -f environment.yml
+    conda env create -n "$ENV_NAME" -f environment.yml
 
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
 
 
 # Install microbetag python library dependencies
-$CONDA_BIN activate $ENV_NAME
+conda activate $ENV_NAME
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
