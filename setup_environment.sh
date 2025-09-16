@@ -12,7 +12,7 @@
   RED_CIRCLE="\U0001F534"
    HOURGLASS="\u23F3"
 WHITE_CIRCLE="\u26AA"
-        SKIP="\u23E9"
+        SKIP="\u23E9"i
 
 # Default values
  VERSION_ARG=false
@@ -81,6 +81,7 @@ if $HELP_ARG; then
   exit 0
 fi
 
+echo -e "\n\n This is the installation setup for microbetag. In case you have trouble running this, feel free to join our Matrix community and share your troubles: https://matrix.to/#/#microbetagcommunity:matrix.org \n\n"
 
 # ====================================
 # Step 0: kofam database
@@ -132,6 +133,8 @@ fi
 eval "$($CONDA_BIN shell.bash hook)"
 echo -e "$WHITE_CIRCLE conda is available and ready to go!"
 
+$CONDA_BIN activate base
+
 # -----------------------------------------------------------------------------
 
 
@@ -141,15 +144,15 @@ if $PHENO_ARG; then
     ENV_NAME="mtg-phenotrex"
 
     # Check if the environment already exists
-    if conda info --envs | grep -q "$ENV_NAME"; then
+    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.8 -y
+        $CONDA_BIN create -n $ENV_NAME python=3.8 -y
         echo -e "$GREEN_TICK A conda environment, named phendb, solely for phenotrex has been built. "
     fi
 
     # Install phenotrex
-    conda activate $ENV_NAME
+    $CONDA_BIN activate $ENV_NAME
 
     echo -e "$HOURGLASS Install numpy phenotrex required version..."
     pip install --upgrade pip setuptools wheel
@@ -160,7 +163,7 @@ if $PHENO_ARG; then
 
 
     echo -e "$TADA phenotrex was installed successfully."
-    conda deactivate
+    $CONDA_BIN deactivate
 
 else
 
@@ -176,21 +179,21 @@ if $MODESEED_ARG; then
     ENV_NAME="mtg-modelseed"
 
     # Check if the environment already exists
-    if conda info --envs | grep -q "$ENV_NAME"; then
+    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.9 -y
+        $CONDA_BIN create -n $ENV_NAME python=3.9 -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
     # Install ModelSEEDpy
-    conda activate $ENV_NAME
+    $CONDA_BIN activate $ENV_NAME
 
     pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/modelseedpy.txt
 
     echo -e "Requirements for modelseedpy environment have been installed sucessfully $TADA"
 
-    conda deactivate
+    $CONDA_BIN deactivate
 
 else 
     echo -e "$SKIP Skip ModeSEEDpy dependencies."
@@ -204,15 +207,15 @@ if $DNNGIOR_ARG; then
     ENV_NAME="mtg-dnngior"
 
     # Check if the environment already exists
-    if conda info --envs | grep -q "$ENV_NAME"; then
+    if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.9 -y
+        $CONDA_BIN create -n $ENV_NAME python=3.9 -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
     # Install ModelSEEDpy
-    conda activate $ENV_NAME
+    $CONDA_BIN activate $ENV_NAME
 
     pip install --timeout 120 --retries 10 --resume-retries 5 -r requirements/dnngior.txt
 
@@ -226,7 +229,7 @@ fi
 
 ENV_NAME="microbetag"
 
-if conda info --envs | grep -q "$ENV_NAME"; then
+if $CONDA_BIN info --envs | grep -q "$ENV_NAME"; then
 
     echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
 
@@ -235,14 +238,14 @@ else
     # Create the microbetag environment and install dependencies
     echo -e "$HOURGLASS The primary conda environment for running microbetag is currently under construction.." 
 
-    conda env create -n "$ENV_NAME" -f environment.yml
+    $CONDA_BIN env create -n "$ENV_NAME" -f environment.yml
 
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
 
 
 # Install microbetag python library dependencies
-conda activate $ENV_NAME
+$CONDA_BIN activate $ENV_NAME
 
 # TODO: DO WE NEED THIS ? 
 echo -e "$HOURGLASS Install further Python library dependencies"
