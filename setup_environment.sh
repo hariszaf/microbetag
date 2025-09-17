@@ -24,6 +24,10 @@ MODESEED_ARG=false
  DNNGIOR_ARG=false
   SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
+# Versions
+JULIA_V=1.9.4  # 1.7.1
+
+
 # Parse options using getopt -- list with all the potential arguments
 PARSED=$(getopt --options kmdph --long kofam,modelseed,dnngior,phenotrex,help -- "$@")
 if [[ $? -ne 0 ]]; then
@@ -292,20 +296,24 @@ else
     echo -e "$HOURGLASS Julia is not installed. Installing Julia..."
     cd $INSTALL_DIR
 
-    if [ -f "julia-1.7.1-linux-x86_64.tar.gz" ]; then
+    if [ -f "julia-${JULIA_V}-linux-x86_64.tar.gz" ]; then
         echo "Julia tarball already exists."
     else
         echo "Downloading Julia tarball..."
-        wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz
-        tar -xvzf julia-1.7.1-linux-x86_64.tar.gz  > /dev/null 2>&1
+        # wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz
+        wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_V%.*}/julia-${JULIA_V}-linux-x86_64.tar.gz   
+        # tar -xvzf julia-1.7.1-linux-x86_64.tar.gz  > /dev/null 2>&1
+        tar -xvzf julia-${JULIA_V}-linux-x86_64.tar.gz  > /dev/null 2>&1
     fi
 
     # Add Julia in PATH
-    echo 'export PATH="$INSTALL_DIR/julia-1.7.1/bin:$PATH"' >> ~/.bashrc
+    # echo 'export PATH="$INSTALL_DIR/julia-1.7.1/bin:$PATH"' >> ~/.bashrc
+    echo 'export PATH="$INSTALL_DIR/julia-${JULIA_V}/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
 
     # Get FlashWeave
-    $INSTALL_DIR/julia-1.7.1/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
+    # $INSTALL_DIR/julia-1.7.1/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
+    $INSTALL_DIR/julia-${JULIA_V}/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
 fi
 
 
