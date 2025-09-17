@@ -25,8 +25,14 @@ MODESEED_ARG=false
   SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
 # Versions
-JULIA_V=1.9.4  # 1.7.1
-
+     JULIA_V=1.9.4  # 1.7.1
+     HMMER_V=3.4
+ NUMPY_PHENO=1.21.6
+PYTHON_PHENO=3.8
+   PYTHON_MS=3.9
+  PYTHON_DNN=3.9
+   DIAMOND_V=2.1.9
+    RASTTK_V=1.040
 
 # Parse options using getopt -- list with all the potential arguments
 PARSED=$(getopt --options kmdph --long kofam,modelseed,dnngior,phenotrex,help -- "$@")
@@ -159,7 +165,7 @@ if $PHENO_ARG; then
     if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.8 -y
+        conda create -n $ENV_NAME python=${PYTHON_PHENO} -y
         echo -e "$GREEN_TICK A conda environment, named phendb, solely for phenotrex has been built. "
     fi
 
@@ -168,7 +174,7 @@ if $PHENO_ARG; then
 
     echo -e "$HOURGLASS Install numpy phenotrex required version..."
     pip install --upgrade pip setuptools wheel
-    pip install --force numpy==1.21.6
+    pip install --force numpy==${NUMPY_PHENO}
 
     echo -e "$HOURGLASS Install phenotrex..!."
     pip --default-timeout=120 install phenotrex[fasta] # > /dev/null 2>&1
@@ -194,7 +200,7 @@ if $MODESEED_ARG; then
     if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.9 -y
+        conda create -n $ENV_NAME python=${PYTHON_MS} -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
@@ -222,7 +228,7 @@ if $DNNGIOR_ARG; then
     if conda info --envs | grep -q "$ENV_NAME"; then
         echo -e "$GREEN_TICK Environment '$ENV_NAME' already exists. Skipping creation."
     else
-        conda create -n $ENV_NAME python=3.9 -y
+        conda create -n $ENV_NAME python=${PYTHON_DNN} -y
         echo -e "$GREEN_TICK A conda environment, named "$ENV_NAME" was built. "
     fi
 
@@ -287,35 +293,39 @@ else
 fi
 
 # Make sure Julia is installed -- used by FlashWeave
-if command -v julia >/dev/null 2>&1  || [ -x "$INSTALL_DIR/julia" ]; then
+JULIA_BIN="$INSTALL_DIR/julia-${JULIA_V}/bin/julia"
+if command -v julia >/dev/null 2>&1 || [ -x "$JULIA_BIN" ]; then
     echo -e "$GREEN_TICK Julia is already installed."
-    echo -e "Get FlashWeave"
-    julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
-
+    echo -e "Installing FlashWeave via Julia..."
 else
     echo -e "$HOURGLASS Julia is not installed. Installing Julia..."
-    cd $INSTALL_DIR
+    cd "$INSTALL_DIR" || exit
 
     if [ -f "julia-${JULIA_V}-linux-x86_64.tar.gz" ]; then
         echo "Julia tarball already exists."
     else
         echo "Downloading Julia tarball..."
-        # wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.1-linux-x86_64.tar.gz
-        wget -c --tries=10 --timeout=30 https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_V%.*}/julia-${JULIA_V}-linux-x86_64.tar.gz   
-        # tar -xvzf julia-1.7.1-linux-x86_64.tar.gz  > /dev/null 2>&1
-        tar -xvzf julia-${JULIA_V}-linux-x86_64.tar.gz  > /dev/null 2>&1
+        wget -c --tries=10 --timeout=30 \
+            "https://julialang-s3.julialang.org/bin/linux/x64/${JULIA_V%.*}/julia-${JULIA_V}-linux-x86_64.tar.gz"
+        tar -xvzf "julia-${JULIA_V}-linux-x86_64.tar.gz" > /dev/null 2>&1
     fi
 
-    # Add Julia in PATH
-    # echo 'export PATH="$INSTALL_DIR/julia-1.7.1/bin:$PATH"' >> ~/.bashrc
-    echo 'export PATH="$INSTALL_DIR/julia-${JULIA_V}/bin:$PATH"' >> ~/.bashrc
-    source ~/.bashrc
+    # Add Julia to PATH if not already present
+    if ! grep -q "$INSTALL_DIR/julia-${JULIA_V}/bin" ~/.bashrc; then
+        echo "export PATH=\"$INSTALL_DIR/julia-${JULIA_V}/bin:\$PATH\"" >> ~/.bashrc
+        source ~/.bashrc
+    fi
 
-    # Get FlashWeave
-    # $INSTALL_DIR/julia-1.7.1/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
-    $INSTALL_DIR/julia-${JULIA_V}/bin/julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
+    # Clear executable stack if patchelf is available
+    if command -v patchelf >/dev/null 2>&1; then
+        patchelf --clear-execstack "$INSTALL_DIR/julia-${JULIA_V}/lib/julia/libopenlibm.so"
+    else
+        echo "patchelf not found, skipping execstack patch"
+    fi
+
+    # Install FlashWeave via Julia
+    "$JULIA_BIN" -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
 fi
-
 
 # Make sure Prodigal is installed -- to get ORFs
 if command -v prodigal >/dev/null 2>&1  || [ -x "$INSTALL_DIR/prodigal" ]; then
@@ -341,14 +351,14 @@ else
     echo -e "$HOURGLASS HMMER is not installed. Installing HMMER... "
     cd $INSTALL_DIR
 
-    if [ -f "hmmer-3.4.tar.gz" ]; then
-        echo "HMMER 3.4 tarball already exists."
+    if [ -f "hmmer-${HMMER_V}.tar.gz" ]; then
+        echo "HMMER ${HMMER_V} tarball already exists."
     else
-        echo "Downloading HMMER 3.4 tarball..."
-        wget http://eddylab.org/software/hmmer/hmmer-3.4.tar.gz   > /dev/null 2>&1
-        tar xf hmmer-3.4.tar.gz   > /dev/null 2>&1
+        echo "Downloading HMMER ${HMMER_V} tarball..."
+        wget http://eddylab.org/software/hmmer/hmmer-${HMMER_V}.tar.gz   > /dev/null 2>&1
+        tar xf hmmer-${HMMER_V}.tar.gz   > /dev/null 2>&1
     fi
-    cd hmmer-3.4 
+    cd hmmer-${HMMER_V} 
     ./configure --prefix=$INSTALL_DIR  > /dev/null 2>&1
     make  > /dev/null 2>&1
     make install  > /dev/null 2>&1
@@ -367,7 +377,7 @@ else
         echo "DIAMOND tarball already exists."
     else
         echo "Downloading DIAMOND tarball..."
-        wget http://github.com/bbuchfink/diamond/releases/download/v2.1.9/diamond-linux64.tar.gz   > /dev/null 2>&1
+        wget http://github.com/bbuchfink/diamond/releases/download/v${DIAMOND_V}/diamond-linux64.tar.gz   > /dev/null 2>&1
         tar xf diamond-linux64.tar.gz  > /dev/null 2>&1
     fi
     echo -e "$TADA DIAMOND was installed. "
@@ -391,16 +401,16 @@ if $MODESEED_ARG; then
 
         cd $INSTALL_DIR
 
-        if [ -f "bvbrc-cli-1.040.deb" ]; then
+        if [ -f "bvbrc-cli-${RASTTK_V}.deb" ]; then
             echo "RAST tools tarball exists."
         else
             echo "Downloading RAST tools deb..."
-            curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/1.040/bvbrc-cli-1.040.deb
+            curl -O -L https://github.com/BV-BRC/BV-BRC-CLI/releases/download/${RASTTK_V}/bvbrc-cli-${RASTTK_V}.deb
         fi
 
-        sudo dpkg --instdir=. -i bvbrc-cli-1.040.deb
+        sudo dpkg --instdir=. -i bvbrc-cli-${RASTTK_V}.deb
 
-        # gdebi bvbrc-cli-1.040.deb
+        # gdebi bvbrc-cli-${RASTTK_V}.deb
         echo -e "$TADA RAST tools was installed. "
     fi
 
