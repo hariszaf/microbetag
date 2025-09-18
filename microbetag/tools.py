@@ -496,6 +496,11 @@ def run_faprotax(config: "Config") -> None:
         Science. 2016 Sep 16;353(6305):1272-7.
     """
 
+    if config.delimiter == "\t":
+        delimiter = "\\\\t"
+    else:
+        delimiter = config.delimiter
+
     faprotax_params = [
         "python",
         config.faprotax_script,
@@ -505,6 +510,8 @@ def run_faprotax(config: "Config") -> None:
         config.faprotax_funct_table,
         "-g",
         config.faprotax_txt,
+        "--table_delimiter",
+        delimiter,
         "-c",
         '"' + "#" + '"',
         "-d",
