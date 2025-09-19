@@ -116,7 +116,7 @@ def hmmsearch(params: List) -> None:
 
 def run_prodigal(fasta: str, basename: str, outdir: str) -> None:
     """
-    Function to predict ORFs using Prodigal.
+    Function to predict ORFs using Prodigal; predicting protein-coding genes
     By default outdir is the ORFs folder
     fna	FASTA nucleic acid	Used generically to specify nucleic acids
     ffn	FASTA nucleotide of gene regions	Contains coding regions for a genome
@@ -137,15 +137,15 @@ def run_prodigal(fasta: str, basename: str, outdir: str) -> None:
         PRODIGAL,
         "-q",
         "-i",
-        fasta,
+        str(fasta),
         "-p",
         "meta",
         "-a",
-        faa_file,
+        str(faa_file),
         "-d",
-        ffn_file,
+        str(ffn_file),
         "-o",
-        gbk_file,
+        str(gbk_file),
     ]
     cmd = " ".join(cmd_para)
     if os.path.exists(faa_file) or os.path.exists(fna_file) or os.path.exists(ffn_file):

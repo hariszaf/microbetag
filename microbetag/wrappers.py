@@ -38,7 +38,7 @@ def run_otf_prodigal(config: "Config"):
         bin_filename = os.path.basename(bin_fa)
 
         bin_id, _ = os.path.splitext(bin_filename)
-        bin_id = bin_id.split("/")[-1]
+        bin_id    = bin_id.split("/")[-1]
 
         bin_fa = os.path.join(config.bins_path, bin_fa)
 
