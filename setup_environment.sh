@@ -362,7 +362,12 @@ else
     ./configure --prefix=$INSTALL_DIR  > /dev/null 2>&1
     make  > /dev/null 2>&1
     make install  > /dev/null 2>&1
-    echo -e "$TADA HMMER was installed. "
+
+    echo -e "Add hmmer to PATH"
+    echo "export PATH=\"$INSTALL_DIR/hmmer-${HMMER_V}/bin:\$PATH\"" >> ~/.bashrc
+    source ~/.bashrc
+
+    echo -e "$TADA HMMER was installed. \n\n"
 fi
 
 
