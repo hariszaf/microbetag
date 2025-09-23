@@ -159,12 +159,12 @@ def run_prodigal(fasta: str, basename: str, outdir: str) -> None:
 
 
 def kegg_annotation(
-    faa: str,
+    faa     : str,
     basename: str,
-    out_dir: str,
-    db_dir: str,
-    ko_dic: dict,
-    threads: int
+    out_dir : str,
+    db_dir  : str,
+    ko_dic  : dict,
+    threads : int
 ) -> bool:
     """
     Function to perform KEGG annotation in parallel.
@@ -190,30 +190,36 @@ def kegg_annotation(
     for knum, info in ko_dic.items():
 
         # Check if hmmout for particular KO of a certain bin is already there
-        hmmout_filename = ".".join([knum, str(basename), "hmmout"])
-        output = os.path.join(out_dir, basename, hmmout_filename)
+        hmmout = ".".join([knum, str(basename), "hmmout"])
+        output = os.path.join(out_dir, basename, hmmout)
         if os.path.exists(output):
             continue
 
         # Get hmm for KO under consideration
         hmm_db = os.path.join(db_dir, "profiles", knum + ".hmm")
         if not os.path.exists(hmm_db):
+            _logger_.warn(f"- {hmm_db} KEGG hidden markov model profile was not found.")
             continue
 
         # Set params for hmmsearch based on the ko_list annotation
         if info[1] == "full":
-            threshold_method = "-T"
-            outtype = "--tblout"
+
+            thres_meth = "-T"
+            outtype          = "--tblout"
 
         elif info[1] == "domain":
-            threshold_method = "--domT"
-            outtype = "--domtblout"
+
+            thres_meth = "--domT"
+            outtype          = "--domtblout"
 
         elif info[1] == "custom":
-            threshold_method = "-E"
-            outtype = "--tblout"
 
-        params.append((threshold_method, info[0], outtype, output, hmm_db, faa))
+            thres_meth = "-E"
+            outtype    = "--tblout"
+
+        params.append((thres_meth, info[0], outtype, output, hmm_db, faa))
+
+        print(">> ", params)
 
     _logger_.info("Number of KEGG processes to be performed: %s", str(len(params)))
 

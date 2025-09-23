@@ -13,11 +13,11 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 test_data_dir = os.path.join(root, "test_data", "test_kegg_annotation")
 
 # Input files
-input_dir = os.path.join(test_data_dir, "input_files")
+input_dir = os.path.join(test_data_dir, "input_genomes")
 faas      = [
     os.path.join(input_dir, f)
     for f in os.listdir(input_dir)
-    if f.endswith(".faa")
+    #if f.endswith(".faa")
 ]
 bin_ids   = [
     os.path.splitext(os.path.basename(faa))[0]
@@ -65,7 +65,7 @@ class testKEGGAnnotation(unittest.TestCase):
             os.makedirs(bin_kos_dir, exist_ok=True)
 
             _ = kegg_annotation(
-                faa, bin_id, hmmout_dir, kegg_db_dir, self.ko_dic, threads
+                faa=faa, basename=bin_id, out_dir=hmmout_dir, db_dir=kegg_db_dir, ko_dic=self.ko_dic, threads=threads
             )
 
             bin_kos_to_file(hmmout_dir=bin_kos_dir, bin_id=bin_id)

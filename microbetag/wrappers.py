@@ -53,12 +53,13 @@ def run_kegg_annotate(config: "Config"):
     Wrapper for the tools.kegg_annotation() for each genome/MAG and the utils.merge_ko().
     """
     ko_list = os.path.join(config.kegg_db_dir, "ko_list")
-    ko_dic = ko_list_parser(ko_list)
+    ko_dic  = ko_list_parser(ko_list)
 
-    hmmout_dir = config.kegg_pieces_dir
+    hmmout_dir       = config.kegg_pieces_dir
     config.ko_merged = os.path.join(config.kegg_annotations, "ko_merged.txt")
 
     for bn in config.bin_filenames:
+
         bin_id, _   = os.path.splitext(bn)
         bin_kos_dir = os.path.join(hmmout_dir, bin_id)
         os.makedirs(bin_kos_dir, exist_ok=True)
