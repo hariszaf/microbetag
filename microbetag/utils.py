@@ -428,16 +428,33 @@ def merge_ko(hmmout_dir: str, output: str) -> None:
         hmmout_dir: path to the .hmmout files
         output: Path/filename to save the output file
     """
+    hmmout_dir = Path(hmmout_dir)
+    output     = Path(output) 
+
     # Under any circumstances microbetag will overwrite the ko_merged.txt file
     with open(output, "w") as fo:
         fo.write("bin_id\tcontig_id\tko_term\n")
+
     # Iterate through the bin folders in the hmmout folder
-    for bin_id in os.listdir(hmmout_dir):
-        bin_folder = os.path.join(hmmout_dir, bin_id)
-        bin_file = "_".join([bin_id, "kos.tsv"])
-        bin_kos_file = os.path.join(bin_folder, bin_file)
-        # Append
-        os.system(" ".join(["cat", bin_kos_file, ">>", output]))
+    # for bin_id in os.listdir(hmmout_dir):
+    #     bin_folder = os.path.join(hmmout_dir, bin_id)
+    #     bin_file = "_".join([bin_id, "kos.tsv"])
+    #     bin_kos_file = os.path.join(bin_folder, bin_file)
+    #     # Append
+    #     os.system(" ".join(["cat", bin_kos_file, ">>", output]))
+
+    for bin_id in hmmout_dir.iterdir():
+        if not bin_id.is_dir():
+            continue
+
+        bin_file = Path(bin_id) / f"{bin_id.name}_kos.tsv"
+        if not bin_file.exists():
+            continue
+
+        # Append file contents
+        with output.open("ab") as out_f, bin_file.open("rb") as in_f:
+            # The copyfileobj() efficiently appends the contents of each KO file, to the merged file.
+            shutil.copyfileobj(in_f, out_f)
 
 
 def bin_kos_to_file(hmmout_dir: str, bin_id: str) -> None:
@@ -968,3 +985,11 @@ def get_tool_location(software: str) -> str:
 
 
 _logger_ = mtg_logger(__name__)
+
+
+def is_inside(path, root):
+    try:
+        path.relative_to(root)
+        return True
+    except ValueError:
+        return False
