@@ -211,7 +211,7 @@ class GEMSReconstruction:
 
             run_carve(
                 faa_files,
-                output_dir=self.config.genres
+                output_dir = self.config.genres
             )
 
         elif self.config.sc_input_type in ["coding_regions", "proteins_faa"]:
@@ -223,8 +223,8 @@ class GEMSReconstruction:
 
             run_carve(
                 faa_files,
-                output_dir=self.config.genres,
-                dna=self.config.sc_input_type == "coding_regions"
+                output_dir = self.config.genres,
+                dna        = self.config.sc_input_type == "coding_regions"
             )
 
     def fgs_annotate_genomes(self):
@@ -318,22 +318,38 @@ def dnngior_gapfill(draft_model, medium=None, outdir=None):
         subprocess.run(command)
 
 
-def run_carve(faa_files, output_dir, dna=False):
+def run_carve(genome_files, output_dir, dna=False):
     """
     Build a GEM using carveme for a list of
+
+    Args:
+        genome_files (list[str]): Input genome files, either in `.fna` or `.faa` format.
+        output_dir (str): Directory to save the draft GEMs.
+        dna (bool, optional): If True, indicates input files are `.fna` (DNA). 
+            Defaults to False, expecting `.faa` (protein) files.
+
+    Returns:
+        None
     """
-    for faa in faa_files:
-        bin_id = os.path.splitext(os.path.basename(faa))[0]
-        xml = os.path.join(output_dir, f"{bin_id}.xml")
+    genome_files = [str(fa) for fa in genome_files]
+
+    for fa in genome_files:
+        
+        bin_id = os.path.splitext(os.path.basename(fa))[0]
+        xml    = os.path.join(output_dir, f"{bin_id}.xml")
+        
         carve_params = ["carve", "--solver", "gurobi", "-o", xml]
+        
         if os.path.exists(xml) and os.path.getsize(xml) > 0:
             _logger_.info(
-                f"""A GEM (.xml) based on {faa} is already available to be used for seed complementarities; carve step will be skiped."""
+                f"""A GEM (.xml) based on {fa} is already available to be used for seed complementarities; carve step will be skiped."""
             )
             continue
+
         if dna:
             carve_params.append("--dna")
-        carve_params.append(faa)
+
+        carve_params.append(fa)
         carve_command = " ".join(carve_params)
 
         os.system(carve_command)
