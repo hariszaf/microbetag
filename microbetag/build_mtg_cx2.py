@@ -495,6 +495,8 @@ def get_compl_maps(config: "Config", genome_ids_in_nodes: List) -> Tuple[pd.Data
 
 def pathway_complements(config: "Config", edgelist_df: pd.DataFrame, node_names: List, cx_edges: Dict):
 
+    _logger_.info("Extend pathway complements format.")
+
     complements_dict = extend_complements(
         complements_json = config.compl_file,
         descrps_path     = config.module_descriptions,
@@ -561,8 +563,11 @@ def _hat_complement(complements: Dict) -> list:
     so MGG can get a list of strings.
     """
     hat_compl = []
-    for compl in complements.values():
-        hat_compl.append("^".join(compl))
+    if isinstance(complements, dict):
+        for compl in complements.values():
+            hat_compl.append("^".join(compl))
+    else:
+        _logger_.warning(f"complements is not in a dictionary type: {complements}")
     return hat_compl
 
 

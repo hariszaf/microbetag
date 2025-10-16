@@ -716,8 +716,6 @@ def extend_complements(
             if not compls:
                 continue
 
-            _logger_.info(f".. compls: {compls}")
-
             complements_dict_ext[beneficiary_bin][potential_donor] = {}
 
             for compl in compls:
@@ -745,10 +743,6 @@ def extend_complements(
                 complements_dict_ext[beneficiary_bin][potential_donor][
                     len(complements_dict_ext[beneficiary_bin][potential_donor])
                 ] = (triplet + compl_str)
-
-                _logger_.info("hello friend")
-
-    _logger_.info(complements_dict_ext)
 
     # Save extended complements to JSON
     extended_path_compl_json = os.path.join(

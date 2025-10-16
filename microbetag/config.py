@@ -331,14 +331,18 @@ def get_value(conf, key, default=None):
 
 
 def load_config(yaml_file):
+
     import yaml
+
     config_path = os.path.abspath(yaml_file)
-    config_dir = os.path.dirname(config_path)
+    config_dir  = os.path.dirname(config_path)
+
     with open(yaml_file, "r") as y:
         yaml_data = yaml.safe_load(y)
     yaml_data["__config_dir__"] = config_dir
 
     return yaml_data
+
 
 def load_abundance(abd_file: str) -> tuple[pd.DataFrame, str, str, str]:
     """
