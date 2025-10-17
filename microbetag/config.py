@@ -236,7 +236,7 @@ class Config:
             self.__dict__.update(vars(pc))
 
         # Open Reading Frames
-        if not self.onthefly and self.path_compl:
+        if not self.onthefly and (self.path_compl or self.seed_compl):
             orfs = conf.get("orfs", {}).get("path")
             if orfs is None:
                 self.prodigal = os.path.join(self.output_dir, "ORFs")

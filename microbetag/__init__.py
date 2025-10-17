@@ -96,5 +96,6 @@ __authors__ = ["Haris Zafeiropoulos <haris.zafeiropoulos@kuleuven.be>"]
 __cite__    = (
     "Zafeiropoulos H, Michail Delopoulos EI, Erega A, Schneider A, Geirnaert A, Morris J, Faust K."
     "microbetag: simplifying microbial network interpretation through annotation, enrichment tests and metabolic complementarity analysis."
-    "bioRxiv. 2024:2024-10."
+    "Genome Biol 26, 292 (2025)"
+    "DOI: https://doi.org/10.1186/s13059-025-03769-2"
 )

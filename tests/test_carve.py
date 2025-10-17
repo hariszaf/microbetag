@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 
 from microbetag.config import Config
-from microbetag.genres import GEMSReconstruction
+#from microbetag.genres import GEMSReconstruction
+from microbetag.wrappers import build_genres
 
 root_dir  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 test_data = os.path.join(root_dir, "test_data", "test_carve")
@@ -26,13 +27,9 @@ class testBuildGemWithCarve(unittest.TestCase):
         cls.config = config
         cls.GEMSReconstruction = None
 
-    def test1_GEMSReconstruction(self):
+    def test_carve(self):
 
-        testBuildGemWithCarve.GEMSReconstruction = GEMSReconstruction(self.config)
-
-    def test2_runCarveme(self):
-
-        self.GEMSReconstruction.carve_reconstructions()
+        build_genres(self.config)
 
 
 if __name__ == "__main__":
