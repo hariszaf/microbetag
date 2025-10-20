@@ -1,0 +1,39 @@
+# Use official Python 3.8 image
+FROM python:3.8-slim
+
+# Set working directory
+WORKDIR /app
+
+# --- Upgrade pip and core build tools ---
+RUN pip install --upgrade pip setuptools wheel
+
+# --- Reinstall compatible numpy version ---
+RUN pip install --force-reinstall numpy==1.24.4
+
+# --- Install CPU-only PyTorch to avoid CUDA downloads ---
+RUN pip install torch==2.3.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# --- Install system build tools required by shap and other deps ---
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# --- Finally, install Phenotrex with FASTA extras ---
+RUN pip install --default-timeout=120 phenotrex[fasta]
+
+# Install DeepNOG dependencies
+RUN pip install deepnog
+
+# Create a directory for the pre-downloaded DeepNOG weights
+RUN mkdir -p /opt/deepnog/weights
+
+# Set an environment variable so deepnog uses this path
+ENV DEEPNOG_WEIGHTS_DIR=/opt/deepnog/weights
+
+# Pre-download the eggNOG5 level-2 deepencoding weights
+RUN python3 -c "from deepnog.utils import get_weights_path; get_weights_path(database='eggNOG5', level='2', architecture='deepencoding')"
+
+RUN pip install numpy==1.21.6
+
+# Default command (if used with Nextflow, Nextflow will override this anyway)
+CMD ["bash"]
