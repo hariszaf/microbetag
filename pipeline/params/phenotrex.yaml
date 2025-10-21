@@ -1,4 +1,4 @@
-# FlashWeave configuration file
+# FlashWeave testing parameters file
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
 genomes: data/genomes

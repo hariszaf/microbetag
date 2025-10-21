@@ -1,0 +1,4 @@
+parts_dir: hmmout
+kegg_list: data/kofam_database/ko_list_test
+hmm_profiles: data/kofam_database/profiles_test/
+faa_dir: results/annotations

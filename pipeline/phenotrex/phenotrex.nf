@@ -19,7 +19,6 @@ if (!workflow.commandLine.contains('-params-file')) {
     println "[INFO] Using user-provided params-file, skipping default YAML."
 }
 
-
 println "Parameters after merge: ${params}"
 
 process genotypes {
@@ -64,7 +63,7 @@ workflow {
 
     // Step 0: check if user provided precomputed genotype file
     def use_precomputed = params.containsKey('genotype_file') && file(params.genotype_file).exists()
-    def classes_ch = Channel.fromPath("phenotrex/classes/*.pkl")
+    def classes_ch      = Channel.fromPath("phenotrex/classes/*.pkl")
 
     // Step 1: generate genotypes from genomes
     if (use_precomputed) {
