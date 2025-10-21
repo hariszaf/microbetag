@@ -19,7 +19,6 @@ new File(params.flashweave_config).eachLine { line ->
     } 
 }
 
-
 println "flashweave_params: ${flashweave_params}"
 
 
