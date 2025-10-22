@@ -1,6 +1,7 @@
 
 threads="$1"
 output_file="$2"
+compress="${3:-false}"  # The :- part, means “use this default value if unset or null.”
 
 echo -e "bin_id\tcontig_id\tko_term" > $output_file
 
@@ -22,4 +23,8 @@ ls hmmout_*/*.hmmout \
       # Process non-comment lines
       grep "^[^#]" "$f" | awk -F" " -v bin="$bin" -v ko="$ko" '\''{print bin "\t" ko "\t" $1}'\''
   ' >> $output_file
+
+if [ "$compress" = true ]; then
+    gzip -f $output_file
+fi
 
