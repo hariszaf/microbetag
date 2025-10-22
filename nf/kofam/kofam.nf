@@ -23,7 +23,7 @@ println "Parameters after merge: ${params}"
 
 process hmmsearch{
 
-    publishDir { "results/hmmsearch" }, mode: 'copy'
+    publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
     container "staphb/hmmer:3.4"
 
     input:
@@ -42,7 +42,7 @@ process hmmsearch{
 }
 
 process merge_hmmout {
-    publishDir { "results/hmmsearch" }, mode: 'copy'
+    publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
     container "microbetag"
 
     input: 
@@ -54,7 +54,7 @@ process merge_hmmout {
 
     script:
     """
-    bash ${merge_sc} ${params.threads} ${params.ko_output_file}
+    bash ${merge_sc} ${params.threads} ${params.ko_output_file} ${params.compress}
     """
 }
 
