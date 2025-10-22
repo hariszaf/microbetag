@@ -114,5 +114,4 @@ workflow {
         // metadata_val is empty → run process that does not use metadata
         runFW(formatted_table, fw_sc_ch)
     }
-    
 }
