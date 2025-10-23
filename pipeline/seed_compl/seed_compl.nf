@@ -75,17 +75,15 @@ process scores_and_compl_precalc {
 
     tag "Calculate seed complementarity scores and extract complements."
 
-    publishDir "${params.outdir}/seed_compl", mode: 'copy'
+    publishDir "${params.outdir}/seed_compl/per_species", mode: 'copy'
     container "microbetag"
 
     input:
-    tuple path(extract_sc), val(species)
-    path nonseeds_json
-    path confidence_json
+    tuple val(species), path(extract_sc), path(nonseeds_json), path(confidence_json)
 
     output:
-    path "seed_scores.json", emit: seed_scores_json
-    path "seed_complements.json", emit: seed_complements_json
+    path "${species}_scores.tsv", emit: seed_scores_json
+    path "${species}_compls.json", emit: seed_complements_json
 
     script:
     """
@@ -93,18 +91,22 @@ process scores_and_compl_precalc {
         "${species}" \
         "${nonseeds_json}" \
         "${confidence_json}" \
-        "${params.kegg_modules_only}"
+        "${params.kegg_modules_only}" \
+        "${species}_scores.tsv" \
+        "${species}_compls.json"
     """
 }
 
 
 workflow {
 
+    // Channels for species GEMs and species names
     gems_ch    = Channel.fromPath("${params.gems}/*.xml")
     species_ch = Channel
         .fromPath("${params.gems}/*.xml")
         .map { file -> file.baseName }
 
+    // Channels for seed complementarity scripts
     sets_sc_ch    = Channel.fromPath("seed_compl/get_seed_sets.py")
     extract_sc_ch = Channel.fromPath("seed_compl/seed_compls.py")
     pkl_sc_ch     = Channel.fromPath("seed_compl/build_pkls.py")
@@ -115,10 +117,12 @@ workflow {
     // Aggregate seed and non-seed sets
     a = aggregate_seed_sets(s.collect(), pkl_sc_ch)
 
+    // Combine scirpt and seed data for each species
+    species_data_ch = species_ch
+        .combine(extract_sc_ch)
+        .combine(a.nonseeds_json)
+        .combine(a.confidence_json)
+
     // Calculate seed complementarity scores and extract complements
-    scores_and_compl_precalc(
-        extract_sc_ch.combine(species_ch),
-        a.nonseeds_json,
-        a.confidence_json
-    )
+    scores_and_compl_precalc(species_data_ch)
 }
