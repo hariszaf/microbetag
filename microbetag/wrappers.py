@@ -91,13 +91,14 @@ def build_genres(config: "Config"):
     Wrapper function for GENREs in a microbetag pipeline run.
     """
     # Init reconstruction class
-    build_genres = GEMSReconstruction(config)
+    genres_config = GEMSReconstruction(config)
+    _logger_.info("---")
 
     # Annotate step
     if config.sc_input_type == "bins_fasta":
 
         if config.genre_reconstruction_with == "modelseedpy":
-            build_genres.rast_annotate_genomes()  # saves under config.reconstructions
+            genres_config.rast_annotate_genomes()  # saves under config.reconstructions
 
         elif config.gene_predictor == "prodigal":
             _logger_.info(
@@ -106,7 +107,7 @@ def build_genres(config: "Config"):
 
         elif config.gene_predictor == "fragGeneScan":
             _logger_.info("Get annotations with FragGeneScan.")
-            build_genres.fgs_annotate_genomes()  # saves under config.reconstructions
+            genres_config.fgs_annotate_genomes()  # saves under config.reconstructions
 
     elif config.sc_input_type == "coding_regions":
         _logger_.info("CarveMe will be used with the users .ffn-like files.")
@@ -120,11 +121,11 @@ def build_genres(config: "Config"):
     # Reconstruct step
     if config.genre_reconstruction_with == "modelseedpy":
         _logger_.info("Build draft reconstructions with ModelSEEDpy")
-        build_genres.modelseed_reconstructions()
+        genres_config.modelseed_reconstructions()
 
     elif config.genre_reconstruction_with == "carveme":
         _logger_.info("Build draft reconstructions with carveme")
-        build_genres.carve_reconstructions()
+        genres_config.carve_reconstructions()
 
     else:
         _logger_.info("User models to be used for the seed complementarity step.")

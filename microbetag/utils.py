@@ -429,7 +429,7 @@ def merge_ko(hmmout_dir: str, output: str) -> None:
         output: Path/filename to save the output file
     """
     hmmout_dir = Path(hmmout_dir)
-    output     = Path(output) 
+    output     = Path(output)
 
     # Under any circumstances microbetag will overwrite the ko_merged.txt file
     with open(output, "w") as fo:
@@ -531,8 +531,10 @@ def load_merged_ko_file(merged_ko: str) -> pd.DataFrame:
         pivot_df: a presence-absence (1/0) df where KOs are the rows and bin_ids the columns
     """
     if merged_ko.endswith(".gz"):
-        os.system(f"gunzip {merged_ko}")
-        merged_ko = merged_ko.rsplit(".gz", 1)[0]
+        local_copy = os.path.basename(merged_ko)
+        shutil.copy(merged_ko, local_copy)
+        os.system(f"gunzip {local_copy}")
+        merged_ko = local_copy.rsplit(".gz", 1)[0]
 
     df = pd.read_csv(merged_ko, sep="\t")
 

@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 _logger_ = mtg_logger(__name__)
 
 
-def _generate_fixed_pairwise_comparisons(fixed_item: str, patric_ids_of_interest: List):
+def generate_fixed_pairwise_comparisons(fixed_item: str, patric_ids_of_interest: List):
     """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
 
     fixed_seedset_as_A    = set()
@@ -329,7 +329,7 @@ class ExportSeedComplementarities:
             return None, None
 
         # Get pairwise
-        as_beneficiary, _ = _generate_fixed_pairwise_comparisons(
+        as_beneficiary, _ = generate_fixed_pairwise_comparisons(
             species, list(self.patric_ids_of_interest)
         )
 

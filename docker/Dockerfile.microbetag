@@ -1,5 +1,6 @@
 # Use an official Miniconda image as base
 # FROM continuumio/miniconda3:latest
+# This Dockerfile requires to be built from the root folder of the microbetag repo
 FROM python:3.10
 
 # Set environment name
@@ -69,6 +70,18 @@ RUN pip install backoff==2.2.1 \
 
 # Set working directory
 WORKDIR /workspace
+
+RUN  wget http://ftp.gnu.org/gnu/parallel/parallel-latest.tar.bz2 && \
+    tar xjf parallel-latest.tar.bz2 && \
+    rm parallel-latest.tar.bz2 && \
+    cd parallel-* && \
+    ./configure && \
+    make && \
+    make install 
+
+RUN apt-get update && apt-get install -y \
+    jq \
+    vim
 
 COPY . .
 RUN pip install . 

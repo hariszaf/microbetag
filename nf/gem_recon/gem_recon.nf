@@ -32,49 +32,94 @@ params.max_forks = params.max_forks ?: 5
 
 process carve {
 
-    tag "GEM reconstruction with CarveMe using .faa files as input"
+    tag "GEM reconstruction with CarveMe"
 
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
     container "carveme"
     containerOptions = "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
     
     input:
-    path faa_chunk
+    path in_chunk
 
     // Optional: uncomment to enable conditional execution
     when: 
-    params.genre_reconstruction_with == "carveme" && params.faa != null
+    params.genre_reconstruction_with == "carveme"
 
     output:
     path "*.xml"
 
     script:
     """
-    for f in ${faa_chunk}; do
-        carve --solver gurobi --output "\$(basename \$f .faa).xml" \$f
+    for f in ${in_chunk}; do
+
+        if [ "${params.is_faa}" == "true" ]; then
+            carve --solver gurobi --output "\$(basename \$f .faa).xml" \$f
+        else
+            base=\$(basename "$f") 
+            base="\${base%.*}"
+            carve --dna --solver gurobi --output "\${base}.xml" \$f
+        fi
+
     done
     """
 }
-    // export GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
+
+            // base="\${f%.fa}"
+            // base="\${base%.fasta}"
+            // base="\${base%.fna}"
+
+process gapseq {
+
+    tag "GEM reconstruction with gapseq"
+
+    publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
+    container "gapseq"
+    containerOptions = "-v ${params.cplex_lic}:/opt/cplex/cplex.lic"
+
+    input:
+    path in_chunk
+
+    when:
+    params.genre_reconstruction_with == "gapseq"
+
+    output:
+    path ".xml"
+
+    script:
+    """
+        for f in ${in_chunk}; do 
+
+            gapseq doall \$f
+
+        done
+    """
+}
 
 
 
 workflow {
 
-    genomes_ch   = Channel.fromPath("${params.genomes}")
+    // 1️⃣ Create a channel of all .faa or .fa, .fasta files
+    def input_files_ch
+
+    if (params.is_faa) {
+        input_files_ch = Channel.fromPath("${params.input_files}/*.faa")
+    } else {
+        input_files_ch = Channel.fromPath("${params.input_files}/*.{fa,fasta,fna}")
+    }
 
     // 1️⃣ Create a channel of all .faa files
-    faa_ch = Channel.fromPath("${params.faa}/*.faa")
+    // input_files_ch = Channel.fromPath("${params.faa}/*.faa")
 
     // 2️⃣ Collect all files into a list (for small/medium datasets)
-    faa_list_ch = faa_ch.collect()
+    input_list_ch = input_files_ch.collect()
 
     // 3️⃣ Compute chunk size and collate
-    faa_chunk_ch = faa_list_ch.flatMap { files ->
+    infiles_chunk_ch = input_list_ch.flatMap { files ->
 
-        println "Found ${files.size()} .faa files"
+        println "Number of input files found: ${files.size()} "
 
-        def chunk_size = Math.ceil(files.size() / 5.0) as int
+        def chunk_size = Math.ceil(files.size() / params.max_forks) as int
         println "Chunk size = $chunk_size"
 
         // collate manually into sublists
@@ -86,15 +131,13 @@ workflow {
         return chunks
     }
 
-    // 4️⃣ Debug
-    faa_chunk_ch.view { println "Chunk: $it" }
+    infiles_chunk_ch.view()
 
-    // 5️⃣ Pass chunks to your carve process
-    carve(faa_chunk_ch)
+    // 4️⃣ Pass chunks to your carve process
+    carve(infiles_chunk_ch)
+
+    // 4️⃣ Pass chunks to your gapseq process
+    gapseq(infiles_chunk_ch)
 
 
 }
-
-
-
-

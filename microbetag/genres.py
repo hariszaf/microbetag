@@ -27,14 +27,20 @@ class GEMSReconstruction:
         config: Instance of the :class:`Config` class.
 
     - `threads`
-    - `bin_filenames`
+
     - `bins_path`
+    - `bin_filenames`
+
     - `reconstructions`
-    - `sc_input_type`
     - `for_reconstructions`
+
+    - `sc_input_type`
+
     - `genres`
     - `gapfill_model`
     - `gapfill_media`
+
+    - genre_reconstruction_with
 
     Note:
        CarveMe:
@@ -232,7 +238,7 @@ class GEMSReconstruction:
         Use FragGeneScan to get .faa files.
         """
         cwd = os.getcwd()
-        if self.config.mount is not None:
+        if getattr(self.config, "mount", None):
             FGS = "/opt/FragGeneScan/FragGeneScan"
         else:
             FGS = get_tool_location("FragGeneScan")
@@ -334,12 +340,12 @@ def run_carve(genome_files, output_dir, dna=False):
     genome_files = [str(fa) for fa in genome_files]
 
     for fa in genome_files:
-        
+
         bin_id = os.path.splitext(os.path.basename(fa))[0]
         xml    = os.path.join(output_dir, f"{bin_id}.xml")
-        
+
         carve_params = ["carve", "--solver", "gurobi", "-o", xml]
-        
+
         if os.path.exists(xml) and os.path.getsize(xml) > 0:
             _logger_.info(
                 f"""A GEM (.xml) based on {fa} is already available to be used for seed complementarities; carve step will be skiped."""
