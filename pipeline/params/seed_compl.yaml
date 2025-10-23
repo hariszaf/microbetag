@@ -1,0 +1,4 @@
+gems: results/reconstructions/
+namespace: BiGG
+outdir: results
+kegg_modules_only: true

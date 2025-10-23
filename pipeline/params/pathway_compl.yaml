@@ -2,5 +2,6 @@ outdir: results
 alts_file: alts.json
 compl_file: pathCompls.json
 tinyurl: false
-# ko_output_file: results/hmmsearch/ko_merged.txt
-ko_output_file: results/ko_merged_7bins.txt
+ko_output_file:
+  results/ko_merged_7bins.txt
+  # results/hmmsearch/ko_merged.txt
