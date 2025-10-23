@@ -1,3 +1,9 @@
+"""
+For a single, beneficiary species, it extracts seed complementarities
+with all other species on the dataset and calculates its seed scores
+with the species under study as node A.
+"""
+
 import sys
 import json
 from microbetag.seed_complementarity import get_kegg_module_related, \
