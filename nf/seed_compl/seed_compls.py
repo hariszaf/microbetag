@@ -11,6 +11,11 @@ conf_dic     = sys.argv[3]
 # Filter complements based on KEGG modules
 module_related = sys.argv[4].lower() == "true"
 
+# Output files
+scores_outfile = sys.argv[5]  # f"{species}_scores.tsv"
+compls_outfile = sys.argv[6]  # f"{species}_complements.json"
+
+# Load KEGG module related compounds if needed
 seed_ko_mo     = "/workspace/microbetag/mtg_maps_models/kegg_mappings/seedId_keggId_module.tsv"
 modules_ms_cpd = get_kegg_module_related(seed_ko_mo)
 
@@ -24,8 +29,6 @@ def species_scores_compls(species, conf_dic, nonseeds_dic) :
         Since, we get all pairwise combinations, we do not care of using the as_donor case for a species,
         since it's gonna be calculated when the other species is the beneficiary
     """
-    scores_outfile = f"{species}_seed_scores.tsv"
-    compls_outfile = f"{species}_seed_complements.tsv"
 
     # Init compls and scores
     scores, compls = set(), {}
@@ -73,11 +76,18 @@ def species_scores_compls(species, conf_dic, nonseeds_dic) :
 
         compls[partner] = B_complements_A
 
-        with open(scores_outfile, "a") as f:
-            f.writelines(scores)
+    # with open(scores_outfile, "a") as f:
+    #     f.writelines(scores)
+
+    with open(scores_outfile, "a") as f:
+        f.writelines(f"{s}" for s in sorted(scores))
 
     with open(compls_outfile, "w") as f:
-        f.writelines(compls)
+        json.dump(compls, f, indent=2)
 
 
-species_scores_compls(species, json.load(open(conf_dic)), json.load(open(nonseeds_dic)))
+species_scores_compls(
+    species,
+    json.load(open(conf_dic)),
+    json.load(open(nonseeds_dic))
+)
