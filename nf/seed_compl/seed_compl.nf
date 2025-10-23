@@ -70,7 +70,6 @@ process aggregate_seed_sets {
     """
 }
 
-
 process scores_and_compl_precalc {
 
     tag "Calculate seed complementarity scores and extract complements."
@@ -82,8 +81,8 @@ process scores_and_compl_precalc {
     tuple val(species), path(extract_sc), path(nonseeds_json), path(confidence_json)
 
     output:
-    path "${species}_scores.tsv", emit: seed_scores_json
-    path "${species}_compls.json", emit: seed_complements_json
+    path "${species}_scores.tsv", emit: sp_seed_scores_json
+    path "${species}_compls.json", emit: sp_seed_compl_json
 
     script:
     """
@@ -95,6 +94,65 @@ process scores_and_compl_precalc {
         "${species}_scores.tsv" \
         "${species}_compls.json"
     """
+}
+
+
+process aggregate_scores_compls {
+    
+    tag "Aggregate the per species seed scores and complements to global files"
+
+    publishDir "${params.outdir}/seed_compl", mode: 'copy'
+    container "microbetag"
+
+    input:
+    path sp_seed_scores_json
+    path sp_seed_compl_json
+
+    output:
+    path compls_js_outfile,  emit: tmp_compls
+    path compls_pkl_outfile, emit: seed_compls
+    path scores_outfile,     emit: seed_scores
+
+    script:
+    compls_js_outfile  = "all_compls.json"
+    compls_pkl_outfile = "seed_compls.pkl"
+    scores_outfile     = "phylomint_scores.tsv"
+    """ 
+    jq -n '
+      reduce inputs as \$f ({}; . + {(\$f|input_filename|capture("(?<key>[^/]+)_compls\\\\.json\$").key): \$f})
+    ' *_compls.json > ${compls_js_outfile}
+
+    echo -e 'nodeA\\tnodeB\\tCompetitionScore\\tCooperationScore' > header
+    cat *.tsv >> scores
+    cat header scores > ${scores_outfile}
+    
+    python - <<'EOF'
+    import json
+    import pickle
+    import pandas as pd
+
+    compls_js_outfile  = "${compls_js_outfile}"
+    compls_pkl_outfile = "${compls_pkl_outfile}"
+
+    with open(compls_js_outfile) as f:
+        compls_dict = json.load(f)
+
+    df = pd.DataFrame.from_dict(compls_dict)
+
+    # Identify only the float columns
+    float_cols = df.select_dtypes(include="float").columns
+
+    # Replace NaNs with [] only in those columns
+    df[float_cols] = df[float_cols].where(df[float_cols].notna(), [[]])
+
+    # Attention! We need to get df.T. Otherwise we get the source as target and the other way around !
+    with open(compls_pkl_outfile, "wb") as f:
+        pickle.dump(df.T, f)
+    EOF
+
+
+    """
+
 }
 
 
@@ -124,5 +182,9 @@ workflow {
         .combine(a.confidence_json)
 
     // Calculate seed complementarity scores and extract complements
-    scores_and_compl_precalc(species_data_ch)
+    e = scores_and_compl_precalc(species_data_ch)
+
+    // Aggregate compls and scores
+    aggregate_scores_compls(e[0].collect(), e[1].collect())
 }
+
