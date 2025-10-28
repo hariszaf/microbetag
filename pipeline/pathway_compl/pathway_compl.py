@@ -11,7 +11,7 @@ class Config:
     ref_ko_per_module            = kegg_mappings / "kegg_terms_per_module.tsv"
     modules_definitions_json_map = kegg_mappings / "module_definition_map.json"
     alts_file            = sys.argv[1]
-    compl_file           = sys.argv[2]
+    pc_file           = sys.argv[2]
     tinyurl              = sys.argv[3]
 
 

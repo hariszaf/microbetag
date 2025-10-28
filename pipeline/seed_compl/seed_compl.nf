@@ -116,7 +116,7 @@ process aggregate_scores_compls {
     script:
     compls_js_outfile  = "all_compls.json"
     compls_pkl_outfile = "seed_compls.pkl"
-    scores_outfile     = "phylomint_scores.tsv"
+    scores_outfile     = "seed_scores.tsv"
     """ 
     jq -n '
       reduce inputs as \$f ({}; . + {(\$f|input_filename|capture("(?<key>[^/]+)_compls\\\\.json\$").key): \$f})

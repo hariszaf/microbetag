@@ -1,0 +1,35 @@
+outdir: results
+mtg_net: my.cx2
+
+indir: data
+onthefly: false
+
+abundance_file: data/abd_data/testAbundMeta.tsv
+delimiter: ","
+metadata_file: data/abd_data/metadata.tsv
+
+network: results/flashweave.edgelist
+
+# For each step, if false, you may leave the extra args blank
+faprotax: true
+faprotax_sub_tables: results/faprotax/sub_tables/
+
+phen_traits: false
+phen_traits_dir:
+  # results/phen_traits
+
+net_cluster: false
+
+path_compl: true
+pc_dir: results/pathway_compl/
+pc_percent: 1
+pc_file: results/pathway_compl/pathCompls.json
+
+seed_compl: true
+sc_pkl: results/seed_compl/seed_compls.pkl
+module_nonseeds: results/seed_compl/keggm_nonseeds.pkl
+seed_scores: results/seed_compl/seed_scores.tsv
+
+tinyurl: false
+
+sequence_id_column_name: null

@@ -1,6 +1,7 @@
 outdir: results
 alts_file: alts.json
-compl_file: pathCompls.json
+pc_file: pathCompls.json
+pc_percent: 1
 tinyurl: false
 ko_output_file:
   results/ko_merged_7bins.txt
