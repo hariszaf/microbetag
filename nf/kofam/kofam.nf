@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run kofam/kofam.nf --kofam_config kofam/kofam.config
+nextflow run kofam/kofam.nf --c kofam/kofam.config
 */
 
 include { readParamsFile } from '../helpers.nf'

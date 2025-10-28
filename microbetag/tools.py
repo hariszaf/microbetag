@@ -265,6 +265,7 @@ def phenotrex_genotype(config: "Config") -> None:
             str(config.threads),
             bin_files_in_a_row,
         ]
+
         # Container - case
         if config.cwd.startswith("/microbetag"):
 
@@ -292,6 +293,7 @@ def phenotrex_genotype(config: "Config") -> None:
         # Local case
         else:
             compute_genotype_command = " ".join(compute_genotype_params)
+            print(compute_genotype_command)
             try:
                 subprocess.run(compute_genotype_command, shell=True, check=True)
             except Exception as e:
@@ -321,7 +323,7 @@ def phenotrex_predict(config: "Config") -> None:
     for model in phen_models:
         model_name = os.path.basename(model)
         model_predictions_output = "".join(
-            [config.predictions_path, "/", model_name[:-4], ".prediction.tsv"]
+            [config.phen_traits_dir, "/", model_name[:-4], ".prediction.tsv"]
         )
 
         # Skip if predictions already computed
@@ -357,7 +359,7 @@ def phenotrex_predict(config: "Config") -> None:
                 _logger_.warn(f"Command execution failed with return code {e}")
 
     # If no predictions file is present for any classes, probably something went off.
-    if not any(glob.glob(os.path.join(config.predictions_path, "*.prediction.tsv"))):
+    if not any(glob.glob(os.path.join(config.phen_traits_dir, "*.prediction.tsv"))):
         _logger_.error(
             "No prediction was able to be retrieved with phenotrex. Check your input files."
         )
@@ -374,7 +376,7 @@ def run_manta(config: "Config") -> None:
     """
     # Build the manta command
     _logger_.info("Running manta clustering algorithm.")
-    manta_output_file = "/".join([config.output_dir, "manta_annotated"])
+    manta_output_file = "/".join([config.outdir, "manta_annotated"])
     manta_params = [
         "manta",
         "-i",

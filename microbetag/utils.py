@@ -113,6 +113,8 @@ def resolve_file_path(base_dir: str, file_path: str) -> str:
     '/home/user/file.txt'
     """
 
+    _logger_.info(f">> file_path: {file_path}")
+
     if file_path is None:
         return None  # Return None if the file path is None
 
@@ -673,8 +675,10 @@ def ensure_same_namespace_after_fw(conf: "Config") -> None:
 
 
 def extend_complements(
-    complements_json: str, descrps_path: str,
-    path_compl_perce: int, path_compl_dir: str
+    complements_json: str,
+    descrps_path    : str,
+    pc_percent: int,
+    pc_dir  : str
 ) -> Dict:
     """
     Extends pathway complement annotations based on given settings and descriptions.
@@ -682,8 +686,8 @@ def extend_complements(
     Parameters:
         - complements_json: Path to the complements JSON file.
         - descrps_path: Path to the KEGG MODULES description file.
-        - path_compl_perce: Maximum allowable percentage of required KOs that must be present.
-        - path_compl_dir: Directory to save the extended complements JSON file.
+        - pc_percent: Maximum allowable percentage of required KOs that must be present.
+        - pc_dir: Directory to save the extended complements JSON file.
         complements_dict (dict): Dictionary of complements loaded from a JSON file.
         descrps_path (str): Path to the module descriptions file (tab-separated file with no header).
 
@@ -695,7 +699,9 @@ def extend_complements(
     """
 
     _logger_.info(
-        f"complements_json: {complements_json}, descrps_path: {descrps_path}, path_compl_dir: {path_compl_dir}"
+        f"complements_json: {complements_json}"
+        f"descrps_path: {descrps_path}"
+        f"pc_dir: {pc_dir}"
     )
 
     # Load and process module descriptions
@@ -703,6 +709,15 @@ def extend_complements(
     descrps.columns = ["category", "moduleId", "description"]
     column_order    = ["moduleId", "description", "category"]
     descrps         = descrps[column_order]
+
+    # Extended complements as JSON
+    extended_path_compl_json = os.path.join(
+        pc_dir, "pathway_complements_extended.json"
+    )
+    if os.path.exists(extended_path_compl_json):
+        with open(extended_path_compl_json, "r") as f:
+            complements_dict_ext = json.load(f)
+        return complements_dict_ext
 
     # Deep copy the complements dictionary
     with open(complements_json, "r") as file:
@@ -727,7 +742,7 @@ def extend_complements(
                 complet_alt = compl[2]  # Alternative complete
 
                 # Skip if long number of required KOs
-                if len(kos_to_get) / len(complet_alt) > path_compl_perce:
+                if len(kos_to_get) / len(complet_alt) > pc_percent:
                     _logger_.info(f"High number of required terms to complete alternative. {len(kos_to_get)} out of {len(complet_alt)}")
                     continue
 
@@ -747,9 +762,6 @@ def extend_complements(
                 ] = (triplet + compl_str)
 
     # Save extended complements to JSON
-    extended_path_compl_json = os.path.join(
-        path_compl_dir, "pathway_complements_extended.json"
-    )
     with open(extended_path_compl_json, "w") as f:
         json.dump(complements_dict_ext, f)
 
@@ -774,11 +786,12 @@ def extend_faprotax(faprotax_sub_tables, sequence_id_column_name) -> Tuple[dict[
     ]
 
     for file in fapro_sub_tables:
+        _logger_.info(f"File: {file}")
         # NOTE (Haris Zafeiropoulos, 2025-05-20):
         # We replace '_' with a space for user's convenience in the MGG
         # Also, this needs to be synced with the MGG.MUtils code for the grouping in the node panel
         trait_name, _ = os.path.splitext(os.path.basename(file))
-        trait         = pd.read_csv(file, sep="\t", skiprows=1)
+        trait         = pd.read_csv(file, sep=",", skiprows=1)
 
         bins_with_trait = trait[sequence_id_column_name].dropna()
 

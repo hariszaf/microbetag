@@ -299,20 +299,20 @@ def export_pathway_complementarities(config, bins_kos_df):
             bins_alternatives = json.load(h)
 
     # If compl.json not available
-    if not os.path.exists(config.compl_file):
+    if not os.path.exists(config.pc_file):
 
         module_to_map = a_modules_maps(config.kegg_modules_to_maps)
         complements = all_complements(
             bin_kos_per_module,
             bins_alternatives,
             module_to_map,
-            config.compl_file,
+            config.pc_file,
             config.tinyurl,
         )
 
     else:
 
-        with open(config.compl_file, "r") as h:
+        with open(config.pc_file, "r") as h:
             complements = json.load(h)
 
     return bins_alternatives, complements

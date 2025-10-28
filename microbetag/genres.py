@@ -217,7 +217,7 @@ class GEMSReconstruction:
 
             run_carve(
                 faa_files,
-                output_dir = self.config.genres
+                outdir = self.config.genres
             )
 
         elif self.config.sc_input_type in ["coding_regions", "proteins_faa"]:
@@ -229,7 +229,7 @@ class GEMSReconstruction:
 
             run_carve(
                 faa_files,
-                output_dir = self.config.genres,
+                outdir = self.config.genres,
                 dna        = self.config.sc_input_type == "coding_regions"
             )
 
@@ -324,13 +324,13 @@ def dnngior_gapfill(draft_model, medium=None, outdir=None):
         subprocess.run(command)
 
 
-def run_carve(genome_files, output_dir, dna=False):
+def run_carve(genome_files, outdir, dna=False):
     """
     Build a GEM using carveme for a list of
 
     Args:
         genome_files (list[str]): Input genome files, either in `.fna` or `.faa` format.
-        output_dir (str): Directory to save the draft GEMs.
+        outdir (str): Directory to save the draft GEMs.
         dna (bool, optional): If True, indicates input files are `.fna` (DNA). 
             Defaults to False, expecting `.faa` (protein) files.
 
@@ -342,7 +342,7 @@ def run_carve(genome_files, output_dir, dna=False):
     for fa in genome_files:
 
         bin_id = os.path.splitext(os.path.basename(fa))[0]
-        xml    = os.path.join(output_dir, f"{bin_id}.xml")
+        xml    = os.path.join(outdir, f"{bin_id}.xml")
 
         carve_params = ["carve", "--solver", "gurobi", "-o", xml]
 

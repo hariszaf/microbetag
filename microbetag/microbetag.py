@@ -176,6 +176,8 @@ def _run_prodigal(config):
     """Helper function to run Prodigal or not."""
     if (config.path_compl or config.seed_compl) and not config.onthefly:
 
+        logger.info(f"ko_merged: {config.ko_merged}")
+
         if (
             config.ko_merged is None and len(os.listdir(config.prodigal)) != len(config.bins_ids)
         ):
@@ -229,7 +231,7 @@ def _get_path_compl(config, **kwargs):
                 pivot_df = load_merged_ko_file(config.ko_merged)  # Load ko_merged.txt
 
                 if not os.path.exists(config.alts_file) or not os.path.exists(
-                    config.compl_file
+                    config.pc_file
                 ):
 
                     _, _ = export_pathway_complementarities(config, pivot_df)

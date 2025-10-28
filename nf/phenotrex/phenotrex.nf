@@ -23,8 +23,10 @@ println "Parameters after merge: ${params}"
 
 process genotypes {
 
-    publishDir 'results', mode: 'copy'
-    container "phenotrex"
+    tag "Annotate genomes with EggNOG to build the `genotype` file for phenotrex."
+
+    publishDir "${params.outdir}", mode: 'copy'
+    container "hariszaf/phenotrex:0.6.0"
 
     input:
         path genome_files
@@ -41,19 +43,20 @@ process genotypes {
 
 process predict {
 
-    publishDir 'results', mode: 'copy'
-    container "phenotrex"
+    tag "Using the `genotype` file, predict phenotypic traits."
+
+    publishDir "${params.outdir}/phen_traits", mode: 'copy'
+    container "hariszaf/phenotrex:0.6.0"
 
     input:
         tuple path(class_file), path(genotype_file)
 
     output:
-        file "predictions/${class_file.simpleName}.tsv"
+        file "${class_file.simpleName}.tsv"
 
     script:
     """
-        mkdir -p predictions/
-        phenotrex predict --classifier ${class_file} --genotype ${genotype_file} --min_proba ${params.min_proba} --verb > predictions/${class_file.simpleName}.tsv
+        phenotrex predict --classifier ${class_file} --genotype ${genotype_file} --min_proba ${params.min_proba} --verb > ${class_file.simpleName}.tsv
     """
 
 }
@@ -62,7 +65,7 @@ process predict {
 workflow {
 
     // Step 0: check if user provided precomputed genotype file
-    def use_precomputed = params.containsKey('genotype_file') && file(params.genotype_file).exists()
+    def use_precomputed = params.containsKey('genotype_file') && params.genotype_file != null && file(params.genotype_file).exists()
     def classes_ch      = Channel.fromPath("phenotrex/classes/*.pkl")
 
     // Step 1: generate genotypes from genomes

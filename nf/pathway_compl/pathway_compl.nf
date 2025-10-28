@@ -44,12 +44,12 @@ process pathway_compl_precalc {
     path path_compl_sc_ch
 
     output:
-    path params.compl_file
+    path params.pc_file
     path params.alts_file
 
     script:
     """
-    python ${path_compl_sc_ch} ${params.alts_file} ${params.compl_file} ${params.tinyurl} ${ko_merged_ch}
+    python ${path_compl_sc_ch} ${params.alts_file} ${params.pc_file} ${params.tinyurl} ${ko_merged_ch}
     """
 }
 

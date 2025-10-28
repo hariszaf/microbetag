@@ -92,7 +92,6 @@ dada2familiesNcbiIds
 *.contigs.fa
 bins/
 
-
 # Ignore the output of the installation.sh script 
 microbetag_env
 
@@ -127,3 +126,5 @@ nf/data/
 nf/results/
 nf/phenotrex/classes/
 
+# Ignore Singularity .sif files
+*.sif

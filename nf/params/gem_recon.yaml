@@ -7,7 +7,8 @@ input_files:
 is_faa: false
 
 genre_reconstruction_with:
-  gapseq
+  carveme
+  #gapseq
   # carveme
 
 gurobi_lic: /opt/gurobi/gurobi_wlm.lic
