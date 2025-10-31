@@ -1,10 +1,9 @@
 outdir: results
 
 input_files:
-  data/genomes
+  data/faa
   # results/annotations/
-
-is_faa: false
+  # data/genomes
 
 genre_reconstruction_with:
   carveme
@@ -17,3 +16,5 @@ gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 # which is the only way to go on with a Docker container, we set by defalt max_forks to 5.
 # Then, our input files will be split in chunks of max_forks size for parallel processing.
 max_forks: 5
+
+debug_decompress:

@@ -6,3 +6,4 @@ tinyurl: false
 ko_output_file:
   results/ko_merged_7bins.txt
   # results/hmmsearch/ko_merged.txt
+threads: 5

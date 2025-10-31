@@ -120,6 +120,7 @@ test_data/test_microbetag/mtg_complete_output
 test_data/test_microbetag/input_files
 
 # Nextflow
+.nextflow.*
 .nextflow/
 work/
 nf/data/
