@@ -867,9 +867,11 @@ def seed_complements(
 
     # NOTE (Haris Zafeiropoulos, 2025-03-26):
     # Remember we only focus on the KEGG MODULES related seeds, nonseeds and compls
+    _logger_.info(f"~ module_nonseeds: {config.module_nonseeds}")
     with open(config.module_nonseeds, "rb") as f:
         non_seed_sets = pickle.load(f)
 
+    _logger_.info(f"~ sc_pkl: {config.sc_pkl}")
     with open(config.sc_pkl, "rb") as f:
         seed_complements = pickle.load(f)
 
@@ -915,21 +917,16 @@ def seed_complements(
 
                 for don_genome in don_ids:
 
-                    edge_id, se, update = process_se_edge(
-                        beneficiary,
-                        donor,
-                        ben_genome,
-                        don_genome,
-                        node_names,
-                        cx_edges,
-                        seed_scores,
-                        seed_complements_dict,
-                        non_seed_sets,
-                        kmap,
-                        shortener,
-                    )
+                    if (res := process_se_edge(
+                        beneficiary, donor,
+                        ben_genome, don_genome,
+                        node_names, cx_edges,
+                        seed_scores, seed_complements_dict,
+                        non_seed_sets, kmap, shortener,
+                    )) is not None:
 
-                    _update_or_append(cx_edges, edge_id, se, update)
+                        edge_id, se, update = res
+                        _update_or_append(cx_edges, edge_id, se, update)
 
     # Average seed scores
     for edge in cx_edges:

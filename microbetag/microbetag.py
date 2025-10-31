@@ -256,9 +256,10 @@ def _get_seed_compl(config, **kwargs):
         # ----------------
         # microbetag implementation of Phylomint
         # ----------------
-        logger.info("[INTERMEDIATE STEP] COMPUTING SEED SETS AND SCORES")
 
         if config.onthefly:
+
+            logger.info("[INTERMEDIATE STEP] GET SEED COMPLS FROM MICROBETAG DB")
 
             db = kwargs.get("db")
 

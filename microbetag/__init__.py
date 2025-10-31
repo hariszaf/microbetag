@@ -83,12 +83,12 @@ from .microbetag import (
 
 
 _KEGG_MAPPINGS         = os.path.join(os.path.dirname(__file__), "mtg_maps_models", "kegg_mappings")
-_KEGG_TERMS_PER_MODULE = os.path.join(_KEGG_MAPPINGS, "kegg_terms_per_module.tsv")
-_MODULE_DEFINITION_MAP = os.path.join(_KEGG_MAPPINGS, "module_definition_map.json")
-_KEGG_MODULES_TO_MAPS  = os.path.join(_KEGG_MAPPINGS, "module_map_pairs.tsv")
+# _KEGG_TERMS_PER_MODULE = os.path.join(_KEGG_MAPPINGS, "kegg_terms_per_module.tsv")
+# _MODULE_DEFINITION_MAP = os.path.join(_KEGG_MAPPINGS, "module_definition_map.json")
+# _KEGG_MODULES_TO_MAPS  = os.path.join(_KEGG_MAPPINGS, "module_map_pairs.tsv")
 
 _MTG_PHEN_ENV      = "mtg-phenotrex"
-_MTG_MODELSEED_ENV = "mtg-modelseed"
+# _MTG_MODELSEED_ENV = "mtg-modelseed"
 
 __version__ = "1.0.4"
 __license__ = "GNU GPL3"

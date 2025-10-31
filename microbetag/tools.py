@@ -44,6 +44,7 @@ def run_seed_complementarity(config: "Config") -> None:
 
     if config.prev_conf is None or os.path.exists(config.prev_conf) is False:
         config.skip_sets = False
+
         if config.user_models:
             genre_files = [
                 os.path.join(config.for_reconstructions, file)
@@ -69,10 +70,12 @@ def run_seed_complementarity(config: "Config") -> None:
 
     # If no seed and/or non-seed sets are missing, get them
     if config.skip_sets is False and config.api is False:
+        _logger_.info("[INTERMEDIATE STEP] COMPUTING SEED SETS")
         seeds.get_sets()
 
     # If either the phylomint scores file or the one with the seed complementarities (pckl) is missing, exract them
     if seeds.get_scores or seeds.get_complements:
+        _logger_.info("[INTERMEDIATE STEP] COMPUTING SEED SCORES AND COMPLS")
         seeds.get_scores_and_compls()
 
 
