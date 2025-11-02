@@ -1,4 +1,4 @@
-
+#!/usr/bin/env bash
 threads="$1"
 output_file="$2"
 

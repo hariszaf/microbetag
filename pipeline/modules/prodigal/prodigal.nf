@@ -20,9 +20,9 @@ if (!workflow.commandLine.contains('-params-file')) {
 }
 
 
-process annotate {
+process PRODIGAL {
 
-    publishDir 'results/annotations', mode: 'copy'
+    publishDir "${params.outdir}/prodigal", mode: 'copy'
     container "biocontainers/prodigal:v1-2.6.3-4-deb_cv1"
     containerOptions = '-u $(id -u):$(id -g)'
 
@@ -33,7 +33,6 @@ process annotate {
         path "*.faa"
         path "*.ffn"
         path "*.gbk"
-
 
     script:
         def genome_name = genome.name.replaceFirst(/\.[^.]+$/, '')
@@ -48,5 +47,13 @@ workflow {
     def genomes_ch = Channel.fromPath("${params.genomes}/*")
 
     // Run annotation process
-    annotate(genomes_ch)
+    // PRODIGAL(genomes_ch)
+    faa_ch = PRODIGAL(genomes_ch)
+
+    // debug output in Nextflow log
+    faa_ch.view()  
+
+    // Return only the *.faa channel
+    return faa_ch   
+
 }

@@ -1,6 +1,43 @@
+#!/usr/bin/env julia
+
 using ArgParse
 using JSON
 using FlashWeave
+
+"""
+FlashWeave CLI Wrapper
+======================
+
+Run FlashWeave on a microbial abundance matrix, with optional metadata and
+custom parameters passed via JSON.
+
+USAGE
+-----
+
+    ./flashweave.jl --input table.tsv
+    ./flashweave.jl --input table.tsv --metadata metadata.tsv
+    ./flashweave.jl --input table.tsv --fw_args {heterogeneous:false, ..}
+
+REQUIRED ARGUMENTS
+------------------
+
+    --input <file>          Abundance table (rows = taxa, columns = samples)
+
+OPTIONAL ARGUMENTS
+------------------
+
+    --metadata <file>       Optional metadata file (sample metadata)
+    --fw_args <json>        JSON object overriding FlashWeave settings
+
+NOTES
+-----
+
+* Input must have taxa/ASVs/OTUs/MAGs as rows and samples as columns.
+* Only specify options you want to override; the script provides defaults.
+* Arguments in --fw_args must be valid JSON.
+
+"""
+
 
 # Parse arguments
 settings = ArgParseSettings()

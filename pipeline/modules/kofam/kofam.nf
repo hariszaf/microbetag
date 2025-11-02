@@ -9,6 +9,7 @@ nextflow run kofam/kofam.nf --c kofam/kofam.config
 
 include { READPARAMSFILE } from '../helpers.nf'
 
+
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
     println "[INFO] No params-file provided, loading default YAML..."
@@ -25,12 +26,9 @@ if (!params.containsKey('parts_dir') || params.parts_dir == null) {
 }
 
 
-println "Parameters after merge: ${params}"
 
+process HMMSEARCH{
 
-process hmmsearch{
-
-    // publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
     container "staphb/hmmer:3.4"
 
     input:
@@ -48,21 +46,23 @@ process hmmsearch{
     """
 }
 
-process merge_hmmout {
+
+process MERGE_HMMOUT {
     publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
     container "hariszaf/microbetag-nf:0.1.0"
 
     input: 
         path hmmout_dirs
-        path merge_sc
+        // path merge_sc
     
     output:
-        path params.ko_output_file
+        path params.ko_merged
         path "hmmout.tar.gz"
 
     script:
+    // bash ${merge_sc} 
     """
-    bash ${merge_sc} ${params.threads} ${params.ko_output_file}
+    merge_hmm.sh ${params.threads} ${params.ko_merged}
     tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
     """
 }
@@ -70,30 +70,30 @@ process merge_hmmout {
 
 workflow {
 
-    // Create a channel from input genomes
-    def hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
-    def merge_sc_ch     = Channel.fromPath('modules/kofam/merge.sh')
-
-    // Input files to run the HMMER scan
-    def genomes_ch      = Channel.fromPath("${params.faa_dir}/*.faa")
+    // Channel for .faa files from path provided 
+    def faa_ch = Channel.fromPath("${params.faa_dir}/*.faa")
 
     // KOFAM db
     def ko_list_ch      = Channel.fromPath("${params.kegg_list}")
     def hmm_prof_ch     = Channel.fromPath("${params.hmm_profiles}")
 
-    // Combine the single channels with all genomes
-    def inputs_ch = genomes_ch
+    // Create a channel from input faa_dir
+    def hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
+
+    // Combine the single channels with all faa_dir
+    def inputs_ch = faa_ch
         .combine(hmmsearch_sc_ch)
         .combine(ko_list_ch)
         .combine(hmm_prof_ch)
 
-    // Run hmmsearch for each genome/bin
-    hmmout_ch = hmmsearch(inputs_ch)
+    // Run HMMSEARCH for each genome/bin
+    hmmout_ch = HMMSEARCH(inputs_ch)
 
     // Collect all emitted hmmout dirs (waits for all tasks to finish)
     merged_input_ch = hmmout_ch.collect()
 
     // Merge all hmmout results into a single file
-    merge_hmmout(merged_input_ch, merge_sc_ch)
+    MERGE_HMMOUT(merged_input_ch)
 
 }
+

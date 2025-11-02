@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+
 import os
 import sys
 import pandas as pd
+
 # temporarily redirect stdout
 sys.stdout = open(os.devnull, 'w')
 from microbetag.utils import detect_separator

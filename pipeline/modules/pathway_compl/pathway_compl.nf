@@ -11,7 +11,7 @@ or
 nextflow run pathway_compl/pathway_compl.nf -params-file params/pathway_compl.yaml
 */
 
-include { READPARAMSFILE } from '../helpers.nf'
+include { READPARAMSFILE; FILE_EXISTS } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
@@ -41,7 +41,6 @@ process PC_PRECALC {
 
     input:
     path ko_merged_ch
-    path path_compl_sc_ch
 
     output:
     path "${params.alts_file}", emit: alts
@@ -49,7 +48,7 @@ process PC_PRECALC {
 
     script:
     """
-    python ${path_compl_sc_ch} \
+    pcompl.py \
         ${params.alts_file} \
         ${params.pc_file} \
         ${ko_merged_ch} \
@@ -57,24 +56,23 @@ process PC_PRECALC {
         ${params.threads}
     """
 }
-// ${params.pc_percent} \
+
 
 process PC_EXTEND {
-    tag ""
+    tag "Extend pathway complementarities with URls to KEGG maps"
 
     publishDir "${params.outdir}/pathway_compl", mode: 'copy'
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
-    path extend_sc
     path pcompls
 
     output:
     path "${pcompls.baseName}_ext.json", emit: pcompls_ext
-    
+
     script:
     """
-    python ${extend_sc} \
+    pcompl_ext.py \
         ${pcompls} \
         ${params.pc_percent} \
         ${params.threads}
@@ -85,16 +83,28 @@ process PC_EXTEND {
 }
 
 
+
 workflow {
+    def alts_file
+    def pc_file
+    def ko_merged_ch = Channel.fromPath(params.ko_output_file, checkIfExists: true)
 
-    def ko_merged_ch     = Channel.fromPath(params.ko_output_file)
-    def path_compl_sc_ch = Channel.fromPath("modules/pathway_compl/pathway_compl.py")
-    def extend_sc_ch     = Channel.fromPath("modules/pathway_compl/extend.py")
-
-    // (alts, pcompls) = PC_PRECALC(ko_merged_ch, path_compl_sc_ch)
-    PC_PRECALC(ko_merged_ch, path_compl_sc_ch)
-
-    // PC_EXTEND(alts, pcompls)
-    PC_EXTEND(extend_sc_ch, PC_PRECALC.out.pcompls)
-
+    // Check if we can skip PC_PRECALC
+    def skip_precalc = params.alts_file && params.pc_file && 
+                      file(params.alts_file).exists() && 
+                      file(params.pc_file).exists()
+    
+    if (skip_precalc) {
+        alts_file = Channel.fromPath(params.alts_file, checkIfExists: true)
+        pc_file   = Channel.fromPath(params.pc_file, checkIfExists: true)
+        log.info "✓ Using existing files, skipping PC_PRECALC"
+    } else {
+        PC_PRECALC(ko_merged_ch)
+        alts_file = PC_PRECALC.out.alts
+        pc_file   = PC_PRECALC.out.pcompls
+        log.info "○ Running PC_PRECALC to generate files"
+    }
+    
+    // Continue pipeline
+    PC_EXTEND(pc_file)
 }

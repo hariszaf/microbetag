@@ -19,7 +19,7 @@ if (!workflow.commandLine.contains('-params-file')) {
 }
 
 
-process get_seed_sets {
+process GET_SEED_SETS {
 
     tag "Calculate seed and non-seed sets based on GEM reconstructions."
 
@@ -27,19 +27,20 @@ process get_seed_sets {
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
-    tuple path(sets_sc), path(gem)
+    path gem
 
     output:
     path "${gem.baseName}_sets.json", emit: seed_sets_json
 
     script:
-    """    
-    python ${sets_sc} ${gem} ${params.namespace} "${gem.baseName}_sets.json"
     """
-
+    seed_sets.py ${gem} ${params.namespace} "${gem.baseName}_sets.json"
+    """
 }
+//     python ${sets_sc} ${gem} ${params.namespace} "${gem.baseName}_sets.json"
 
-process aggregate_seed_sets {
+
+process AGGREGATE_SEED_SETS {
 
     tag "Aggregate seed and non-seed sets, as JSON files, and filter them based on KEGG modules, pickle files."
 
@@ -48,7 +49,7 @@ process aggregate_seed_sets {
 
     input:
     path seed_sets_json
-    path build_pkls_sc
+    // path build_pkls_sc
 
     output:
     path "seeds.json", emit: seeds_json
@@ -64,11 +65,11 @@ process aggregate_seed_sets {
     jq 'map({ (.base_name): .non_seed_set }) | add' all_seed_sets.json > nonseeds.json
     jq 'map({ (.base_name): .seed_set_confidence }) | add' all_seed_sets.json > confidence.json
 
-    python ${build_pkls_sc}
+    ssets_pkls.py
     """
 }
 
-process scores_and_compl_precalc {
+process SCORES_COMPLS_PRECALC {
 
     tag "Calculate seed complementarity scores and extract complements."
 
@@ -76,7 +77,7 @@ process scores_and_compl_precalc {
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
-    tuple val(species), path(extract_sc), path(nonseeds_json), path(confidence_json)
+    tuple val(species), path(nonseeds_json), path(confidence_json)
 
     output:
     path "${species}_scores.tsv", emit: sp_seed_scores_json
@@ -84,7 +85,7 @@ process scores_and_compl_precalc {
 
     script:
     """
-    python ${extract_sc} \
+    seed_compls.py \
         "${species}" \
         "${nonseeds_json}" \
         "${confidence_json}" \
@@ -95,7 +96,7 @@ process scores_and_compl_precalc {
 }
 
 
-process aggregate_scores_compls {
+process AGGREGATE_SCORES_COMPLS {
     
     tag "Aggregate the per species seed scores and complements to global files"
 
@@ -124,31 +125,11 @@ process aggregate_scores_compls {
     cat *.tsv >> scores
     cat header scores > ${scores_outfile}
     
-    python - <<'EOF'
-    import json
-    import pickle
-    import pandas as pd
+    scompls_pkls.py ${compls_js_outfile} ${compls_pkl_outfile}
 
-    compls_js_outfile  = "${compls_js_outfile}"
-    compls_pkl_outfile = "${compls_pkl_outfile}"
-
-    with open(compls_js_outfile) as f:
-        compls_dict = json.load(f)
-
-    df = pd.DataFrame.from_dict(compls_dict)
-
-    # Identify only the float columns
-    float_cols = df.select_dtypes(include="float").columns
-
-    # Replace NaNs with [] only in those columns
-    df[float_cols] = df[float_cols].where(df[float_cols].notna(), [[]])
-
-    # Attention! We need to get df.T. Otherwise we get the source as target and the other way around !
-    with open(compls_pkl_outfile, "wb") as f:
-        pickle.dump(df.T, f)
-    EOF
     """
 }
+
 
 
 workflow {
@@ -159,27 +140,21 @@ workflow {
         .fromPath("${params.gems}/*.xml")
         .map { file -> file.baseName }
 
-    // Channels for seed complementarity scripts
-    sets_sc_ch    = Channel.fromPath("modules/seed_compl/get_seed_sets.py")
-    extract_sc_ch = Channel.fromPath("modules/seed_compl/seed_compls.py")
-    pkl_sc_ch     = Channel.fromPath("modules/seed_compl/build_pkls.py")
 
     // Get seed and non-seed sets
-    s = get_seed_sets(sets_sc_ch.combine(gems_ch))
+    s = GET_SEED_SETS(gems_ch)
 
     // Aggregate seed and non-seed sets
-    a = aggregate_seed_sets(s.collect(), pkl_sc_ch)
+    a = AGGREGATE_SEED_SETS(s.collect())
 
     // Combine scirpt and seed data for each species
     species_data_ch = species_ch
-        .combine(extract_sc_ch)
         .combine(a.nonseeds_json)
         .combine(a.confidence_json)
 
     // Calculate seed complementarity scores and extract complements
-    e = scores_and_compl_precalc(species_data_ch)
+    e = SCORES_COMPLS_PRECALC(species_data_ch)
 
     // Aggregate compls and scores
-    aggregate_scores_compls(e[0].collect(), e[1].collect())
+    AGGREGATE_SCORES_COMPLS(e[0].collect(), e[1].collect())
 }
-

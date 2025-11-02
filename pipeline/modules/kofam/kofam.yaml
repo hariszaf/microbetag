@@ -28,4 +28,4 @@ hmm_profiles: data/kofam_database/profiles_test/
 
 threads: 5
 
-ko_output_file: ko_merged.txt
+ko_merged: ko_merged.txt
