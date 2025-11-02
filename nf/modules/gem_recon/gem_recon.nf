@@ -11,28 +11,17 @@ or
 nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 */
 
-
-
 include { READPARAMSFILE } from '../helpers.nf'
-// include { gunzip } from '../helpers.nf'
 include  { SANITIZE_CH; PREP_FILES; GUNZIP } from '../helpers.nf'
-
 
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
     def new_params = READPARAMSFILE(params.paramsFile)
     params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
 }
 
-println "Parameters after merge: ${params}"
-
-
 params.max_forks = params.max_forks ?: 5
-
 
 process CARVE {
 

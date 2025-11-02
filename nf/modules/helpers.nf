@@ -86,3 +86,7 @@ process GUNZIP {
 }
 
 
+// Helper function to check file existence
+def FILE_EXISTS(param_name) {
+    return params[param_name] && file(params[param_name]).exists()
+}

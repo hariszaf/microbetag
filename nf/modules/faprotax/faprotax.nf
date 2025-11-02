@@ -12,17 +12,12 @@ include { READPARAMSFILE } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
     def new_params = READPARAMSFILE(params.paramsFile)
     params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
 }
 
-println "Parameters after merge: ${params}"
 
-
-process faprotax {
+process FAPROTAX {
 
     publishDir "${params.outdir}/faprotax", mode: 'copy'
     container "hariszaf/microbetag-nf:0.1.0"
@@ -54,7 +49,9 @@ workflow{
 
     // Create a channel from input abundance table
     def abundance_ch = Channel.fromPath("${params.abundance_table}")
-    faprotax(abundance_ch)
+
+    // Run process 
+    FAPROTAX(abundance_ch)
 
 }
 

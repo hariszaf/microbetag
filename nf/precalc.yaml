@@ -1,0 +1,27 @@
+# Phenotrex parameters file
+
+outdir: results
+
+threads: 4
+
+#  PHENOTREX
+
+# Input file (tab-separated, samples in rows, variables in columns, header required)
+phenotrex: true
+genomes: data/genomes
+
+# Genotypes output file
+genotype_file:
+  # results/eggnog.genotype
+
+min_proba: 0.75
+
+# PATHWAY COMPL
+pathway_compl: true
+faa_dir:
+#  results/annotations
+
+ko_merged:
+  # ko_merged.txt
+kegg_list: data/kofam_database/ko_list_test
+hmm_profiles: data/kofam_database/profiles_test/
