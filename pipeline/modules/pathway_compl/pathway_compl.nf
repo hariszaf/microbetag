@@ -15,20 +15,8 @@ include { READPARAMSFILE; FILE_EXISTS } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
     def new_params = READPARAMSFILE(params.paramsFile)
     params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
-}
-
-println "Parameters after merge: ${params}"
-
-
-params.ko_output_file = params.ko_output_file ?: null
-
-if( !params.ko_output_file ) {
-    exit 1, "❌ The parameter 'ko_output_file' is required. Example: nextflow run main.nf --ko_output_file myfile.txt"
 }
 
 
@@ -43,14 +31,14 @@ process PC_PRECALC {
     path ko_merged_ch
 
     output:
-    path "${params.alts_file}", emit: alts
-    path "${params.pc_file}", emit: pcompls
+    path "alternatives.json", emit: alts
+    path "pcompls.json", emit: pcompls
 
     script:
     """
     pcompl.py \
-        ${params.alts_file} \
-        ${params.pc_file} \
+        alternatives.json \
+        pcompls.json \
         ${ko_merged_ch} \
         ${params.tinyurl} \
         ${params.threads}
@@ -85,9 +73,10 @@ process PC_EXTEND {
 
 
 workflow {
+
     def alts_file
     def pc_file
-    def ko_merged_ch = Channel.fromPath(params.ko_output_file, checkIfExists: true)
+    def ko_merged_ch = Channel.fromPath(params.ko_merged, checkIfExists: true)
 
     // Check if we can skip PC_PRECALC
     def skip_precalc = params.alts_file && params.pc_file && 

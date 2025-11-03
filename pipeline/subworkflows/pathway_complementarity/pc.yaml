@@ -1,0 +1,30 @@
+outdir: results
+
+threads: 4
+
+genomes: data/genomes
+
+faa_dir: 
+  # results/prodigal
+
+ko_merged:
+  # results/ko_merged_7bins.txt
+  # ko_merged.txt
+
+kegg_list: data/kofam_database/ko_list_test
+hmm_profiles: data/kofam_database/profiles_test/
+
+# Path compl
+alts_file:
+  # results/pathway_compl/alternatives.json
+pc_file: 
+  # results/pathway_compl/pcompls.json
+
+
+tinyurl: false
+pc_percent: 1
+
+
+ko_merged:
+
+

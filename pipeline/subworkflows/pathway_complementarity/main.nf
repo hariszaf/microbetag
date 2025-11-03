@@ -8,9 +8,10 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { READPARAMSFILE } from './modules/helpers.nf'
-include { PRODIGAL } from './modules/prodigal/prodigal.nf'
-include { HMMSEARCH; MERGE_HMMOUT; KO_ANNOTATE } from './modules/kofam/kofam.nf'
+include { READPARAMSFILE } from '../../modules/helpers'
+include { PRODIGAL } from '../../modules/prodigal/prodigal'
+include { HMMSEARCH; MERGE_HMMOUT } from '../../modules/kofam/kofam'
+include { PC_PRECALC; PC_EXTEND } from '../../modules/pathway_compl/pathway_compl'
 
 
 /*
@@ -19,113 +20,126 @@ include { HMMSEARCH; MERGE_HMMOUT; KO_ANNOTATE } from './modules/kofam/kofam.nf'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-workflow PATHWAY_COMPLEMENTARITY{
-
-    take:
-    genomes
-    faa
-    ko_merged
-
-    main:
-
-    // Input (annotated) genome files 
-    def genomes_ch = Channel.fromPath("${params.genomes}/*")
-
-    // KOFAM db
-    def ko_list_ch      = Channel.fromPath("${params.kegg_list}")
-    def hmm_prof_ch     = Channel.fromPath("${params.hmm_profiles}")
 
 
-    // Create a channel from input genomes
-    def hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
-
-
-    def faa_ch
-
+workflow PATHWAY_COMPLEMENTARITY {
 
     // PATHWAY COMPLEMENTARITY STEP
+    def ko2contig_ch
     def alts_file
     def pc_file
-    def ko_merged_ch = Channel.fromPath(params.ko_output_file, checkIfExists: true)
 
-
-    // Check if we can skip PC_PRECALC
-    def skip_precalc = params.alts_file && params.pc_file && 
-                      file(params.alts_file).exists() && 
-                      file(params.pc_file).exists()
+    // Extract ko2contig
+    def faa_ch
+    def ko_list_ch
+    def hmm_prof_ch
+    def hmmsearch_sc_ch
+    def hmm_in_ch
     
-    // get_ko2contig should only run if we're NOT skipping precalc
-    def get_ko2contig = !skip_precalc && params.ko_output_file && file(params.ko_output_file).exists()
+    def has_faa_dir
+
+    // Genome annotation 
+    def genomes_ch
+    def prodigal_output
+
+    def prec_res
 
 
-   // Check if faa
+    // Check if we can skip ALL upstream processing
+    def skip_all_upstream = params.alts_file && params.pc_file && 
+                           file(params.alts_file).exists() && 
+                           file(params.pc_file).exists()
 
-    // Check if faa_dir exists and contains files
-    def faa_dir = params.faa_dir ? file(params.faa_dir) : null
-    
+    if (skip_all_upstream) {
 
+        // Skip everything - just use the provided files
+        alts_file = file(params.alts_file)
+        pc_file   = file(params.pc_file)
+        log.info "✓ Using existing alts_file and pc_file, skipping ALL upstream processing"
 
+        // Continue pipeline with the generated/already available files
+        PC_EXTEND(pc_file)
 
-
-    // path_compl.nf module
-    if (skip_precalc) {
-        alts_file = Channel.fromPath(params.alts_file, checkIfExists: true)
-        pc_file   = Channel.fromPath(params.pc_file, checkIfExists: true)
-        log.info "✓ Using existing files, skipping PC_PRECALC"
 
     } else {
 
+        // Need to run some or all of the upstream pipeline
+        log.info "○ Running upstream pipeline to generate alts_file and pc_file"
 
-        if (get_ko2contig) {
+        def has_ko_output = params.ko_merged && file(params.ko_merged).exists()
 
-                // faa_ch = PRODIGAL(genomes_ch)  // returns a channel of *.faa files
+        // If ko to conting exists, you can run the generate alts_file and pc_file directly 
+        if (has_ko_output) {
 
+            // Use existing KO output file, skip annotation
+            ko2contig_ch = Channel.fromPath(params.ko_merged, checkIfExists: true)
+            log.info "✓ Using existing KO output file: ${params.ko_merged}"
+        
+        } else {
 
-            // Combine the single channels with all genomes
-            def inputs_ch = faa_ch
+            log.info "○ Building the KO to contig file"
+
+            // KOFAM db - validate required inputs
+            if (!params.kegg_list || !file(params.kegg_list).exists()) {
+                throw new Exception("KEGG list file does not exist: ${params.kegg_list}")
+            }
+            if (!params.hmm_profiles || !file(params.hmm_profiles).exists()) {
+                throw new Exception("HMM profiles file does not exist: ${params.hmm_profiles}")
+            }
+            
+            // Define KOFAM channels only when needed
+            ko_list_ch      = Channel.fromPath(params.kegg_list, checkIfExists: true)
+            hmm_prof_ch     = Channel.fromPath(params.hmm_profiles, checkIfExists: true)
+            hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
+
+            // Handle FAA files
+            has_faa_dir = params.faa_dir && file(params.faa_dir).exists()
+            faa_files_empty = true
+            if (has_faa_dir) {
+                def faa_files_list = file(params.faa_dir).list().findAll { it.endsWith('.faa') }
+                faa_files_empty = faa_files_list.isEmpty()
+            }
+
+            if (has_faa_dir && !faa_files_empty) {
+
+                // Use existing FAA files
+                log.info "✓ Using existing FAA files from: ${params.faa_dir}"
+                faa_ch = Channel.fromPath("${params.faa_dir}/*.faa", checkIfExists: true)
+            
+            } else {
+
+                log.info "○ Running genome annotation to get ORFs with Prodigal "
+
+                genomes_ch = Channel.fromPath("${params.genomes}/*.{fa, fasta}", checkIfExists: true)
+                prodigal_output = PRODIGAL(genomes_ch)
+                faa_ch =  prodigal_output.faa
+
+            }
+
+            // Combine the single channels with all faa_dir
+            hmm_in_ch = faa_ch
                 .combine(hmmsearch_sc_ch)
                 .combine(ko_list_ch)
                 .combine(hmm_prof_ch)
-
+            
             // Run HMMSEARCH for each genome/bin
-            hmmout_ch = HMMSEARCH(inputs_ch)
+            def hmmout_ch = HMMSEARCH(hmm_in_ch)
 
             // Collect all emitted hmmout dirs (waits for all tasks to finish)
-            merged_input_ch = hmmout_ch.collect()
+            def merged_input_ch = hmmout_ch.collect()
 
             // Merge all hmmout results into a single file
-            MERGE_HMMOUT(merged_input_ch, merge_sc_ch)
-
+            def merge_res = MERGE_HMMOUT(merged_input_ch)
+            ko2contig_ch = merge_res.ko2contig            
         }
 
+        // Run PC_PRECALC with the KO data (either existing or generated)
+        def pc_precalc_result = PC_PRECALC(ko2contig_ch)
 
-        PC_PRECALC(ko_merged_ch)
-        alts_file = PC_PRECALC.out.alts
-        pc_file   = PC_PRECALC.out.pcompls
-        log.info "○ Running PC_PRECALC to generate files"
+        PC_EXTEND(pc_precalc_result.pcompls)
+
     }
-    
-    // Continue pipeline
-    PC_EXTEND(pc_file)
-
-
-
 }
 
 
-
-
-    // // Check if faa_dir exists and contains files
-    // def faa_dir = params.faa_dir ? file(params.faa_dir) : null
-
-    // def faa_ch
-
-    // if (faa_dir?.exists() && faa_dir?.isDirectory() && faa_dir?.listFiles()?.find { it.name.endsWith('.faa') }) {
-    //     println "Using existing FAA files from ${params.faa_dir}"
-    //     faa_ch = Channel.fromPath("${params.faa_dir}/*.faa")
-    // } else {
-    //     println "FAA files missing or empty, running ORFS/PRODIGAL"
-    //     def genomes_ch = Channel.fromPath("${params.genomes}/*")
-    //     faa_ch = PRODIGAL(genomes_ch)  // returns a channel of *.faa files
-    // }
 

@@ -12,11 +12,9 @@ include { READPARAMSFILE } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
+    println "[INFO] kalos ta mas ..."
     def new_params = READPARAMSFILE(params.paramsFile)
     params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
 }
 
 // Add missing defaults
@@ -29,6 +27,8 @@ if (!params.containsKey('parts_dir') || params.parts_dir == null) {
 
 process HMMSEARCH{
 
+    tag "Running HMMER search on over a list of .faa files}"
+
     container "staphb/hmmer:3.4"
 
     input:
@@ -39,7 +39,6 @@ process HMMSEARCH{
     
     script:
     """
-    echo "Running HMMER search on ${faa} using kofam: ${ko_list}}"
     mkdir -p hmmout_${faa.baseName}
     bash ${hmmsearch_sc} ${faa} ${ko_list} ${hmm_profiles}
     mv *.hmmout hmmout_${faa.baseName}
@@ -48,21 +47,23 @@ process HMMSEARCH{
 
 
 process MERGE_HMMOUT {
+
+    tag "Merging hmmout files of each bin/genome to build 3-col ko_merged file"
+
     publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
     container "hariszaf/microbetag-nf:0.1.0"
 
     input: 
         path hmmout_dirs
-        // path merge_sc
     
     output:
-        path params.ko_merged
-        path "hmmout.tar.gz"
+        path "ko_merged.txt", emit: ko2contig
+        path "hmmout.tar.gz", emit: hmmout_tar
 
     script:
     // bash ${merge_sc} 
     """
-    merge_hmm.sh ${params.threads} ${params.ko_merged}
+    merge_hmm.sh ${params.threads} ko_merged.txt
     tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
     """
 }
@@ -94,6 +95,8 @@ workflow {
 
     // Merge all hmmout results into a single file
     MERGE_HMMOUT(merged_input_ch)
+
+    MERGE_HMMOUT.out.ko2contig.view()
 
 }
 
