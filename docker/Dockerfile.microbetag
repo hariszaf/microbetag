@@ -86,5 +86,7 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 RUN pip install . 
 
+ADD nf/bin/mtg /opt/mtg
+ENV PATH=/opt/mtg/:$PATH
 # Default command
 CMD ["bash"]

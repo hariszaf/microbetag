@@ -11,11 +11,8 @@ include { READPARAMSFILE } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
     def new_params = READPARAMSFILE(params.paramsFile)
     params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
 }
 
 
@@ -37,7 +34,6 @@ process GET_SEED_SETS {
     seed_sets.py ${gem} ${params.namespace} "${gem.baseName}_sets.json"
     """
 }
-//     python ${sets_sc} ${gem} ${params.namespace} "${gem.baseName}_sets.json"
 
 
 process AGGREGATE_SEED_SETS {
@@ -49,7 +45,6 @@ process AGGREGATE_SEED_SETS {
 
     input:
     path seed_sets_json
-    // path build_pkls_sc
 
     output:
     path "seeds.json", emit: seeds_json
@@ -126,7 +121,6 @@ process AGGREGATE_SCORES_COMPLS {
     cat header scores > ${scores_outfile}
     
     scompls_pkls.py ${compls_js_outfile} ${compls_pkl_outfile}
-
     """
 }
 

@@ -44,3 +44,9 @@ RUN pip install julia
 
 # Install ArgParse.jl via Julia
 RUN julia -e 'import Pkg; Pkg.add("ArgParse"); Pkg.add("JSON")'
+
+ADD nf/bin/fw /opt/fw
+ENV PATH=/opt/fw/:$PATH
+
+# Default command
+CMD ["bash"]
