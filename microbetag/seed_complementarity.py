@@ -25,23 +25,6 @@ if TYPE_CHECKING:
 _logger_ = mtg_logger(__name__)
 
 
-def generate_fixed_pairwise_comparisons(fixed_item: str, patric_ids_of_interest: List):
-    """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
-
-    fixed_seedset_as_A    = set()
-    fixed_nonseedset_as_A = set()
-
-    # Generate pairs where fixed_item is in the first position
-    for B in patric_ids_of_interest:
-        fixed_seedset_as_A.add((fixed_item, B))
-
-    # Generate pairs where fixed_item is in the second position
-    for A in patric_ids_of_interest:
-        fixed_nonseedset_as_A.add((A, fixed_item))
-
-    return list(fixed_seedset_as_A), list(fixed_nonseedset_as_A)
-
-
 class Ixes:
     def __init__(self, compound_prefix, ex_suffix, int_suffix):
         self.compound_prefix = compound_prefix
@@ -558,19 +541,19 @@ def progress_tracker(queue, total):
             pbar.update(1)
 
 
-def generate_fixed_pairwise_comparisons(fixed_item, reconstruction_filenames):
+def generate_fixed_pairwise_comparisons(term, lst):
     """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
 
-    fixed_seedset_as_A = set()
+    fixed_seedset_as_A    = set()
     fixed_nonseedset_as_A = set()
 
-    # Generate pairs where fixed_item is in the first position
-    for B in reconstruction_filenames:
-        fixed_seedset_as_A.add((fixed_item, B))
+    # Generate pairs where term is in the first position
+    for B in lst:
+        fixed_seedset_as_A.add((term, B))
 
-    # Generate pairs where fixed_item is in the second position
-    for A in reconstruction_filenames:
-        fixed_nonseedset_as_A.add((A, fixed_item))
+    # Generate pairs where term is in the second position
+    for A in lst:
+        fixed_nonseedset_as_A.add((A, term))
 
     return list(fixed_seedset_as_A), list(fixed_nonseedset_as_A)
 

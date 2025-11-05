@@ -7,12 +7,12 @@ Usage:
 nextflow run flashweave/flashweave.nf  --flashweave_config flashweave/flashweave.config
 */
 
-include { READPARAMSFILE } from '../helpers.nf'
+include { readParamsFile } from '../helpers.nf'
 import groovy.json.JsonOutput
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = READPARAMSFILE(params.paramsFile)
+    def new_params = readParamsFile(params.paramsFile)
     params.putAll(new_params)
 }
 

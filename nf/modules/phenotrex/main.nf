@@ -8,12 +8,12 @@ nextflow run phenotrex/phenotrex.nf  --phenotrex_config phenotrex/phenotrex.conf
 */
 
 
-include { READPARAMSFILE } from '../helpers.nf'
+include { readParamsFile } from '../helpers.nf'
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
     println "[INFO] No params-file provided, loading default YAML..."
-    def new_params = READPARAMSFILE(params.paramsFile)
+    def new_params = readParamsFile(params.paramsFile)
     params.putAll(new_params)
 } else {
     println "[INFO] Using user-provided params-file, skipping default YAML."
