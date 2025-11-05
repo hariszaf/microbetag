@@ -21,3 +21,19 @@ You can edit the parameters file you will find under [`params`](./params) accord
 
 
 
+
+## Notes
+
+Inside a workflow/process scope, `def x = ...` is interpreted as:
+
+> Declare a local variable named `ko_list_ch` AND also shadow/override `Channel` symbol resolution.
+
+Then `Channel.fromPath` is misinterpreted as:
+
+> There is a variable named `Channel` defined here
+
+
+
+# Since we can have up to 5 parallel sessions with the WLS license of Gurobi,
+# which is the only way to go on with a Docker container, we set by defalt max_forks to 5.
+# Then, our input files will be split in chunks of max_forks size for parallel processing.

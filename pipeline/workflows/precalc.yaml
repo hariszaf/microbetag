@@ -1,0 +1,88 @@
+# Global
+
+outdir: results
+
+threads: 4
+
+genomes:
+  data/genomes
+  # Path to the genome catalogue
+  # Required for phenotrex -- will be used for Pathway Compl if not .faa available
+
+faa_dir:
+  # results/prodigal
+  # You may provide a path with .faa files if already available
+  # -- they can also used for the GEM reconstruction step if GEMs not available
+
+# -----------
+# PHENOTREX
+# -----------
+phenotrex: true
+
+# Genotypes output file
+genotype_file:
+  # results/eggnog.genotype
+  # Output file of the phenotrex training step with the EGGNOG annotation per genome
+  # Provide a path to it, ONLY if you have previously run this step with microbetag
+
+min_proba: 0.75
+
+# -----------
+# PATHWAY COMPL
+# -----------
+
+pathway_compl: true
+
+ko_merged:
+  # results/ko_merged_7bins.txt
+  # ko_merged.txt
+kegg_list: data/kofam_database/ko_list_test
+hmm_profiles: data/kofam_database/profiles_test/
+
+# Path compl
+alts_file:
+  # results/pathway_compl/alts.json
+  # A .JSON file with the alternatives for each KEGG MODULE of each genome of the catalogue.
+pc_file:
+  # results/pathway_compl/pcompls.json
+  #
+
+tinyurl: false
+pc_percent: 1
+
+# -----------
+# SEED COMPL
+# -----------
+
+seed_compl: true
+
+gems:
+  # results/reconstructions
+  # Path to previously reconstructed genome-scale models, if available
+  # Leave empty if not available
+
+gurobi_lic: /opt/gurobi/gurobi_wlm.lic
+
+recon_with:
+  carveme
+  #gapseq
+  # carveme
+
+max_forks: 3
+
+namespace:
+  BiGG
+  # ModelSEED
+
+# Seed set inference: Skip steps before SCORES_COMPLS_PRECALC
+nonseeds_json:
+  # results/seed_compl/nonseeds.json
+
+confidence_json:
+  # results/seed_compl/confidence.json
+
+# Seed complementarity
+kegg_modules_only: true
+
+# In case you'd like to save the decompressed input files
+debug_decompress:

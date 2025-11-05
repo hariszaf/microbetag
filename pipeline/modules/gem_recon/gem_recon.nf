@@ -11,13 +11,13 @@ or
 nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 */
 
-include { READPARAMSFILE } from '../helpers.nf'
-include  { SANITIZE_CH; PREP_FILES; GUNZIP } from '../helpers.nf'
+include { readParamsFile } from '../helpers.nf'
+include  { sanitizeChannel; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
 
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = READPARAMSFILE(params.paramsFile)
+    def new_params = readParamsFile(params.paramsFile)
     params.putAll(new_params)
 }
 
@@ -37,7 +37,7 @@ process CARVE {
 
     // Optional: uncomment to enable conditional execution
     when: 
-    params.genre_reconstruction_with == "carveme"
+    params.recon_with == "carveme"
 
     output:
     path "*.xml"
@@ -73,7 +73,7 @@ process GAPSEQ {
     path in_chunk
 
     when:
-    params.genre_reconstruction_with == "gapseq"
+    params.recon_with == "gapseq"
 
     output:
     path ".xml"
@@ -99,11 +99,11 @@ workflow {
 
     if (faa_files && !nucl_files) {
         log.info "Detected protein FASTA files (*.faa or *.faa.gz)"
-        input_files_ch = SANITIZE_CH("${params.input_files}/*.{faa,faa.gz}")
+        input_files_ch = sanitizeChannel("${params.input_files}/*.{faa,faa.gz}")
         is_faa = true
     } else if (nucl_files && !faa_files) {
         log.info "Detected nucleotide FASTA files (*.fa, *.fna, *.fasta, etc.)"
-        input_files_ch = SANITIZE_CH("${params.input_files}/*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}")
+        input_files_ch = sanitizeChannel("${params.input_files}/*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}")
         is_faa = false
     } else if (faa_files && nucl_files) {
         error "Mixed FASTA file types detected (both nucleotide and protein). Please separate them."
@@ -111,8 +111,8 @@ workflow {
         error "No input FASTA files found in ${params.input_files}"
     }
 
-    // Sanitize filenames if for example filenames like BATCH:set1.fastq
-    prep = PREP_FILES(input_files_ch)
+    // sanitize filenames if for example filenames like BATCH:set1.fastq
+    prep = SAFENAME_FILES(input_files_ch)
 
     // Decompress if .gz
     decomp_files = GUNZIP(
