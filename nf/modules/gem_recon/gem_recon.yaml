@@ -1,11 +1,11 @@
-outdir: results
+outdir: test-modules
 
-input_files:
+recon_files:
   data/faa
   # results/annotations/
   # data/genomes
 
-genre_reconstruction_with:
+recon_with:
   carveme
   #gapseq
   # carveme

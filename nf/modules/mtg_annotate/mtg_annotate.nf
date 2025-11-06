@@ -20,7 +20,7 @@ if (!workflow.commandLine.contains('-params-file')) {
 }
 
 
-process mtg_annotate_netw {
+process ANNOTATE_NETWORK {
 
     tag "Build microbetag-annotated network (.cx2 file) "
 
@@ -28,17 +28,22 @@ process mtg_annotate_netw {
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
-    path annotate_sc
     path yaml
-    path input
-    path outdir
+    path network
+    path precalc
+    path inDir
+    path fapro_tables
 
     output:
     path "*.cx2", emit: mtg_net
 
     script:
     """
-    python ${annotate_sc} ${yaml}
+        if [ ! -s ${fapro_tables} ]; then
+            mtg_annotate.py --config_file ${yaml} --network ${network}
+        else
+            mtg_annotate.py --config_file ${yaml} --network ${network} --faprotax ${fapro_tables}
+        fi
     """
 }
 
@@ -46,12 +51,11 @@ process mtg_annotate_netw {
 
 workflow {
 
-    def mtg_net_sc_ch = Channel.fromPath("modules/mtg_annotate/mtg_annotate.py")
-    def yaml_ch       = Channel.fromPath(params.paramsFile)
-
+    def yaml_ch   = Channel.fromPath(params.paramsFile)
     def input_ch  = Channel.fromPath(params.indir)
     def outdir_ch = Channel.fromPath(params.outdir)
 
-    mtg_annotate_netw(mtg_net_sc_ch, yaml_ch, input_ch, outdir_ch)
+    // ANNOTATE_NETWORK(mtg_net_sc_ch, yaml_ch, input_ch, outdir_ch)
+    ANNOTATE_NETWORK(yaml_ch, input_ch, outdir_ch)
 
 }

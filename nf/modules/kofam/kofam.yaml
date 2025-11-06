@@ -1,6 +1,6 @@
-outdir: results
+outdir: test-modules
 
-faa_dir: results/annotations
+faa_dir: test-modules/prodigal
 
 # KOFAM database
 # kegg_list should be a file that looks like:

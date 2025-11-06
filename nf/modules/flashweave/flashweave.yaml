@@ -1,6 +1,6 @@
 # FlashWeave configuration file
 
-outdir: results
+outdir: test-modules
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
 abundance_file: data/abd_data/testAbundMeta.tsv

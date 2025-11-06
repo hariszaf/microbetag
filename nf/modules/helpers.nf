@@ -13,16 +13,23 @@ def readParamsFile(defaultFile) {
 
     // 2. Parse YAML file
     def yaml = new YamlSlurper().parse(new File(paramsFile))
+    println "--> ${yaml}"
 
     // 3. Assign YAML values to params (only if not already specified via CLI)
     yaml.each { k, v ->
-        if (!params.containsKey(k)) {
+        // Check if parameter is null or empty string
+        if (!params.containsKey(k) || params[k] == null || params[k].toString().trim().isEmpty()) {
             params[k] = v
         }
     }
+    println ">>> ${params}"
     return params
 }
 
+def isChannel(obj) {
+    return obj.getClass().name.contains('Channel') || 
+           obj.getClass().name.contains('Dataflow')
+}
 
 def sanitize(name) {
     return name.bytes.encodeBase64().toString() //.replace('+','-').replace('/','_').replaceAll('=+$','')
