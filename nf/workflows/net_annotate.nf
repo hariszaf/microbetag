@@ -79,7 +79,7 @@ workflow MICROBETAG_ANNOTATE {
     }
 
 
-    def net_clusters
+    def net_cluster
     if (params.net_cluster) {
 
         if (params.manta) {
@@ -92,14 +92,16 @@ workflow MICROBETAG_ANNOTATE {
 
             log.info "Run manta..."
 
-            network = RUN_MANTA(format_net)
+            net_cluster = RUN_MANTA(format_net)
 
         } else {
 
-            log.warn "You have selected clustering your network, but applying your own clustering. 
-                      In this case, microbetag expects you to provide your network in .cyjs format.
-                      Otherwise, it will fail when building the annotated network."
+            log.warn "You have selected clustering your network, but applying your own clustering."
+                      "In this case, microbetag expects you to provide your network in .cyjs format."
+                      "Otherwise, it will fail when building the annotated network."
         }
+    } else {
+        net_cluster = Channel.empty()
     }
 
 
@@ -108,7 +110,7 @@ workflow MICROBETAG_ANNOTATE {
     def precalc; precalc = Channel.fromPath(params.precalculations)
     def inDir; inDir     = Channel.fromPath(params.indir)
 
-    ANNOTATE_NETWORK(yaml, network, precalc, inDir, faprotax_sub_tables)
+    ANNOTATE_NETWORK(yaml, network, precalc, inDir, faprotax_sub_tables, net_cluster)
 
 }
 

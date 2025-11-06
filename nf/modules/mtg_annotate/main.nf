@@ -8,8 +8,6 @@ nextflow run modules/mtg_annotate/main.nf -params-file modules/mtg_annotate/mtg_
 */
 
 
-// import groovy.json.JsonOutput
-
 process ANNOTATE_NETWORK {
 
     tag "Build microbetag-annotated network (.cx2 file) "
@@ -18,30 +16,33 @@ process ANNOTATE_NETWORK {
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
-    path yaml
-    path network
-    path precalc
-    path inDir
-    path fapro_tables
+        path yaml
+        path network
+        path precalc
+        path inDir
+        path fapro_tables
+        path net_cluster
 
     output:
-    path "*.cx2", emit: mtg_net
+        path "*.cx2", emit: mtg_net
 
     script:
-    """
-        if [ ! -s ${fapro_tables} ]; then
-            mtg_annotate.py --config_file ${yaml} --network ${network}
-        else
-            mtg_annotate.py --config_file ${yaml} --network ${network} --faprotax ${fapro_tables}
-        fi
-    """
-}
+        """
+        cmd="mtg_annotate.py --config_file ${yaml} --network ${network}"
 
+        [[ -s "${fapro_tables}" ]] && cmd+=" --faprotax ${fapro_tables}"
+        [[ -s "${net_cluster}" ]] && cmd+=" --clustered ${net_cluster}"
+
+        echo "Running: \$cmd"
+        eval "\$cmd"
+        """
+}
 
 
 workflow {
 
-    // todo : needs update with new inputs
+    // todo hariszaf : needs update with new inputs
+    // Should not work at the moment
 
     def yaml_ch   = Channel.fromPath(params.paramsFile)
     def input_ch  = Channel.fromPath(params.indir)
