@@ -80,9 +80,25 @@ nextflow run subworkflows/pathway_complementarity/main.nf \
 ```
 
 ```
-nextflow run subworkflows/pathway_complementarity/main.nf \
-    -params-file subworkflows/pathway_complementarity/pc.yaml \
-    -entry PATHWAY_COMPLEMENTARITY
+nextflow run subworkflows/seed_complementarity/main.nf \
+    -params-file subworkflows/seed_complementarity/sc.yaml \
+    -entry SEED_COMPLEMENTARITY
+```
+
+
+### Workflows
+
+```
+nextflow run workflows/precalc.nf \
+    -params-file workflows/precalc.yaml \
+    -entry MICROBETAG_PRECALC
+```
+
+
+```
+nextflow run workflows/net_annotate.nf \
+    -params-file workflows/net_annotate.yaml \
+    -entry MICROBETAG_ANNOTATE 
 ```
 
 
