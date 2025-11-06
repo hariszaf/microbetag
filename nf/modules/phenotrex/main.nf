@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run phenotrex/phenotrex.nf  --phenotrex_config phenotrex/phenotrex.config
+nextflow run phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml
 */
 
 
@@ -61,7 +61,7 @@ process PREDICT {
 }
 
 
-workflow PHENOTREX {
+workflow {
 
     // Step 0: check if user provided precomputed genotype file
     def use_precomputed = params.containsKey('genotype_file') && params.genotype_file != null && file(params.genotype_file).exists()
@@ -74,7 +74,6 @@ workflow PHENOTREX {
         // The .collect() aggregates all files into a single list. The process will receive all files at once.
         genomes_ch = Channel.fromPath("${params.genomes}/*").collect()
         genotype   = GENOTYPE(genomes_ch)
-
     }
 
     // Step 2: predict phenotypes from genotypes

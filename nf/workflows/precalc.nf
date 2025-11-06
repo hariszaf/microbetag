@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run precalc.nf  -params-file params/precalc.yaml
+nextflow run precalc.nf  -params-file params/precalc.yaml -entry MICROBETAG_PRECALC
 
 */
 
@@ -13,7 +13,7 @@ include { PHENOTREX } from '../modules/phenotrex/phenotrex.nf'
 include { PATHWAY_COMPLEMENTARITY } from '../subworkflows/pathway_complementarity/main'
 include { SEED_COMPLEMENTARITY } from '../subworkflows/seed_complementarity/main'
 
-import groovy.json.JsonOutput
+// import groovy.json.JsonOutput
 
 // Only read default YAML if user didn't specify a params-file
 if (!workflow.commandLine.contains('-params-file')) {
@@ -30,7 +30,6 @@ workflow MICROBETAG_PRECALC {
         PHENOTREX()
 
     }
-
 
     if (params.pathway_compl ) {
 
