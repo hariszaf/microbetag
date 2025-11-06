@@ -9,9 +9,9 @@ nextflow run precalc.nf  -params-file params/precalc.yaml -entry MICROBETAG_PREC
 */
 
 include { readParamsFile } from '../modules/helpers.nf'
-include { PHENOTREX } from '../modules/phenotrex/phenotrex.nf'
-include { PATHWAY_COMPLEMENTARITY } from '../subworkflows/pathway_complementarity/main'
-include { SEED_COMPLEMENTARITY } from '../subworkflows/seed_complementarity/main'
+include { PHENOTREX } from '../modules/phenotrex/main'
+include { PATHWAY_COMPLEMENTARITY } from '../subworkflows/pathway_complementarity/'
+include { SEED_COMPLEMENTARITY } from '../subworkflows/seed_complementarity/'
 
 // import groovy.json.JsonOutput
 

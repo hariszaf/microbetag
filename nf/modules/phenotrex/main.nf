@@ -61,7 +61,7 @@ process PREDICT {
 }
 
 
-workflow {
+workflow PHENOTREX {
 
     // Step 0: check if user provided precomputed genotype file
     def use_precomputed = params.containsKey('genotype_file') && params.genotype_file != null && file(params.genotype_file).exists()
