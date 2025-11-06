@@ -7,7 +7,7 @@ Usage:
 nextflow run flashweave/flashweave.nf  --flashweave_config flashweave/flashweave.config
 */
 
-include { readParamsFile } from '../helpers.nf'
+include { readParamsFile } from '../helpers'
 import groovy.json.JsonOutput
 
 // Only read default YAML if user didn't specify a params-file
@@ -18,8 +18,10 @@ if (!workflow.commandLine.contains('-params-file')) {
 
 // ---------------- Processes ----------------
 
-process formatFlashWeave {
-    // publishDir '${params.outdir}/flashweave', mode: 'copy'
+process FORMAT_FW {
+
+    tag "Bring abundance data to a FlashWeave-friendly format"
+
     container "hariszaf/microbetag-nf:0.1.0"
 
     input:
@@ -34,7 +36,9 @@ process formatFlashWeave {
     """
 }
 
-process runFW {
+process RUN_FW {
+
+    tag "Network inference using FlashWeave"
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
@@ -43,19 +47,23 @@ process runFW {
         file formatted_table
 
     output:
-        file 'flashweave.edgelist'
+        file 'fw_net.txt'
 
     script:
         """
-        echo "FW ARGS JSON: ${groovy.json.JsonOutput.toJson(params.flashweave_args)}" > emm
         run_fw.jl \
         --input ${formatted_table} \
-        --fw_args '${groovy.json.JsonOutput.toJson(params.flashweave_args)}'
+        --fw_args '${groovy.json.JsonOutput.toJson(params.flashweave_args)}' \
+        --output fw_net.edgelist
+
+        tail -n +3 fw_net.edgelist > fw_net.txt
         """
 }
 
 
-process runFWMetadata {
+process RUN_FW_METADATA {
+
+    tag "Network inference using FlashWeave and the study metadata"
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
@@ -65,7 +73,7 @@ process runFWMetadata {
         file metadata_file
 
     output:
-        file 'flashweave.edgelist'
+        file 'fw_net.txt'
 
     script:
         """
@@ -74,7 +82,10 @@ process runFWMetadata {
         run_fw.jl \
         --input ${formatted_table} \
         --metadata ${metadata_file} \
-        --fw_args '${groovy.json.JsonOutput.toJson(params.flashweave_args)}'
+        --fw_args '${groovy.json.JsonOutput.toJson(params.flashweave_args)}' \
+        --output fw_net.edgelist
+
+        tail -n +3 fw_net.edgelist > fw_net.txt
         """   
 }
 
@@ -85,7 +96,7 @@ workflow {
     abundance_ch = Channel.fromPath(params.abundance_file)
 
     // Step 1: format input table
-    formatted_table = formatFlashWeave(abundance_ch)
+    formatted_table = FORMAT_FW(abundance_ch)
 
     // Step 2: checl if metadata file 
     metadata_val = params.metadata_file ?: ""
@@ -94,9 +105,10 @@ workflow {
     if (metadata_val) {
         // metadata_val is non-empty → run process that uses metadata
         metadata_ch = Channel.fromPath(metadata_val)
-        runFWMetadata(formatted_table, metadata_ch)
+        RUN_FW_METADATA(formatted_table, metadata_ch)
+
     } else {
         // metadata_val is empty → run process that does not use metadata
-        runFW(formatted_table)
+        RUN_FW(formatted_table)
     }
 }

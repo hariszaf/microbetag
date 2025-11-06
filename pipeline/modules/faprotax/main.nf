@@ -26,8 +26,8 @@ process FAPROTAX {
         path abundance_table
     
     output:
-        path "functional_otu_table.tsv"
-        path "sub_tables"
+        path "functional_otu_table.tsv", emit: fapro_table
+        path "sub_tables",               emit: fapro_subtables
     
     script:
         """

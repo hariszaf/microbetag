@@ -38,11 +38,11 @@ process HMMSEARCH{
         path "hmmout_${faa.baseName}"
     
     script:
-    """
-    mkdir -p hmmout_${faa.baseName}
-    bash ${hmmsearch_sc} ${faa} ${ko_list} ${hmm_profiles}
-    mv *.hmmout hmmout_${faa.baseName}
-    """
+        """
+        mkdir -p hmmout_${faa.baseName}
+        bash ${hmmsearch_sc} ${faa} ${ko_list} ${hmm_profiles}
+        mv *.hmmout hmmout_${faa.baseName}
+        """
 }
 
 
@@ -61,28 +61,39 @@ process MERGE_HMMOUT {
         path "hmmout.tar.gz", emit: hmmout_tar
 
     script:
-    // bash ${merge_sc} 
-    """
-    merge_hmm.sh ${params.threads} ko_merged.txt
-    tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
-    """
+        """
+        merge_hmm.sh ${params.threads} ko_merged.txt
+        tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
+        """
 }
 
 
 workflow {
 
     // Channel for .faa files from path provided 
-    def faa_ch = Channel.fromPath("${params.faa_dir}/*.faa")
+    def faa_ch
+    if( params.faa_dir && params.faa_dir != '' ) {
+        def faa_dir = file(params.faa_dir)
+
+        if( !faa_dir.exists() ) {
+            error "Directory not found: ${params.faa_dir}"
+        } else {
+            faa_ch = Channel.fromPath("${params.faa_dir}/*.faa", checkIfExists: false)
+        }
+    } else {
+        error "No FAA directory specified (params.faa_dir is null or empty)."
+    }
 
     // KOFAM db
-    def ko_list_ch      = Channel.fromPath("${params.kegg_list}")
-    def hmm_prof_ch     = Channel.fromPath("${params.hmm_profiles}")
+    ko_list_ch  = Channel.fromPath("${params.kegg_list}")
+    hmm_prof_ch = Channel.fromPath("${params.hmm_profiles}")
 
     // Create a channel from input faa_dir
-    def hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
+    hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
 
     // Combine the single channels with all faa_dir
-    def inputs_ch = faa_ch
+    def inputs_ch
+    inputs_ch = faa_ch
         .combine(hmmsearch_sc_ch)
         .combine(ko_list_ch)
         .combine(hmm_prof_ch)
@@ -95,8 +106,6 @@ workflow {
 
     // Merge all hmmout results into a single file
     MERGE_HMMOUT(merged_input_ch)
-
-    MERGE_HMMOUT.out.ko2contig.view()
 
 }
 

@@ -4,17 +4,11 @@
 
 Usage: 
 
-nextflow run prodigal/prodigal.nf --prodigal_config prodigal/prodigal.config
+nextflow run modules/prodigal/prodigal.nf -params-file modules/prodigal/prodigal.yaml 
+
 */
 
-
 include { readParamsFile } from '../helpers.nf'
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
 
 
 process PRODIGAL {
@@ -27,6 +21,7 @@ process PRODIGAL {
         path genome
 
     output:
+        // Returns 3 channales that you need to specify
         path "*.faa", emit: faa
         path "*.ffn", emit: ffn
         path "*.gbk", emit: gbk
@@ -44,11 +39,10 @@ workflow {
     def genomes_ch = Channel.fromPath("${params.genomes}/*")
 
     // Run annotation process
-    // PRODIGAL(genomes_ch)
-    faa_ch = PRODIGAL(genomes_ch)
+    def annotations = PRODIGAL(genomes_ch)
 
-    // debug output in Nextflow log
-    faa_ch.view()  
+    // Get only faa files
+    def faa_ch = annotations.faa
 
     // Return only the *.faa channel
     return faa_ch

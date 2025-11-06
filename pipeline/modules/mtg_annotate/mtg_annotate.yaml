@@ -1,0 +1,34 @@
+indir: data
+onthefly: false
+
+outdir: annotate-test
+mtg_net: my.cx2
+
+abundance_file: data/abd_data/testAbundMeta.tsv
+delimiter: ","
+sequence_id_column_name: null
+
+metadata_file:
+#data/abd_data/metadata.tsv
+
+network: annotate-test/flashweave//fw_net.txt
+
+# For each step, if false, you may leave the extra args blank
+faprotax: true
+faprotax_sub_tables: annotate-test/faprotax/sub_tables/
+
+phen_traits: true
+phen_traits_dir: precal-test/phenotrex/predictions
+
+path_compl: true
+pc_percent: 1
+pc_dir: precal-test/pathway_compl/
+pc_file: precal-test/pathway_compl/pcompls.json
+
+seed_compl: true
+tinyurl: false
+sc_pkl: precal-test/seed_compl/seed_compls.pkl
+module_nonseeds: precal-test/seed_compl/keggm_nonseeds.pkl
+seed_scores: precal-test/seed_compl/seed_scores.tsv
+
+net_cluster: false
