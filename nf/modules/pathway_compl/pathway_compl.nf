@@ -4,21 +4,12 @@
 
 Usage: 
 
-nextflow run pathway_compl/pathway_compl.nf -c pathway_compl/kofam.config
+From root_repo/nf
 
-or
+Run
 
-nextflow run pathway_compl/pathway_compl.nf -params-file params/pathway_compl.yaml
+nextflow run modules/pathway_compl/main.nf -params-file modules/pathway_compl/pathway_compl.yaml
 */
-
-include { readParamsFile; fileExists } from '../helpers.nf'
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
-
 
 
 process PC_PRECALC {
@@ -69,7 +60,6 @@ process PC_EXTEND {
     """
 
 }
-
 
 
 workflow {
