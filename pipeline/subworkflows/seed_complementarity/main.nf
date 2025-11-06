@@ -8,10 +8,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { readParamsFile; getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../../modules/helpers'
-include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../modules/seed_compl/seed_compl'
+include { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../../modules/helpers'
+include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../modules/seed_compl'
 include { CARVE } from '../../modules/gem_recon/gem_recon'
-
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,9 +18,7 @@ include { CARVE } from '../../modules/gem_recon/gem_recon'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-
 workflow SEED_COMPLEMENTARITY {
-
 
     def has_gems = params.gems && file(params.gems).exists()
     gem_files_empty = true
@@ -40,7 +37,7 @@ workflow SEED_COMPLEMENTARITY {
         log.info "Genome-scale metabolic models were not provided and they will be reconstructed."
 
         def recon_in; def prep; def decomp
-        def mapped_files;  def infiles_chunk_ch
+        def mapped_files; def infiles_chunk_ch
 
         // sanitize filenames if for example filenames like BATCH:set1.fastq
         recon_in = getInputFiles(params.recon_files)
@@ -52,7 +49,7 @@ workflow SEED_COMPLEMENTARITY {
             tuple(orig_name, orig_name_decomp, file)
         }
 
-        decomp = GUNZIP(mapped_files)
+        decomp    = GUNZIP(mapped_files)
         decomp_ch = decomp.collect()
 
         // Use the COLLECTED channel for chunking, not the original decomp channel
@@ -65,7 +62,8 @@ workflow SEED_COMPLEMENTARITY {
 
         }
 
-        species_ch = gems_ch.map { file -> file.baseName }
+        // species_ch = gems_ch.map { file -> file.baseName }
+        species_ch = gems_ch.flatten().map { file -> file.baseName }
 
     } else {
 
@@ -76,20 +74,19 @@ workflow SEED_COMPLEMENTARITY {
         species_ch = Channel
             .fromPath("${params.gems}/*.xml")
             .map { file -> file.baseName }
-
     }
 
     def species_data_ch
     seedsets_avail = params.nonseeds_json && params.confidence_json && 
-                        file(params.nonseeds_json).exists() && 
-                        file(params.confidence_json).exists()
+        file(params.nonseeds_json).exists() && 
+        file(params.confidence_json).exists()
 
     if (!seedsets_avail) {
 
         log.info "Confidence and non-seed files were not provided and will be calculated"
 
         // Get seed and non-seed sets
-        s = GET_SEED_SETS(gems_ch)
+        s = GET_SEED_SETS(gems_ch.flatten())
 
         // Aggregate seed and non-seed sets
         a = AGGREGATE_SEED_SETS(s.collect())
@@ -118,6 +115,4 @@ workflow SEED_COMPLEMENTARITY {
 
     // Aggregate compls and scores
     AGGREGATE_SCORES_COMPLS(e[0].collect(), e[1].collect())
-
 }
-

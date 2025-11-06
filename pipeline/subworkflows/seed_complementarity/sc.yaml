@@ -1,4 +1,4 @@
-outdir: results
+outdir: test-subworkflows
 # ---
 # Genome-scale metabolic model reconstructions
 # ---

@@ -1,6 +1,6 @@
 # Phenotrex parameters file
 
-outdir: results
+outdir: test-modules
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
 genomes: data/genomes

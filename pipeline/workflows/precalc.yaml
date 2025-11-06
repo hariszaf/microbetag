@@ -1,6 +1,6 @@
 # Global
 
-outdir: results
+outdir: test-precalc
 
 threads: 4
 

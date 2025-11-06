@@ -4,21 +4,11 @@
 
 Usage: 
 
-nextflow run mtg_annotate/mtg_annotate.nf -c mtg_annotate/mtg_annotate.config
+nextflow run modules/mtg_annotate/main.nf -params-file modules/mtg_annotate/mtg_annotate.yaml
 */
 
-include { readParamsFile } from '../helpers.nf'
-import groovy.json.JsonOutput
 
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
-}
-
+// import groovy.json.JsonOutput
 
 process ANNOTATE_NETWORK {
 
@@ -50,6 +40,8 @@ process ANNOTATE_NETWORK {
 
 
 workflow {
+
+    // todo : needs update with new inputs
 
     def yaml_ch   = Channel.fromPath(params.paramsFile)
     def input_ch  = Channel.fromPath(params.indir)

@@ -1,11 +1,15 @@
-outdir: results
+outdir: test-modules
+
 alts_file:
-# results/pathway_compl/alts.json
+  # results/pathway_compl/alts.json
+
 pc_file:
-# results/pathway_compl/pathCompls.json
+  # results/pathway_compl/pathCompls.json
+
 pc_percent: 1
+
 tinyurl: false
-ko_merged:
-  results/ko_merged_7bins.txt
-  # results/hmmsearch/ko_merged.txt
+
+ko_merged: test-modules/hmmsearch/ko_merged.txt
+
 threads: 5

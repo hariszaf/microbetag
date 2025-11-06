@@ -6,7 +6,7 @@ Two main workflows:
 
 You may run modules under `modules/` individually, for example:
 
-``
+```
 nextflow run modules/phenotrex/main.nf -params-file params/phenotrex.yaml -entry PHENOTREX
 
 # or
@@ -37,3 +37,54 @@ Then `Channel.fromPath` is misinterpreted as:
 # Since we can have up to 5 parallel sessions with the WLS license of Gurobi,
 # which is the only way to go on with a Docker container, we set by defalt max_forks to 5.
 # Then, our input files will be split in chunks of max_forks size for parallel processing.
+
+
+```
+nextflow run workflows/precalc.nf -params-file workflows/precalc.yaml  -entry MICROBETAG_PRECALC
+```
+
+
+### Modules 
+
+```
+nextflow run modules/faprotax/main.nf -params-file modules/faprotax/faprotax.yaml 
+
+nextflow run modules/flashweave/main.nf -params-file modules/flashweave/flashweave.yaml 
+
+nextflow run modules/gem_recon/main.nf -params-file modules/gem_recon/gem_recon.yaml 
+
+# Before the kofam 
+nextflow run modules/prodigal/main.nf -params-file modules/prodigal/prodigal.yaml 
+
+nextflow run modules/kofam/main.nf -params-file modules/kofam/kofam.yaml 
+
+nextflow run modules/manta/main.nf -params-file modules/manta/manta.yaml 
+
+nextflow run modules/pathway_compl/main.nf -params-file modules/pathway_compl/pathway_compl.yaml 
+
+nextflow run modules/phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml 
+
+nextflow run modules/seed_compl/main.nf -params-file modules/seed_compl/seed_compl.yaml
+```
+
+Last, but not least, the most tricky of the modules, the network annotation ! 
+
+
+
+### Subworkflows
+
+```
+nextflow run subworkflows/pathway_complementarity/main.nf \
+    -params-file subworkflows/pathway_complementarity/pc.yaml \
+    -entry PATHWAY_COMPLEMENTARITY
+```
+
+```
+nextflow run subworkflows/pathway_complementarity/main.nf \
+    -params-file subworkflows/pathway_complementarity/pc.yaml \
+    -entry PATHWAY_COMPLEMENTARITY
+```
+
+
+
+

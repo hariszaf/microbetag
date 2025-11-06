@@ -54,12 +54,17 @@ settings = ArgParseSettings()
         arg_type = String
         default = ""
 
-
     "--fw_args"
         help = "FlashWeave args as JSON string"
         arg_type = String
         required = false
         default = "{}"
+
+    "--output"
+        help = "Filename for output network"
+        arg_type = String
+        required = false
+        default = ""
 end
 
 
@@ -115,4 +120,5 @@ else
     )
 end
 
-save_network("flashweave.edgelist", net)
+# save_network("flashweave.edgelist", net)
+save_network(parsed_args["output"], net)

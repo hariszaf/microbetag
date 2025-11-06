@@ -1,4 +1,4 @@
-gems: results/reconstructions/
+gems: data/gems
 namespace: BiGG
-outdir: results
+outdir: test-modules
 kegg_modules_only: true

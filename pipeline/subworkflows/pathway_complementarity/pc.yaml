@@ -1,7 +1,7 @@
 # Example parameters file for pathway complementarity
 # If you skip a parameter, e.g. ko_merged, you can leave it empty (reccommended) or remove it
 
-outdir: results
+outdir: test-subworkflows
 
 threads: 4
 

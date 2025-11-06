@@ -12,9 +12,9 @@
 */
 
 // include { readParamsFile } from '../../modules/helpers'
-include { PRODIGAL } from '../../modules/prodigal/prodigal'
-include { HMMSEARCH; MERGE_HMMOUT } from '../../modules/kofam/kofam'
-include { PC_PRECALC; PC_EXTEND } from '../../modules/pathway_compl/pathway_compl'
+include { PRODIGAL } from '../../modules/prodigal'
+include { HMMSEARCH; MERGE_HMMOUT } from '../../modules/kofam'
+include { PC_PRECALC; PC_EXTEND } from '../../modules/pathway_compl'
 
 
 /*
