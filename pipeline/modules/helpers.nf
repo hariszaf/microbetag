@@ -113,7 +113,7 @@ process SAFENAME_FILES {
     if (params.debug_decompress) {
         publishDir "${params.outdir}/data", mode: 'copy', overwrite: true
     }
-    container "microbetag"
+    container "hariszaf/microbetag-nf:0.1.0"
 
     input:
     tuple val(orig_name), val(safe_name), path(file)
@@ -137,7 +137,7 @@ process GUNZIP {
     if (params.debug_decompress) {
         publishDir "${params.outdir}/decompr", mode: 'copy', overwrite: true
     }
-    container "microbetag"
+    container "hariszaf/microbetag-nf:0.1.0"
 
     input:
     tuple val(orig_name), val(orig_name_decomp), path(file)
