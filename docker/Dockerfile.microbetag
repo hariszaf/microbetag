@@ -83,10 +83,16 @@ RUN apt-get update && apt-get install -y \
     jq \
     vim
 
+# Install manta 
+RUN pip install git+https://github.com/hariszaf/manta.git@scipy-version 
+
+# Add the microbetag library source code and install it 
 COPY . .
 RUN pip install . 
 
+# Add paths
 ADD nf/bin/mtg /opt/mtg
 ENV PATH=/opt/mtg/:$PATH
+
 # Default command
 CMD ["bash"]

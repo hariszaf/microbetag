@@ -21,17 +21,12 @@ RUN apt-get update && apt-get install -y wget tar ca-certificates && \
     rm /tmp/julia.tar.gz && \
     ln -s $JULIA_DIR/bin/julia /usr/local/bin/julia
 
+# 🧩 Set system-wide Julia depot path (FIXED - only set once)
+ENV JULIA_DEPOT_PATH=/usr/local/share/julia
+RUN mkdir -p $JULIA_DEPOT_PATH
 
-# 🧩 Set system-wide Julia depot path (must come before Pkg.add)
-ENV JULIA_DEPOT_PATH=/opt/julia_depot
-RUN mkdir -p /opt/julia_depot && chmod -R 777 /opt/julia_depot
-
-# 🧩 Allow Julia to write logs and caches inside /tmp (writable in Singularity)
-ENV JULIA_DEPOT_PATH="/tmp/julia_depot:/opt/julia_depot"
-ENV JULIA_HISTORY="/tmp/julia_history.jl"
-
-# Install FlashWeave.jl via Julia
-RUN julia -e 'import Pkg; Pkg.add("FlashWeave")'
+# Install FlashWeave.jl and dependencies via Julia
+RUN julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("ArgParse"); Pkg.add("JSON")'
 
 # Install Python 
 RUN apt-get update && apt-get install -y \
@@ -41,9 +36,6 @@ RUN apt-get update && apt-get install -y \
     && pip3 install --upgrade pip
 
 RUN pip install julia
-
-# Install ArgParse.jl via Julia
-RUN julia -e 'import Pkg; Pkg.add("ArgParse"); Pkg.add("JSON")'
 
 ADD nf/bin/fw /opt/fw
 ENV PATH=/opt/fw/:$PATH

@@ -5,16 +5,15 @@ recon_files:
   # results/annotations/
   # data/genomes
 
-recon_with:
-  carveme
-  #gapseq
-  # carveme
+recon_with: carveme
 
-gurobi_lic: /opt/gurobi/gurobi_wlm.lic
+# Attention! Please provide absolute path to .lic file
+# You will need a license for containers -- WLS
+gurobi_lic: /home/luna.kuleuven.be/u0156635/github_repos/KU/microbetagApp/services/web/microbetag/nf/gurobi_wlm.lic
 
 # Since we can have up to 5 parallel sessions with the WLS license of Gurobi,
 # which is the only way to go on with a Docker container, we set by defalt max_forks to 5.
 # Then, our input files will be split in chunks of max_forks size for parallel processing.
-max_forks: 5
+max_forks: 3
 
 debug_decompress:

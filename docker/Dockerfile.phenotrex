@@ -7,9 +7,6 @@ WORKDIR /app
 # --- Upgrade pip and core build tools ---
 RUN pip install --upgrade pip setuptools wheel
 
-# --- Reinstall compatible numpy version ---
-RUN pip install --force-reinstall numpy==1.24.4
-
 # --- Install CPU-only PyTorch to avoid CUDA downloads ---
 RUN pip install torch==2.3.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 

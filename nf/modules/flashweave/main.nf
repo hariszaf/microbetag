@@ -4,17 +4,12 @@
 
 Usage: 
 
-nextflow run flashweave/flashweave.nf  --flashweave_config flashweave/flashweave.config
+nextflow run modules/flashweave/main.nf -params-file modules/flashweave/flashweave.yaml 
+
 */
 
-include { readParamsFile } from '../helpers'
 import groovy.json.JsonOutput
 
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
 
 // ---------------- Processes ----------------
 
@@ -31,9 +26,10 @@ process FORMAT_FW {
         file 'flashweave_abd_table.tsv'
 
     script:
-    """
-    format_fw.py ${abundance_file} > flashweave_abd_table.tsv 2>emm
-    """
+        """
+        format_fw.py ${abundance_file} > flashweave_abd_table.tsv
+        """
+
 }
 
 process RUN_FW {
@@ -98,17 +94,23 @@ workflow {
     // Step 1: format input table
     formatted_table = FORMAT_FW(abundance_ch)
 
+    formatted_table.view()
+
     // Step 2: checl if metadata file 
     metadata_val = params.metadata_file ?: ""
 
     // Step 3: run FlashWeave on formatted table 
     if (metadata_val) {
+
         // metadata_val is non-empty → run process that uses metadata
         metadata_ch = Channel.fromPath(metadata_val)
         RUN_FW_METADATA(formatted_table, metadata_ch)
 
     } else {
+
         // metadata_val is empty → run process that does not use metadata
         RUN_FW(formatted_table)
     }
+
 }
+

@@ -2,11 +2,7 @@
 
 /* Nextflow script to perform Pathway complementarity precalculations 
 
-Usage: 
-
-From root_repo/nf
-
-Run
+Usage (from root microbetag/nf:): 
 
 nextflow run modules/pathway_compl/main.nf -params-file modules/pathway_compl/pathway_compl.yaml
 */

@@ -4,18 +4,9 @@
 
 Usage: 
 
-nextflow run faprotax/faprotax.nf --faprotax_config faprotax/faprotax.config
+nextflow run modules/faprotax/main.nf -params-file modules/faprotax/faprotax.yaml 
+
 */
-
-
-include { readParamsFile } from '../helpers.nf'
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
-
 
 process FAPROTAX {
 

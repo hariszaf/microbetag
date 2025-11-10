@@ -13,6 +13,10 @@ nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 
 include  { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
 
+def gurobiBind = workflow.containerEngine == 'singularity' ?
+    "-B ${params.gurobi_lic}:/opt/gurobi/gurobi.lic" :
+    "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+
 
 process CARVE {
 
@@ -20,8 +24,8 @@ process CARVE {
 
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
     container "hariszaf/carveme:1.6.6"
-    containerOptions = "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
-    
+    containerOptions = gurobiBind
+
     input:
         path in_chunk
         val is_faa
@@ -35,29 +39,41 @@ process CARVE {
 
     script:
         """
-        for f in ${in_chunk}; do
+        export GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
 
-            base=\$(basename "\$f") 
+        # Create a clean file list to safely iterate
+        for f in ${in_chunk}; do
+            echo "\$f" >> chunk.list
+        done
+
+        while read f; do
+            base=\$(basename "\$f")
             base="\${base%.*}"
 
             if [ ${is_faa} == "true" ]; then
-                carve --solver gurobi --output "\${base}.xml" \$f
+                echo "Running CarveMe on \$f (FAA mode)" >&2
+                carve --solver gurobi --output "\${base}.xml" "\$f"
             else
-                carve --dna --solver gurobi --output "\${base}.xml" \$f
+                echo "Running CarveMe on \$f (DNA mode)" >&2
+                carve --dna --solver gurobi --output "\${base}.xml" "\$f"
             fi
 
-        done
+        done < chunk.list
         """
+
 }
 
 
 process GAPSEQ {
 
+    // todo
+
     tag "GEM reconstruction with gapseq"
 
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
-    container "gapseq"
-    containerOptions = "-v ${params.cplex_lic}:/opt/cplex/cplex.lic"
+    container "hariszaf/gapseq:0.1.0"
+    // containerOptions = "-v ${params.cplex_lic}:/opt/cplex/cplex.lic"
+    // containerOptions = cplexBind
 
     input:
         path in_chunk
