@@ -4,22 +4,10 @@
 
 Usage: 
 
-nextflow run phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml
+nextflow run modules/phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml
+
 */
 
-
-include { readParamsFile } from '../helpers.nf'
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] No params-file provided, loading default YAML..."
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-} else {
-    println "[INFO] Using user-provided params-file, skipping default YAML."
-}
-
-println "Parameters after merge: ${params}"
 
 process GENOTYPE {
 
@@ -35,9 +23,9 @@ process GENOTYPE {
         file 'eggnog.genotype'
 
     script:
-    """
-    phenotrex compute-genotype --out eggnog.genotype --threads ${params.threads} ${genome_files.join(' ')}
-    """
+        """
+        phenotrex compute-genotype --out eggnog.genotype --threads ${params.threads} ${genome_files.join(' ')}
+        """
 }
 
 
@@ -55,9 +43,9 @@ process PREDICT {
         file "${class_file.simpleName}.tsv"
 
     script:
-    """
-    phenotrex predict --classifier ${class_file} --genotype ${genotype_file} --min_proba ${params.min_proba} --verb > ${class_file.simpleName}.tsv
-    """
+        """
+        phenotrex predict --classifier ${class_file} --genotype ${genotype_file} --min_proba ${params.min_proba} --verb > ${class_file.simpleName}.tsv
+        """
 }
 
 

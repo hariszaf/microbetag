@@ -4,18 +4,10 @@
 
 Usage: 
 
-nextflow run kofam/kofam.nf --c kofam/kofam.config
+nextflow run modules/kofam/main.nf -params-file modules/kofam/kofam.yaml
+
 */
 
-include { readParamsFile } from '../helpers.nf'
-
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    println "[INFO] kalos ta mas ..."
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
 
 // Add missing defaults
 if (!params.containsKey('parts_dir') || params.parts_dir == null) {

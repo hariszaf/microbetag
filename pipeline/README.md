@@ -103,4 +103,18 @@ nextflow run workflows/net_annotate.nf \
 
 
 
+```
+echo 'export NXF_SINGULARITY_CACHEDIR=/home/luna.kuleuven.be/u0156635/.singularity/images' >> ~/.bashrc
+```
 
+
+
+
+
+
+export SINGULARITY_TMPDIR=/home1/haris/.singularity/tmp
+export SINGULARITY_CACHEDIR=/home1/haris/.singularity/cache
+export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_CACHEDIR
+
+
+in the singularity case, **do not use the `containerOptions = '-u $(id -u):$(id -g)'`**

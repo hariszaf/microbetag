@@ -4,18 +4,19 @@
 
 Usage: 
 
-nextflow run modules/prodigal/prodigal.nf -params-file modules/prodigal/prodigal.yaml 
+nextflow run modules/prodigal/main.nf -params-file modules/prodigal/prodigal.yaml 
 
 */
 
 include { readParamsFile } from '../helpers.nf'
 
-
+// ORIGINAL
 process PRODIGAL {
 
     publishDir "${params.outdir}/prodigal", mode: 'copy'
     container "biocontainers/prodigal:v1-2.6.3-4-deb_cv1"
-    containerOptions = '-u $(id -u):$(id -g)'
+    containerOptions = workflow.containerEngine == 'docker' ? '-u $(id -u):$(id -g)' : ''
+
 
     input:
         path genome
@@ -33,13 +34,16 @@ process PRODIGAL {
         """
 }
 
+
 workflow {
 
     // Create a channel from input genomes
     def genomes_ch = Channel.fromPath("${params.genomes}/*")
 
+    // PRODIGAL(genomes_ch) | view { message -> "I say... $message" }
+
     // Run annotation process
-    def annotations = PRODIGAL(genomes_ch)
+    def annotations = PRODIGAL(genomes_ch) 
 
     // Get only faa files
     def faa_ch = annotations.faa
