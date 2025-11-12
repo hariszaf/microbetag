@@ -4,7 +4,7 @@ outdir: test-modules
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
 genomes: data/genomes
-threads: 4
+threads: 10
 
 # Genotypes output file
 genotype_file:

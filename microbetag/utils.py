@@ -437,14 +437,6 @@ def merge_ko(hmmout_dir: str, output: str) -> None:
     with open(output, "w") as fo:
         fo.write("bin_id\tcontig_id\tko_term\n")
 
-    # Iterate through the bin folders in the hmmout folder
-    # for bin_id in os.listdir(hmmout_dir):
-    #     bin_folder = os.path.join(hmmout_dir, bin_id)
-    #     bin_file = "_".join([bin_id, "kos.tsv"])
-    #     bin_kos_file = os.path.join(bin_folder, bin_file)
-    #     # Append
-    #     os.system(" ".join(["cat", bin_kos_file, ">>", output]))
-
     for bin_id in hmmout_dir.iterdir():
         if not bin_id.is_dir():
             continue
@@ -554,7 +546,7 @@ def load_merged_ko_file(merged_ko: str) -> pd.DataFrame:
     df = pd.read_csv(merged_ko, sep="\t")
 
     # Build presence/absence pivot table
-    bin_id, _, ko = df.columns[:3]
+    bin_id, _, ko = df.columns[:3]  # The second column of the file corresponds to the contig id.
     unique   = df.drop_duplicates().assign(presence=1)
     pivot_df = unique.pivot_table(index=ko, columns=bin_id, values="presence", fill_value=0)
 

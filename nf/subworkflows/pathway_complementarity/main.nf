@@ -11,7 +11,6 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// include { readParamsFile } from '../../modules/helpers'
 include { PRODIGAL } from '../../modules/prodigal'
 include { HMMSEARCH; MERGE_HMMOUT } from '../../modules/kofam'
 include { PC_PRECALC; PC_EXTEND } from '../../modules/pathway_compl'

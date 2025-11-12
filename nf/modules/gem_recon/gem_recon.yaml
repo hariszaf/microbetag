@@ -2,14 +2,12 @@ outdir: test-modules
 
 recon_files:
   data/faa
-  # results/annotations/
   # data/genomes
 
 recon_with: carveme
 
-# Attention! Please provide absolute path to .lic file
-# You will need a license for containers -- WLS
-gurobi_lic: /home/luna.kuleuven.be/u0156635/github_repos/KU/microbetagApp/services/web/microbetag/nf/gurobi_wlm.lic
+# Attention! You will need a Gurobi license specifically for containers -- WLS
+gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 
 # Since we can have up to 5 parallel sessions with the WLS license of Gurobi,
 # which is the only way to go on with a Docker container, we set by defalt max_forks to 5.

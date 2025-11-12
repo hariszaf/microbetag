@@ -1,8 +1,17 @@
 
+# Run `microbetag` as a Nextflow workflow 
+
 Two main workflows: 
 
-1. catalogue precomputation ([`precalc.nf`](./precalc.nf))
-2. Network annotation using a selected precomputation set ([`mtg.nf`](./mtg.nf))
+1. catalog pre-calculations ([`precalc.nf`](./workflows/precalc.nf))
+2. network annotation using a selected pre-calculation folder ([`net_annotate.nf`](./workflows/net_annotate.nf))
+
+
+These workflows depend on modules, one may run individually. 
+
+Both modules and workflows, as well as sub-workflows, they can all be performed either using Docker or Singularity/Apptainer 
+
+
 
 You may run modules under `modules/` individually, for example:
 
@@ -22,15 +31,31 @@ You can edit the parameters file you will find under [`params`](./params) accord
 
 
 
-## Notes
 
-Inside a workflow/process scope, `def x = ...` is interpreted as:
 
-> Declare a local variable named `ko_list_ch` AND also shadow/override `Channel` symbol resolution.
 
-Then `Channel.fromPath` is misinterpreted as:
+export SINGULARITY_TMPDIR=/home1/haris/.singularity/tmp
+export SINGULARITY_CACHEDIR=/home1/haris/.singularity/cache
 
-> There is a variable named `Channel` defined here
+export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_CACHEDIR
+export NXF_TEMP=/home1/haris/.tmp/
+
+in the singularity case, **do not use the `containerOptions = '-u $(id -u):$(id -g)'`**
+
+
+Download the `.img` images in a directory you can access, and replace that in the `cacheDir` on the [`nextflow.config`](./nextflow.config)
+
+```
+singularity {
+    enabled    = true
+    autoMounts = true
+    cacheDir   = "${HOME}/.singularity/mtg-images"
+    runOptions = getHPCBinds()
+}
+```
+
+
+
 
 
 
@@ -112,9 +137,12 @@ echo 'export NXF_SINGULARITY_CACHEDIR=/home/luna.kuleuven.be/u0156635/.singulari
 
 
 
-export SINGULARITY_TMPDIR=/home1/haris/.singularity/tmp
-export SINGULARITY_CACHEDIR=/home1/haris/.singularity/cache
-export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_CACHEDIR
+## Notes
 
+Inside a workflow/process scope, `def x = ...` is interpreted as:
 
-in the singularity case, **do not use the `containerOptions = '-u $(id -u):$(id -g)'`**
+> Declare a local variable named `ko_list_ch` AND also shadow/override `Channel` symbol resolution.
+
+Then `Channel.fromPath` is misinterpreted as:
+
+> There is a variable named `Channel` defined here
