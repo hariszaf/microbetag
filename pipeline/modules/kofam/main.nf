@@ -8,13 +8,10 @@ nextflow run modules/kofam/main.nf -params-file modules/kofam/kofam.yaml
 
 */
 
-
 // Add missing defaults
 if (!params.containsKey('parts_dir') || params.parts_dir == null) {
-    println "[INFO] 'parts_dir' missing, setting default..."
     params.parts_dir = "hmmout"
 }
-
 
 
 process HMMSEARCH{

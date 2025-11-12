@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run modules/phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml
+nextflow run modules/phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml -entry PHENOTREX
 
 */
 

@@ -75,4 +75,3 @@ workflow {
     RUN_MANTA(format_net)
 
 }
-

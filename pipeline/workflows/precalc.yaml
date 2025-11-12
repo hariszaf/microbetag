@@ -1,29 +1,25 @@
+# -----------
 # Global
+# -----------
 
-outdir: test-precalc2
+outdir: test-precalc
 
 threads: 4
 
-genomes:
-  data/genomes
-  # Path to the genome catalogue
-  # Required for phenotrex -- will be used for Pathway Compl if not .faa available
+# Path to the genome catalogue. Required for phenotrex -- will be used for Pathway Compl if not .faa available
+genomes: data/genomes
 
+# You may provide a path with .faa files if already available -- they can also used for the GEM reconstruction step if GEMs not available, e.g. test-precalc/prodigal/. Leave empty if not available.
 faa_dir:
-  # results/prodigal
-  # You may provide a path with .faa files if already available
-  # -- they can also used for the GEM reconstruction step if GEMs not available
 
 # -----------
 # PHENOTREX
 # -----------
+
 phenotrex: true
 
-# Genotypes output file
+# Genotypes output file. Output file of the phenotrex training step with the EGGNOG annotation per genome, e.g. test-precalc/eggnog.genotype. Leave empty if not available.
 genotype_file:
-  # results/eggnog.genotype
-  # Output file of the phenotrex training step with the EGGNOG annotation per genome
-  # Provide a path to it, ONLY if you have previously run this step with microbetag
 
 min_proba: 0.75
 
@@ -33,21 +29,34 @@ min_proba: 0.75
 
 pathway_compl: true
 
+# A three column file with the genome id, the contig id and its corresponding KEGG ORTHOLOGY term, e.g. test-modules/hmmsearch/ko_merged.txt. Leave empty if not available.
+# Example file:
+# bin_id  contig_id       ko_term
+# bin_101 c_000000006615_9        K00005
+# bin_101 c_000000142277_2        K00012
 ko_merged:
-  # results/ko_merged_7bins.txt
-  # ko_merged.txt
+
+# Path to KOFAM database list file, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz` command
+# Supposed to look like:
+# knum    threshold       score_type      profile_type    F-measure       nseq    nseq_used       alen    mlen    eff_nseq        re/pos  definition
+# K00001  363.33  domain  all     0.312178        2773    2310    2080    519     14.06   0.590   alcohol dehydrogenase [EC:1.1.1.1]
+# K00002  438.50  domain  all     0.418181        2762    2642    6996    484     7.63    0.590   alcohol dehydrogenase (NADP+) [EC:1.1.1.2]
 kegg_list: data/kofam_database/ko_list_test
+
+# Path to KOFAM database folder with HMM models, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz` command
+# It would look like:
+# ls data/kofam_database/profiles_test
+# K00011.hmm  K00023.hmm  K00034.hmm
 hmm_profiles: data/kofam_database/profiles_test/
 
-# Path compl
+# A .JSON file with the alternatives for each KEGG MODULE of each genome of the catalogue. Leave empty if not available.
 alts_file:
-  # results/pathway_compl/alts.json
-  # A .JSON file with the alternatives for each KEGG MODULE of each genome of the catalogue.
+
+# Pathway complementarity file in json format. Leave empty if not available.
 pc_file:
-  # results/pathway_compl/pcompls.json
-  #
 
 tinyurl: false
+
 pc_percent: 1
 
 # -----------
@@ -56,17 +65,12 @@ pc_percent: 1
 
 seed_compl: true
 
+# Path to previously reconstructed genome-scale models. Leave empty if not available.
 gems:
-  # results/reconstructions
-  # Path to previously reconstructed genome-scale models, if available
-  # Leave empty if not available
 
 gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 
-recon_with:
-  carveme
-  #gapseq
-  # carveme
+recon_with: carveme
 
 max_forks: 3
 
