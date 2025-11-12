@@ -11,7 +11,7 @@ from microbetag.tools import kegg_annotation
 root          = Path(__file__).resolve().parent.parent
 test_data_dir = root / "test_data" / "test_kegg_annotation"
 input_dir     = test_data_dir / "input_faa"
-kegg_db_dir   = root /"ext_data"/ "kofam_database"  # KEGG database
+kegg_db_dir   = root / "ext_data" / "kofam_database"  # KEGG database
 ko_list       = kegg_db_dir / "ko_list_tests"        # Subset used for faster testing
 
 # Input files
@@ -32,17 +32,17 @@ threads   = 2
 
 
 # Output files
-output_dir = test_data_dir / "output_files"
-hmmout_dir = output_dir / "hmmout"
-ko_merged  = output_dir / "ko_merged.txt"
+outdir = test_data_dir / "output_files"
+hmmout_dir = outdir / "hmmout"
+ko_merged  = outdir / "ko_merged.txt"
 
 # Remove ouput dir from previous run, if any
-prev_run = Path(output_dir)
+prev_run = Path(outdir)
 if prev_run.exists():
     print("Removing output folder from previous run.")
     shutil.rmtree(prev_run)
 
-os.makedirs(output_dir, exist_ok=True)
+os.makedirs(outdir, exist_ok=True)
 os.makedirs(hmmout_dir, exist_ok=True)
 
 
