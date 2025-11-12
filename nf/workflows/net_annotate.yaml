@@ -9,22 +9,47 @@
 # Important:
 # Ensure that any file paths you provide point to files located within either the indir or the outdir.
 
+# Path to
 indir: data
-abundance_file:
-  data/abd_data/salm_catalogue.tsv
-  # data/abd_data/testAbundMeta.tsv
+
+# Path to your abundance table
+abundance_file: data/abd_data/test_catalogue.tsv
+
+# Path to metadata file. Leave empty if not available.
 metadata_file:
 
-# If already available, then set path to file, otherwise, leave blank
+# If already available, then set path to network file. It needs to be in a 3-column, tab separated format. Leave empty if not available.
 network:
 
-precalculations:
-  salmo_precalc
-  # test-precalc
+# Output directory of the MICROBETAG_PRECALC (precalc.nf) workflow
+precalculations: test-precalc
 
 # Output
 outdir: test-annotate
-mtg_net: salmo.cx2
+mtg_net: test.cx2
+
+# For each step, if false, you may leave the extra args blank
+faprotax: true
+taxonomy_colname: classification
+delimiter: ","
+
+phen_traits: true
+phen_traits_dir: test-precalc/phenotrex/predictions/
+
+path_compl: true
+pc_percent: 1
+pc_dir: test-precalc/pathway_compl
+pc_file: test-precalc/pathway_compl/pcompls.json
+
+seed_compl: true
+sc_pkl: test-precalc/seed_compl/seed_compls.pkl
+seed_scores: test-precalc/seed_compl/seed_scores.tsv
+module_nonseeds: test-precalc/seed_compl/keggm_nonseeds.pkl
+tinyurl: false
+
+net_cluster: true
+manta: true
+manta_prefix: manta_test
 
 # In case a network file is provided, please skip flashweave_args
 flashweave_args:
@@ -69,40 +94,3 @@ flashweave_args:
   track_rejections:
 
 onthefly: false
-
-# For each step, if false, you may leave the extra args blank
-faprotax: true
-taxonomy_colname:
-  classification
-  # Taxonomy
-delimiter: ","
-
-phen_traits: true
-phen_traits_dir:
-  salmo_precalc/phenotrex/predictions/
-  # test-precalc/phenotrex/predictions
-
-path_compl: true
-pc_percent: 1
-pc_dir:
-  salmo_precalc/pathway_compl
-  # test-precalc/pathway_compl
-pc_file:
-  salmo_precalc/pathway_compl/pcompls.json
-  # test-precalc/pathway_compl/pcompls.json
-
-seed_compl: true
-tinyurl: false
-sc_pkl:
-  salmo_precalc/seed_compl/seed_compls.pkl
-  # test-precalc/seed_compl/seed_compls.pkl
-seed_scores:
-  salmo_precalc/seed_compl/seed_scores.tsv
-  # test-precalc/seed_compl/seed_scores.tsv
-module_nonseeds:
-  salmo_precalc/seed_compl/keggm_nonseeds.pkl
-  # test-precalc/seed_compl/keggm_nonseeds.pkl
-
-net_cluster: true
-manta: true
-manta_prefix: manta_salmo

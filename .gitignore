@@ -126,6 +126,7 @@ work/
 nf/data/
 nf/results/
 nf/phenotrex/classes/
+nf/test-*
 
 # Ignore Singularity .sif files
 *.sif

@@ -21,6 +21,7 @@ phenotrex: true
 # Genotypes output file. Output file of the phenotrex training step with the EGGNOG annotation per genome, e.g. test-precalc/eggnog.genotype. Leave empty if not available.
 genotype_file:
 
+# Class probability threshold for displaying predictions. Predictions below the threshold will be given as "N/A".
 min_proba: 0.75
 
 # -----------
@@ -41,23 +42,27 @@ ko_merged:
 # knum    threshold       score_type      profile_type    F-measure       nseq    nseq_used       alen    mlen    eff_nseq        re/pos  definition
 # K00001  363.33  domain  all     0.312178        2773    2310    2080    519     14.06   0.590   alcohol dehydrogenase [EC:1.1.1.1]
 # K00002  438.50  domain  all     0.418181        2762    2642    6996    484     7.63    0.590   alcohol dehydrogenase (NADP+) [EC:1.1.1.2]
-kegg_list: data/kofam_database/ko_list_test
+kegg_list: data/kofam_database/ko_list
 
 # Path to KOFAM database folder with HMM models, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz` command
 # It would look like:
 # ls data/kofam_database/profiles_test
 # K00011.hmm  K00023.hmm  K00034.hmm
-hmm_profiles: data/kofam_database/profiles_test/
+hmm_profiles: data/kofam_database/profiles
 
-# A .JSON file with the alternatives for each KEGG MODULE of each genome of the catalogue. Leave empty if not available.
+# A .json file with the alternatives for each KEGG MODULE of each genome of the catalogue, e.g. alternatives.json. Leave empty if not available.
 alts_file:
 
-# Pathway complementarity file in json format. Leave empty if not available.
+# A .json file with pathway complementarities, e.g. pcompls.json. Leave empty if not available.
 pc_file:
 
+# Use tinyurl (https://tinyurl.com/) to shorten the links to KEGG MAPS with colored KOs or compounds for the complementarities
 tinyurl: false
 
-pc_percent: 1
+# Ratio of the number of KOs to get to the total number of the KOs of the KEGG MODULE alternative.
+# So, for example if you need to get 2 and the alternative has 3, that would give a ~0.66.
+# microbetag will return all complementarities with a lower ratio than the pc_percent
+pc_percent: 0.75
 
 # -----------
 # SEED COMPL
@@ -68,24 +73,25 @@ seed_compl: true
 # Path to previously reconstructed genome-scale models. Leave empty if not available.
 gems:
 
+# Path to the Gurobi WLS license
 gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 
+# Tool to reconstruct GEMs with; currently onle carveme available for the Nextflow case.
 recon_with: carveme
 
+# Gurobi WLS allows up to 5 parallel sessions, so in that case max could not be higher than 5.
 max_forks: 3
 
-namespace:
-  BiGG
-  # ModelSEED
+# Namespace of the GEMs to be used; can be either BiGG or ModelSEED
+namespace: BiGG
 
-# Seed set inference: Skip steps before SCORES_COMPLS_PRECALC
+# Nonseed set per genome, e.g. nonseeds.json. Skip steps before SCORES_COMPLS_PRECALC. Leave empty if not available.
 nonseeds_json:
-  # results/seed_compl/nonseeds.json
 
+# Confidence of each seed per genome, e.g. confidence.json. Leave empty if not available.
 confidence_json:
-  # results/seed_compl/confidence.json
 
-# Seed complementarity
+# Return only seed complementarities that are related to some KEGG MODULE
 kegg_modules_only: true
 
 # In case you'd like to save the decompressed input files
