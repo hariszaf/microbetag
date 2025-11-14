@@ -45,13 +45,13 @@ workflow PATHWAY_COMPLEMENTARITY {
         // Need to run some or all of the upstream pipeline
         log.info "○ Running upstream pipeline to generate alts_file and pc_file"
 
+        def ko2contig_ch
         def has_ko_output = params.ko_merged && file(params.ko_merged).exists()
 
         // If ko to conting exists, you can run the generate alts_file and pc_file directly 
         if (has_ko_output) {
 
             // Use existing KO output file, skip annotation
-            def ko2contig_ch
             ko2contig_ch = Channel.fromPath(params.ko_merged, checkIfExists: true)
             log.info "✓ Using existing KO output file: ${params.ko_merged}"
         
