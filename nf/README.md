@@ -16,6 +16,19 @@ To run `microbetag` this way, you need to install:
      - HPC: [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html)/[Apptainer](https://apptainer.org/docs/admin/main/installation.html)
 
 
+If you are interested in [Pathway Complementarity](https://microbetag.readthedocs.io/en/v1.0.4/modules/modules.html#pathway-complementarity), and you do not have KEGG ORTHOLOGY annotation for your genomes already, 
+you would have to get the KOFAM database on your computing environment. 
+
+To do so, you may run:
+
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz 
+    gzip -d ko_list.gz
+
+    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz     
+    tar zxvf profiles.tar.gz 
+
+
+
 ### The HPC case
 
 If you are about to run this on an HPC, we suggest you download first the images you will need. 
@@ -89,7 +102,7 @@ When running `microbetag` through Nextflow, there are **two** configuration leve
 
 ### Nextflow configuration 
 
-In the Nextflow configuration level, one need to make sure that Nextflow will use the containerization technology 
+In the Nextflow configuration level, one need to make sure that Nextflow will use the containerization technology (container engine)
 available in their system. 
 
 You can edit this, by setting to `true` and/or `false` the `enabled` flag of theirs.
@@ -246,3 +259,17 @@ Inside a workflow/process scope, `def x = ...` is interpreted as:
 Then `Channel.fromPath` is misinterpreted as:
 
 > There is a variable named `Channel` defined here -->
+
+
+Medium for gapseq
+
+```
+compounds,name,maxFlux
+cpd00001,H2O,100
+cpd00007,O2,100
+cpd00027,D-Glucose,13.88
+```
+
+
+
+the current working directory (i.e., where you ran nextflow run …) is the base for relative paths, unless you explicitly use projectDir or another absolute reference.
