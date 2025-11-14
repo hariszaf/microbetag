@@ -20,99 +20,113 @@ include { CARVE } from '../../modules/gem_recon'
 
 workflow SEED_COMPLEMENTARITY {
 
-    def has_gems = params.gems && file(params.gems).exists()
-    gem_files_empty = true
-    if (has_gems) {
-        def gem_files_list = file(params.gems).list().findAll { 
-             it.endsWith('.xml') || it.endsWith('.sbml') 
-         }
-        gem_files_empty = gem_files_list.isEmpty()
-    }
+    take:
+        faa_ch
 
-    def species_ch
-    def gems_ch
 
-    if (gem_files_empty) {
+    main:
 
-        log.info "Genome-scale metabolic models were not provided and they will be reconstructed."
+        def gems_ch
+        def species_ch
 
-        def recon_in; def prep; def decomp
-        def mapped_files; def infiles_chunk_ch
-
-        // sanitize filenames if for example filenames like BATCH:set1.fastq
-        recon_in = getInputFiles(params.recon_files)
-        prep     = SAFENAME_FILES(recon_in.files_ch)
-
-        // Add a separate mapping step
-        mapped_files = prep.map { orig_name, file ->
-            def orig_name_decomp = orig_name.endsWith(".gz") ? orig_name[0..-4] : orig_name
-            tuple(orig_name, orig_name_decomp, file)
+        def has_gems = params.gems && file(params.gems).exists()
+        gem_files_empty = true
+        if (has_gems) {
+            def gem_files_list = file(params.gems).list().findAll { 
+                it.endsWith('.xml') || it.endsWith('.sbml') 
+            }
+            gem_files_empty = gem_files_list.isEmpty()
         }
 
-        decomp    = GUNZIP(mapped_files)
-        decomp_ch = decomp.collect()
+        if (gem_files_empty) {
 
-        // Use the COLLECTED channel for chunking, not the original decomp channel
-        infiles_chunk_ch = chunkFiles(decomp_ch, params.max_forks)
+            log.info "Genome-scale metabolic models were not provided and they will be reconstructed."
 
-        // Reconstruct using software of user's choice
-        if (params.recon_with =="carveme") {
+            // def recon_in; 
+            def prep; def decomp
+            def mapped_files; def infiles_chunk_ch
 
-            gems_ch = CARVE(infiles_chunk_ch, recon_in.is_faa)
+            // sanitize filenames if for example filenames like BATCH:set1.fastq
+            // recon_in = getInputFiles(params.recon_files)
+            // prep     = SAFENAME_FILES(recon_in.files_ch)
+            // prep = SAFENAME_FILES(faa_ch)
 
+            // // Add a separate mapping step
+            // mapped_files = prep.map { orig_name, file ->
+            //     def orig_name_decomp = orig_name.endsWith(".gz") ? orig_name[0..-4] : orig_name
+            //     tuple(orig_name, orig_name_decomp, file)
+            // }
+
+            // decomp    = GUNZIP(mapped_files)
+            // decomp_ch = decomp.collect()
+
+            // Use the COLLECTED channel for chunking, not the original decomp channel
+            // infiles_chunk_ch = chunkFiles(decomp_ch, params.max_forks)
+            infiles_chunk_ch = chunkFiles(faa_ch, params.max_forks)
+
+            // Reconstruct using software of user's choice
+            if (params.recon_with =="carveme") {
+
+                // gems_ch = CARVE(infiles_chunk_ch, recon_in.is_faa)
+                gems_ch = CARVE(infiles_chunk_ch, true)
+
+            }
+
+            // species_ch = gems_ch.map { file -> file.baseName }
+            species_ch = gems_ch.flatten().map { file -> file.baseName }
+
+        } else {
+
+            log.info "Genome-scale models were provided by the user and will be used. "
+
+            // Channels for species GEMs and species names
+            gems_ch    = Channel.fromPath("${params.gems}/*.xml")
+            species_ch = Channel
+                .fromPath("${params.gems}/*.xml")
+                .map { file -> file.baseName }
         }
 
-        // species_ch = gems_ch.map { file -> file.baseName }
-        species_ch = gems_ch.flatten().map { file -> file.baseName }
+        def species_data_ch
+        seedsets_avail = params.nonseeds_json && params.confidence_json && 
+            file(params.nonseeds_json).exists() && 
+            file(params.confidence_json).exists()
 
-    } else {
+        if (!seedsets_avail) {
 
-        log.info "Genome-scale models were provided by the user and will be used. "
+            log.info "Confidence and non-seed files were not provided and will be calculated"
 
-        // Channels for species GEMs and species names
-        gems_ch    = Channel.fromPath("${params.gems}/*.xml")
-        species_ch = Channel
-            .fromPath("${params.gems}/*.xml")
-            .map { file -> file.baseName }
-    }
+            // Get seed and non-seed sets
+            s = GET_SEED_SETS(gems_ch.flatten())
 
-    def species_data_ch
-    seedsets_avail = params.nonseeds_json && params.confidence_json && 
-        file(params.nonseeds_json).exists() && 
-        file(params.confidence_json).exists()
+            // Aggregate seed and non-seed sets
+            a = AGGREGATE_SEED_SETS(s.collect())
 
-    if (!seedsets_avail) {
+            // Combine scirpt and seed data for each species
+            species_data_ch = species_ch
+                .combine(a.nonseeds_json)
+                .combine(a.confidence_json)
 
-        log.info "Confidence and non-seed files were not provided and will be calculated"
+        } else {
 
-        // Get seed and non-seed sets
-        s = GET_SEED_SETS(gems_ch.flatten())
+            log.info "Previous calculated confidence and non-seed files were provided by the used and will be used."
 
-        // Aggregate seed and non-seed sets
-        a = AGGREGATE_SEED_SETS(s.collect())
+            def nonseeds_json; def confidence_json
+            nonseeds_json   = Channel.fromPath(params.nonseeds_json)
+            confidence_json = Channel.fromPath(params.confidence_json)
+            species_data_ch = species_ch
+                .combine(nonseeds_json)
+                .combine(confidence_json)
+        }
 
-        // Combine scirpt and seed data for each species
-        species_data_ch = species_ch
-            .combine(a.nonseeds_json)
-            .combine(a.confidence_json)
+        log.info "Calculate seed scores and complementarities using seed sets."
 
-    } else {
+        // Calculate seed complementarity scores and extract complements
+        e = SCORES_COMPLS_PRECALC(species_data_ch)
 
-        log.info "Previous calculated confidence and non-seed files were provided by the used and will be used."
+        // Aggregate compls and scores
+        sc = AGGREGATE_SCORES_COMPLS(e[0].collect(), e[1].collect())
 
-        def nonseeds_json; def confidence_json
-        nonseeds_json   = Channel.fromPath(params.nonseeds_json)
-        confidence_json = Channel.fromPath(params.confidence_json)
-        species_data_ch = species_ch
-            .combine(nonseeds_json)
-            .combine(confidence_json)
-    }
+    emit:
+        sc.seed_compls
 
-    log.info "Calculate seed scores and complementarities using seed sets."
-
-    // Calculate seed complementarity scores and extract complements
-    e = SCORES_COMPLS_PRECALC(species_data_ch)
-
-    // Aggregate compls and scores
-    AGGREGATE_SCORES_COMPLS(e[0].collect(), e[1].collect())
 }
