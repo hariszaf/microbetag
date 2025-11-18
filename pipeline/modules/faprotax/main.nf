@@ -10,6 +10,8 @@ nextflow run modules/faprotax/main.nf -params-file modules/faprotax/faprotax.yam
 
 process FAPROTAX {
 
+    tag "Annotate abundance table with FAPROTAX functional groups"
+
     publishDir "${params.outdir}/faprotax", mode: 'copy'
     container "hariszaf/microbetag-nf:0.1.0"
 
