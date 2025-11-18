@@ -10,6 +10,14 @@ nextflow run modules/flashweave/main.nf -params-file modules/flashweave/flashwea
 
 import groovy.json.JsonOutput
 
+jlSingularityOptions = workflow.containerEngine == 'singularity' ? 
+    """
+        --bind $HOME/julia_depot:$HOME/julia_depot \
+        --bind $HOME/julia_tmp:$HOME/juliatmp \
+        --env JULIA_DEPOT_PATH=$HOME/julia_depot:/usr/local/share/julia \
+        --env TMPDIR=$HOME/julia_tmp
+    """.stripIndent().trim() : 
+    ""
 
 // ---------------- Processes ----------------
 
@@ -38,6 +46,7 @@ process RUN_FW {
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
+    containerOptions = jlSingularityOptions
 
     input:
         file formatted_table
@@ -63,6 +72,7 @@ process RUN_FW_METADATA {
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
+    containerOptions = jlSingularityOptions
 
     input:
         file formatted_table
@@ -73,8 +83,6 @@ process RUN_FW_METADATA {
 
     script:
         """
-        println "FW ARGS JSON: ${groovy.json.JsonOutput.toJson(params.flashweave_args)}" > emm
-
         run_fw.jl \
         --input ${formatted_table} \
         --metadata ${metadata_file} \

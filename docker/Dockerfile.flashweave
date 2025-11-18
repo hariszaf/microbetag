@@ -26,7 +26,7 @@ ENV JULIA_DEPOT_PATH=/usr/local/share/julia
 RUN mkdir -p $JULIA_DEPOT_PATH
 
 # Install FlashWeave.jl and dependencies via Julia
-RUN julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("ArgParse"); Pkg.add("JSON")'
+RUN julia -e 'import Pkg; Pkg.add("FlashWeave"); Pkg.add("ArgParse"); Pkg.add("JSON"); Pkg.instantiate(); Pkg.precompile()'
 
 # Install Python 
 RUN apt-get update && apt-get install -y \
@@ -39,6 +39,12 @@ RUN pip install julia
 
 ADD nf/bin/fw /opt/fw
 ENV PATH=/opt/fw/:$PATH
+
+# Together with the Pkg.precompile(). this make sure all Julia packages are fully precompiled during docker build,
+#  and no precompilation happens at runtime.
+# This eliminates the mktemp: Read-only file system errors entirely.
+COPY nf/bin/fw/precompile_julia.jl /opt/fw/precompile_fw.jl
+RUN julia -e 'include("/opt/fw/precompile_fw.jl")'
 
 # Default command
 CMD ["bash"]

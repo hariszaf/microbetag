@@ -20,6 +20,12 @@ workflow MICROBETAG_ANNOTATE {
     def paramsIndex = cmdTokens.indexOf('-params-file')
 
     def yaml
+    def network
+    def net_cluster
+    def abundance_ch
+    def faprotax_sub_tables
+
+
     if (paramsIndex != -1) {
         yaml = Channel.fromPath(cmdTokens[paramsIndex + 1])
     } else {
@@ -29,8 +35,7 @@ workflow MICROBETAG_ANNOTATE {
     def abd_data_av = params.abundance_file && file(params.abundance_file).exists()
     def network_av  = params.network && file(params.network).exists()
 
-    def abundance_ch
-    def network
+
     if (!network_av && abd_data_av) {
 
         log.info "No network was provided. microbetag will use FlashWeave to infer one."
@@ -60,7 +65,6 @@ workflow MICROBETAG_ANNOTATE {
     }
 
 
-    def faprotax_sub_tables
     if (params.faprotax) {
 
         log.info "Run FAPROTAX against abundance table provided"
@@ -75,11 +79,11 @@ workflow MICROBETAG_ANNOTATE {
 
     } else {
 
-        faprotax_sub_tables = Channel.empty()
+        faprotax_sub_tables = Channel.of(null)
     }
 
 
-    def net_cluster
+    
     if (params.net_cluster) {
 
         if (params.manta) {
@@ -101,7 +105,8 @@ workflow MICROBETAG_ANNOTATE {
                       "Otherwise, it will fail when building the annotated network."
         }
     } else {
-        net_cluster = Channel.empty()
+
+        net_cluster = Channel.of(null)
     }
 
 
