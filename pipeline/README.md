@@ -10,10 +10,10 @@ We provide an example dataset under the [`data/genomes`](./data/genomes) folder,
 
 * The `precalc.nf` workflow of `microbetag` computes all pairwise relationships between genomes of a catalogue. 
 
-* Then, the `net_annotate.nf` workflow, infers a network, if one is not provided, and uses these pre-calculations to annotate the network.
+* Then, the `annotate.nf` workflow, infers a network, if one is not provided, and uses these pre-calculations to annotate the network.
 
 Under the [`test-precalc`](./test-precalc/) folder, you will find the pre-calculations obtained after running the `precalc.nf` workflow on the example genomes,
-while under the [`test-annotate`](./test-annotate/) folder, you will find the results obtained after running the `net_annotate.nf` workflow using these pre-calculations and an example abundance table.
+while under the [`test-annotate`](./test-annotate/) folder, you will find the results obtained after running the `annotate.nf` workflow using these pre-calculations and an example abundance table.
 
 The [`test.cx2`](./test-annotate/test.cx2) file contains the annotated network in CX2 format and you may load it to Cytoscape and parse it using the MGG app.
 
@@ -100,7 +100,7 @@ This is needed for the Julia installation inside the Singularity/Apptainer conta
 Two main [**workflows**](./workflows/): 
 
 1. catalog pre-calculations ([`precalc.nf`](./workflows/precalc.nf))
-2. network annotation using a selected pre-calculation folder ([`net_annotate.nf`](./workflows/net_annotate.nf))
+2. network annotation using a selected pre-calculation folder ([`annotate.nf`](./workflows/annotate.nf))
 
 
 These workflows are built on [**modules**](./modules/) and [**sub-workflows**](./subworkflows/), which one may run individually. 
@@ -124,7 +124,7 @@ Reuse the precalculated database to annotate multiple networks from different ab
 When running `microbetag` through Nextflow, there are **two** configuration levels, corresponding to **two** different files: 
 
 - nextflow configuration, through the [`nextflow.config`](./nextflow.config) file
-- `microbetag` configuration, through the [`precalc.yaml`](./workflows/precalc.yaml) and the [`net_annotate.yaml`](./workflows/net_annotate.yaml) files correspondingly 
+- `microbetag` configuration, through the [`precalc.yaml`](./workflows/precalc.yaml) and the [`annotate.yaml`](./workflows/annotate.yaml) files correspondingly 
  
 
 
@@ -216,12 +216,12 @@ nextflow run workflows/precalc.nf \
 Similarly, one may run the network annotation workflow with the follwoing:
 
 ```
-nextflow run workflows/net_annotate.nf \
-    -params-file workflows/net_annotate.yaml \
+nextflow run workflows/annotate.nf \
+    -params-file workflows/annotate.yaml \
     -entry MICROBETAG_ANNOTATE 
 ```
 
-In this case, we have filled in the [`net_annotate.yaml`](./workflows/net_annotate.yaml) file, 
+In this case, we have filled in the [`annotate.yaml`](./workflows/annotate.yaml) file, 
 assuming we are using the pre-calculations built from the command above, i.e. the `test-precalc` folder as our `precalculations`, and using a `test_catalogue.tsv` that as our `abundance table`, expected to be under `data/abd_data/`.
 
 Again, the
