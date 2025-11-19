@@ -46,22 +46,6 @@ workflow SEED_COMPLEMENTARITY {
             def prep; def decomp
             def mapped_files; def infiles_chunk_ch
 
-            // sanitize filenames if for example filenames like BATCH:set1.fastq
-            // recon_in = getInputFiles(params.recon_files)
-            // prep     = SAFENAME_FILES(recon_in.files_ch)
-            // prep = SAFENAME_FILES(faa_ch)
-
-            // // Add a separate mapping step
-            // mapped_files = prep.map { orig_name, file ->
-            //     def orig_name_decomp = orig_name.endsWith(".gz") ? orig_name[0..-4] : orig_name
-            //     tuple(orig_name, orig_name_decomp, file)
-            // }
-
-            // decomp    = GUNZIP(mapped_files)
-            // decomp_ch = decomp.collect()
-
-            // Use the COLLECTED channel for chunking, not the original decomp channel
-            // infiles_chunk_ch = chunkFiles(decomp_ch, params.max_forks)
             infiles_chunk_ch = chunkFiles(faa_ch, params.max_forks)
 
             // Reconstruct using software of user's choice
