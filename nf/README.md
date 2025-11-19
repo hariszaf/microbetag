@@ -2,6 +2,26 @@
 # Run `microbetag` as a Nextflow workflow 
 
 
+## Overview with an example dataset
+
+This tutorial will guide you through running `microbetag` as a [Nextflow](https://www.nextflow.io/) pipeline. 
+
+We provide an example dataset under the [`data/genomes`](./data/genomes) folder, which contains 3 genomes in FASTA format; this is what we call a _genome catalogue_.
+
+* The `precalc.nf` workflow of `microbetag` computes all pairwise relationships between genomes of a catalogue. 
+
+* Then, the `net_annotate.nf` workflow, infers a network, if one is not provided, and uses these pre-calculations to annotate the network.
+
+Under the [`test-precalc`](./test-precalc/) folder, you will find the pre-calculations obtained after running the `precalc.nf` workflow on the example genomes,
+while under the [`test-annotate`](./test-annotate/) folder, you will find the results obtained after running the `net_annotate.nf` workflow using these pre-calculations and an example abundance table.
+
+The [`test.cx2`](./test-annotate/test.cx2) file contains the annotated network in CX2 format and you may load it to Cytoscape and parse it using the MGG app.
+
+In the following sections, we will guide you through the requirements needed to run `microbetag` as a Nextflow pipeline.
+
+Take extra care in the [Nextflow configuration](#nextflow-configuration) section, since you may need to edit this part based on your computing environment.
+
+
 ## Requirements
 
 Both modules, sub-workflows and workflows, they can all be performed either using [Docker](https://www.docker.com/) or [Singularity](https://sylabs.io/singularity/)/[Apptainer](https://apptainer.org/).
@@ -16,7 +36,7 @@ To run `microbetag` this way, you need to install:
      - HPC: [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/installation.html)/[Apptainer](https://apptainer.org/docs/admin/main/installation.html)
 
 
-If you are interested in [Pathway Complementarity](https://microbetag.readthedocs.io/en/v1.0.4/modules/modules.html#pathway-complementarity), and you do not have KEGG ORTHOLOGY annotation for your genomes already, 
+If you are interested in [Pathway Complementarity](https://microbetag.readthedocs.io/en/latest/modules/modules.html#pathway-complementarity), and you do not have KEGG ORTHOLOGY annotation for your genomes already, 
 you would have to get the KOFAM database on your computing environment. 
 
 To do so, you may run:
@@ -27,6 +47,8 @@ To do so, you may run:
     wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz     
     tar zxvf profiles.tar.gz 
 
+Last, if you are interested in [Seed Complementarity](https://microbetag.readthedocs.io/en/latest/modules/modules.html), and you do not have already Genome-Scale Metabolic Models (GEMs) for your genomes,
+you would have to get a [Gurobi Web License Service (WLS) license](https://www.gurobi.com/features/academic-wls-license/), if you ask `microbetag` to use CarveMe to reconstruct them, or (optionally) CPLEX. 
 
 
 ### The HPC case
@@ -49,7 +71,6 @@ which, by default, will use `${HOME}/.singularity/mtg-images`.
 
 Otherwise, you may specify where with the `-sif-dir` flag: 
 
-
 ```
 ./get_sif.sh --sif-dir /opt/sing/mtg-images
 ```
@@ -65,6 +86,13 @@ For example,
     NXF_TEMP
 
 Make sure you follow your admin's instructions for how to use Nextflow and Singularity/Apptainer. 
+
+Last, please run: 
+
+    mkdir $HOME/julia_depot $HOME/julia_tmp
+
+This is needed for the Julia installation inside the Singularity/Apptainer containers to work properly.
+
 
 
 ## Workflows
@@ -260,16 +288,3 @@ Then `Channel.fromPath` is misinterpreted as:
 
 > There is a variable named `Channel` defined here -->
 
-
-Medium for gapseq
-
-```
-compounds,name,maxFlux
-cpd00001,H2O,100
-cpd00007,O2,100
-cpd00027,D-Glucose,13.88
-```
-
-
-
-the current working directory (i.e., where you ran nextflow run …) is the base for relative paths, unless you explicitly use projectDir or another absolute reference.

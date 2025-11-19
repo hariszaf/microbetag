@@ -2,16 +2,12 @@
 # Global
 # -----------
 
-outdir: test-precalc-pacbio
+outdir: test-precalc
 
 threads: 4
 
-# Path to the genome catalogue. Required for phenotrex -- will be used for Pathway Compl if not .faa available
-# You may use relative pathways given the directory of where you are firing nextflow!
-# For example, if you fire it from within the nf/ folder, then you may use
-genomes:
-  data/genomes
-  # ../test_data/test_phenotrex/input_files/
+# Path to the genome catalogue. Required for phenotrex -- will be used for pathway and seed complementarities if not .faa and gems are available respectively.
+genomes: data/genomes/
 
 # You may provide a path with .faa files if already available -- they can also used for the GEM reconstruction step if GEMs not available, e.g. test-precalc/prodigal/. Leave empty if not available.
 faa_dir:
@@ -40,24 +36,26 @@ pathway_compl: true
 # bin_101 c_000000006615_9        K00005
 # bin_101 c_000000142277_2        K00012
 ko_merged:
-  # data/ko_merged.txt
 
 # Path to KOFAM database list file, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz` command
 # Supposed to look like:
 # knum    threshold       score_type      profile_type    F-measure       nseq    nseq_used       alen    mlen    eff_nseq        re/pos  definition
 # K00001  363.33  domain  all     0.312178        2773    2310    2080    519     14.06   0.590   alcohol dehydrogenase [EC:1.1.1.1]
 # K00002  438.50  domain  all     0.418181        2762    2642    6996    484     7.63    0.590   alcohol dehydrogenase (NADP+) [EC:1.1.1.2]
+# Important: Make sure you replace this with the path to the file you downloaded for the KOFAM database if you downloaded it in a different location!
 kegg_list:
   ../ext_data/kofam_database/ko_list_test
-  # data/kofam_database/ko_list_test
+  # <PATH_TO>/ko_list
+  # ../ext_data/kofam_database/
 
 # Path to KOFAM database folder with HMM models, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz` command
 # It would look like:
 # ls data/kofam_database/profiles_test
 # K00011.hmm  K00023.hmm  K00034.hmm
+# Important: Make sure you replace this with the path to the file you downloaded for the KOFAM database if you downloaded it in a different location!
 hmm_profiles:
   ../ext_data/kofam_database/profiles_test
-  # data/kofam_database/profiles_test
+  # <PATH_TO>/profiles
 
 # A .json file with the alternatives for each KEGG MODULE of each genome of the catalogue, e.g. alternatives.json. Leave empty if not available.
 alts_file:
@@ -82,14 +80,19 @@ seed_compl: true
 # Path to previously reconstructed genome-scale models. Leave empty if not available.
 gems:
 
-# Path to the Gurobi WLS license
-gurobi_lic: /opt/gurobi/gurobi_wlm.lic
+# Tool to reconstruct GEMs with; gapseq requires much more computing resources and time.
+recon_with:
+  carveme
+  # gapseq
 
-# Tool to reconstruct GEMs with; currently onle carveme available for the Nextflow case.
-recon_with: carveme
+# Path to the Gurobi WLS license, e.g. /opt/gurobi/gurobi_wlm.lic -- Attention! Please provide absolute path to the license file.
+gurobi_lic:
+
+# Path to the CPLEX installation, e.g. /opt/ibm/ILOG/CPLEX_Studio2211/
+cplex:
 
 # Gurobi WLS allows up to 5 parallel sessions, so in that case max could not be higher than 5.
-max_forks: 3
+max_forks: 5
 
 # Namespace of the GEMs to be used; can be either BiGG or ModelSEED
 namespace: BiGG

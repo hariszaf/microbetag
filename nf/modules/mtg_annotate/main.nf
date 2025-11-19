@@ -56,55 +56,6 @@ process ANNOTATE_NETWORK {
 
     script:
         """
-        # --> change paths to be relative to indir
-
-        # Extract indir value from YAML
-        indir=\$(grep "^indir:" ${yaml} | awk '{print \$2}')
-
-        # Get last directory name
-        base=\$(basename "\$indir")
-
-        # Rewrite the YAML file with corrected paths
-        awk -v base="\$base" '
-            \$1=="indir:" {
-                print "indir: " base
-                next
-            }
-
-            \$1=="abundance_file:" {
-                # extract the path after the key
-                path=\$2
-                sub(".*" base "/", base "/", path)
-                print "abundance_file: " path
-                next
-            }
-
-            \$1=="metadata_file:" {
-                if (\$2 != "") {
-                    path=\$2
-                    sub(".*" base "/", base "/", path)
-                    print "metadata_file: " path
-                } else {
-                    print
-                }
-                next
-            }
-
-            \$1=="network:" {
-                if (\$2 != "") {
-                    path=\$2
-                    sub(".*" base "/", base "/", path)
-                    print "network: " path
-                } else {
-                    print
-                }
-                next
-            }
-
-            { print }
-        ' ${yaml} > tmp.yaml
-
-        mv tmp.yaml ${yaml}
 
         # Build the command
         cmd="mtg_annotate.py --config_file ${yaml} --network ${network}"
@@ -131,3 +82,55 @@ workflow {
     ANNOTATE_NETWORK(yaml_ch, input_ch, outdir_ch)
 
 }
+
+
+// 
+        // # --> change paths to be relative to indir
+
+        // # Extract indir value from YAML
+        // indir=\$(grep "^indir:" ${yaml} | awk '{print \$2}')
+
+        // # Get last directory name
+        // base=\$(basename "\$indir")
+
+        // # Rewrite the YAML file with corrected paths
+        // awk -v base="\$base" '
+        //     \$1=="indir:" {
+        //         print "indir: " base
+        //         next
+        //     }
+
+        //     \$1=="abundance_file:" {
+        //         # extract the path after the key
+        //         path=\$2
+        //         sub(".*" base "/", base "/", path)
+        //         print "abundance_file: " path
+        //         next
+        //     }
+
+        //     \$1=="metadata_file:" {
+        //         if (\$2 != "") {
+        //             path=\$2
+        //             sub(".*" base "/", base "/", path)
+        //             print "metadata_file: " path
+        //         } else {
+        //             print
+        //         }
+        //         next
+        //     }
+
+        //     \$1=="network:" {
+        //         if (\$2 != "") {
+        //             path=\$2
+        //             sub(".*" base "/", base "/", path)
+        //             print "network: " path
+        //         } else {
+        //             print
+        //         }
+        //         next
+        //     }
+
+        //     { print }
+        // ' ${yaml} > tmp.yaml
+
+        // mv tmp.yaml ${yaml}

@@ -12,8 +12,8 @@
 # Path to your input directory with abundance table and optional metadata and network file -- to be mounted so containers can access them
 indir: data/
 
-# Path to your abundance table -- needs to be within the indir
-abundance_file: data/salmo/abundance_prev20.tsv
+# Path to your abundance table -- needs to be within the indir and its path should be relative to the indir
+abundance_file: data/abd_data/abund.tsv
 
 # Path to metadata file. Leave empty if not available.
 metadata_file:
@@ -22,34 +22,47 @@ metadata_file:
 network:
 
 # Output directory of the MICROBETAG_PRECALC (precalc.nf) workflow -- to be mounted so containers can access them
-precalculations: salmo_precalc
+precalculations: test-precalc
 
 # Output
-outdir: salmo-annotate
+outdir: test-annotate
 mtg_net: test.cx2
 
 # For each step, if false, you may leave the extra args blank
 faprotax: true
-taxonomy_colname: classification
+taxonomy_colname: Taxonomy
 delimiter: ","
 
+# Annotate network using genome-based phenotypic traits as provided by Phenotreex
 phen_traits: true
-phen_traits_dir: salmo_precalc/phenotrex/predictions/
+# Path to directory with Phenotreex predictions -- needs to be within the indir or outdir
+phen_traits_dir: test-precalc/phenotrex/predictions/
 
+# Annotate the network using pathway complementarities
 path_compl: true
+# Like in the precalc step.
 pc_percent: 1
-pc_dir: salmo_precalc/pathway_compl
-pc_file: salmo_precalc/pathway_compl/pcompls.json
+# Path to directory with pathway complementarities -- needs to be within the indir or outdir
+pc_dir: test-precalc/pathway_compl
+# Path to precalculated pathway complementarities file -- needs to be within the indir or outdir
+pc_file: test-precalc/pathway_compl/pcompls.json
 
+# Annotate the network using seed complementarities
 seed_compl: true
-sc_pkl: salmo_precalc/seed_compl/seed_compls.pkl
-seed_scores: salmo_precalc/seed_compl/seed_scores.tsv
-module_nonseeds: salmo_precalc/seed_compl/keggm_nonseeds.pkl
+# Path to seed complmentarities pickle file -- needs to be within the indir or outdir
+sc_pkl: test-precalc/seed_compl/seed_compls.pkl
+# Path to seed scores tsv file -- needs to be within the indir or outdir
+seed_scores: test-precalc/seed_compl/seed_scores.tsv
+# Path to non-seed KEGG MODULES pickle file -- needs to be within the indir or outdir
+module_nonseeds: test-precalc/seed_compl/keggm_nonseeds.pkl
+# Convert long URLs built from the complementarity modules pointing to KEGG MAPS, showing beneficiary's and donor's compounds or KOs, to tinyurl links in the output network file
 tinyurl: false
 
+# Annotate the network using cluster assignments
 net_cluster: false
+# Perform the manta algorithm for cluster detection
 manta: true
-manta_prefix: manta_test
+manta_prefix:
 
 # In case a network file is provided, please skip flashweave_args
 flashweave_args:
@@ -93,4 +106,5 @@ flashweave_args:
   # Store for each discarded edge, which variable set lead to its exclusion (can be memory intense for large networks)
   track_rejections:
 
+# Do not edit below this line
 onthefly: false
