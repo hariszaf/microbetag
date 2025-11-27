@@ -8,7 +8,6 @@ nextflow run precalc.nf  -params-file params/precalc.yaml -entry MICROBETAG_PREC
 
 */
 
-include { readParamsFile } from '../modules/helpers.nf'
 include { PHENOTREX } from '../modules/phenotrex/'
 include { PRODIGAL } from '../modules/prodigal/'
 include { PATHWAY_COMPLEMENTARITY } from '../subworkflows/pathway_complementarity/'
@@ -26,33 +25,52 @@ workflow MICROBETAG_PRECALC {
     // Both complementarity modules require .faa files at some point. 
     // Make sure either user already provided them from config file, 
     // or microbetag runs Prodigal to get them, before firing the sub-workflows for the complementarities
+
+
+    // Helper booleans
+    def do_compl     = params.pathway_compl || params.seed_compl
+    def gems_dir_ok  = params.gems && file(params.gems).exists()
+    def faa_dir_ok   = params.faa_dir && file(params.faa_dir).exists()
+    def faa_exists   = faa_dir_ok && file(params.faa_dir).list().any { 
+        it.endsWith('.faa')  || it.endsWith('.faa.gz')
+    }
+    def gems_exist   = gems_dir_ok && file(params.gems).list().any { 
+        it.endsWith('.xml')  || it.endsWith('.xml.gz') 
+    }
+    def genomes_ch
+    def prodigal_out
     def faa_ch
-    if (params.pathway_compl || params.seed_compl ) {
+    def gems_ch
 
-        // Handle FAA files
-        def has_faa_dir = params.faa_dir && file(params.faa_dir).exists()
-        faa_files_empty = true
+    if (do_compl) {
 
-        if (has_faa_dir) {
-            def faa_files_list = file(params.faa_dir).list().findAll { it.endsWith('.faa') }
-            faa_files_empty = faa_files_list.isEmpty()
+        // If only seed_compl and valid GEMs exist → skip annotation & FAA
+        if (!params.pathway_compl && params.seed_compl && gems_exist) {
+            log.info "✓ Using GEMs provided by the user. No genome annotation needed."
+            check = false
+            gems_ch = Channel.fromPath("${params.gems}/*.xml",  checkIfExists: true)
+        } else {
+            check = true
         }
 
-        if (has_faa_dir && !faa_files_empty) {
+        if (check) {
 
-            // Use existing FAA files
-            log.info "✓ Using existing FAA files from: ${params.faa_dir}"
-            faa_ch = Channel.fromPath("${params.faa_dir}/*.faa", checkIfExists: true)
-        
-        } else {
+            if (faa_exists) {
+ 
+                // Use FAA files
+                log.info "✓ Using existing FAA files in: ${params.faa_dir}"
+ 
+                faa_ch = Channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}", checkIfExists: true)
 
-            log.info "○ Running genome annotation to get ORFs with Prodigal "
+            } else {
+                // Run Prodigal
+                log.info "○ Running genome annotation (Prodigal) to generate ORFs"
 
-            def genomes_ch
-            genomes_ch = Channel.fromPath("${params.genomes}/*.{fa,fasta}", checkIfExists: true)  // note: do not leave spaces in the regex
-            def prodigal_output = PRODIGAL(genomes_ch)
-            faa_ch =  prodigal_output.faa
-
+                genomes_ch   = Channel.fromPath("${params.genomes}/*.{fa,fasta,fa.gz,fasta.gz}", checkIfExists: true)
+                prodigal_out = PRODIGAL(genomes_ch)
+ 
+                faa_ch = prodigal_out.faa
+            }
         }
     }
 
@@ -63,7 +81,12 @@ workflow MICROBETAG_PRECALC {
 
     if ( params.seed_compl) {
 
-        SEED_COMPLEMENTARITY(faa_ch)
+        if (gems_exist) {
+            log.info"Firing SEED_COMPLEMENTARITY sub-workflow with gems_ch."
+            SEED_COMPLEMENTARITY(gems_ch)
+        } else {
+            SEED_COMPLEMENTARITY(faa_ch)
+        }
 
     }
 
