@@ -59,9 +59,20 @@ workflow PHENOTREX {
     if (use_precomputed) {
         genotype = Channel.fromPath(params.genotype_file)
     } else {
-        // The .collect() aggregates all files into a single list. The process will receive all files at once.
-        genomes_ch = Channel.fromPath("${params.genomes}/*").collect()
-        genotype   = GENOTYPE(genomes_ch)
+
+        def genomes_ok    = params.genomes && file(params.genomes).exists()
+        def genomes_exist = genomes_ok && file(params.genomes).list().any { 
+            it.endsWith('.fa')  || it.endsWith('.fasta')
+        }
+
+        if (!genomes_exist) {
+            log.error("No genomes and no genotype file was provided. PHENOTREX will fail.")
+        } else {
+            // The .collect() aggregates all files into a single list. The process will receive all files at once.
+            genomes_ch = Channel.fromPath("${params.genomes}/*").collect()
+            genotype   = GENOTYPE(genomes_ch)
+
+        }
     }
 
     // Step 2: predict phenotypes from genotypes
