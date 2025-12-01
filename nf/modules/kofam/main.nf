@@ -52,7 +52,7 @@ process MERGE_HMMOUT {
     script:
         """
         merge_hmm.sh ${params.threads} ko_merged.txt
-        tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
+        find hmmout_*/ -name "*.hmmout" -type f -print | tar -zcvf hmmout.tar.gz -T -
         """
 }
 
