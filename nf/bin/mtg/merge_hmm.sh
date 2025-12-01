@@ -4,8 +4,7 @@ output_file="$2"
 
 echo -e "bin_id\tcontig_id\tko_term" > $output_file
 
-ls hmmout_*/*.hmmout \
-  | parallel -j $threads --bar --no-notice '
+find hmmout_*/ -name "*.hmmout" -print0 | parallel -0 -j $threads --bar --no-notice '
       f={}
 
       # Skip file if it has no non-comment lines
