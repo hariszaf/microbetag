@@ -40,7 +40,7 @@ process MERGE_HMMOUT {
     tag "Merging hmmout files of each bin/genome to build 3-col ko_merged file"
 
     publishDir { "${params.outdir}/hmmsearch" }, mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container "hariszaf/microbetag-nf:0.1.1"
 
     input: 
         path hmmout_dirs
@@ -52,7 +52,6 @@ process MERGE_HMMOUT {
     script:
         """
         merge_hmm.sh ${params.threads} ko_merged.txt
-        tar -zcvf hmmout.tar.gz hmmout_*/*.hmmout
         """
 }
 
