@@ -6,7 +6,7 @@
 # 
 # Usage: docker build -t hariszaf/microbetag:<tag> .
 
-FROM microbetag_base:latest
+FROM hariszaf/microbetag_base:1.0
 
 LABEL maintainer = "Haris Zafeiropoulos" 
 LABEL contact    = "haris.zafeiropoulos@kuleuven.be"
@@ -24,7 +24,7 @@ ADD ext_data/kofam_database/ko_list ./microbetag/mtg_maps_models/kofam_database/
 ADD microbetag/ ./microbetag/
 
 # Add addtional 
-ADD tests/ ./tests
+ADD tests/ ./tests/
 ADD LICENSE ./
 
 ENTRYPOINT [ "python3", "microbetag.py", "/data/*.yml" ]
