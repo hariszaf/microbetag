@@ -256,7 +256,7 @@ else
     # Create the microbetag environment and install dependencies
     echo -e "$HOURGLASS The primary conda environment for running microbetag is currently under construction.." 
 
-    conda env create -n "$ENV_NAME" -f environment.yml
+    conda env create -n "$ENV_NAME" -f environment_original.yml
 
     echo -e "$TADA microbetag conda environent was built successfully"
 fi
@@ -318,11 +318,14 @@ else
 
     # Clear executable stack if patchelf is available
     if command -v patchelf >/dev/null 2>&1; then
-        patchelf --clear-execstack "$INSTALL_DIR/julia-${JULIA_V}/lib/julia/libopenlibm.so"
+        if patchelf --help | grep -q clear-execstack; then
+            patchelf --clear-execstack "$INSTALL_DIR/julia-${JULIA_V}/lib/julia/libopenlibm.so"
+        else
+            echo "patchelf too old, skipping execstack patch"
+        fi
     else
         echo "patchelf not found, skipping execstack patch"
     fi
-
     # Install FlashWeave via Julia
     "$JULIA_BIN" -e 'using Pkg; Pkg.add("PyCall"); Pkg.add("FlashWeave")'
 fi
