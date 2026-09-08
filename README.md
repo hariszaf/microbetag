@@ -247,6 +247,16 @@ you wish to go for. This is shown in several [`tests`](./tests/).
 https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
 
 
+#### Tests
+
+To run the `tests/` locally, you may use `pytest`. 
+
+For the case of getting the seed inference example cases, you may run:
+
+```
+pytest tests/test-get-seeds.py --draw --graph-dir test_data/test_graphs
+```
+
 ---
 
 🚀 Once setting `microbetag` locally, you can use it as a Python library to a great extent, meaning you can perform a great range 

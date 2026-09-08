@@ -120,3 +120,5 @@ test_data/test_modelseed/input_files
 test_data/test_microbetag/mtg_complete_output
 test_data/test_microbetag/input_files
 
+# Ignore lib being produced by Jupyter notebook
+notebooks/lib/

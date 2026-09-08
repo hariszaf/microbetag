@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "acald_c", "label": "acald_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "accoa_c", "label": "accoa_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "acald_e", "label": "acald_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "etoh_c", "label": "etoh_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "akg_c", "label": "akg_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "cit_c", "label": "cit_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "mal__L_c", "label": "mal__L_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "actp_c", "label": "actp_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ac_c", "label": "ac_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ac_e", "label": "ac_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "acon_C_c", "label": "acon_C_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "icit_c", "label": "icit_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "glx_c", "label": "glx_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "succ_c", "label": "succ_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "succoa_c", "label": "succoa_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "akg_e", "label": "akg_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "glu__L_c", "label": "glu__L_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "etoh_e", "label": "etoh_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "3pg_c", "label": "3pg_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13dpg_c", "label": "13dpg_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "2pg_c", "label": "2pg_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "e4p_c", "label": "e4p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "g3p_c", "label": "g3p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "s7p_c", "label": "s7p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "f6p_c", "label": "f6p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fdp_c", "label": "fdp_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "g6p_c", "label": "g6p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "xu5p__D_c", "label": "xu5p__D_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "r5p_c", "label": "r5p_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "dhap_c", "label": "dhap_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "6pgl_c", "label": "6pgl_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "gln__L_c", "label": "gln__L_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "glu__L_e", "label": "glu__L_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "oaa_c", "label": "oaa_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pep_c", "label": "pep_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pyr_c", "label": "pyr_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "lac__D_c", "label": "lac__D_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "for_c", "label": "for_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pyr_e", "label": "pyr_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ru5p__D_c", "label": "ru5p__D_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "lac__D_e", "label": "lac__D_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "for_e", "label": "for_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fum_c", "label": "fum_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "succ_e", "label": "succ_e", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "6pgc_c", "label": "6pgc_c", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "glc__D_e", "label": "glc__D_e", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "acald_c", "to": "accoa_c", "width": 1}, {"arrows": "to", "from": "acald_c", "to": "acald_e", "width": 1}, {"arrows": "to", "from": "acald_c", "to": "etoh_c", "width": 1}, {"arrows": "to", "from": "accoa_c", "to": "acald_c", "width": 1}, {"arrows": "to", "from": "accoa_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "accoa_c", "to": "cit_c", "width": 1}, {"arrows": "to", "from": "accoa_c", "to": "mal__L_c", "width": 1}, {"arrows": "to", "from": "accoa_c", "to": "actp_c", "width": 1}, {"arrows": "to", "from": "acald_e", "to": "acald_c", "width": 1}, {"arrows": "to", "from": "ac_c", "to": "actp_c", "width": 1}, {"arrows": "to", "from": "ac_c", "to": "ac_e", "width": 1}, {"arrows": "to", "from": "actp_c", "to": "ac_c", "width": 1}, {"arrows": "to", "from": "actp_c", "to": "accoa_c", "width": 1}, {"arrows": "to", "from": "cit_c", "to": "acon_C_c", "width": 1}, {"arrows": "to", "from": "acon_C_c", "to": "cit_c", "width": 1}, {"arrows": "to", "from": "acon_C_c", "to": "icit_c", "width": 1}, {"arrows": "to", "from": "icit_c", "to": "acon_C_c", "width": 1}, {"arrows": "to", "from": "icit_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "icit_c", "to": "glx_c", "width": 1}, {"arrows": "to", "from": "icit_c", "to": "succ_c", "width": 1}, {"arrows": "to", "from": "ac_e", "to": "ac_c", "width": 1}, {"arrows": "to", "from": "akg_c", "to": "succoa_c", "width": 1}, {"arrows": "to", "from": "akg_c", "to": "akg_e", "width": 1}, {"arrows": "to", "from": "akg_c", "to": "glu__L_c", "width": 1}, {"arrows": "to", "from": "akg_c", "to": "icit_c", "width": 1}, {"arrows": "to", "from": "succoa_c", "to": "succ_c", "width": 1}, {"arrows": "to", "from": "akg_e", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "etoh_c", "to": "acald_c", "width": 1}, {"arrows": "to", "from": "etoh_c", "to": "etoh_e", "width": 1}, {"arrows": "to", "from": "3pg_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "3pg_c", "to": "13dpg_c", "width": 1}, {"arrows": "to", "from": "3pg_c", "to": "2pg_c", "width": 1}, {"arrows": "to", "from": "e4p_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "e4p_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "e4p_c", "to": "s7p_c", "width": 1}, {"arrows": "to", "from": "e4p_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "fdp_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "g6p_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "s7p_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "e4p_c", "width": 1}, {"arrows": "to", "from": "f6p_c", "to": "xu5p__D_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "fdp_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "13dpg_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "e4p_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "r5p_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "xu5p__D_c", "width": 1}, {"arrows": "to", "from": "g3p_c", "to": "dhap_c", "width": 1}, {"arrows": "to", "from": "g6p_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "g6p_c", "to": "6pgl_c", "width": 1}, {"arrows": "to", "from": "g6p_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "gln__L_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "gln__L_c", "to": "glu__L_c", "width": 1}, {"arrows": "to", "from": "glu__L_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "glu__L_c", "to": "gln__L_c", "width": 1}, {"arrows": "to", "from": "glu__L_c", "to": "glu__L_e", "width": 1}, {"arrows": "to", "from": "oaa_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "oaa_c", "to": "cit_c", "width": 1}, {"arrows": "to", "from": "oaa_c", "to": "mal__L_c", "width": 1}, {"arrows": "to", "from": "oaa_c", "to": "pep_c", "width": 1}, {"arrows": "to", "from": "pep_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "pep_c", "to": "2pg_c", "width": 1}, {"arrows": "to", "from": "pep_c", "to": "g6p_c", "width": 1}, {"arrows": "to", "from": "pep_c", "to": "pyr_c", "width": 1}, {"arrows": "to", "from": "pep_c", "to": "oaa_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "lac__D_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "accoa_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "for_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "pep_c", "width": 1}, {"arrows": "to", "from": "pyr_c", "to": "pyr_e", "width": 1}, {"arrows": "to", "from": "r5p_c", "to": "akg_c", "width": 1}, {"arrows": "to", "from": "r5p_c", "to": "ru5p__D_c", "width": 1}, {"arrows": "to", "from": "r5p_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "r5p_c", "to": "s7p_c", "width": 1}, {"arrows": "to", "from": "lac__D_e", "to": "lac__D_c", "width": 1}, {"arrows": "to", "from": "lac__D_c", "to": "lac__D_e", "width": 1}, {"arrows": "to", "from": "lac__D_c", "to": "pyr_c", "width": 1}, {"arrows": "to", "from": "2pg_c", "to": "pep_c", "width": 1}, {"arrows": "to", "from": "2pg_c", "to": "3pg_c", "width": 1}, {"arrows": "to", "from": "etoh_e", "to": "etoh_c", "width": 1}, {"arrows": "to", "from": "fdp_c", "to": "dhap_c", "width": 1}, {"arrows": "to", "from": "fdp_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "fdp_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "dhap_c", "to": "fdp_c", "width": 1}, {"arrows": "to", "from": "dhap_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "for_e", "to": "for_c", "width": 1}, {"arrows": "to", "from": "for_c", "to": "for_e", "width": 1}, {"arrows": "to", "from": "fum_c", "to": "succ_c", "width": 1}, {"arrows": "to", "from": "fum_c", "to": "mal__L_c", "width": 1}, {"arrows": "to", "from": "succ_c", "to": "succ_e", "width": 1}, {"arrows": "to", "from": "succ_c", "to": "fum_c", "width": 1}, {"arrows": "to", "from": "succ_c", "to": "succoa_c", "width": 1}, {"arrows": "to", "from": "mal__L_c", "to": "fum_c", "width": 1}, {"arrows": "to", "from": "mal__L_c", "to": "oaa_c", "width": 1}, {"arrows": "to", "from": "mal__L_c", "to": "pyr_c", "width": 1}, {"arrows": "to", "from": "6pgl_c", "to": "g6p_c", "width": 1}, {"arrows": "to", "from": "6pgl_c", "to": "6pgc_c", "width": 1}, {"arrows": "to", "from": "13dpg_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "13dpg_c", "to": "3pg_c", "width": 1}, {"arrows": "to", "from": "glc__D_e", "to": "g6p_c", "width": 1}, {"arrows": "to", "from": "glc__D_e", "to": "pyr_c", "width": 1}, {"arrows": "to", "from": "glu__L_e", "to": "glu__L_c", "width": 1}, {"arrows": "to", "from": "6pgc_c", "to": "ru5p__D_c", "width": 1}, {"arrows": "to", "from": "ru5p__D_c", "to": "xu5p__D_c", "width": 1}, {"arrows": "to", "from": "ru5p__D_c", "to": "r5p_c", "width": 1}, {"arrows": "to", "from": "glx_c", "to": "mal__L_c", "width": 1}, {"arrows": "to", "from": "pyr_e", "to": "pyr_c", "width": 1}, {"arrows": "to", "from": "xu5p__D_c", "to": "ru5p__D_c", "width": 1}, {"arrows": "to", "from": "xu5p__D_c", "to": "g3p_c", "width": 1}, {"arrows": "to", "from": "xu5p__D_c", "to": "s7p_c", "width": 1}, {"arrows": "to", "from": "xu5p__D_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "succ_e", "to": "succ_c", "width": 1}, {"arrows": "to", "from": "s7p_c", "to": "e4p_c", "width": 1}, {"arrows": "to", "from": "s7p_c", "to": "f6p_c", "width": 1}, {"arrows": "to", "from": "s7p_c", "to": "r5p_c", "width": 1}, {"arrows": "to", "from": "s7p_c", "to": "xu5p__D_c", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

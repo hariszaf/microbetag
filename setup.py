@@ -25,13 +25,14 @@ and place it in `microbetag/mtg_maps_models/MetaNetX`
 
 This should be already done when running `setup_environment.sh`.
 """
+
+import ast
 import os
 import re
-import sys
-import ast
 import subprocess
+import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 from setuptools.command.install import install
 
 # Read the requirements.txt file
@@ -47,7 +48,7 @@ def get_records():
     version_match = re.search(r'__version__\s*=\s*"([^"]+)"', content)
     version = version_match.group(1) if version_match else None
 
-    authors_match = re.search(r'__authors__\s*=\s*(\[.*?\])', content, re.DOTALL)
+    authors_match = re.search(r"__authors__\s*=\s*(\[.*?\])", content, re.DOTALL)
     authors = ast.literal_eval(authors_match.group(1)) if authors_match else []
 
     license_match = re.search(r'__license__\s*=\s*"([^"]+)"', content)
@@ -56,12 +57,7 @@ def get_records():
     cite_match = re.search(r'__cite__\s*=\s*"([^"]+)"', content)
     cite = cite_match.group(1) if cite_match else None
 
-    return {
-        "version": version,
-        "authors": authors,
-        "license": license,
-        "cite": cite
-    }
+    return {"version": version, "authors": authors, "license": license, "cite": cite}
 
 
 records = get_records()
@@ -77,32 +73,34 @@ class CustomInstallCommand(install):
         # tries to use a deprecated setup.py egg_info process,
         # which fails in current Python environments
         # (especially in isolated or conda environments with modern setuptools and pip).
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "pyshorteners==1.0.1"])
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "pyshorteners==1.0.1"]
+        )
 
 
 setup(
-    name                 = "microbetag",
-    description          = "A library for microbial co-occurrencce network annotation.",
-    documentation        = "https://microbetag.readthedocs.io/",
-    version              = records["version"],
-    authors              = records["authors"],
-    license              = records["license"],
-    cite                 = records["cite"],
-    packages             = find_packages(include=["microbetag", "microbetag.*"]),
-    include_package_data = True,
-    entry_points         = {
+    name="microbetag",
+    description="A library for microbial co-occurrencce network annotation.",
+    documentation="https://microbetag.readthedocs.io/",
+    version=records["version"],
+    authors=records["authors"],
+    license=records["license"],
+    cite=records["cite"],
+    packages=find_packages(include=["microbetag", "microbetag.*"]),
+    include_package_data=True,
+    entry_points={
         "console_scripts": [
             "microbetag = microbetag.microbetag:main",
         ],
     },
-    package_data = {
+    package_data={
         "microbetag": ["mtg_maps_models/*", "PhyloMint/*", "PhyloMint/lib/*"]
     },
-    install_requires = requirements,
-    dependency_links = [
+    install_requires=requirements,
+    dependency_links=[
         "git+https://github.com/hariszaf/manta.git@scipy-version#egg=manta"
     ],
-    cmdclass={
-        'install': CustomInstallCommand,
-    },
+    # cmdclass={
+    #     "install": CustomInstallCommand,
+    # },
 )
