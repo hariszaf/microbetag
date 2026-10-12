@@ -12,17 +12,15 @@ the pathway and seed complementarities and build the annotated network. The micr
 [microbetag as a Nextflow pipeline](https://microbetag.readthedocs.io/en/latest/tutorials_local/nf.html).
 Its source is `docs/tutorials_local/nf.md` in the microbetag repository; please update it there.
 
-Quick start, with Docker and the example genomes in `data/genomes`
-(with Nextflow 25.10 or later, set `NXF_SYNTAX_PARSER=v1` first; the scripts do not follow its stricter syntax yet):
+Quick start, with Docker and the example data (tested with Nextflow 26.04):
 
 ```bash
-export NXF_SYNTAX_PARSER=v1
-nextflow run workflows/precalc.nf -params-file workflows/precalc.yaml -entry MICROBETAG_PRECALC
-nextflow run workflows/annotate.nf -params-file workflows/annotate.yaml -entry MICROBETAG_ANNOTATE
+nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
+nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
 ```
 
 To prepare an amplicon dataset for the on-the-fly version (GTDB taxonomies with IDTAXA, network with FlashWeave):
 
 ```bash
-nextflow run workflows/prep.nf -params-file workflows/prep.yaml -entry MICROBETAG_PREP
+nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
 ```

@@ -71,17 +71,23 @@ process ANNOTATE_NETWORK {
 
 workflow {
 
-    // todo hariszaf : needs update with new inputs
-    // Should not work at the moment
+    // The params file is passed on to microbetag, which reads the annotation settings from it
+    def cmdTokens   = workflow.commandLine.tokenize()
+    def paramsIndex = cmdTokens.indexOf('-params-file')
+    if (paramsIndex == -1) {
+        error "Provide the parameters with -params-file, e.g. -params-file modules/mtg_annotate/mtg_annotate.yaml"
+    }
 
-    def yaml_ch   = Channel.fromPath(params.paramsFile)
-    def input_ch  = Channel.fromPath(params.indir)
-    def outdir_ch = Channel.fromPath(params.outdir)
-
-    // ANNOTATE_NETWORK(mtg_net_sc_ch, yaml_ch, input_ch, outdir_ch)
-    ANNOTATE_NETWORK(yaml_ch, input_ch, outdir_ch)
-
+    ANNOTATE_NETWORK(
+        channel.fromPath(cmdTokens[paramsIndex + 1], checkIfExists: true),
+        channel.fromPath(params.network, checkIfExists: true),
+        channel.fromPath(params.precalculations, checkIfExists: true),
+        channel.fromPath(params.indir, checkIfExists: true),
+        params.faprotax_sub_tables ?: "",
+        params.manta_net ?: ""
+    )
 }
+
 
 
 // 

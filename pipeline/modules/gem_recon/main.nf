@@ -15,13 +15,18 @@ include  { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } 
 include {GAPSEQ_FIND; GAPSEQ_FIND_TRANSPORTER; GAPSEQ_DRAFT; GAPSEQ_FILL} from './gapseq'
 
 
-def gurobiBind = workflow.containerEngine == 'singularity' ?
-    "-B ${params.gurobi_lic}:/opt/gurobi/gurobi.lic" :
-    "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+// Mount the Gurobi license and CPLEX in the containers
+def gurobiBind() {
+    return workflow.containerEngine == 'singularity'
+        ? "-B ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+        : "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+}
 
-def cplexBind = workflow.containerEngine == 'singularity' ?
-    "-B ${params.cplex}:/opt/CPLEX" :
-    "-v ${params.cplex}:/opt/CPLEX"
+def cplexBind() {
+    return workflow.containerEngine == 'singularity'
+        ? "-B ${params.cplex}:/opt/CPLEX"
+        : "-v ${params.cplex}:/opt/CPLEX"
+}
 
 
 process CARVE {
@@ -30,18 +35,17 @@ process CARVE {
 
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
     container "hariszaf/carveme:1.6.6"
-    containerOptions = gurobiBind
+    containerOptions { gurobiBind() }
 
     input:
         path in_chunk
         val is_faa
 
-    // Optional: uncomment to enable conditional execution
-    when:
-        params.recon_with == "carveme"
-
     output:
         path "*.xml", emit: carve_model
+
+    when:
+        params.recon_with == "carveme"
 
     script:
         """
@@ -75,20 +79,20 @@ process GAPSEQ {
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
     container "hariszaf/gapseq:1.4.0"
 
-    containerOptions = cplexBind
+    containerOptions { cplexBind() }
 
     input:
         path genome
         path prev_tbl
         path medium
 
-    when:
-        params.recon_with == "gapseq"
-
     output:
         path "emm"
         path "*.tbl", emit: tbl, optional: true
         path "*.xml", emit: gapseq_model  //, optional: true
+
+    when:
+        params.recon_with == "gapseq"
 
     script:
         """
@@ -225,14 +229,14 @@ workflow {
     } else if (params.recon_with == "gapseq") {
         
         def gapseq_prev_ch = params.gapseq.prev_tbl ? 
-            Channel.fromPath("${params.gapseq.prev_tbl}/*")
-                .ifEmpty { Channel.value([]) }
+            channel.fromPath("${params.gapseq.prev_tbl}/*")
+                .ifEmpty { channel.value([]) }
                 .collect() :
-            Channel.value([])
+            channel.value([])
 
         def med_ch = params.gapseq.medium.file ?
-            Channel.fromPath(params.gapseq.medium.file).ifEmpty { Channel.value([]) } :
-            Channel.value([])
+            channel.fromPath(params.gapseq.medium.file).ifEmpty { channel.value([]) } :
+            channel.value([])
 
         // Pass chunks to your gapseq process
         GAPSEQ(decomp_ch, gapseq_prev_ch, med_ch)

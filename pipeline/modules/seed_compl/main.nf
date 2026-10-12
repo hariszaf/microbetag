@@ -7,15 +7,6 @@ Usage:
 nextflow run seed_compl/seed_compl.nf -c seed_compl/seed_compl.config
 */
 
-include { readParamsFile } from '../helpers.nf'
-
-// Only read default YAML if user didn't specify a params-file
-if (!workflow.commandLine.contains('-params-file')) {
-    def new_params = readParamsFile(params.paramsFile)
-    params.putAll(new_params)
-}
-
-
 process GET_SEED_SETS {
 
     tag "Calculate seed and non-seed sets based on GEM reconstructions."
@@ -129,8 +120,8 @@ process AGGREGATE_SCORES_COMPLS {
 workflow {
 
     // Channels for species GEMs and species names
-    gems_ch    = Channel.fromPath("${params.gems}/*.xml")
-    species_ch = Channel
+    gems_ch    = channel.fromPath("${params.gems}/*.xml")
+    species_ch = channel
         .fromPath("${params.gems}/*.xml")
         .map { file -> file.baseName }
 

@@ -80,7 +80,7 @@ workflow TAXONOMY {
         training_set
 
     main:
-        classify_script = Channel.fromPath("${moduleDir}/../../bin/taxonomy/classify.R", checkIfExists: true)
+        classify_script = channel.fromPath("${moduleDir}/../../bin/taxonomy/classify.R", checkIfExists: true)
 
         fasta       = TO_FASTA(abundance_table)
         assignments = IDTAXA(fasta.fasta, training_set, classify_script)
@@ -94,7 +94,7 @@ workflow TAXONOMY {
 workflow {
 
     TAXONOMY(
-        Channel.fromPath(params.abundance_file, checkIfExists: true),
-        Channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
+        channel.fromPath(params.abundance_file, checkIfExists: true),
+        channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
     )
 }

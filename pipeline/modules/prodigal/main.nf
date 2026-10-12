@@ -8,14 +8,12 @@ nextflow run modules/prodigal/main.nf -params-file modules/prodigal/prodigal.yam
 
 */
 
-include { readParamsFile } from '../helpers.nf'
-
 // ORIGINAL
 process PRODIGAL {
 
     publishDir "${params.outdir}/prodigal", mode: 'copy'
     container "biocontainers/prodigal:v1-2.6.3-4-deb_cv1"
-    containerOptions = workflow.containerEngine == 'docker' ? '-u $(id -u):$(id -g)' : ''
+    containerOptions workflow.containerEngine == 'docker' ? '-u $(id -u):$(id -g)' : ''
 
 
     input:
@@ -38,7 +36,7 @@ process PRODIGAL {
 workflow {
 
     // Create a channel from input genomes
-    def genomes_ch = Channel.fromPath("${params.genomes}/*")
+    def genomes_ch = channel.fromPath("${params.genomes}/*")
 
     // PRODIGAL(genomes_ch) | view { message -> "I say... $message" }
 

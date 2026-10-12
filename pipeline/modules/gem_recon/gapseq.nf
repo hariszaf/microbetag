@@ -1,8 +1,11 @@
 
 
-def cplexBind = workflow.containerEngine == 'singularity' ?
-    "-B ${params.cplex}:/opt/CPLEX" :
-    "-v ${params.cplex}:/opt/CPLEX"
+// Mount CPLEX in the containers
+def cplexBind() {
+    return workflow.containerEngine == 'singularity'
+        ? "-B ${params.cplex}:/opt/CPLEX"
+        : "-v ${params.cplex}:/opt/CPLEX"
+}
 
 
 process GAPSEQ_FIND {
@@ -10,7 +13,7 @@ process GAPSEQ_FIND {
     tag "gapseq find"
     
     container "hariszaf/gapseq:1.4.0"
-    publishDir "${params.outdir}/reconstructions/${base}", mode: 'copy', overwrite: true
+    publishDir path: { "${params.outdir}/reconstructions/${base}" }, mode: 'copy', overwrite: true
 
     input:
     tuple val(base), path(genome)
@@ -47,7 +50,7 @@ process GAPSEQ_FIND_TRANSPORTER {
     tag "gapseq find transporters"
 
     container "hariszaf/gapseq:1.4.0"
-    publishDir "${params.outdir}/reconstructions/${base}", mode: 'copy', overwrite: true
+    publishDir path: { "${params.outdir}/reconstructions/${base}" }, mode: 'copy', overwrite: true
 
     input:
     tuple val(base), path(genome)
@@ -85,9 +88,9 @@ process GAPSEQ_DRAFT {
     tag "gapseq draft reconstruction"
 
     container "hariszaf/gapseq:1.4.0"
-    containerOptions = cplexBind
+    containerOptions { cplexBind() }
 
-    publishDir "${params.outdir}/reconstructions/${base}", mode: 'copy', overwrite: true
+    publishDir path: { "${params.outdir}/reconstructions/${base}" }, mode: 'copy', overwrite: true
     
 
     input:
@@ -148,9 +151,9 @@ process GAPSEQ_FILL {
     tag "gapseq gapfill"
     
     container "hariszaf/gapseq:1.4.0"
-    containerOptions = cplexBind
+    containerOptions { cplexBind() }
 
-    publishDir "${params.outdir}/reconstructions/${base}", mode: 'copy', overwrite: true
+    publishDir path: { "${params.outdir}/reconstructions/${base}" }, mode: 'copy', overwrite: true
 
     input:
     tuple val(base),
@@ -199,7 +202,7 @@ workflow GAPSEQ {
     def gf_input
     def med_ch
 
-    genome_ch = Channel.fromPath("${params.recon_files}/*")
+    genome_ch = channel.fromPath("${params.recon_files}/*")
 
     // ${params.gapseq.find.p} genomes, with their base name -- genome is a Path object from the previous channel.
     genomes_with_base = genome_ch.map { genome -> [genome.getBaseName(), genome] }
@@ -280,7 +283,7 @@ workflow GAPSEQ {
     
     if( has_medium ) {
         println "GO FOR GAP-FILLING WITH MEDIUM FILE"
-        med_ch   = Channel.value(file(med_file))
+        med_ch   = channel.value(file(med_file))
         gf_input = existing_xml_ch.concat(draft.draft_recon_files).combine(med_ch)
         gf_input.view{ base, xml_rds, rxn_wghts, rxn_genes, medim -> 
         """

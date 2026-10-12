@@ -1,10 +1,12 @@
 indir: data
+# Output directory of the precalc workflow, with the pre-calculations to annotate the network with
+precalculations: test-precalc
 onthefly: false
 
 outdir: test-annotate
 mtg_net: my.cx2
 
-abundance_file: data/abd_data/testAbundMeta.tsv
+abundance_file: data/abd_data/abund.tsv
 delimiter: ","
 sequence_id_column_name: null
 
@@ -31,7 +33,8 @@ sc_pkl: test-precalc/seed_compl/seed_compls.pkl
 module_nonseeds: test-precalc/seed_compl/keggm_nonseeds.pkl
 seed_scores: test-precalc/seed_compl/seed_scores.tsv
 
-net_cluster: true
+# true needs a manta-clustered network (.cyjs): set manta_net, or run the annotate workflow, which runs manta
+net_cluster: false
 # If you wish to apply manta clustering set to true. Set to false if you already have clusters on your network.
 # Attention! In this case, please provide your network in .cyjs format.
 manta: true

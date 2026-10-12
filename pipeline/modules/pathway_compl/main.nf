@@ -62,7 +62,7 @@ workflow {
 
     def alts_file
     def pc_file
-    def ko_merged_ch = Channel.fromPath(params.ko_merged, checkIfExists: true)
+    def ko_merged_ch = channel.fromPath(params.ko_merged, checkIfExists: true)
 
     // Check if we can skip PC_PRECALC
     def skip_precalc = params.alts_file && params.pc_file && 
@@ -70,8 +70,8 @@ workflow {
                       file(params.pc_file).exists()
     
     if (skip_precalc) {
-        alts_file = Channel.fromPath(params.alts_file, checkIfExists: true)
-        pc_file   = Channel.fromPath(params.pc_file, checkIfExists: true)
+        alts_file = channel.fromPath(params.alts_file, checkIfExists: true)
+        pc_file   = channel.fromPath(params.pc_file, checkIfExists: true)
         log.info "✓ Using existing files, skipping PC_PRECALC"
     } else {
         PC_PRECALC(ko_merged_ch)

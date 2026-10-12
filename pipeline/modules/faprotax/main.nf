@@ -41,7 +41,7 @@ process FAPROTAX {
 workflow{
 
     // Create a channel from input abundance table
-    def abundance_ch = Channel.fromPath("${params.abundance_table}")
+    def abundance_ch = channel.fromPath("${params.abundance_table}")
 
     // Run process 
     FAPROTAX(abundance_ch)

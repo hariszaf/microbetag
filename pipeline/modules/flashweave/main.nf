@@ -8,16 +8,14 @@ nextflow run modules/flashweave/main.nf -params-file modules/flashweave/flashwea
 
 */
 
-import groovy.json.JsonOutput
-
-jlSingularityOptions = workflow.containerEngine == 'singularity' ? 
-    """
-        --bind $HOME/julia_depot:$HOME/julia_depot \
-        --bind $HOME/julia_tmp:$HOME/juliatmp \
-        --env JULIA_DEPOT_PATH=$HOME/julia_depot:/usr/local/share/julia \
-        --env TMPDIR=$HOME/julia_tmp
-    """.stripIndent().trim() : 
-    ""
+// Singularity/Apptainer: Julia needs writable folders, outside the read-only image
+def jlSingularityOptions() {
+    def home = System.getenv('HOME')
+    return workflow.containerEngine == 'singularity'
+        ? "--bind ${home}/julia_depot:${home}/julia_depot --bind ${home}/julia_tmp:${home}/juliatmp " +
+          "--env JULIA_DEPOT_PATH=${home}/julia_depot:/usr/local/share/julia --env TMPDIR=${home}/julia_tmp"
+        : ""
+}
 
 // ---------------- Processes ----------------
 
@@ -46,7 +44,7 @@ process RUN_FW {
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
-    containerOptions = jlSingularityOptions
+    containerOptions { jlSingularityOptions() }
 
     input:
         file formatted_table
@@ -72,7 +70,7 @@ process RUN_FW_METADATA {
 
     publishDir "${params.outdir}/flashweave", mode: 'copy'
     container "hariszaf/flashweave:0.19.2"
-    containerOptions = jlSingularityOptions
+    containerOptions { jlSingularityOptions() }
 
     input:
         file formatted_table
@@ -97,7 +95,7 @@ process RUN_FW_METADATA {
 
 workflow {
 
-    abundance_ch = Channel.fromPath(params.abundance_file)
+    abundance_ch = channel.fromPath(params.abundance_file)
 
     // Step 1: format input table
     formatted_table = FORMAT_FW(abundance_ch)
@@ -111,7 +109,7 @@ workflow {
     if (metadata_val) {
 
         // metadata_val is non-empty → run process that uses metadata
-        metadata_ch = Channel.fromPath(metadata_val)
+        metadata_ch = channel.fromPath(metadata_val)
         RUN_FW_METADATA(formatted_table, metadata_ch)
 
     } else {

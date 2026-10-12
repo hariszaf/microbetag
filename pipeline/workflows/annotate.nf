@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 
-/* Nextflow script to run microbetag precalculations for a genome catalogue
+/* Nextflow script to annotate a co-occurrence network with microbetag, using the pre-calculations of a genome catalogue
 
-Usage: 
+Usage:
 
-nextflow run net_annoate.nf  -params-file params/net_annoate.yaml -entry 
+nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
 
 */
 
@@ -27,7 +27,7 @@ workflow MICROBETAG_ANNOTATE {
 
 
     if (paramsIndex != -1) {
-        yaml = Channel.fromPath(cmdTokens[paramsIndex + 1])
+        yaml = channel.fromPath(cmdTokens[paramsIndex + 1])
     } else {
         error "Provide a valid input parameter file."
     }
@@ -40,7 +40,7 @@ workflow MICROBETAG_ANNOTATE {
 
         log.info "No network was provided. microbetag will use FlashWeave to infer one."
 
-        abundance_ch = Channel.fromPath(params.abundance_file)  // params.abundance_file
+        abundance_ch = channel.fromPath(params.abundance_file)  // params.abundance_file
 
         // Step 1: format input table
         formatted_table = FORMAT_FW(abundance_ch)
@@ -51,7 +51,7 @@ workflow MICROBETAG_ANNOTATE {
         // Step 3: run FlashWeave on formatted table 
         if (metadata_val) {
             // metadata_val is non-empty → run process that uses metadata
-            metadata_ch = Channel.fromPath(metadata_val)
+            metadata_ch = channel.fromPath(metadata_val)
             network = RUN_FW_METADATA(formatted_table, metadata_ch)
         } else {
             // metadata_val is empty → run process that does not use metadata
@@ -61,7 +61,7 @@ workflow MICROBETAG_ANNOTATE {
     } else {
 
         log.info "A previously inferred network will be used."
-        network = Channel.fromPath(params.network)
+        network = channel.fromPath(params.network)
     }
 
 
@@ -70,7 +70,7 @@ workflow MICROBETAG_ANNOTATE {
         log.info "Run FAPROTAX against abundance table provided"
 
         // Create a channel from input abundance table
-        abundance_ch = Channel.fromPath(params.abundance_file)
+        abundance_ch = channel.fromPath(params.abundance_file)
 
         // Run process 
         f = FAPROTAX(abundance_ch)
@@ -79,7 +79,7 @@ workflow MICROBETAG_ANNOTATE {
 
     } else {
 
-        faprotax_sub_tables = Channel.of(null)
+        faprotax_sub_tables = channel.of(null)
     }
 
 
@@ -106,14 +106,14 @@ workflow MICROBETAG_ANNOTATE {
         }
     } else {
 
-        net_cluster = Channel.of(null)
+        net_cluster = channel.of(null)
     }
 
 
     log.info "Annotating the network..."
 
-    def precalc; precalc = Channel.fromPath(params.precalculations)
-    def inDir; inDir     = Channel.fromPath(params.indir)
+    def precalc; precalc = channel.fromPath(params.precalculations)
+    def inDir; inDir     = channel.fromPath(params.indir)
 
     ANNOTATE_NETWORK(yaml, network, precalc, inDir, faprotax_sub_tables, net_cluster)
 

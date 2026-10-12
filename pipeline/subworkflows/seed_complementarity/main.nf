@@ -32,8 +32,8 @@ workflow SEED_COMPLEMENTARITY {
         def has_gems = params.gems && file(params.gems).exists()
         gem_files_empty = true
         if (has_gems) {
-            def gem_files_list = file(params.gems).list().findAll { 
-                it.endsWith('.xml') || it.endsWith('.sbml') 
+            def gem_files_list = file(params.gems).list().findAll { name ->
+                name.endsWith('.xml') || name.endsWith('.sbml') 
             }
             gem_files_empty = gem_files_list.isEmpty()
         }
@@ -64,8 +64,8 @@ workflow SEED_COMPLEMENTARITY {
             log.info "Genome-scale models were provided by the user and will be used. "
 
             // Channels for species GEMs and species names
-            gems_ch    = Channel.fromPath("${params.gems}/*.xml")
-            species_ch = Channel
+            gems_ch    = channel.fromPath("${params.gems}/*.xml")
+            species_ch = channel
                 .fromPath("${params.gems}/*.xml")
                 .map { file -> file.baseName }
         }
@@ -95,8 +95,8 @@ workflow SEED_COMPLEMENTARITY {
             log.info "Previous calculated confidence and non-seed files were provided by the used and will be used."
 
             def nonseeds_json; def confidence_json
-            nonseeds_json   = Channel.fromPath(params.nonseeds_json)
-            confidence_json = Channel.fromPath(params.confidence_json)
+            nonseeds_json   = channel.fromPath(params.nonseeds_json)
+            confidence_json = channel.fromPath(params.confidence_json)
             species_data_ch = species_ch
                 .combine(nonseeds_json)
                 .combine(confidence_json)
@@ -113,4 +113,11 @@ workflow SEED_COMPLEMENTARITY {
     emit:
         sc.seed_compls
 
+}
+
+
+// Run on its own, with the parameters of its .yaml file:
+// nextflow run subworkflows/seed_complementarity/main.nf -params-file subworkflows/seed_complementarity/sc.yaml
+workflow {
+    SEED_COMPLEMENTARITY(params.recon_files ? channel.fromPath("${params.recon_files}/*") : channel.empty())
 }

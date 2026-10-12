@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run precalc.nf  -params-file params/precalc.yaml -entry MICROBETAG_PRECALC
+nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
 
 */
 
@@ -31,11 +31,11 @@ workflow MICROBETAG_PRECALC {
     def do_compl     = params.pathway_compl || params.seed_compl
     def gems_dir_ok  = params.gems && file(params.gems).exists()
     def faa_dir_ok   = params.faa_dir && file(params.faa_dir).exists()
-    def faa_exists   = faa_dir_ok && file(params.faa_dir).list().any { 
-        it.endsWith('.faa')  || it.endsWith('.faa.gz')
+    def faa_exists   = faa_dir_ok && file(params.faa_dir).list().any { name ->
+        name.endsWith('.faa')  || name.endsWith('.faa.gz')
     }
-    def gems_exist   = gems_dir_ok && file(params.gems).list().any { 
-        it.endsWith('.xml')  || it.endsWith('.xml.gz') 
+    def gems_exist   = gems_dir_ok && file(params.gems).list().any { name ->
+        name.endsWith('.xml')  || name.endsWith('.xml.gz')
     }
     def genomes_ch
     def prodigal_out
@@ -48,7 +48,7 @@ workflow MICROBETAG_PRECALC {
         if (!params.pathway_compl && params.seed_compl && gems_exist) {
             log.info "✓ Using GEMs provided by the user. No genome annotation needed."
             check = false
-            gems_ch = Channel.fromPath("${params.gems}/*.xml",  checkIfExists: true)
+            gems_ch = channel.fromPath("${params.gems}/*.xml",  checkIfExists: true)
         } else {
             check = true
         }
@@ -60,13 +60,13 @@ workflow MICROBETAG_PRECALC {
                 // Use FAA files
                 log.info "✓ Using existing FAA files in: ${params.faa_dir}"
  
-                faa_ch = Channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}", checkIfExists: true)
+                faa_ch = channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}", checkIfExists: true)
 
             } else {
                 // Run Prodigal
                 log.info "○ Running genome annotation (Prodigal) to generate ORFs"
 
-                genomes_ch   = Channel.fromPath("${params.genomes}/*.{fa,fasta,fa.gz,fasta.gz}", checkIfExists: true)
+                genomes_ch   = channel.fromPath("${params.genomes}/*.{fa,fasta,fa.gz,fasta.gz}", checkIfExists: true)
                 prodigal_out = PRODIGAL(genomes_ch)
  
                 faa_ch = prodigal_out.faa

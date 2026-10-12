@@ -2,7 +2,7 @@
 // Subworkflow for pathway complementarity pre-calculations for microbetag
 //
 // To run on its own:
-// nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml -entry PATHWAY_COMPLEMENTARITY 
+// nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
 //
 
 /*
@@ -56,7 +56,7 @@ workflow PATHWAY_COMPLEMENTARITY {
             if (has_ko_output) {
 
                 // Use existing KO output file, skip annotation
-                ko2contig_ch = Channel.fromPath(params.ko_merged, checkIfExists: true)
+                ko2contig_ch = channel.fromPath(params.ko_merged, checkIfExists: true)
                 log.info "✓ Using existing KO output file: ${params.ko_merged}"
             
             } else {
@@ -72,15 +72,15 @@ workflow PATHWAY_COMPLEMENTARITY {
                 }
 
                 // Define KOFAM channels only when needed
-                def ko_list_ch; ko_list_ch   = Channel.fromPath(params.kegg_list, checkIfExists: true)
-                def hmm_prof_ch; hmm_prof_ch = Channel.fromPath(params.hmm_profiles, checkIfExists: true)
-                def hmm_sc_ch ; hmm_sc_ch    = Channel.fromPath("${moduleDir}/../../modules/kofam/kofam.sh", checkIfExists: true)
+                def ko_list_ch; ko_list_ch   = channel.fromPath(params.kegg_list, checkIfExists: true)
+                def hmm_prof_ch; hmm_prof_ch = channel.fromPath(params.hmm_profiles, checkIfExists: true)
+                def hmm_sc_ch ; hmm_sc_ch    = channel.fromPath("${moduleDir}/../../modules/kofam/kofam.sh", checkIfExists: true)
 
                 // Handle FAA files
                 def has_faa_dir = params.faa_dir && file(params.faa_dir).exists()
                 faa_files_empty = true
                 if (has_faa_dir) {
-                    def faa_files_list = file(params.faa_dir).list().findAll { it.endsWith('.faa') }
+                    def faa_files_list = file(params.faa_dir).list().findAll { name -> name.endsWith('.faa') }
                     faa_files_empty = faa_files_list.isEmpty()
                 }
 
@@ -111,4 +111,11 @@ workflow PATHWAY_COMPLEMENTARITY {
     emit:
         pc_ext
 
+}
+
+
+// Run on its own, with the parameters of its .yaml file:
+// nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
+workflow {
+    PATHWAY_COMPLEMENTARITY(params.faa_dir ? channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}") : channel.empty())
 }

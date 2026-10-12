@@ -8,15 +8,9 @@ nextflow run modules/kofam/main.nf -params-file modules/kofam/kofam.yaml
 
 */
 
-// Add missing defaults
-if (!params.containsKey('parts_dir') || params.parts_dir == null) {
-    params.parts_dir = "hmmout"
-}
-
-
 process HMMSEARCH{
 
-    tag "Running HMMER search on over a list of .faa files}"
+    tag "Running HMMER search on a list of .faa files"
 
     container "staphb/hmmer:3.4"
 
@@ -66,18 +60,18 @@ workflow {
         if( !faa_dir.exists() ) {
             error "Directory not found: ${params.faa_dir}"
         } else {
-            faa_ch = Channel.fromPath("${params.faa_dir}/*.faa", checkIfExists: false)
+            faa_ch = channel.fromPath("${params.faa_dir}/*.faa", checkIfExists: false)
         }
     } else {
         error "No FAA directory specified (params.faa_dir is null or empty)."
     }
 
     // KOFAM db
-    ko_list_ch  = Channel.fromPath("${params.kegg_list}")
-    hmm_prof_ch = Channel.fromPath("${params.hmm_profiles}")
+    ko_list_ch  = channel.fromPath("${params.kegg_list}")
+    hmm_prof_ch = channel.fromPath("${params.hmm_profiles}")
 
     // Create a channel from input faa_dir
-    hmmsearch_sc_ch = Channel.fromPath("${moduleDir}/kofam.sh", checkIfExists: true)
+    hmmsearch_sc_ch = channel.fromPath("${moduleDir}/kofam.sh", checkIfExists: true)
 
     // Combine the single channels with all faa_dir
     def inputs_ch

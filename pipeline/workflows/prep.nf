@@ -10,7 +10,7 @@ Upload the outputs to MGG.
 
 Usage:
 
-nextflow run workflows/prep.nf -params-file workflows/prep.yaml -entry MICROBETAG_PREP
+nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
 */
 
 include { TAXONOMY } from '../modules/taxonomy/'
@@ -23,11 +23,11 @@ workflow MICROBETAG_PREP {
         error "Set assign_taxonomy and/or build_network to true."
     }
 
-    abundance_ch = Channel.fromPath(params.abundance_file, checkIfExists: true)
+    abundance_ch = channel.fromPath(params.abundance_file, checkIfExists: true)
 
     if (params.assign_taxonomy) {
         log.info "Assigning GTDB taxonomies to the sequences with IDTAXA."
-        training_set = Channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
+        training_set = channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
         TAXONOMY(abundance_ch, training_set)
     }
 
@@ -38,7 +38,7 @@ workflow MICROBETAG_PREP {
         formatted_table = FORMAT_FW(abundance_ch)
 
         if (params.metadata_file) {
-            RUN_FW_METADATA(formatted_table, Channel.fromPath(params.metadata_file, checkIfExists: true))
+            RUN_FW_METADATA(formatted_table, channel.fromPath(params.metadata_file, checkIfExists: true))
         } else {
             RUN_FW(formatted_table)
         }

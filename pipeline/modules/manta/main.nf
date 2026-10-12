@@ -45,7 +45,7 @@ process RUN_MANTA {
 
 workflow {
 
-    orig_net = Channel.fromPath(params.network)
+    orig_net = channel.fromPath(params.network)
 
     def format_net
     if( params.cyjs_net && params.cyjs_net != '' ) {
@@ -56,14 +56,14 @@ workflow {
             error "The ${params.cyjs_net} cyjs network does not exist."
         } else {
             log.info "A network in .cyjs format was provided and will be used as input for manta."
-            format_net = Channel.fromPath( params.cyjs_net, checkIfExists: false)
+            format_net = channel.fromPath( params.cyjs_net, checkIfExists: false)
         }
 
     } else {
 
         log.info "Original network not in .cyjs version. Needs to be converted to that for manta."
 
-        abd_data = Channel.fromPath(params.abundance_file)
+        abd_data = channel.fromPath(params.abundance_file)
     
         f = PREP_NETWORK(abd_data, orig_net)
 
