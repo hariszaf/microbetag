@@ -130,3 +130,6 @@ nf/test-*
 *.sif
 .pytest_cache/
 *.log
+
+# pyvis writes its JavaScript/CSS next to rendered networks
+lib/
