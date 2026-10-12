@@ -1,6 +1,4 @@
-# microbetag back-end 
-
-(From priv)
+# microbetag back-end
 
 ## Basic architecture and firing up
 
@@ -10,47 +8,37 @@ More specifically, it consists of 3 Docker images:
 - an ngninx (`services/nginx`)
 - the actual app (`services/web`)
  
-First, each of those images needs to be built. 
-Assuming all 3 images are ready, all you have to do is to fire the `docker-compose` command. 
-We will discuss how to edit an image later. 
-When the `docker-compose` command performs, it will start the web-server of microbetag. 
-That means we need a way that this will keep running even when we exit our terminal.
- 
-To this end, we init a tmux session:
+First, each of those images needs to be built, and their settings filled in: copy `.env.example` to `.env.dev`,
+and `services/db/.env.example` to `services/db/.env`, and set the values (they are not tracked by git).
+Then `docker compose up`, run from this folder, starts the web server.
+
+### Running it as a service (systemd)
+
+To keep the server running after you log out, start it at boot and restart it if it fails, let systemd run it.
+[`deploy/microbetag.service`](./deploy/microbetag.service) is a unit file for this; set its `WorkingDirectory`
+to this folder (and the path of `docker`, from `which docker`, if it is not `/usr/bin/docker`), then:
 
 ```bash
-tmux new -s dockerApp
+sudo cp deploy/microbetag.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now microbetag
 ```
 
-From within the tmux session, we move to the root folder of this repo `/microbetagApp` and fire the `docker-compose` command:
+`enable` starts it at every boot, `--now` starts it right away.
 
-```bash
-docker-compose up
-```
+| Task | Command |
+|---|---|
+| Is it running? | `systemctl status microbetag` |
+| Follow the logs | `journalctl -u microbetag -f` |
+| Restart, e.g. after rebuilding an image | `sudo systemctl restart microbetag` |
+| Stop | `sudo systemctl stop microbetag` |
+| Do not start it at boot | `sudo systemctl disable microbetag` |
 
+systemd restarts the whole stack if `docker compose up` fails. To restart a single crashed container without
+the others, add `restart: unless-stopped` to its service in `docker-compose.yml`.
 
-**Attention!**
-
-You need to **detach** from the tmux session; **not** exit!
-If you exit, the `docker-compose` command will be shut and your app will go down.
-To detach, you need to press:
-`ctrl+b` and then `d`.
-
-You can attach to your running session any time by runnint
-```bash
-tmux attach -t dockerApp
-```
-
-When running `htop` now on the server and searching for "tmux" in the tree mode, you may see something similar with this:
-
-![tmux docker](figs/init-app.png)
-
-
-The app is now up and running! 
-You may check this by just typing to a browser: [msysbio.gbiomed.kuleuven.be/](msysbio.gbiomed.kuleuven.be/). 
-
-
-
+The app is now up and running!
+You may check this by just typing to a browser: [msysbio.gbiomed.kuleuven.be/](msysbio.gbiomed.kuleuven.be/).
 
 
 ## How to edit the app
