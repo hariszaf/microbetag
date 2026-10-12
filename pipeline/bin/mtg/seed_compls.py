@@ -6,11 +6,18 @@ with all other species on the dataset and calculates its seed scores
 with the species under study as node A.
 """
 
-import sys
 import json
-from microbetag.seed_complementarity import get_kegg_module_related, \
-    generate_fixed_pairwise_comparisons, kegg_module_related_intersect
-from microbetag.PhyloMint.lib.CalculateIndexes import calculate_scores, extract_complements
+import sys
+
+from microbetag.PhyloMint.lib.CalculateIndexes import (
+    calculate_scores,
+    extract_complements,
+)
+from microbetag.seed_complementarity import (
+    generate_fixed_pairwise_comparisons,
+    get_kegg_module_related,
+    kegg_module_related_intersect,
+)
 
 species      = sys.argv[1]
 nonseeds_dic = sys.argv[2]

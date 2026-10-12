@@ -2,6 +2,7 @@
 
 import os
 import sys
+
 import pandas as pd
 
 # TODO (Haris Zafeiropoulos, 2025-11-10): do we need those two lines now?
@@ -11,6 +12,7 @@ os.makedirs("/tmp/cobrapy_cache", exist_ok=True)
 # temporarily redirect stdout
 sys.stdout = open(os.devnull, 'w')
 from microbetag.utils import detect_separator
+
 sys.stdout = sys.__stdout__
 
 if len(sys.argv) < 2:

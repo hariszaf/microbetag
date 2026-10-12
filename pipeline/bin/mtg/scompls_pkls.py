@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import sys
 import json
 import pickle
+import sys
+
 import pandas as pd
 
 compls_js_outfile  = sys.argv[1]

@@ -30,9 +30,10 @@ Output:
     - seed_set_confidence: Confidence scores for SEED compounds
 """
 
-import sys
 import json
-from microbetag.seed_complementarity import process_sbml, bigg_to_seed_mapping_df, Ixes
+import sys
+
+from microbetag.seed_complementarity import Ixes, bigg_to_seed_mapping_df, process_sbml
 
 sbml_path = sys.argv[1]
 namespace = sys.argv[2]

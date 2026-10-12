@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import os
 import sys
 from pathlib import Path
+
 import microbetag
 from microbetag.utils import extend_complements
 

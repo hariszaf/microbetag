@@ -14,8 +14,12 @@ Output files:
 
 import json
 import pickle
+
 import pandas as pd
-from microbetag.seed_complementarity import get_kegg_module_related, kegg_module_related_intersect
+from microbetag.seed_complementarity import (
+    get_kegg_module_related,
+    kegg_module_related_intersect,
+)
 
 seed_ko_mo      = "/workspace/microbetag/mtg_maps_models/kegg_mappings/seedId_keggId_module.tsv"
 module_seeds    = "keggm_seeds.pkl"

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-import yaml
 import argparse
 import traceback
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
+import yaml
+from microbetag.build_mtg_cx2 import mtg_annotate_network
 from microbetag.config import load_abundance
 from microbetag.networks import get_edgelist
 from microbetag.utils import detect_separator
-from microbetag.build_mtg_cx2 import mtg_annotate_network
 
 
 class Config:

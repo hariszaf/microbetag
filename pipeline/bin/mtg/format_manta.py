@@ -6,8 +6,10 @@ Script to apply transformation from 3-col edgelist to .cyjs using microbetag's c
 
 import sys
 from pathlib import Path
-from mtg_annotate import load_data
+
 from microbetag.helpers import manta_input_net
+from mtg_annotate import load_data
+
 
 class Config:
     def __init__(self):
