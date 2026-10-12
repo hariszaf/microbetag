@@ -4,7 +4,7 @@
 # External tools (Prodigal, kofam, phenotrex, FlashWeave, CarveMe, FAPROTAX, manta) have their
 # own images in microbetag-nf.
 #
-# Build, from the root of the repository:
+# Build, from this folder (microbetag/ of the repository):
 #   docker build -t hariszaf/microbetag:<version> .
 #
 # Run, with the configuration YAML and the files it points to in the current folder:
@@ -23,7 +23,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml README.md LICENSE /opt/microbetag/
-COPY microbetag/ /opt/microbetag/microbetag/
+COPY src/ /opt/microbetag/src/
 RUN pip install --no-cache-dir "/opt/microbetag[otf]" \
  && rm -rf /opt/microbetag
 

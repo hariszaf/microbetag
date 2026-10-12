@@ -6,6 +6,11 @@ on:
     tags: ["v*"]
   pull_request:
 
+# The package, its tests and its image are in microbetag/
+defaults:
+  run:
+    working-directory: microbetag
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,7 +21,7 @@ jobs:
         with:
           python-version: "3.10"
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: microbetag/pyproject.toml
 
       - name: Install microbetag
         run: pip install ".[test]"
@@ -56,7 +61,7 @@ jobs:
       - name: Check tag matches package version
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          version=$(python -c "import re; print(re.search(r'__version__\s*=\s*\"(.+?)\"', open('microbetag/__init__.py').read()).group(1))")
+          version=$(python -c "import re; print(re.search(r'__version__\s*=\s*\"(.+?)\"', open('src/microbetag/__init__.py').read()).group(1))")
           if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
             echo "Tag ${GITHUB_REF_NAME} does not match microbetag.__version__ ${version}"
             exit 1
@@ -65,7 +70,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist/
+          path: microbetag/dist/
 
   publish:
     # Runs only for version tags, e.g. v1.1.0

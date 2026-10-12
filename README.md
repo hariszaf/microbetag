@@ -29,16 +29,15 @@ The repository has three parts, one folder each:
 
 ```
 microbetag/
-├── microbetag/   the Python package
+├── microbetag/   the Python package: src/microbetag/, its tests, pyproject.toml and Dockerfile
 ├── pipeline/     the Nextflow pipeline (microbetag-nf)
 ├── server/       the on-the-fly server and its database (microbetagDB)
-├── tests/        tests of the package
 └── docs/         documentation (readthedocs)
 ```
 
 | Part | What it does | Used by | Install / run |
 |---|---|---|---|
-| [**`microbetag/`**](microbetag) — the package | Computes pathway and seed complementarities from KEGG annotations and GEMs, and builds the annotated network (`.cx2`). It does not run external tools. Also exports pre-calculations as a database (`microbetag-export-db`) and matches taxonomies to genomes (`microbetag.taxonomy`). | you, the pipeline, the server | `pip install .`, or the `hariszaf/microbetag` image |
+| [**`microbetag/`**](microbetag) — the package | Computes pathway and seed complementarities from KEGG annotations and GEMs, and builds the annotated network (`.cx2`). It does not run external tools. Also exports pre-calculations as a database (`microbetag-export-db`) and matches taxonomies to genomes (`microbetag.taxonomy`). | you, the pipeline, the server | `pip install ./microbetag`, or the `hariszaf/microbetag` image; see [microbetag/README.md](microbetag/README.md) |
 | [**`pipeline/`**](pipeline) — microbetag-nf | Runs the external tools in containers: Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta, then the package. Workflows: `precalc` (your genomes → pre-calculations), `annotate` (→ an annotated network), `prep` (inputs for the on-the-fly version). | you, on a computer or an HPC | Nextflow and Docker/Singularity; see [pipeline/README.md](pipeline/README.md) |
 | [**`server/`**](server) — on-the-fly server | The Flask app behind Cytoscape's `MGG`, and the MySQL microbetagDB it queries: GTDB genomes on the public server, or your own genomes after `precalc` and `microbetag-export-db`. | `MGG` | Docker Compose and systemd; see [server/README.md](server/README.md) |
 
@@ -77,20 +76,20 @@ pipeline. It runs the external tools in containers and then `microbetag`.
 
 ```bash
 git clone https://github.com/hariszaf/microbetag.git
-cd microbetag
+cd microbetag/microbetag
 pip install .
 ```
 
 Add `".[otf]"` for the on-the-fly version, which queries the microbetag database, and `".[test]"` to run the tests.
 
-To check your installation, run the tests from the root of the repository:
+To check your installation, run the tests from the same folder:
 
 ```bash
 pip install ".[test]"
 pytest
 ```
 
-[`tests/README.md`](./tests/README.md) describes how to run single tests, or single microbetag steps on the test data.
+[`microbetag/tests/README.md`](./microbetag/tests/README.md) describes how to run single tests, or single microbetag steps on the test data.
 
 #### In a container
 
@@ -100,7 +99,7 @@ The `hariszaf/microbetag` image holds the package and its commands:
 docker pull hariszaf/microbetag:<version>
 ```
 
-or build it from the root of this repository:
+or build it from the `microbetag/` folder of this repository:
 
 ```bash
 docker build -t hariszaf/microbetag:<version> .
@@ -178,12 +177,12 @@ Then run:
 microbetag --config config.yml
 ```
 
-[`tests/data/microbetag`](./tests/data/microbetag/) is a complete example, with its [`config.yml`](./tests/data/microbetag/config.yml).
+[`microbetag/tests/data/microbetag`](./microbetag/tests/data/microbetag/) is a complete example, with its [`config.yml`](./microbetag/tests/data/microbetag/config.yml).
 
 The steps are also available as separate commands (`microbetag-pcompl`, `microbetag-seed-sets`,
 `microbetag-annotate`, ...), which the microbetag-nf pipeline uses; each has `--help`.
 `microbetag` can also be used as a Python library, e.g. to get the seed complementarities of a set of GEMs
-without a network (see [`tests/unit/test_seed_compl.py`](./tests/unit/test_seed_compl.py)).
+without a network (see [`microbetag/tests/unit/test_seed_compl.py`](./microbetag/tests/unit/test_seed_compl.py)).
 
 
 ## RTD

@@ -100,7 +100,7 @@
   Only input for this test is a `ko_merged`-like file, based on the 7 bins we've been using across all the tests, 
   namely: `bin_101`, `bin_151`, `bin_19`, `bin_38`, `bin_41`, `bin_45`, `bin_48`.
 
-  This file is the output of the `merge_ko()` you may check on the [`utils.py`](../microbetag/utils.py) function,
+  This file is the output of the `merge_ko()` you may check on the [`utils.py`](../../../microbetag/src/microbetag/utils.py) function,
   and it looks like:
 
   ```bash

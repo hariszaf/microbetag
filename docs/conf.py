@@ -68,7 +68,7 @@ def setup(app):
     app.connect("autoapi-skip-member", autoapi_skip_member)
 
 
-autoapi_dirs   = ["../microbetag"]
+autoapi_dirs   = ["../microbetag/src/microbetag"]
 autoapi_ignore = [
     "*PhyloMint*",
     "*FAPROTAX*",

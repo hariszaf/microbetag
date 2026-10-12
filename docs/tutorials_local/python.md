@@ -49,10 +49,10 @@ description: "how to run microbetag from Python"
   which the [microbetag-nf](./nf.md) pipeline uses; each has `--help`.
 
   To go through them, you may have a look at the [API Reference](../autoapi/index) but also 
-  on the <a href="https://github.com/msysbio/microbetag/tree/develop/tests" target="_blank">`unittests` of ours</a>.
+  on the <a href="https://github.com/msysbio/microbetag/tree/develop/microbetag/tests" target="_blank">`unittests` of ours</a>.
 
   Input/output for these tests can be found in the 
-  <a href="https://github.com/msysbio/microbetag/tree/develop/tests/data" target="_blank">`tests/data`</a>
+  <a href="https://github.com/msysbio/microbetag/tree/develop/microbetag/tests/data" target="_blank">`tests/data`</a>
   folder where each case is explained further. 
   
   In the [.. using custom genomes](./local.md) tutorial, we provide an example of a complete `microbetag` run,

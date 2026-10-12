@@ -54,6 +54,7 @@ Source        = "https://github.com/hariszaf/microbetag"
 version = { attr = "microbetag.__version__" }
 
 [tool.setuptools.packages.find]
+where   = ["src"]
 include = ["microbetag", "microbetag.*"]
 
 [tool.setuptools.package-data]

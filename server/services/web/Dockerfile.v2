@@ -5,7 +5,7 @@
 # in this image, taken from the pipeline's images.
 #
 # Build the pipeline's images first, from the root of the repository:
-#   docker build -t hariszaf/microbetag:2.0.0 .
+#   docker build -t hariszaf/microbetag:2.0.0 microbetag
 #   docker build -f pipeline/containers/Dockerfile.microbetag-nf -t hariszaf/microbetag-nf:2.0.0 pipeline
 #   docker build -f pipeline/containers/Dockerfile.flashweave -t hariszaf/flashweave:0.19.2 pipeline
 # then this one, also from the root of the repository:

@@ -129,12 +129,12 @@ Here we provide instructions for installing the required components for each mod
 
   ```bash
       git clone https://github.com/hariszaf/microbetag.git
-      cd microbetag
+      cd microbetag/microbetag
       pip install .
   ```
 
   Add the `otf` extra (`pip install ".[otf]"`) for the on-the-fly version, which queries the microbetag database,
-  and the `test` extra to run the tests (`pytest`, from the root of the repository).
+  and the `test` extra to run the tests (`pytest`, from the `microbetag/` folder of the repository).
 
   Check that it is available:
 

@@ -50,7 +50,7 @@ no container engine is needed inside it.
 
 ```bash
 # from the root of the repository
-docker build -t hariszaf/microbetag:2.0.0 .
+docker build -t hariszaf/microbetag:2.0.0 microbetag
 docker build -f pipeline/containers/Dockerfile.microbetag-nf -t hariszaf/microbetag-nf:2.0.0 pipeline
 docker build -f pipeline/containers/Dockerfile.flashweave -t hariszaf/flashweave:0.19.2 pipeline
 docker build -f server/services/web/Dockerfile.v2 -t microbetag-server:2.0.0 .

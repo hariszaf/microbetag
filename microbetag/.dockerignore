@@ -1,6 +1,6 @@
 # Only what the image copies is sent to the build
 *
-!microbetag/
+!src/
 !pyproject.toml
 !README.md
 !LICENSE

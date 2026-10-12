@@ -13,7 +13,7 @@ The tests need only the package; the external tools are tested in
 
 ## Running the tests
 
-Install the package with the `test` extra, then run pytest from the **root of the repository**,
+Install the package with the `test` extra, then run pytest from the **`microbetag/` folder** of the repository,
 where `pyproject.toml` is:
 
 ```bash
@@ -29,10 +29,10 @@ pytest tests/unit/test_cli.py -v -s       # verbose, showing microbetag's log ou
 
 The commands that the Nextflow pipeline uses can be run on the test data directly.
 Run them in a scratch folder, so that their outputs stay out of the repository;
-`MTG` points to the root of the repository:
+`MTG` points to the package folder (`microbetag/` of the repository):
 
 ```bash
-MTG=$(pwd)                     # run this from the root of the repository
+MTG=$(pwd)                     # run this from microbetag/, where pyproject.toml is
 mkdir -p ~/mtg-try && cd ~/mtg-try
 
 # Pathway complementarities from a 3-column KO table

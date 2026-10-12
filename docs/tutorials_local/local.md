@@ -11,7 +11,7 @@ description: "an example case of how to run microbetag using your own bins/MAGs"
 
 <div style="display: flex; gap: 10px;">
    <a href="https://github.com/msysbio/microbetag-nf" class="btn-green" target="_blank"> microbetag-nf pipeline </a>
-   <a href="https://github.com/msysbio/microbetag/tree/develop/tests/data/microbetag" class="btn-purple" target="_blank"> Tutorial files </a>
+   <a href="https://github.com/msysbio/microbetag/tree/develop/microbetag/tests/data/microbetag" class="btn-purple" target="_blank"> Tutorial files </a>
 </div>
 
 
@@ -44,7 +44,7 @@ annotation of your genomes from an earlier analysis, you can run `microbetag` on
 ## Input files
 
 The tutorial files are the
-<a href="https://github.com/msysbio/microbetag/tree/develop/tests/data/microbetag" target="_blank">`tests/data/microbetag`</a>
+<a href="https://github.com/msysbio/microbetag/tree/develop/microbetag/tests/data/microbetag" target="_blank">`tests/data/microbetag`</a>
 folder of the `microbetag` repository: 7 bins of the Hessler data set, their network and the tool outputs.
 
 | File | What | Produced by | Used for |
