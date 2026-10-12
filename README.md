@@ -18,15 +18,33 @@ Then, it will annotate your network based on pre-calculations of those GTDB geno
 To annotate your network using your own genomes, run microbetag locally.
 The steps that run external tools on the genomes (gene prediction, KEGG annotation, trait prediction,
 genome-scale model reconstruction, FAPROTAX, network inference and clustering) are computationally
-expensive; they run in the [**microbetag-nf**](https://github.com/msysbio/microbetag-nf) Nextflow pipeline,
+expensive; they run in the [**microbetag-nf**](pipeline) Nextflow pipeline,
 on your computer or an HPC. The `microbetag` package then computes the pathway and seed complementarities
 from their outputs and builds the annotated network, e.g. `mtag_net_2025-05-08_17-47.cx2`.
 Load this file in Cytoscape to go through its annotations as in the on-the-fly version.
 
-| | Runs | Install |
-|---|---|---|
-| **microbetag-nf** | the external tools, then `microbetag` | Nextflow and Docker/Singularity; see [microbetag-nf](https://github.com/msysbio/microbetag-nf) |
-| **microbetag** (this repository) | pathway and seed complementarities, the annotated network, the on-the-fly version | `pip install` |
+## Repository layout
+
+The repository has three parts, one folder each:
+
+```
+microbetag/
+├── microbetag/   the Python package
+├── pipeline/     the Nextflow pipeline (microbetag-nf)
+├── server/       the on-the-fly server and its database (microbetagDB)
+├── tests/        tests of the package
+└── docs/         documentation (readthedocs)
+```
+
+| Part | What it does | Used by | Install / run |
+|---|---|---|---|
+| [**`microbetag/`**](microbetag) — the package | Computes pathway and seed complementarities from KEGG annotations and GEMs, and builds the annotated network (`.cx2`). It does not run external tools. Also exports pre-calculations as a database (`microbetag-export-db`) and matches taxonomies to genomes (`microbetag.taxonomy`). | you, the pipeline, the server | `pip install .`, or the `hariszaf/microbetag` image |
+| [**`pipeline/`**](pipeline) — microbetag-nf | Runs the external tools in containers: Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta, then the package. Workflows: `precalc` (your genomes → pre-calculations), `annotate` (→ an annotated network), `prep` (inputs for the on-the-fly version). | you, on a computer or an HPC | Nextflow and Docker/Singularity; see [pipeline/README.md](pipeline/README.md) |
+| [**`server/`**](server) — on-the-fly server | The Flask app behind Cytoscape's `MGG`, and the MySQL microbetagDB it queries: GTDB genomes on the public server, or your own genomes after `precalc` and `microbetag-export-db`. | `MGG` | Docker Compose and systemd; see [server/README.md](server/README.md) |
+
+How they fit together: the **pipeline** runs the tools and calls the **package**. The **package** builds the
+annotated networks. The **server** serves the package's on-the-fly version from a database built from the
+pipeline's `precalc` output.
 
 If you already have the outputs of those tools, for example GEMs or a KEGG annotation of your genomes,
 you can run `microbetag` on them directly.
@@ -49,7 +67,7 @@ To use `microbetag` on-the-fly, all you have to do is to make sure you have Cyto
 
 ### Option 2: The microbetag-nf pipeline
 
-To go from your genomes to an annotated network, use the [microbetag-nf](https://github.com/msysbio/microbetag-nf)
+To go from your genomes to an annotated network, use the [microbetag-nf](pipeline)
 pipeline. It runs the external tools in containers and then `microbetag`.
 
 
@@ -107,8 +125,8 @@ singularity exec -B $PWD/my_study:/data microbetag.sif microbetag --config /data
 
 Overall, `microbetag` is a software ecosystem composed of a collection of modular code components:
 
-- `microbetag-nf`: the Nextflow pipeline running the external tools, and preparing amplicon data for the on-the-fly version; individual [GitHub repo](https://github.com/msysbio/microbetag-nf)
-- `microbetagDB` : `db` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/db)
+- `microbetag-nf`: the Nextflow pipeline running the external tools, and preparing amplicon data for the on-the-fly version; in [`pipeline/`](pipeline)
+- `microbetagDB` : the database of the server, in [`server/services/db`](server/services/db)
 - `microbetag_prep`: replaced by the prep workflow of `microbetag-nf`; the former tool is on the `preprocess` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/preprocess)
 - `microbetagApp`: individual [GitHub repo](https://github.com/msysbio/microbetagApp-public)
 - `MGG` source code: individual [GitHub repo](https://github.com/hariszaf/MGG)
