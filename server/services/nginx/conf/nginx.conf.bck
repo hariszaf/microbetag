@@ -1,0 +1,16 @@
+events {}
+
+server {
+  listen 441 ssl;
+  server_name 134.58.253.57; 
+  ssl_certificate /etc/nginx/certs/certificate.crt;
+  ssl_certificate_key /etc/nginx/certs/certificate.key;
+
+  location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        # proxy_pass http://app:8080;
+  }
+}
+
+
