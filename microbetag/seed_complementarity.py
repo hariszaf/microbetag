@@ -537,17 +537,6 @@ def _bigg_to_modelseed(bigg_obj, bigg2seed):
         return modelseed_seed_dict
 
 
-def progress_tracker(queue, total):
-    """Progress bar updater."""
-    with tqdm(
-        total=total,
-        desc="Calculate cooperation and competition scores as well as complementarities.",
-    ) as pbar:
-        for _ in range(total):
-            queue.get()  # Wait for a task to finish
-            pbar.update(1)
-
-
 def generate_fixed_pairwise_comparisons(term, lst):
     """Generate and return two lists: one with the fixed item in the first position and one with it in the second."""
 

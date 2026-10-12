@@ -843,28 +843,6 @@ def load_phenotypic_traits(phen_outdir) -> Tuple[Dict[str, Dict[str, Union[str, 
     return bin_phen_traits, phentraits
 
 
-def is_any_nan(x) -> bool:
-    """
-    Checks whether the input value is NaN (Not a Number).
-
-    It first tries to use `numpy.isnan()` for numerical or array-like inputs. 
-    If that fails (e.g., for non-numeric types), it falls back to checking if the string
-    representation of `x` is equal to 'nan' (case-insensitive).
-
-    Returns:
-        bool
-    """
-    try:
-        return np.isnan(x)
-    except Exception:
-        return str(x).lower() == 'nan'
-
-
-def remove_nan_from_list(lst: List) -> List:
-    """Removes Nan from a list using the :class:`is_any_nan`."""
-    return [x for x in lst if not is_any_nan(x)]
-
-
 from typing import Optional
 
 
@@ -1002,10 +980,3 @@ def get_tool_location(software: str) -> str:
 
 _logger_ = mtg_logger(__name__)
 
-
-def is_inside(path, root):
-    try:
-        path.relative_to(root)
-        return True
-    except ValueError:
-        return False
