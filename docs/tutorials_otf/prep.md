@@ -53,7 +53,7 @@ That image is still available on Docker Hub, but it is no longer developed; the 
   cd microbetag-nf
   ```
 
-- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_16s.RData`)
+- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`)
 - your **abundance table**, as a `.tsv` or `.csv` file:
   the sequence identifier in the first column, then the samples, and in the **last** column either the
   **sequence** (to assign taxonomies) or the **taxonomy** (if you only need the network)
@@ -75,7 +75,7 @@ The parameters are set in a YAML file; [`prep.yaml`][2] is a template.
 |`abundance_file`          | The abundance table |
 |`outdir`                  | The output folder |
 |`assign_taxonomy`         | Assign GTDB taxonomies to the sequences with IDTAXA (`true`/`false`) |
-|`gtdb_16s_training_set`   | The GTDB 16S training set (`gtdb_16s.RData`) |
+|`gtdb_16s_training_set`   | The GTDB 16S training set (`gtdb_r207_ssu_idtaxa.RData`) |
 |`idtaxa_threshold`        | IDTAXA confidence threshold: 60 (cautious) or 50 (sensible) |
 |`build_network`           | Infer the co-occurrence network with FlashWeave (`true`/`false`) |
 |`metadata_file`           | Metadata file for FlashWeave; leave empty if not available |
@@ -106,7 +106,7 @@ template there:
 
 ```bash
 mkdir my_microbetag_prep
-mv ~/Downloads/seq_ab_tab.tsv ~/Downloads/prep.yaml /path/to/gtdb_16s.RData my_microbetag_prep/
+mv ~/Downloads/seq_ab_tab.tsv ~/Downloads/prep.yaml /path/to/gtdb_r207_ssu_idtaxa.RData my_microbetag_prep/
 ```
 
 In `prep.yaml`:

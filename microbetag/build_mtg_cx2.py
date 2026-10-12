@@ -1116,15 +1116,19 @@ def mtg_annotate_network(config: "Config") -> ndex2.cx2.CX2Network:
     manta_layout = None
     if config.net_cluster:
 
-        if os.path.exists(config.manta_net):
+        manta_net = getattr(config, "manta_net", None)
+        if manta_net and os.path.exists(manta_net):
             _logger_.info("-- Loading manta clusters\n")
             manta_layout = update_with_manta(
                 nodes      = nodes,
                 node_names = node_names,
-                manta_net  = config.manta_net
+                manta_net  = manta_net
             )
         else:
-            _logger_.warning("! manta was not able to run successfully.")
+            _logger_.warning(
+                "! Network clustering is switched on, but no manta-clustered network was found (%s); "
+                "the network is annotated without clusters.", manta_net
+            )
 
     # PATHWAY COMPL
     if config.path_compl:
