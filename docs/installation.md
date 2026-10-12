@@ -49,6 +49,9 @@ Here we provide instructions for installing the required components for each mod
     - The tool <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">on DockerHub</a>
     - <a href="https://github.com/hariszaf/microbetag/" target="_blank">Source code</a>
 
+  - `microbetag-nf` pipeline, running the external tools on your genomes:
+    - <a href="https://github.com/msysbio/microbetag-nf" target="_blank">Source code</a>
+
   - `microbetagDB`: 
     - <a href="https://github.com/hariszaf/microbetag/tree/microbetagdb" target="_blank">Source code</a>
     - Key data products <a href="https://zenodo.org/records/10562677" target="_blank">on Zenodo</a>
@@ -82,131 +85,78 @@ Here we provide instructions for installing the required components for each mod
 
 ## Install stand-alone `microbetag`
 
-  If you are interested in running `microbetag` with your own genomes, or if you would like to go for any 
-  of its features independently, you need to install the actual `microbetag` pipeline, and its several dependencies. 
+  To annotate a network using your own genomes, there are two parts:
 
-  To this end, you may build its Python library from its [source code](#locally) or its [containerized versions](#as-a-container). 
-  Yet, you may also access `microbetag` through a [Nextflow pipeline](#as-a-nextflow-pipeline).
+  - the [**microbetag-nf** pipeline](#the-microbetag-nf-pipeline) runs the external tools on your genomes
+    (Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta), and then `microbetag`;
+  - the [**`microbetag` package**](#the-microbetag-package) computes the pathway and seed complementarities
+    from the outputs of those tools and builds the annotated network.
 
-  In all cases, you need to make sure that besides `microbetag` itself, you also have access to:
-
-  - KOFAM database for KEGG Orthology annotations -- if you plan to run the KEGG annotation step
-  
-  In case you build `microbetag` from source code locally, you may add the `--kofam` in the `install.sh` script call,
-  and it will automatically download the KOFAM database for you.
-  Otherwise, you may download it manually by running the following commands:
-
-  ```
-    cd ext_data/kofam_database
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz 
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz 
-    gzip -d ko_list.gz &&\
-    tar zxvf profiles.tar.gz 
-  ```
-  - A [Gurobi license](#install-gurobi-license) -- if you plan to run the GEM reconstruction step using `carveme`
-  - (optional) [a CPLEX license](#install-cplex) -- if you plan to run the GEM reconstruction step using `gapseq` with CPLEX solver
+  To start from your genomes, install the pipeline. If you already have the outputs of the tools
+  (e.g. GEMs or KEGG annotations of your genomes), the package is enough.
+  The tutorial [.. using custom genomes](./tutorials_local/local.md) describes both.
 
 
-### .. as a Nextflow pipeline
+### The microbetag-nf pipeline
 
-  The easiest, most straight-forward approach to access the stand-alone version of `microbetag` is as a Nextflow pipeline. 
-
-  To get started, you need first to make sure you have [Nextflow](https://www.nextflow.io/) installed on your system.
-  If not already available, you may follow instructions 
+  You need [Nextflow](https://www.nextflow.io/); if not already available, follow the instructions
   <a href="https://www.nextflow.io/docs/latest/getstarted.html#installation" target="_blank">here</a>.
 
-  Then, you need to make sure you have `Docker` or `Singularity/Apptainer` installed on your system.
-  If not already available, you may follow instructions 
-  <a href="https://docs.docker.com/get-docker/" target="_blank">here</a> 
-  for `Docker` or 
-  <a href="https://docs.sylabs.io/guides/3.0/user-guide/installation.html" target="_blank">here</a> 
-  for `Singularity` and <a href="https://apptainer.org/docs/admin/main/installation.html" target="_blank">here</a> for `Apptainer`.
+  You also need a containerization technology to run the tools:
+  <a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a>, or
+  <a href="https://docs.sylabs.io/guides/3.0/user-guide/installation.html" target="_blank">Singularity</a> /
+  <a href="https://apptainer.org/docs/admin/main/installation.html" target="_blank">Apptainer</a>.
+  On an HPC system, Singularity or Apptainer is most likely already available, while Docker would not be an option.
 
-  In case you are working on a HPC system, `Singularity` and/or `Apptainer` most likely would already be available, while Docker would not be an option.
-
-
-  After you have `Nextflow` and a containerization technology installed, you may get the `microbetag` Nextflow pipeline by running: 
+  Then get the pipeline:
 
   ```bash
       git clone https://github.com/msysbio/microbetag-nf
   ```
 
-  The pipeline is developed in its own repository, `microbetag-nf`.
-  Run either the `precalc.nf` or the `annotate.nf` workflow from its `workflows/` folder, following the instructions [here](./tutorials_local/nf.md).
+  and follow its instructions [here](./tutorials_local/nf.md).
+  Depending on the steps you run, the pipeline also needs:
+
+  - the [KOfam database](https://www.genome.jp/ftp/db/kofam/), for the KEGG ORTHOLOGY annotation;
+  - a [Gurobi license](#install-gurobi-license), for GEM reconstruction with CarveMe or gap-filling with DNNGIOR
+    (or [CPLEX](#install-cplex), for gapseq).
 
 
+### The `microbetag` package
 
-
-### .. locally
-
-  To install the `microbetag` stand-alone tool locally, you need first to make sure you have `conda` or `miniconda`.
-  If not already available, you may follow instructions 
-  <a href="https://docs.anaconda.com/miniconda/" target="_blank">here</a>.
-
-
-  Then, you need to clone or download _microbetag_'s source code locally and fire a bash script 
-  that will build the required environments for the different _microbetag_ modules: 
+  `microbetag` needs Python 3.10 or later. Install it from its source code:
 
   ```bash
       git clone https://github.com/hariszaf/microbetag.git
-
       cd microbetag
-
-      bash install.sh
+      pip install .
   ```
 
+  Add the `otf` extra (`pip install ".[otf]"`) for the on-the-fly version, which queries the microbetag database,
+  and the `test` extra to run the tests (`pytest`, from the root of the repository).
 
-  _microbetag_ depends on several software packages that often have co-exclusive depdencies. 
-  To address this challenge, _microbetag_ makes use of different `conda` environmets for each of these packages. 
-  Therefore, once the `install.sh` script is complete, you should have the folllowing list of `conda envs`:
+  Check that it is available:
 
-  * `microbetag`       : a Python 3.10 based environment; the basic environment for the _microbetag_ pipeline 
-  * `mtg-phenotrex`    : for predicting genome-based phenotypic traits with <a href="https://phenotrex.readthedocs.io/en/latest/usage.html" target="_blank">`phenotrex`</a>
-  * `mtg-modelseedpy`  : for genome-scale metabolic network reconstruction with [ModelSEEDpy] (https://modelseedpy.readthedocs.io/en/latest/){target="_blank"}
-  * `mtg-dnngior`      : for gap-filling draft reconstructions with <a href="https://github.com/MGXlab/DNNGIOR/" target="_blank">DNNGIOR</a>
-
-
-  Even most of the dependencies can be installed at the user level, 
-  to enable the 
-  <a href="https://www.bv-brc.org/docs///cli_tutorial/rasttk_getting_started.html" target="_blank">RASTtk</a>, 
-  there are some Perl requirements that if not already available, they do require to be installed by your admin, 
-  i.e. requiring sudo rights.
-  Also, <a href="https://itsfoss.com/gdebi-default-ubuntu-software-center/" target="_blank">gdebi</a> 
-  is required for installing `RASTtk`.
-
-  ```{note}
-  Each environment is described in a file under [`envs/`](https://github.com/hariszaf/microbetag/tree/main/envs).
-  By default, `install.sh` only builds the `microbetag` environment, which includes Prodigal, HMMER,
-  DIAMOND, FragGeneScan and Julia with FlashWeave. Add `--phenotrex`, `--modelseed`, `--dnngior`, or `--all`
-  for the other environments, and `--kofam` to download the KOFAM database.
-  Run `bash install.sh --help` for all options.
-
-  Nothing is installed outside the conda environments; Julia packages are kept inside the `microbetag` environment.
+  ```bash
+      microbetag --version
   ```
 
-  ```{note}
-  RASTtk, needed by `--modelseed` to annotate genomes, can't be installed with conda
-  and requires admin rights; the script prints instructions when it is missing.
-  DNNGIOR and CarveMe need a [Gurobi license](#install-gurobi-license).
-  ```
 
 ### .. as a container
 
-  A Docker image for `microbetag` is available, and we have successfully tested it using Singularity as well.
-  For installing either of those, check the [below](#containerization-technologies-docker-and-singularityapptainer) for more.
+  The `microbetag` package is also available as a Docker image, which also works with Singularity/Apptainer:
 
-  Assuming Docker is available, you may get `microbetag` simply by running: 
+  ```bash
+      docker pull hariszaf/microbetag:<version>
+  ```
 
-    docker pull hariszaf/microbetag:<version>
-
-  In case `<version>` is blank, Docker will pull the latest version of `microbetag`.
+  If `<version>` is left out, Docker pulls the latest version.
+  See the tutorial on [running `microbetag` on a container](./tutorials_local/containers.md).
 
   ```{note}
-  As discussed in the tutorial for running [`microbetag` locally](./tutorials_local/local.md), a **configuration 
-  YAML file** is required. 
-  Make sure to obtain this from the 
-  <a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`microbetag` GitHub repository</a> 
-  and ensure it matches the version of `microbetag` you are using.
+  `microbetag` needs a **configuration YAML file**; get the template of the version you are using from the
+  <a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`microbetag` GitHub repository</a>.
+  See [the configuration file](./tutorials_local/config.md).
   ```
 
 
@@ -256,37 +206,20 @@ So far, we have tested them using:
 
 ### Install `gurobi` license
 
-  If you are about to run `microbetag` locally and reconstruct Genome Scale Reconstructions (GENREs) 
-  based on your own genomes/bins/MAGs, `microbetag` wraps two widely used approaches: 
+  GEM reconstruction with CarveMe, and gap-filling of ModelSEEDpy reconstructions with DNNGIOR, need a solver;
+  CarveMe requires one to run (Gurobi or CPLEX). These steps run in the [microbetag-nf](./tutorials_local/nf.md)
+  pipeline; `microbetag` itself does not need a solver.
 
-  - **using `modelseedpy`:** 
+  The reconstruction approaches:
 
-    this approach requires a RAST annotation of your bins which depends on a successful connection to the RAST server. 
-    It makes use of the 
-    <a href="https://modelseed.org" target="_blank">ModelSEED resource</a> 
-    and its identifiers,
-    but so-far it can be a rather time-consuming step and quite often unsuccessful, due to RAST-related issues.
-    
-    ```{note}
-    `moodelseedpy` is currently under active development, and we anticipate that this approach will become 
-    more robust in the near future.
-    ```
-    
+  - **using `carveme`:** works on both DNA and protein sequences and uses the
+    <a href="http://bigg.ucsd.edu" target="_blank">BiGG identifiers</a>.
 
-  - **using `carveme`:** 
-    
-    that can be performed in both DNA and protein sequences, make use of the 
-    <a href="http://bigg.ucsd.edu" target="_blank">BiGG identifiers</a> 
-    and required a Gurobi license (see section [GEM reconstruction step](advanced_use/local.md#gem-reconstruction-step))
+  - **using `modelseedpy`:** requires a RAST annotation of your genomes, which depends on a connection to the RAST server.
+    It uses the <a href="https://modelseed.org" target="_blank">ModelSEED resource</a> and its identifiers,
+    but it can be rather time-consuming and quite often unsuccessful, due to RAST-related issues.
 
-  Both approaches benefit a lot from solvers, such as `gurobi`; `carve` actually requires one to run 
-  (either Gurobi or CPLEX).
-
-  In the following sections we provide some links on how to get a Gurobi license (for academics): 
-
-    - locally
-
-    - for using it on a container
+  In the following sections we provide some links on how to get a Gurobi license (for academics):
 
 #### .. on a local system
 
@@ -294,17 +227,10 @@ So far, we have tested them using:
   <a href="https://www.youtube.com/watch?v=oW6ma8rdZk8" target="_blank">this video</a> 
   (released on 2022) quite helpful on how to get a Gurobi license. 
 
-  Your license is a `gurobi.lic` file. To check that your Python can actually use the license, you may run:
-
-  ```bash
-      conda activate microbetag
-      python
-  ```
-
-  and then 
+  Your license is a `gurobi.lic` file. To check that Python can use the license, in an environment with `gurobipy`:
 
   ```python
-      >>> import gurobipy as gbp
+      >>> import gurobipy
       >>> m = gurobipy.Model()
       Set parameter Username
       Academic license - for non-commercial use only - expires 2025-04-15
@@ -312,30 +238,15 @@ So far, we have tested them using:
 
 #### .. on a container
 
-  When you are using `microbetag` stand-alone tool as a container, 
-  you will need a different kind of Gurobi license, 
-  one called 
-  <a href="https://www.gurobi.com/downloads/" target="_blank">**Web License Service (WLS)**</a>
-  Gurobi license.
+  To use Gurobi in a container, you need a different kind of license, called
+  <a href="https://www.gurobi.com/downloads/" target="_blank">**Web License Service (WLS)**</a>.
+  You may find the following
+  <a href="https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu" target="_blank">link</a>
+  useful on how to get one.
 
-  You may find the following 
-  <a href="https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu" target="_blank">link</a> 
-  useful on how to do that.
+  The WLS license is again a `gurobi.lic` file. The microbetag-nf pipeline describes how to give it to the
+  CarveMe and DNNGIOR containers.
 
-
-  After you get your WLS, it will be again be a `gurobi.lic` file, you need to **mount** it on the `microbetag` container.
-  For example, assuming you have the `gurobi.lic` file in the folder you are running the following `docker` command from:
-
-  ```bash
-      docker run --rm -it  \
-          --volume=$PWD/my_study:/data \
-          --volume=$PWD/kofam_database:/kofam_database \
-          --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-          hariszaf/microbetag:<version>
-  ```
-
-  Note that `microbetag` is looking for the license under `/opt/gurobi/`.
-  
 
 ### Install CPLEX
 

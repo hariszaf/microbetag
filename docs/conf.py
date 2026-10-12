@@ -10,7 +10,9 @@ import re
 project = "microbetag"
 copyright = "2025, Lab of Microbial Systems Biology"
 author = "Lab of Microbial Systems Biology"
-release = "1.0.3"
+# The version of the microbetag package, read without importing it
+with open(os.path.join(os.path.dirname(__file__), "..", "microbetag", "__init__.py")) as f:
+    release = re.search(r'__version__\s*=\s*"([^"]+)"', f.read()).group(1)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -112,6 +114,9 @@ myst_enable_extensions = [
     "dollarmath",
     "colon_fence",
 ]  # for latex and to enable download files    "frontmatter"
+
+# Anchors for headings up to level 4, so that links like page.md#some-heading work
+myst_heading_anchors = 4
 
 
 # -- Options for sphinxcontrib.lightbox2 -------------------------------------

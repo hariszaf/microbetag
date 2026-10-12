@@ -173,31 +173,25 @@ description: "Frequently Asked Questions on how to use and interprete microbetag
 
 ## I am trying to run `microbetag` locally, but.. 
 
-   When running `microbetag` locally (see [relative tutorial](./tutorials_local/local.md)) 
-   one may have a wide range of different input files as starting points.
+   When running `microbetag` locally (see [relative tutorial](./tutorials_local/local.md)),
+   you may start from your genomes, or from annotations you already have.
 
-   You could start with nothing but your bins; i.e., sequencing files, one for each bin mentioned in your abundance table. 
-   Otherwise, you may have already annotated them with KEGG ORTHOLOGY terms. 
-   Or you may already have reconstructed GEMs on your own. 
-
+   The [microbetag-nf](./tutorials_local/nf.md) pipeline starts from your genomes: it runs the external tools
+   (KEGG annotation, GEM reconstruction, phenotrex, ...) and then `microbetag`.
+   If you have already annotated your genomes with KEGG ORTHOLOGY terms, or reconstructed GEMs on your own,
+   point the configuration file of `microbetag` to them and run it directly.
 
    ```{important}
-   When using the local version of *microbetag*, remember you do not need to go for all the different annotation types!
+   You do not need to go for all the different annotation types!
 
-   That means that if for example you are not interested in pathway complementarities, you may set this step as `false` on the configuration file
-   and in that case, the time consuming step of KEGG ORTHOLOGY annotation would be skipped. 
+   If, for example, you are not interested in pathway complementarities, set this step to `false`
+   in the configuration file, and the time-consuming KEGG ORTHOLOGY annotation is not needed.
    ```
 
-   You can adapt your `microbetag` run by pointing to these files through the 
-   <a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`config.yml`</a>
-   file you have to provide as input.
-   However, we cannot say for sure that no matter the software you used to annotate 
-   for example your bins will suit what `microbetag` expects.
-
-   If you have a high number of bins, and you would prefer to avoid annotating them again using `microbetag` this time, 
-   you may check the format of the annotations provided in the example case and see if you can edit your format to that. 
-   In any case, we strongly suggest you reach out the 
-   <a href="https://matrix.to/#/#microbetagcommunity:matrix.org" target="_blank">`microbetag`'s community on Matrix</a> 
+   The [tutorial](./tutorials_local/local.md#input-files) describes the format `microbetag` expects for each file.
+   If your annotations come from other software, check that they follow it, or convert them.
+   In any case, we strongly suggest you reach out the
+   <a href="https://matrix.to/#/#microbetagcommunity:matrix.org" target="_blank">`microbetag`'s community on Matrix</a>
    with any specific questions of yours.
 
 

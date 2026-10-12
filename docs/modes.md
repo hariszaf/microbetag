@@ -80,16 +80,16 @@ Details on how to use this can be found in the [preparation tutorial](./tutorial
 
 ### 💻 Local
 
-In this mode, you use the `microbetag` Python library directly to annotate your data using your own genome bins or MAGs.
-This option allows for complete customization and offline execution.
-See the [local usage tutorial](./tutorials_local/local.md) for instructions.
+In this mode, you annotate your network using your own genome bins or MAGs, on your computer or an HPC.
+The [microbetag-nf](./tutorials_local/nf.md) Nextflow pipeline runs the external tools on your genomes
+(gene prediction, KEGG annotation, trait prediction, GEM reconstruction, ...) and then the `microbetag` package,
+which computes the pathway and seed complementarities and builds the annotated network.
+If you already have the outputs of those tools, you can run the `microbetag` package on them directly.
+See the [local usage tutorial](./tutorials_local/local.md) for instructions, and the
+[installation page](./installation.md#install-stand-alone-microbetag) for how to set them up.
 
-To simplify the setup, we provide a <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">containerized version</a> 
-that bundles all dependencies.
-For further instructions on how to set `microbeag` locally, have a look at the [installation page](./installation.md).
-
-❗ Running `microbetag` locally can take several hours depending on the number of genomes. 
-For this reason, local execution is required for large-scale datasets.
+❗ The external tools can take several hours depending on the number of genomes;
+this is why they run locally and not on our server.
 
 ```{note}
 Once the annotation is complete, you can import and explore the annotated network (.cx2 format) 
@@ -128,7 +128,8 @@ These tutorials demonstrate how to run `microbetag` on your own system:
 
 - [Filling in the YAML configuration file](./tutorials_local/config.md) based on your data 
   and the specific tasks you want microbetag to perform.
-- [Running the Python-based annotation pipeline](./tutorials_local/local.md) with custom genome collections
+- [Running `microbetag`](./tutorials_local/local.md) with custom genome collections, and the
+  [microbetag-nf pipeline](./tutorials_local/nf.md) that runs the external tools on them
 
 
 
