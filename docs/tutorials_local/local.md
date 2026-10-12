@@ -10,7 +10,7 @@ description: "an example case of how to run microbetag using your own bins/MAGs"
 # .. using custom genomes
 
 <div style="display: flex; gap: 10px;">
-   <a href="https://github.com/msysbio/microbetag-nf" class="btn-green" target="_blank"> microbetag-nf pipeline </a>
+   <a href="https://github.com/hariszaf/microbetag/tree/develop/pipeline" class="btn-green" target="_blank"> pipeline </a>
    <a href="https://github.com/msysbio/microbetag/tree/develop/microbetag/tests/data/microbetag" class="btn-purple" target="_blank"> Tutorial files </a>
 </div>
 
@@ -39,6 +39,9 @@ This needs much more computing time than our web server can offer, so it runs on
 
 microbetag-nf runs both parts for you. If you already have some of the tool outputs, for example GEMs or a KEGG
 annotation of your genomes from an earlier analysis, you can run `microbetag` on them directly, as below.
+
+If you will annotate many networks with the same genomes, or want others to annotate theirs through `MGG`,
+the pre-calculations of the pipeline can also be the database of [your own server](./server.md).
 
 
 ## Input files

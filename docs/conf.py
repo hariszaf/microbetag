@@ -7,11 +7,13 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import re
+
 project = "microbetag"
 copyright = "2025, Lab of Microbial Systems Biology"
 author = "Lab of Microbial Systems Biology"
+
 # The version of the microbetag package, read without importing it
-with open(os.path.join(os.path.dirname(__file__), "..", "microbetag", "__init__.py")) as f:
+with open(os.path.join(os.path.dirname(__file__), "..", "microbetag/src/microbetag/", "__init__.py")) as f:
     release = re.search(r'__version__\s*=\s*"([^"]+)"', f.read()).group(1)
 
 # -- General configuration ---------------------------------------------------

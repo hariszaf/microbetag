@@ -9,94 +9,84 @@ usemath: true
 # Usage modes
 
 
-## A software suite
+## What microbetag is made of
 
-*microbetag* is a comprehensive software suite composed of several modules, each tailored to different analytical tasks.
-It includes:
+You need two things:
 
-* <img src="./_static/img/Python_Logo.png" style="width: 30px; height: 30px;"> **a Python library:**
+* <img src="./_static/img/app/cytoscape_logo.png" style="width: 30px; height: 30px;"> **`MGG`, the Cytoscape app:**
+  sends your data to a `microbetag` server and loads the annotated network back, and lets you browse it and run
+  enrichment analyses within Cytoscape. Whatever way you annotate your network, you explore it with `MGG`.
 
-<!-- - [![Python_Logo](https://cdn3.emoji.gg/emojis/1850-python-logo.png)](https://emoji.gg/emoji/1850-python-logo) **a Python library:**  -->
+* <img src="./_static/img/Python_Logo.png" style="width: 30px; height: 30px;"> **`microbetag`**, one repository
+  with three parts:
 
-which provides functionality for key preprocessing steps and powers the core annotation pipeline; it supports `microbetag` analyses using local or custom genome sets
+  | Part | What it does |
+  |---|---|
+  | the **package** (`microbetag/`) | computes the pathway and seed complementarities from the outputs of the external tools and builds the annotated network (`.cx2`); a Python package and the `hariszaf/microbetag` image |
+  | the **pipeline** (`pipeline/`, *microbetag-nf*) | a Nextflow pipeline that runs the external tools (Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta) in containers, and then the package |
+  | the **server** (`server/`) | the web server `MGG` talks to, with its database of pre-computed annotations; it runs the package on-the-fly, and the pipeline for FlashWeave, FAPROTAX and manta |
 
-* <img src="https://cdn3.emoji.gg/emojis/DatabaseCheck.png" style="width: 30px; height: 30px;"> **a database (`microbetagDB`):** 
+  Our public server's database has the annotations of the GTDB representative genomes. With the pipeline, you can
+  build a database of your own genomes and serve it with your own server.
 
-containing precomputed annotations for GTDB reference genomes
-
-- 🌐 **a web server:**
-
-    -  enables **on-the-fly** network annotation by mapping taxonomies from abundance data or network node names to their closest GTDB genomes
-    - offers an API for programmatic access to `microbetagDB` content
-
-- <img src="./_static/img/app/cytoscape_logo.png" style="width: 30px; height: 30px;"> **a Cytoscape app (`MGG`)**
-
-offering a user-friendly interface for running `microbetag`, parsing annotated networks, and performing enrichment analyses directly within Cytoscape
-
-- <img src="https://static-00.iconduck.com/assets.00/module-icon-1923x2048-yned2cx0.png" style="width: 30px; height: 30px;"> **a `pre-process` independent module**
-
-designed for 16S rRNA amplicon data, which performs taxonomic assignment using a GTDB-specific reference database to prepare the data for optimal downstream `microbetag` analyses
-
-
-If you plan to use the on-the-fly version of microbetag, simply follow these steps:
-
-- make sure <a href="https://cytoscape.org" target="_blank">Cytoscape</a> is installed on your system; 
-  if not, download and install it from the <a href="https://cytoscape.org/download.html" target="_blank">Cytoscape Install page</a>
-    
-- launch Cytoscape, then visit the <a href="https://apps.cytoscape.org/apps/mgg" target="_blank">MGG Cytoscape Appstore page</a>, 
-  then click the `Install` button to add the MGG app to your Cytoscape environment
-
-
-To make use of other *microbetag* modules, follow their corresponding instructions on the [*Installation*](./installation.md) page.
-
+[*Installation*](./installation.md) has where to get each of them.
 
 
 ## Running `microbetag`..
 
-To use `microbetag`, you can choose between two main modes depending on your data and analysis goals:
+There are two ways to annotate a network, depending on the genomes you want to annotate it with:
 
-### 🚀 On-the-fly
+| | 🚀 [**MGG and a server**](#mgg-and-a-server) | 💻 [**the pipeline and the package**](#the-pipeline-and-the-package) |
+|---|---|---|
+| Genomes | the GTDB representative genomes (our server), or your own (your server) | your own genomes, bins or MAGs |
+| You run | Cytoscape and `MGG` | Nextflow, on your computer or an HPC |
+| Taxa matched to genomes | by taxonomy | by genome identifier, or by taxonomy |
+| The external tools run | once for all the genomes, in advance | on your genomes |
 
-This mode runs entirely within the Cytoscape environment via the `MGG` Cytoscape App.
 
-You begin by loading your data into Cytoscape, then use `MGG` to submit a `microbetag` job to the web server. Once submitted:
+### MGG and a server
 
-Taxa in your data are mapped to their closest GTDB representative genomes (if possible).
-Precomputed information from `microbetagDB` is used to annotate your network.
+You load your abundance table, and optionally your network, in Cytoscape, and `MGG` sends them to a `microbetag`
+server, by default ours. The server:
+
+- matches the taxa of your data to their closest genomes in its database, by their taxonomy;
+- infers the network with FlashWeave if you do not provide one, and runs FAPROTAX and manta (with the pipeline);
+- annotates the network with the pre-computed traits and complementarities of the matched genomes,
+
+and `MGG` loads the annotated network in Cytoscape.
 
 ```{note}
-If your abundance table contains more than 1000 taxa, providing a corresponding network is required.
-Also, the use of a fixed taxonomy scheme.
+If your abundance table contains more than 1000 taxa, providing a corresponding network is required,
+as well as a GTDB or Silva taxonomy.
 ```
 
-To support large-scale 16S rRNA datasets and ensure compatibility with GTDB 
-(when your taxonomy is not already in Silva or GTDB format),
-we provide a containerized preparation tool: 
-<a href="https://hub.docker.com/r/hariszaf/microbetag_prep" target="_blank">`microbetag_prep`</a>.
-Details on how to use this can be found in the [preparation tutorial](./tutorials_otf/prep.md). 
-`microbetag_prep` is also available as a <a href="https://hub.docker.com/r/hariszaf/microbetag_prep" target="_blank">Docker image</a>.
+For large 16S rRNA amplicon datasets, the [**prep** workflow](./tutorials_otf/prep.md) of the pipeline assigns
+GTDB taxonomies to your sequences and infers the network on your computer, before you send them to the server.
+
+To annotate networks with **your own genomes** in this way, build their database with the pipeline and run
+[**your own server**](./tutorials_local/server.md).
 
 
+### The pipeline and the package
 
-### 💻 Local
+The [**pipeline**](./tutorials_local/nf.md) runs the external tools on your genomes and then the package:
 
-In this mode, you annotate your network using your own genome bins or MAGs, on your computer or an HPC.
-The [microbetag-nf](./tutorials_local/nf.md) Nextflow pipeline runs the external tools on your genomes
-(gene prediction, KEGG annotation, trait prediction, GEM reconstruction, ...) and then the `microbetag` package,
-which computes the pathway and seed complementarities and builds the annotated network.
-If you already have the outputs of those tools, you can run the `microbetag` package on them directly.
-See the [local usage tutorial](./tutorials_local/local.md) for instructions, and the
-[installation page](./installation.md#install-stand-alone-microbetag) for how to set them up.
+1. **`precalc`**: once for your genomes, all the annotations and pairwise complementarities;
+2. **`annotate`**: as many times as you like, annotates a network from an abundance table (inferring the network
+   with FlashWeave if needed), with the pre-calculations of `precalc`.
+
+You get an annotated network (`.cx2`) to [load in Cytoscape](./tutorials_core/load.md) and browse with `MGG`,
+as in the on-the-fly version.
+
+Optionally, the pre-calculations become **your own database**: export them with `microbetag-export-db` and serve
+them with [your own server](./tutorials_local/server.md), so that you, or your colleagues, annotate networks
+through `MGG` with your genomes.
+
+If you already have the outputs of the tools, for example GEMs or KEGG annotations of your genomes,
+[the package](./tutorials_local/local.md) runs on them directly.
 
 ❗ The external tools can take several hours depending on the number of genomes;
-this is why they run locally and not on our server.
-
-```{note}
-Once the annotation is complete, you can import and explore the annotated network (.cx2 format) 
-on Cytoscape using the `MGG` App; just like in the on-the-fly version.
-```
-
-
+this is why they run in advance, once per genome, and not for each network.
 
 
 ## How to
@@ -114,22 +104,22 @@ These tutorials introduce key concepts that apply to all usage modes of `microbe
 - Performing [enrichment analysis](./tutorials_core/enrichment.md) on network features
 
 
-### 🚀 Using `microbetag` On-the-Fly
+### MGG and a server
 
 These tutorials guide you through using `microbetag` directly via Cytoscape and the MGG app, including:
 
 - Firing `microbetag` [with](./tutorials_otf/from_net.md) or [without](./tutorials_otf/abd_only.md) a network file as input
 - [Providing metadata](./tutorials_otf/abd_and_metadata.md) for the network inference
-- Using the [`pre-process` module](./tutorials_otf/prep.md) for 16S rRNA data (to enable use of large datasets in on-the-fly mode)
+- Using the [prep workflow](./tutorials_otf/prep.md) for 16S rRNA data (to enable use of large datasets in on-the-fly mode)
+- Running [your own server](./tutorials_local/server.md), with the GTDB genomes or your own
 
-### 💻 Using `microbetag` Locally
+### The pipeline and the package
 
 These tutorials demonstrate how to run `microbetag` on your own system:
 
-- [Filling in the YAML configuration file](./tutorials_local/config.md) based on your data 
-  and the specific tasks you want microbetag to perform.
-- [Running `microbetag`](./tutorials_local/local.md) with custom genome collections, and the
-  [microbetag-nf pipeline](./tutorials_local/nf.md) that runs the external tools on them
+- [The pipeline](./tutorials_local/nf.md): from your genomes to an annotated network, and to your own database
+- [Running the package](./tutorials_local/local.md) on the outputs of the tools you already have, and
+  [filling in its YAML configuration file](./tutorials_local/config.md)
 
 
 
@@ -137,8 +127,8 @@ These tutorials demonstrate how to run `microbetag` on your own system:
 
 For coding-familiar users, we also provide instructions about:
 
-- how to use `microbetag`'s [API](./tutorials_local/local.md) to get either species specific annotations or 
-  potential complementarities for species pairs from `microbetagDB`
+- how to use `microbetag`'s [API](./api.md) to get either species specific annotations or 
+  potential complementarities for species pairs from the database of our server
 
 - the [code base of `microbetag`](./autoapi/index)
 

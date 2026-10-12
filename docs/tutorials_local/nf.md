@@ -7,13 +7,13 @@ description: "running microbetag on your genomes with Nextflow"
 ---
 
 
-# .. as a Nextflow pipeline
+# The pipeline: microbetag-nf
 
 <div style="display: flex; gap: 10px;">
-   <a href="https://github.com/msysbio/microbetag-nf" class="btn-green" target="_blank"> microbetag-nf </a>
+   <a href="https://github.com/hariszaf/microbetag/tree/develop/pipeline" class="btn-green" target="_blank"> pipeline </a>
 </div>
 
-**microbetag-nf** takes you from your genomes to an annotated network.
+The pipeline, **microbetag-nf**, takes you from your genomes to an annotated network.
 It runs the external tools, each in its own container, and then the `microbetag` commands:
 
 | Step | Tool | Gives `microbetag` |
@@ -29,14 +29,23 @@ It runs the external tools, each in its own container, and then the `microbetag`
 `microbetag` then computes the pathway and seed complementarities and builds the annotated network.
 The pipeline spreads the work over the genomes, so it runs on a laptop as well as on an HPC.
 
-If you already have the outputs of these tools, you can also run `microbetag` on them directly;
+The pipeline is one of the two ways to use `microbetag` (see [usage modes](../modes.md)), and it serves the other
+one too:
+
+- **with the package**, it annotates your networks with your own genomes: `precalc` once for the genomes, then
+  `annotate` for each network; you browse the annotated network with `MGG`;
+- **for a server**, the output of `precalc` becomes the [database of your own server](#your-own-database), which
+  annotates networks sent from `MGG` with your genomes; the server itself runs the pipeline's `network` workflow
+  for FlashWeave, FAPROTAX and manta;
+- **for our server**, the `prep` workflow prepares large amplicon datasets: GTDB taxonomies for the sequences, and
+  the network; see [the preparation steps](../tutorials_otf/prep.md).
+
+If you already have the outputs of these tools, you can also run the package on them directly;
 see the tutorial [.. using custom genomes](./local.md).
 
-The pipeline also has a **prep** workflow, which prepares amplicon datasets for the on-the-fly version:
-GTDB taxonomies for the sequences, and the network; see [the preparation steps](../tutorials_otf/prep.md).
-
-Paths in this page are relative to the root of the
-<a href="https://github.com/msysbio/microbetag-nf" target="_blank">microbetag-nf repository</a>.
+The pipeline is the `pipeline/` folder of the
+<a href="https://github.com/hariszaf/microbetag" target="_blank">microbetag repository</a>;
+paths in this page are relative to it.
 
 
 ## Overview with an example dataset
@@ -129,11 +138,12 @@ it was last tested with Nextflow 26.04.
 
 ## Workflows
 
-Three workflows, in the `workflows` folder:
+Four workflows, in the `workflows` folder:
 
 1. catalogue pre-calculations (`precalc.nf`)
 2. network annotation using a pre-calculation folder (`annotate.nf`)
 3. preparation of amplicon datasets for the on-the-fly version (`prep.nf`); see [the preparation steps](../tutorials_otf/prep.md)
+4. FlashWeave, FAPROTAX and manta only (`network.nf`), which [the server](./server.md) runs
 
 `main.nf` runs one of them, chosen with `--workflow`. They are built on **modules** (`modules` folder) and
 **sub-workflows** (`workflows/subworkflows` folder), which can also run on their own.
@@ -155,13 +165,32 @@ Reuse the pre-calculations to annotate multiple networks, from different abundan
 The species in your abundance table or network need to be among those of the catalogue.
 ```
 
+### Your own database
+
+The output of `precalc` can also be the database of [your own server](./server.md), which annotates networks sent
+from `MGG` with your genomes, by matching their taxa to the closest of your genomes. Export it with the
+`microbetag-export-db` command of the package, with the taxonomy of each genome:
+
+```bash
+microbetag-export-db --precalc <precalc output folder> --genome-taxonomy genome_taxonomy.tsv --outdir db_files
+```
+
+The `export_db` module runs it in the pipeline too:
+
+```bash
+nextflow run modules/export_db/main.nf -params-file modules/export_db/export_db.yaml
+```
+
+[Your own server](./server.md) describes how to load these files in a database and serve them.
+
 
 ## Configuration
 
 There are **two** configuration levels, with their own files:
 
 - the Nextflow configuration: `nextflow.config`
-- the `microbetag` configuration: `workflows/precalc.yaml`, `workflows/annotate.yaml` and `workflows/prep.yaml`
+- the `microbetag` configuration: `workflows/precalc.yaml`, `workflows/annotate.yaml`, `workflows/prep.yaml`
+  and `workflows/network.yaml`
 
 The microbetag steps run in the `hariszaf/microbetag-nf` image, set in `params.microbetag_image` of
 `nextflow.config`; its version is the version of the `microbetag` package it holds.

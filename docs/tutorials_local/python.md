@@ -37,7 +37,7 @@ description: "how to run microbetag from Python"
     -v, --version         Show Microbetag version
   ```
 
-  If not, please follow instructions [here](../installation.md#the-microbetag-package) on how to get it! 
+  If not, please follow instructions [here](../installation.md#the-package) on how to get it! 
 
 
 

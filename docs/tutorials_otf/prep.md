@@ -9,7 +9,7 @@ description: "an example case of how to run the microbetag prep step"
 # `microbetag` preparation steps
 
 <div style="display: flex; gap: 10px;">
-   <a href="https://github.com/msysbio/microbetag-nf" class="btn-green" target="_blank"> microbetag-nf </a>
+   <a href="https://github.com/hariszaf/microbetag/tree/develop/pipeline" class="btn-green" target="_blank"> pipeline </a>
    <a href="../_static/download/prep/seq_ab_tab.tsv" class="btn-purple"> Tutorial file </a>
 </div>
 
@@ -27,14 +27,14 @@ The on-the-fly version of `microbetag` annotates your network on our server, fro
 Two tasks before the annotation can be computationally expensive, especially for large datasets:
 
 - the **taxonomy assignment** of your ASVs/OTUs with GTDB taxonomies, so that `microbetag` can match them to the
-  GTDB genomes of microbetagDB as well as possible. It uses the IDTAXA algorithm of the
+  GTDB genomes of our server as well as possible. It uses the IDTAXA algorithm of the
   <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a training set
   built from the 16S rRNA gene sequences of the GTDB genomes
   (based on <a href="https://zenodo.org/records/6655692" target="_blank">these reference sequences</a>);
 - the **network inference** with FlashWeave, needed when you have more than 1,000 ASVs/OTUs and no network.
 
-You can run them on your computer or an HPC with the **prep workflow** of the [microbetag-nf](../tutorials_local/nf.md)
-pipeline, and then upload its outputs to MGG.
+You can run them on your computer or an HPC with the **prep workflow** of the [pipeline](../tutorials_local/nf.md),
+and then upload its outputs to MGG.
 
 ```{note}
 Up to version 1.0.1, these steps were in a stand-alone Docker image, `hariszaf/microbetag_prep`.
@@ -45,16 +45,19 @@ That image is still available on Docker Hub, but it is no longer developed; the 
 ## What you need
 
 - [Nextflow](https://www.nextflow.io/docs/latest/install.html), and Docker or Singularity/Apptainer;
-  see [installing the pipeline](../installation.md#the-microbetag-nf-pipeline)
-- the microbetag-nf pipeline:
+  see [installing the pipeline](../installation.md#the-pipeline)
+- the pipeline, the `pipeline/` folder of the `microbetag` repository:
 
   ```bash
-  git clone https://github.com/msysbio/microbetag-nf
-  cd microbetag-nf
+  git clone https://github.com/hariszaf/microbetag.git
+  cd microbetag/pipeline
   ```
 
-- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`): IDTAXA's training set
-  built from the 16S rRNA gene sequences of the GTDB r207 genomes, the GTDB release of microbetagDB
+- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`): IDTAXA's training set,
+  built with DECIPHER's `LearnTaxa` from the
+  <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>.
+  r207 is the GTDB release of our server's database: the taxonomies need to be of the same release, since the
+  server matches taxa to genomes by their names
 - your **abundance table**, as a `.tsv` or `.csv` file:
   the sequence identifier in the first column, then the samples, and in the **last** column either the
   **sequence** (to assign taxonomies) or the **taxonomy** (if you only need the network)
@@ -102,7 +105,7 @@ and the <a href="https://github.com/meringlab/flashweave.jl" target="_blank">Fla
 In its last column there is the ASV sequence instead of a taxonomy, since we want GTDB taxonomies, from the 16S rRNA gene,
 to map our ASVs to their closest GTDB genomes.
 
-In the `microbetag-nf` folder, create a folder for the data, and move the table, the training set and the [`prep.yaml`][2]
+In the `pipeline` folder, create a folder for the data, and move the table, the training set and the [`prep.yaml`][2]
 template there:
 
 ```bash
@@ -117,19 +120,21 @@ In `prep.yaml`:
 - we have no metadata file, so `metadata_file` is empty;
 - the table has 16 samples, fewer than the 20 FlashWeave needs by default, so `n_obs_min` is `16`.
 
-Then run, from the `microbetag-nf` folder:
+Then run, from the `pipeline` folder:
 
 ```bash
 nextflow run main.nf -params-file my_microbetag_prep/prep.yaml --workflow prep
 ```
 
-Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`:
+Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`
+(the `outdir` of `prep.yaml`):
 
 - `GTDB_tax_assigned_abundance_table.tsv`: your abundance table with the GTDB taxonomy of each ASV/OTU in place of its sequence;
 - `flashweave/fw_net.txt`: the network inferred by FlashWeave, as a 3-column edge list: the first two columns give a
   pairwise association of two ASVs/OTUs, and the third one its weight, positive for co-occurrence and negative for depletion.
 
 Upload both to MGG, as described in [annotating your own network](./from_net.md).
+`MGG` sends them to our server, which matches the ASVs to their closest GTDB genomes by their new taxonomies.
 
 ```{important}
 **REMOVE TAXA NOT PRESENT IN THE NETWORK**

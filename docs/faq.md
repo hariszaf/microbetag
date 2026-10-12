@@ -198,13 +198,12 @@ description: "Frequently Asked Questions on how to use and interprete microbetag
 ## I have a really large 16S-oriented network. What can I do? 
 
    There are three things you could do in this case.
-   First, you can try to build a database with the closest genomes you can find for the strains present in your data. 
-   If you do so, then you could run `microbetag` locally using those genomes as they were your bins. 
+   First, you can gather the closest genomes you can find for the taxa in your data, and run the
+   [pipeline](./tutorials_local/nf.md) on them: `precalc` once for the genomes, then `annotate` for your network.
 
-   Second, you could build a local instance of `microbetagDB` locally. 
-   This would require a storage of ~700GB.
-   <!-- REMEMBER! Edit next phrase once coplete -->
-   We are now working on an efficient way to go for that. 
+   Second, with the same pre-calculations, you can run [your own server](./tutorials_local/server.md) with a database
+   of these genomes, and annotate your networks through `MGG`, without the limits of our public server.
+   A local instance of our server's GTDB database would need a storage of ~700GB.
 
    Third, you can get the annotations per species pairs using the `microbetag` API. 
    However, in this case, you will not have a `.cx2` file as an end product, 

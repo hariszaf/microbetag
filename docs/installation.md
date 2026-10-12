@@ -8,54 +8,47 @@ description: "Installation approaches"
 
 # Install `microbetag`
 
-`microbetag` consists of several, independent tools, 
-to allow users to get an annotated co-occurrence network based on their needs. 
+There are two things to install, depending on [how you use `microbetag`](./modes.md):
 
-Have a look at the [Usage modes](./modes.md) section regarding the different modules supported.
+- **`MGG`**, the Cytoscape app: to run `microbetag` through a server, and to browse annotated networks;
+- **`microbetag`**: one repository with the **package**, the **pipeline** and the **server**, to annotate networks
+  with your own genomes, or to run your own server.
 
-Here we provide instructions for installing the required components for each module across various computing environments.
+| You want to .. | Install |
+|---|---|
+| annotate your network with the GTDB genomes, on our server | [`MGG`](#install-mgg-cytoscape) |
+| prepare a large amplicon dataset for our server | [`MGG`](#install-mgg-cytoscape) and [the pipeline](#the-pipeline) |
+| annotate your network with your own genomes | [the pipeline](#the-pipeline) (it runs the package), and `MGG` to browse the result |
+| annotate it with the outputs of the tools you already have (GEMs, KEGG annotations, ..) | [the package](#the-package) |
+| serve the GTDB genomes or your own genomes to `MGG` | [a server](#a-server) |
 
-<!-- Its basic features are the following: 
-
-- *microbetag* Cytoscape App called MGG: no matter how you will actually run `microbetag`, 
-  you will need `MGG` to visualize the annotated network. 
-  Through MGG, you can upload your input data and directly call `microbetag` which will run on-the-fly on our server. 
-  `microbetag` will first try to map the taxa present on the data to their corresponding GTDB genomes 
-  based on their **taxonomies**. 
-  This case is rather straight forward for the user, but it is limited in datasets with less than 1_000 taxa. 
-
-- *microbetagDB* hosted at KU Leuven, it consists of all the pairwise GTDB reference genomes annotations. 
-  You can directly access its contents using its corresponding [API](api).
-
-- `microbetag_prep` a Docker image that allows you to run only two specific preprocessing steps: 
-  - in case of 16S rRNA data, you can provide an abundance table with the ASV/OTU on its last column and your data will be taxonomically assigned using a GTDB-oriented 16S reference database.
-  - for datasets with more than 1000 taxa, you can perform the network inference using this image and the `FlashWeave` tool. 
-  After, you run this pre-process image, you may provide your findings on MGG instead of your original data. This way, you can run the streamiline on-the-fly version of `microbetag` for bigger datasets. 
-
-- `microbetag` stand-alone tool. This is the most elevated way to access `microbetag`'s features. It is the one allowing you to move beyond the precalculations of the GTDB reference genomes and the `microbetagDB`, and instead, implement our approach on your own genomes, bins/MAGs, genome annotations or even Genome Scale Models. 
- -->
 
 ## Where to get what
 
-  - `MGG` app: 
-    - The app <a href="https://apps.cytoscape.org/apps/mgg" target="_blank">on your Cytoscape</a>
-    - <a href="https://github.com/ermismd/MGG" target="_blank">Source code</a> for the app
+  - `MGG`, the Cytoscape app:
+    - the app <a href="https://apps.cytoscape.org/apps/mgg" target="_blank">on the Cytoscape App Store</a>
+    - <a href="https://github.com/ermismd/MGG" target="_blank">source code</a>
 
-  - preparation of amplicon data for the on-the-fly version: the prep workflow of `microbetag-nf` (below);
-    previously, the stand-alone `microbetag_prep` tool
-    (<a href="https://hub.docker.com/r/hariszaf/microbetag_prep" target="_blank">on DockerHub</a>,
-    <a href="https://github.com/msysbio/microbetag/tree/preprocess" target="_blank">source code</a>)
+  - `microbetag`: <a href="https://github.com/hariszaf/microbetag" target="_blank">source code</a>, with
+    - the **package**, in `microbetag/`; its image <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">`hariszaf/microbetag`</a> on Docker Hub
+    - the **pipeline** (*microbetag-nf*), in `pipeline/`; the images of its tools are on Docker Hub too, and
+      `pipeline/get_sif.sh` downloads them for Singularity/Apptainer
+    - the **server**, in `server/`, with the schema of its database
 
-  - `microbetag` stand alone: 
-    - The tool <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">on DockerHub</a>
-    - <a href="https://github.com/hariszaf/microbetag/" target="_blank">Source code</a>
+  - the data of our server's database, the annotations of the GTDB representative genomes:
+    <a href="https://zenodo.org/records/10562677" target="_blank">on Zenodo</a>
 
-  - `microbetag-nf` pipeline, running the external tools on your genomes:
-    - <a href="https://github.com/msysbio/microbetag-nf" target="_blank">Source code</a>
+  ```{note}
+  The pipeline used to be a repository of its own (`msysbio/microbetag-nf`), the amplicon preparation a
+  stand-alone image (`hariszaf/microbetag_prep`, up to v1.0.1), and the database and server had their own
+  repositories too. They are all in the `microbetag` repository now.
+  ```
 
-  - `microbetagDB`: 
-    - <a href="https://github.com/hariszaf/microbetag/tree/microbetagdb" target="_blank">Source code</a>
-    - Key data products <a href="https://zenodo.org/records/10562677" target="_blank">on Zenodo</a>
+  Get the repository with:
+
+  ```bash
+      git clone https://github.com/hariszaf/microbetag.git
+  ```
 
 
 
@@ -84,21 +77,21 @@ Here we provide instructions for installing the required components for each mod
 
 
 
-## Install stand-alone `microbetag`
+## Install the pipeline and the package
 
   To annotate a network using your own genomes, there are two parts:
 
-  - the [**microbetag-nf** pipeline](#the-microbetag-nf-pipeline) runs the external tools on your genomes
-    (Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta), and then `microbetag`;
-  - the [**`microbetag` package**](#the-microbetag-package) computes the pathway and seed complementarities
+  - the [**pipeline**](#the-pipeline) runs the external tools on your genomes
+    (Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta), and then the package;
+  - the [**package**](#the-package) computes the pathway and seed complementarities
     from the outputs of those tools and builds the annotated network.
 
-  To start from your genomes, install the pipeline. If you already have the outputs of the tools
+  To start from your genomes, install the pipeline: it runs the package in its own image, so you do not need to
+  install the package too. If you already have the outputs of the tools
   (e.g. GEMs or KEGG annotations of your genomes), the package is enough.
-  The tutorial [.. using custom genomes](./tutorials_local/local.md) describes both.
 
 
-### The microbetag-nf pipeline
+### The pipeline
 
   You need [Nextflow](https://www.nextflow.io/); if not already available, follow the instructions
   <a href="https://www.nextflow.io/docs/latest/getstarted.html#installation" target="_blank">here</a>.
@@ -109,21 +102,23 @@ Here we provide instructions for installing the required components for each mod
   <a href="https://apptainer.org/docs/admin/main/installation.html" target="_blank">Apptainer</a>.
   On an HPC system, Singularity or Apptainer is most likely already available, while Docker would not be an option.
 
-  Then get the pipeline:
+  The pipeline is the `pipeline/` folder of the repository:
 
   ```bash
-      git clone https://github.com/msysbio/microbetag-nf
+      git clone https://github.com/hariszaf/microbetag.git
+      cd microbetag/pipeline
   ```
 
-  and follow its instructions [here](./tutorials_local/nf.md).
+  Follow its instructions [here](./tutorials_local/nf.md).
   Depending on the steps you run, the pipeline also needs:
 
   - the [KOfam database](https://www.genome.jp/ftp/db/kofam/), for the KEGG ORTHOLOGY annotation;
   - a [Gurobi license](#install-gurobi-license), for GEM reconstruction with CarveMe or gap-filling with DNNGIOR
-    (or [CPLEX](#install-cplex), for gapseq).
+    (or [CPLEX](#install-cplex), for gapseq);
+  - the GTDB 16S training set, for the taxonomy assignment of the [prep workflow](./tutorials_otf/prep.md).
 
 
-### The `microbetag` package
+### The package
 
   `microbetag` needs Python 3.10 or later. Install it from its source code:
 
@@ -133,7 +128,7 @@ Here we provide instructions for installing the required components for each mod
       pip install .
   ```
 
-  Add the `otf` extra (`pip install ".[otf]"`) for the on-the-fly version, which queries the microbetag database,
+  Add the `otf` extra (`pip install ".[otf]"`) for the on-the-fly version, which queries the database of a server,
   and the `test` extra to run the tests (`pytest`, from the `microbetag/` folder of the repository).
 
   Check that it is available:
@@ -162,6 +157,12 @@ Here we provide instructions for installing the required components for each mod
 
 
 
+## A server
+
+  The server runs in containers, with Docker: the web app, with the package, the pipeline's tools and Nextflow,
+  and the MySQL database. It has its own page: [your own server](./tutorials_local/server.md).
+
+
 ## Prepare amplicon data for the on-the-fly version
 
   For **amplicon** datasets that cannot be analyzed directly on-the-fly, you can run the computationally heavy tasks of
@@ -169,15 +170,10 @@ Here we provide instructions for installing the required components for each mod
   - the network inference through FlashWeave, and
   - the taxonomy assignment against
     <a href="https://zenodo.org/records/6655692" target="_blank">a GTDB-specific 16S rRNA database</a>,
-    which improves the matching of your taxa to the genomes of microbetagDB,
+    which improves the matching of your taxa to the GTDB genomes of our server,
 
-  locally, with the **prep workflow** of the [microbetag-nf pipeline](#the-microbetag-nf-pipeline).
+  locally, with the **prep workflow** of the [pipeline](#the-pipeline).
   See [the preparation steps](./tutorials_otf/prep.md).
-
-  ```{note}
-  These steps used to be in a stand-alone image, `hariszaf/microbetag_prep` (up to v1.0.1).
-  It is still on Docker Hub, but it is no longer developed.
-  ```
 
 
 ## Further dependencies 
@@ -197,8 +193,8 @@ So far, we have tested them using:
 ### Install `gurobi` license
 
   GEM reconstruction with CarveMe, and gap-filling of ModelSEEDpy reconstructions with DNNGIOR, need a solver;
-  CarveMe requires one to run (Gurobi or CPLEX). These steps run in the [microbetag-nf](./tutorials_local/nf.md)
-  pipeline; `microbetag` itself does not need a solver.
+  CarveMe requires one to run (Gurobi or CPLEX). These steps run in the [pipeline](./tutorials_local/nf.md);
+  the package itself does not need a solver.
 
   The reconstruction approaches:
 
@@ -234,7 +230,8 @@ So far, we have tested them using:
   <a href="https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu" target="_blank">link</a>
   useful on how to get one.
 
-  The WLS license is again a `gurobi.lic` file. The microbetag-nf pipeline describes how to give it to the
+  The WLS license is again a `gurobi.lic` file; you need only the license, not a Gurobi installation.
+  The [pipeline](./tutorials_local/nf.md) describes how to give it to the
   CarveMe and DNNGIOR containers.
 
 
