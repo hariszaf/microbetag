@@ -93,6 +93,16 @@ setup(
     entry_points         = {
         "console_scripts": [
             "microbetag = microbetag.microbetag:main",
+            # Used by the microbetag-nf Nextflow pipeline
+            "microbetag-annotate = microbetag.cli.annotate:main",
+            "microbetag-format-fw = microbetag.cli.format_fw:main",
+            "microbetag-format-manta = microbetag.cli.format_manta:main",
+            "microbetag-pcompl = microbetag.cli.pcompl:main",
+            "microbetag-pcompl-ext = microbetag.cli.pcompl_ext:main",
+            "microbetag-seed-sets = microbetag.cli.seed_sets:main",
+            "microbetag-seed-compls = microbetag.cli.seed_compls:main",
+            "microbetag-scompls-pkl = microbetag.cli.scompls_pkl:main",
+            "microbetag-ssets-pkl = microbetag.cli.ssets_pkl:main",
         ],
     },
     package_data = {
