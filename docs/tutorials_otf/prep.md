@@ -2,307 +2,145 @@
 title: microbetag-prep
 layout: default
 parent: Additional tutorials
-# version: latest
-# permalink: /docs/{{ page.version }}/tutorials
 nav_order: 1
 description: "an example case of how to run the microbetag prep step"
 ---
 
 # `microbetag` preparation steps
 
-
-
-<span class="label-green">microbetag web-app v1.0.1</span>
-
 <div style="display: flex; gap: 10px;">
-   <a href="https://hub.docker.com/layers/hariszaf/microbetag_prep/v1.0.1/images/sha256-084c547fe88f5bd09bb44cbb960dcacdcb0ded78d55214c80da123bcfb9b864f?context=repo" class="btn-green"> Docker image </a>
-   <a href="https://github.com/hariszaf/microbetag/tree/preprocess/test" class="btn-purple"> Tutorial files </a>
+   <a href="https://github.com/msysbio/microbetag-nf" class="btn-green" target="_blank"> microbetag-nf </a>
+   <a href="../_static/download/prep/seq_ab_tab.tsv" class="btn-purple"> Tutorial file </a>
 </div>
-
-
-
 
 
 ```{important}
 **INPUT FILES USED IN THIS TUTORIAL**
 
-For the `microbetag` preparation tutorial, i.e., the steps you may run to come up with a co-occurrence network and taxonomically assign your sequences using the GTDB resource, we will use the following 2 files: 
-
- - the [`seq_ab_tab.tsv`][1] as our abundance table, which in its last column instead of a taxonomy includes the **ASV sequence**
- - the [`config.yml`][2] where you may set your arguments for how to run the `microbetag_prep` image
+ - [`seq_ab_tab.tsv`][1]: our abundance table, which in its last column has the **ASV sequence** instead of a taxonomy
+ - [`prep.yaml`][2]: the parameters of the preparation workflow
 ```
 
 ## The *preparation* step
 
-`microbetag` is a one-stop-shop application as it supports the taxonomic annotation of ASVs/OTUs, the building of the co-occurrence network and its annotation. 
-However, its main goal is the latter and at the same point, the first two tasks can be computationally expensive especially for large datasets.
-To this end, a Docker/Singularity image is available supporting the taxonomy assignment of the ASVs/OTUs with GTDB taxonomies 
-<a href="https://zenodo.org/records/6655692" target="_blank">a taxonomy annotated abundance file with the 16S GTDB (v.207) taxonomies</a> 
-and the creation of the co-occurrence network if asked. 
+The on-the-fly version of `microbetag` annotates your network on our server, from your abundance table.
+Two tasks before the annotation can be computationally expensive, especially for large datasets:
 
+- the **taxonomy assignment** of your ASVs/OTUs with GTDB taxonomies, so that `microbetag` can match them to the
+  GTDB genomes of microbetagDB as well as possible. It uses the IDTAXA algorithm of the
+  <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a training set
+  built from the 16S rRNA gene sequences of the GTDB genomes
+  (based on <a href="https://zenodo.org/records/6655692" target="_blank">these reference sequences</a>);
+- the **network inference** with FlashWeave, needed when you have more than 1,000 ASVs/OTUs and no network.
 
-<a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a> or 
-<a href="https://docs.sylabs.io/guides/3.0/user-guide/installation.html" target="_blank">Singularity</a>
-needs to be installed. 
-Then, download the `microbetag_prep` image either by running: 
-
-
-```bash
-docker pull hariszaf/microbetag_prep:<version>
-```
-
-
-or 
-```bash
-singularity pull docker://hariszaf/microbetag_prep:<version>
-```
+You can run them on your computer or an HPC with the **prep workflow** of the [microbetag-nf](../tutorials_local/nf.md)
+pipeline, and then upload its outputs to MGG.
 
 ```{note}
-Leaving `<version>` blank will pull the latest version of the image
+Up to version 1.0.1, these steps were in a stand-alone Docker image, `hariszaf/microbetag_prep`.
+That image is still available on Docker Hub, but it is no longer developed; the prep workflow replaces it.
 ```
 
 
-Then you need to also download the<a href="https://raw.githubusercontent.com/msysbio/microbetag/preprocess/test/config.yml" download="config.yml">`config` file</a> and edit it accordingly. 
+## What you need
 
+- [Nextflow](https://www.nextflow.io/docs/latest/install.html), and Docker or Singularity/Apptainer;
+  see [installing the pipeline](../installation.md#the-microbetag-nf-pipeline)
+- the microbetag-nf pipeline:
 
-```{attention}
-The `cofing.yml` file and the input files to be used, need to be in the directory 
-to be mounted (see Docker and Singularity commands below).
-```
+  ```bash
+  git clone https://github.com/msysbio/microbetag-nf
+  cd microbetag-nf
+  ```
 
-```{attention}
-Do not mistake the configuration file used by the preprocessing tool for the one required by _microbetag_.
-```
+- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_16s.RData`)
+- your **abundance table**, as a `.tsv` or `.csv` file:
+  the sequence identifier in the first column, then the samples, and in the **last** column either the
+  **sequence** (to assign taxonomies) or the **taxonomy** (if you only need the network)
+- optionally, a **metadata file** for FlashWeave; see [the input files](../tutorials_core/input.md#abundance-table)
+  and the <a href="https://github.com/meringlab/FlashWeave.jl" target="_blank">FlashWeave documentation</a>
 
-
-
-## I/O folder 
-
-The folder to be mounted needs two mandatory files:
-- an abundance table 
-- the `config.yml` file
-
-
-Two main steps are to be performed from this preparation image. 
-A taxonomy annotation of the OTUs/ASVs to GTDB taxonomies using the IDTAXA algorithm of the DECIPHER package and the 16S sequences of the GTDB genomes or/and the building of a co-occurrence network using FlashWeave. 
-
-The user can select which tasks to run through the `16s_gtdb_taxonomy_assign` and the `build_network` arguments. 
-
-A thorough description of each argument can be found below as well as in the `config.yml` template.
-
-
-|**Parameter**                |**Description**                                                                                         |
-|-----------------------------|--------------------------------------------------------------------------------------------------------|
-|``abundance_table_file``     | An OTU/ASV abundance table with a sequence identifier in first column and the sequence in the last one |
-|``metadata_file``            | A metadata file with samples as rows and descriptions characterizing the samples as columns For an example file see https://github.com/meringlab/FlashWeave.jl/tree/master/test/data/HMP_SRA_gut. |
-|``build_network``            | Build co-occurrence network using FlashWeave |
-|``16s_gtdb_taxonomy_assign`` | Taxonomy assignment of the sequences using IDTAXA and the 16S sequences of the GTDB genomes. |
-|``flashweave_sensitive``     | (From FlashWeave documentation) Enable fine-grained associations (FlashWeave-S, FlashWeaveHE-S), sensitive=false results in the fast modes FlashWeave-F or FlashWeaveHE-F  |
-|``flashweave_heterogeneous`` | (From FlashWeave documentation) Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE) |
-|``output_directory``         | Output folder name; it will be created within the mounted folder |
-
-
-### Docker
-
-To run directly 
-
-```bash
-docker run --rm -v ./test/:/media hariszaf/microbetag_prep:v1.0.0
-```
-
-In this case it is the `./test/` local directory you mount in the `/media` folder on the container.
-
-
-If you would like to initiate an interactive container you may run: 
-
-```bash
-docker run --rm -it --entrypoint /bin/bash -v ./test/:/media microbetag_prep:v1.0.0
-```
-this would initiate a console from within the container with you as a root user:
-
-```bash
-root@69bdeedb582b:/pre_microbetag#
+```{important}
+Make sure there are no comment lines on top of your abundance table: it needs to start with a header.
+Avoid numbers as sequence identifiers (e.g., 5434); use alphanumerics instead (e.g., ASV_5434).
 ```
 
 
-```{highlight}
-This case can be useful when several FlashWeave arguments not included in the basic config file need to be edited. 
-```
+## Parameters
 
-You can see what is present under the `/pre_microbetag` directory:
-```bash
-root@69bdeedb582b:/pre_microbetag# ls
-classify.R  flashweave.jl  gtdb_16s.RData  prep.py
-```
+The parameters are set in a YAML file; [`prep.yaml`][2] is a template.
 
-and edit scripts, e.g.:
-
-```bash
-vim flashweave.jl
-```
-
-### Singularity
-
-The equivalent commands in Singularity would be :
-
-
-To run the pre-process directly:
-<!-- --env USER_ID=$HOST_USER_ID --env HOST_GID=$HOST_GROUP_ID -->
-
-
-```bash
-singularity run -B ~/prep_test/:/media microbetag_prep_latest.sif 
-```
-
-where again, you mount (`-B`) the `~/prep_test/` local directory to the `/media` folder on the container.
-
-Likewise, to open a console:
-
-```bash
-singularity exec -B ~/prep_test/:/media microbetag_prep_latest.sif bash
-cd /pre_microbetag/
-``` 
-
+|**Parameter**             |**Description**                                                                                         |
+|--------------------------|--------------------------------------------------------------------------------------------------------|
+|`abundance_file`          | The abundance table |
+|`outdir`                  | The output folder |
+|`assign_taxonomy`         | Assign GTDB taxonomies to the sequences with IDTAXA (`true`/`false`) |
+|`gtdb_16s_training_set`   | The GTDB 16S training set (`gtdb_16s.RData`) |
+|`idtaxa_threshold`        | IDTAXA confidence threshold: 60 (cautious) or 50 (sensible) |
+|`build_network`           | Infer the co-occurrence network with FlashWeave (`true`/`false`) |
+|`metadata_file`           | Metadata file for FlashWeave; leave empty if not available |
+|`flashweave_args`         | FlashWeave arguments, e.g. `sensitive`, `heterogeneous`, `n_obs_min`; see the [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) |
+|`threads`                 | Number of threads |
 
 
 ## An example case
 
-We will use the findings of a 16S rRNA analysis with <a href="https://benjjneb.github.io/dada2/" target="_blank">DADA2</a> 
-that we have exported in a `.tsv` file. 
-We show how to get a *microbetag*-annotated co-occurrence network with this matrix as your only input.
-More complex scenarios can be the case, however they are all based on the principles described here.
-
+We will use the output of a 16S rRNA analysis with <a href="https://benjjneb.github.io/dada2/" target="_blank">DADA2</a>,
+exported as a `.tsv` file, and show how to get to a *microbetag*-annotated network with this table as the only input.
 
 ```{tip}
-Having an already optimal co-occurrence network to annotate is essential from a biological point-of-view.
-Thus, we strongly suggest you first build your co-occurrence network using FlashWeave or any inference tool 
-on your own, in order to address the idiosyncrasy of your data the best you can. 
-
-In the framework of microbetag, you can do that by running the pre-processing Docker image we provide. 
-You may check the [FAQs](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) 
-for FlashWeave's most essential parameters you can set through the `config.yml` file of the preprocessing image.
-In addition, you can edit the `flashweave.jl` script to adjust it to your needs; you may check for more information the 
-<a href="https://github.com/meringlab/flashweave.jl" target="_blank">FlashWeave documentation</a> 
-direclty.
+An optimal co-occurrence network is essential from a biological point of view.
+We strongly suggest you build your network with FlashWeave or any inference tool you prefer, to address the
+idiosyncrasy of your data the best you can. The prep workflow passes the `flashweave_args` to FlashWeave;
+see the [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) for its most essential parameters,
+and the <a href="https://github.com/meringlab/flashweave.jl" target="_blank">FlashWeave documentation</a> for the rest.
 ```
 
+[Download][1] the table. It has 996 ASVs and 16 samples; the on-the-fly version can infer networks of up to
+1,000 sequences, but amplicon analyses often have several thousands, and then the preparation step is needed.
+In its last column there is the ASV sequence instead of a taxonomy, since we want GTDB taxonomies, from the 16S rRNA gene,
+to map our ASVs to their closest GTDB genomes.
 
-[Download][1] the data set if you have not done so already.
-After a quick look at it, you will notice that it consists of 1,004 ASVs; just 4 more than `microbetag`'s up limit to build a network on the fly.
-However, most often than not, this number can range up to several hundreds of ASVs or OTUs for amplicon analyses.
-In both cases, the preprocessing step is required.
-Moreover, you will notice that in this abundance table, in the last column there is not a taxonomy but the corresponding ASV instead.
-That is because we want to use the GTDB taxonomy based on the 16S rRNA gene, so we map our ASVs to their closest GTDB genomes. 
-
-<!-- For the preparation, we will use the [`microbetag_prep` Docker image](https://hub.docker.com/r/hariszaf/microbetag_prep).  -->
-<!-- If you do not have the `microbetag_prep` image on your computer system yet, please follow the instructions you may find in the [Preparation](../input.md#the-preparation) paragraph.  -->
-<!-- If [Docker](https://www.docker.com) is not available either, you will have to [install it](https://docs.docker.com/get-docker/).  -->
-
-Assuming both Docker and the `microbetag_prep` image are installed, you should be able to run and among your images find the one for the preparation steps:
-
-```bash
-(base) u0156635@gbw-l-l0074:git$ docker images
-REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
-hariszaf/microbetag_prep   latest    1500f6f7a0aa   7 weeks ago     3.92GB
-```
-
-Open a terminal and create a new folder (e.g. `my_microbetag_prep`)
+In the `microbetag-nf` folder, create a folder for the data, and move the table, the training set and the [`prep.yaml`][2]
+template there:
 
 ```bash
 mkdir my_microbetag_prep
+mv ~/Downloads/seq_ab_tab.tsv ~/Downloads/prep.yaml /path/to/gtdb_16s.RData my_microbetag_prep/
 ```
 
-Move (or copy) your abundance table in the directory you just created. 
-Assuming you downloaded the data from the link above in your `Downloads`: 
+In `prep.yaml`:
+
+- `abundance_file` is `my_microbetag_prep/seq_ab_tab.tsv`;
+- we will both assign the GTDB taxonomies and build the network, so `assign_taxonomy` and `build_network` are `true`;
+- we have no metadata file, so `metadata_file` is empty;
+- the table has 16 samples, fewer than the 20 FlashWeave needs by default, so `n_obs_min` is `16`.
+
+Then run, from the `microbetag-nf` folder:
 
 ```bash
-mv ~/Downloads/seq_ab_tab.tsv my_microbetag_prep/
+nextflow run workflows/prep.nf -params-file my_microbetag_prep/prep.yaml -entry MICROBETAG_PREP
 ```
 
-Now, you need to get the `config.yml` file and move it or keep a copy of it in the `my_microbetag_prep` folder. 
-<!-- 
-If you have already downloaded this then you need to move/copy it in the `my_microbetag_prep` folder too. 
-If you have not, then you may run 
-```bash
-cd my_microbetag_prep  # to move into your folder
-wget https://raw.githubusercontent.com/hariszaf/microbetag/preprocess/test/config.yml
-``` 
--->
-
-Your `my_microbetag_prep` folder should now look like:
-
-```bash
-(base) u0156635@gbw-l-l0074:my_microbetag_prep$ ls
-config.yml  seq_ab_tab.tsv
+```{note}
+With Nextflow 25.10 or later, run `export NXF_SYNTAX_PARSER=v1` first;
+see [the pipeline page](../tutorials_local/nf.md#nextflow-versions).
 ```
 
-Before firing the preparation, you need to set the values of the parameters described in the `config.yml` file.
-If you feel confident with the terminal, you can do so by `nano`, `vim` or any other editor you are using.
-Otherwise, you can always go to the `my_microbetag_prep` folder and double-click on the `config.yml` file.
-In this case, you will see something like:
+Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`:
 
-![gedit](../_static/img/config.png)
+- `GTDB_tax_assigned_abundance_table.tsv`: your abundance table with the GTDB taxonomy of each ASV/OTU in place of its sequence;
+- `flashweave/fw_net.txt`: the network inferred by FlashWeave, as a 3-column edge list: the first two columns give a
+  pairwise association of two ASVs/OTUs, and the third one its weight, positive for co-occurrence and negative for depletion.
 
-
-No matter how you edit the file, you need to make sure the following: 
-
-- provide the filename of your abundance table in the `abundance_table_file` parameter; in our case that would be `seq_ab_tab.tsv`
-
-```{important}
-**SEQUENCE OR TAXONOMY?**
-
-Please, make sure you have not comment lines on top of your file
-Your abundance table needs to start with a header, in the first column having the sequence identifier and in the **last one** either the **taxonomy** if only the network inference is to be performed or the **sequence** itself in case you need to perform the GTDB assignment as well.
-Also, avoid numbers as sequence identifiers (e.g., 5434), instead use alpharithmetics (e.g., ASV_5434).
-```
-
-- the tasks you want to perform by setting them to `True` or `False`; in our case, we will both use the 16S-oriented GTDB taxonomy and build a network. Thus we set both `16s_gtdb_taxonomy_assign` and `build_network` as `True`.
-
-
-In case you have asked for building a network, then you also need to consider setting the two related parameters.
-You may check this [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) and of course advise the FlashWeave GitHub and paper for that. 
-In our case, we set `flashweave_sensitive` as `True` and `flashweave_heterogeneous` as `False`.
-
-
-- if available, provide the filename of your metadata file; for instructions on how this file should be formatted, 
-  please see [here](../tutorials_core/input.md#abundance-table) as well as the <a href="https://github.com/meringlab/FlashWeave.jl" target="_blank">FlashWeave documentation</a>
-
-
-Now, based on your container technology you are ready to run the preparation image.
-
-An example of a directory to mount can be seen <a href="https://github.com/msysbio/microbetag/tree/preprocess/test" target="_blank">here</a>.
-The mandatory abundance table file can be provided as a `.tsv` or a `.csv` file and needs to be specified in the `config.yml` file accordingly.
-
-
-Now, we are ready to fire the pre-process by running the following command:
-
-```bash
-docker run --rm -v ./my_microbetag_prep/:/media hariszaf/microbetag_prep
-```
-
-Make sure you are in the parent folder of the `my_microbetag_prep` directory. 
-
-If you would like to edit the FlashWeave script and add extra argument on it, you can 
-fire a Docker container as explained [above](#docker) and edit the script as you wish.
-
-
-Once the preprocessing is completed (based on your input this could take up to hours)
-you will find two output files, 
-
-- `GTDB_tax_assigned_abundance_table.tsv`: this is your abundance table but instead of the corresponding sequence to each ASV/OTU, now you have their corresponding GTDB-based taxonomy
-- `network_output.edgelist`: This is the network built from FlashWeave. You may skip its first two lines and check the 3-column format after that, where the first two columns give a pairwise association of two ASVs/OTUs and the third one its value that can be either positive or negative, denoting co-occurrence or depletion correspondingly.
-
+Upload both to MGG, as described in [annotating your own network](./from_net.md).
 
 ```{important}
 **REMOVE TAXA NOT PRESENT IN THE NETWORK**
- 
-Once you have come up with your network, you can remove the non-present taxa from your abundance table. This will save you quite some time! 
+
+Once you have your network, you can remove from your abundance table the taxa that are not in it. This will save you quite some time!
 ```
 
 
-
-
-
 [1]:../_static/download/prep/seq_ab_tab.tsv
-[2]:../_static/download/prep/config.yml
-
+[2]:../_static/download/prep/prep.yaml

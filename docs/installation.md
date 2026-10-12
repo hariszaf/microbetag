@@ -41,9 +41,10 @@ Here we provide instructions for installing the required components for each mod
     - The app <a href="https://apps.cytoscape.org/apps/mgg" target="_blank">on your Cytoscape</a>
     - <a href="https://github.com/ermismd/MGG" target="_blank">Source code</a> for the app
 
-  - `microbetag_prep` tool:
-    - The tool <a href="https://hub.docker.com/r/hariszaf/microbetag_prep" target="_blank">on DockerHub</a>
-    - <a href="https://github.com/hariszaf/microbetag/tree/preprocess" target="_blank">Source code</a>
+  - preparation of amplicon data for the on-the-fly version: the prep workflow of `microbetag-nf` (below);
+    previously, the stand-alone `microbetag_prep` tool
+    (<a href="https://hub.docker.com/r/hariszaf/microbetag_prep" target="_blank">on DockerHub</a>,
+    <a href="https://github.com/msysbio/microbetag/tree/preprocess" target="_blank">source code</a>)
 
   - `microbetag` stand alone: 
     - The tool <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">on DockerHub</a>
@@ -161,32 +162,21 @@ Here we provide instructions for installing the required components for each mod
 
 
 
-## Install `microbetag_prep` tool
+## Prepare amplicon data for the on-the-fly version
 
-  In case of **amplicon** datasets that cannot be analyzed directly on-the-fly, you can perform the 
-  computationally heavy task of:
+  For **amplicon** datasets that cannot be analyzed directly on-the-fly, you can run the computationally heavy tasks of
 
-  - the network inference through FlashWeave as well as 
-    
-  - the taxonomy annotation against 
-  <a href="https://zenodo.org/records/6655692" target="_blank">a GTDB-specific (v.207) 16S rRNA database</a>
+  - the network inference through FlashWeave, and
+  - the taxonomy assignment against
+    <a href="https://zenodo.org/records/6655692" target="_blank">a GTDB-specific 16S rRNA database</a>,
+    which improves the matching of your taxa to the genomes of microbetagDB,
 
-  locally, using the `microbetag_prep` tool.
+  locally, with the **prep workflow** of the [microbetag-nf pipeline](#the-microbetag-nf-pipeline).
+  See [the preparation steps](./tutorials_otf/prep.md).
 
-  The latter, makes optimizes the matching of a taxonomy to a genome on `microbetag`. 
-
-
-  Then, download the `microbetag_prep` image either by running: 
-
-
-  ```bash
-      docker pull hariszaf/microbetag_prep:<version>
-  ```
-
-
-  or 
-  ```bash
-      singularity pull docker://hariszaf/microbetag_prep:<version>
+  ```{note}
+  These steps used to be in a stand-alone image, `hariszaf/microbetag_prep` (up to v1.0.1).
+  It is still on Docker Hub, but it is no longer developed.
   ```
 
 

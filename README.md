@@ -106,8 +106,9 @@ singularity exec -B $PWD/my_study:/data microbetag.sif microbetag --config /data
 
 Overall, `microbetag` is a software ecosystem composed of a collection of modular code components:
 
-- `microbetagDB` : `db` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/db)
-- `microbetag_prep`: `preprocess` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/preprocess)
+- `microbetag-nf`: the Nextflow pipeline running the external tools, and preparing amplicon data for the on-the-fly version; individual [GitHub repo](https://github.com/msysbio/microbetag-nf)
+- `microbetagDB` : `db` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/db)
+- `microbetag_prep`: replaced by the prep workflow of `microbetag-nf`; the former tool is on the `preprocess` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/preprocess)
 - `microbetagApp`: individual [GitHub repo](https://github.com/msysbio/microbetagApp-public)
 - `MGG` source code: individual [GitHub repo](https://github.com/hariszaf/MGG)
 - pre-calculations: Seed and non-seed sets for GTDB representative genomes available in `microbetag`, their corresponding GEMs, models for `phenotrex`-based predictions and KEGG annotations of each of those genomes are available on [Zenodo](https://zenodo.org/records/15102937).
@@ -169,6 +170,15 @@ without a network (see [`tests/unit/test_seed_compl.py`](./tests/unit/test_seed_
 > **For contributors**
 >
 > To test changes locally first, run:
+>
+> Make sure you install `requirements.txt` on a conda environment: 
+> 
+>```
+> cd docs/
+> pip install -r requirements.txt
+>```
+>
+> and then, you may run:
 > ```
 > sphinx-build -b html -d _build/doctrees -D language=en . _build/html -v
 > ```

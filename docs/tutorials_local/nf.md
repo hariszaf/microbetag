@@ -32,6 +32,9 @@ The pipeline spreads the work over the genomes, so it runs on a laptop as well a
 If you already have the outputs of these tools, you can also run `microbetag` on them directly;
 see the tutorial [.. using custom genomes](./local.md).
 
+The pipeline also has a **prep** workflow, which prepares amplicon datasets for the on-the-fly version:
+GTDB taxonomies for the sequences, and the network; see [the preparation steps](../tutorials_otf/prep.md).
+
 Paths in this page are relative to the root of the
 <a href="https://github.com/msysbio/microbetag-nf" target="_blank">microbetag-nf repository</a>.
 
@@ -118,12 +121,25 @@ mkdir $HOME/julia_depot $HOME/julia_tmp
 This is needed for Julia (FlashWeave) to work inside the Singularity/Apptainer containers.
 
 
+## Nextflow versions
+
+From version 25.10, Nextflow uses a stricter syntax for its scripts, which the pipeline does not follow yet,
+e.g. for `-entry`. Until it does, run, before `nextflow run`:
+
+```bash
+export NXF_SYNTAX_PARSER=v1
+```
+
+The pipeline was last tested with Nextflow 26.04 this way.
+
+
 ## Workflows
 
-Two main workflows, in the `workflows` folder:
+Three workflows, in the `workflows` folder:
 
 1. catalogue pre-calculations (`precalc.nf`)
 2. network annotation using a pre-calculation folder (`annotate.nf`)
+3. preparation of amplicon datasets for the on-the-fly version (`prep.nf`); see [the preparation steps](../tutorials_otf/prep.md)
 
 They are built on **modules** (`modules` folder) and **sub-workflows** (`subworkflows` folder), which can also run on their own.
 
@@ -146,7 +162,11 @@ The species in your abundance table or network need to be among those of the cat
 There are **two** configuration levels, with their own files:
 
 - the Nextflow configuration: `nextflow.config`
-- the `microbetag` configuration: `workflows/precalc.yaml` and `workflows/annotate.yaml`
+- the `microbetag` configuration: `workflows/precalc.yaml`, `workflows/annotate.yaml` and `workflows/prep.yaml`
+
+The microbetag steps run in the `hariszaf/microbetag-nf` image, set in `params.microbetag_image` of
+`nextflow.config`; its version is the version of the `microbetag` package it holds.
+The external tools have their own images (see `containers/` and `get_sif.sh`).
 
 ### Nextflow configuration
 
