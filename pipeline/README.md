@@ -25,51 +25,27 @@ Tested with Nextflow 26.04 and Docker.
 
 ## Gurobi
 
-CarveMe needs the Gurobi solver. The pipeline runs CarveMe in a container that already has Gurobi's Python package
-(`gurobipy`), so what you need is a **license file**, given to the pipeline with the `gurobi_lic` parameter.
+CarveMe needs the Gurobi solver. The pipeline runs CarveMe in a container that already has Gurobi
+(its Python package, `gurobipy`), so you do **not** need to install Gurobi: you only need a **license file**,
+given to the pipeline with the `gurobi_lic` parameter.
 
 **It has to be a Web License Service (WLS) license.** The standard academic license is tied to the machine it was
 issued for and does not work inside containers. Academics can get a WLS license for free:
 
 1. Create an account at [gurobi.com](https://www.gurobi.com/) with your institutional email.
 2. Request an [academic WLS license](https://www.gurobi.com/features/academic-wls-license/) and download its
-   `gurobi.lic` from the [Web License Manager](https://license.gurobi.com/).
+   license file from the [Web License Manager](https://license.gurobi.com/); keep it private, it holds your
+   license key.
 3. Point the pipeline to it, with an absolute path, in the parameter file (e.g. `workflows/precalc.yaml`):
 
    ```yaml
-   gurobi_lic: /home/you/gurobi/gurobi.lic
+   gurobi_lic: /home/you/gurobi/gurobi_wls.lic
    ```
 
    The pipeline mounts it in the CarveMe container as `/opt/gurobi/gurobi.lic`.
 
 A WLS license allows a limited number of sessions at a time (5 for the academic one), so CarveMe runs on at most
 `max_forks` (5 by default) chunks of genomes in parallel.
-
-### Installing Gurobi itself (optional)
-
-You only need Gurobi on your own machine to check your license, or to run CarveMe outside the containers.
-Download it from [gurobi.com](https://www.gurobi.com/downloads/gurobi-software/), extract it, e.g. in `/opt`
-(needs `sudo`) or your home folder:
-
-```bash
-tar xvfz gurobi13.0.3_linux64.tar.gz -C /opt
-```
-
-and add to your `~/.bashrc`, so that it is set in every new terminal:
-
-```bash
-export GUROBI_HOME=/opt/gurobi1303/linux64
-export PATH="${PATH}:${GUROBI_HOME}/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
-export GRB_LICENSE_FILE=/home/you/gurobi/gurobi.lic   # if the license is not in your home folder or /opt/gurobi
-```
-
-Then open a new terminal (or run `source ~/.bashrc`) and check the license with:
-
-```bash
-gurobi_cl --license
-```
-
 
 ## Repository layout
 
