@@ -19,14 +19,24 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install microbetag
-        run: |
-          pip install ".[test]"
-          pip install "git+https://github.com/hariszaf/manta.git@scipy-version"
+        run: pip install ".[test]"
 
-      # tests/unit needs only Python dependencies; tests/integration needs the external
-      # tools from install.sh and is skipped here.
       - name: Run tests
-        run: pytest -v -rs tests/unit
+        run: pytest -v
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build only, to check that the image still builds and runs
+      - name: Build the container image
+        run: docker build -t microbetag:ci .
+
+      - name: Run microbetag in the image
+        run: |
+          docker run --rm -v $PWD/tests/data/microbetag:/data microbetag:ci \
+            bash -c "cp -r /data /tmp/run && microbetag --config /tmp/run/config.yml && ls /tmp/run/output/*.cx2"
 
   build:
     needs: test
