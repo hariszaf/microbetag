@@ -1,47 +1,46 @@
-version: '3.8'
+# The microbetag server: the web app, its database and nginx in front of them.
+#
+# Before the first start:
+#   cp .env.example .env.dev                         # the web app's settings
+#   cp services/db/.env.example services/db/.env     # the database's settings
+# and fill them in. Then:
+#   docker compose up -d --build
+# or run it as a service with deploy/microbetag.service (see README.md).
 
 services:
 
-  # Servise for the application
+  # The web app (Flask, served by gunicorn), on the microbetag package of this repository.
+  # Its image (services/web/Dockerfile.v2) also has the pipeline's tools and Nextflow, to run FlashWeave,
+  # FAPROTAX and manta (the network workflow of pipeline/), so it is built from the root of the repository.
   web:
 
     build:
-      context: ./services/web
-      dockerfile: Dockerfile.prod
+      context: ..
+      dockerfile: server/services/web/Dockerfile.v2
 
-    # Start the Gunicorn server:
-    # - Bind it to all network interfaces on port 5000
-    # - Specify the application module and instance (app:app)
-    # - Set the number of worker processes to 5
-    # Keep in mind that the Gunicorn timeout value should be greater than or equal to the Nginx proxy_read_timeout value 
-    # to avoid premature termination of requests by Nginx.
+    # gunicorn's timeout needs to be at least nginx's proxy_read_timeout, so that nginx does not end long runs
     command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
-    
-    # For production, add a volume to the web and nginx services in docker-compose.prod.yml 
-    # so that each container will share a directory named "static":
+
+    # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
+    # also CATALOGUE=custom and SEEDS_DIR=/seeds (see .env.example)
+    env_file:
+      - ./.env.dev
+
     volumes:
-      - ./services/db/data:/var/lib/mysql-files/:rw
-      # - ./services/web/static:/var/tmp/:rw
+      # The seed sets of the database's genomes (microbetag-export-db's all_conf.json.gz, all_nonseeds.json.gz
+      # and all_nonseeds_module_related.pckl), read by the app when SEEDS_DIR=/seeds
+      - ./services/db/data:/seeds:ro
 
     expose:
       - 5000
 
-    environment:
-      - DB_HOST=db
-      # - DB_PORT=3306
-      - DB_PORT=3307
-
-    env_file:
-      - ./.env.dev
-
-    ports:
-      - 8080:8080
-
     depends_on:
       - db
 
-  # Servise for the database; the database will be built through this 
-  # and a backup will be stored periodically under /data/mysql/data
+    restart: unless-stopped
+
+  # The database: microbetagDB, in MySQL. Its files are in services/db/data (a link to /data/mysql/data/microbetagDB
+  # on our server), loaded at its first start.
   db:
 
     build:
@@ -52,15 +51,15 @@ services:
       - ./services/db/.env
 
     volumes:
-      - ./services/db/data:/var/lib/mysql-files/:rw  # This `data` folder is a sym link to /data/mysql/data/microbetagDB
+      - ./services/db/data:/var/lib/mysql-files/:rw
       - ./services/db/tmp:/var/tmp:rw
 
     ports:
-      # - "3306:3306"
       - "3307:3306"
 
-  # Servise for the server; it will list to the app at port 5000 (through the nginx.conf file)
-  # and it will serve its output through the web at port 1337
+    restart: unless-stopped
+
+  # nginx: passes the requests on port 1337 to the web app (services/nginx/nginx.conf)
   nginx:
 
     build: ./services/nginx
@@ -72,7 +71,8 @@ services:
 
     ports:
       - 1337:80
-      # - 443:443
 
     depends_on:
       - web
+
+    restart: unless-stopped

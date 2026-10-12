@@ -211,7 +211,7 @@ class Mappings:
     FAMILIES_NCBI_IDS = os.path.join(TAXONOMY, "families2ncbiId.tsv")
 
     # The seed sets of the database's genomes; SEEDS_DIR for those of a custom database (microbetag-export-db)
-    SEEDS_DIR           = os.environ.get("SEEDS_DIR", os.path.join(app_dir, "mappings/kegg_seeds"))
+    SEEDS_DIR           = os.environ.get("SEEDS_DIR") or os.path.join(app_dir, "mappings/kegg_seeds")
     ALL_CONFIDENCE      = os.path.join(SEEDS_DIR, "all_conf.json.gz")
     ALL_NONSEEDS        = os.path.join(SEEDS_DIR, "all_nonseeds.json.gz")
     ALL_NONSEEDS_MODULE = os.path.join(SEEDS_DIR, "all_nonseeds_module_related.pckl")
