@@ -1,2 +1,11 @@
-tests/data/
-tests/
+# Only what the images copy is sent to the build
+*
+!envs/
+!microbetag/
+!pyproject.toml
+!README.md
+!LICENSE
+# containers/Dockerfile.flashweave
+!nf/bin/fw/
+**/__pycache__
+**/*.pyc

@@ -32,7 +32,7 @@ The last is common in HPC systems and if you are about to use such a system, you
 
   Once you have installed Docker locally, you may run 
   ```bash
-  docker pull hariszaf/microbetag:v1.0.2
+  docker pull hariszaf/microbetag:<version>
   ```
   
   to get microbetag locally.
@@ -113,11 +113,10 @@ The last is common in HPC systems and if you are about to use such a system, you
 
   ```bash
   docker run --rm -it  \
-  --volume=./tests/dev_io_microbetag/:/data \
-  --volume=./microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
+  --volume=$PWD/my_study:/data \
+  --volume=$PWD/kofam_database:/kofam_database \
   --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-  --entrypoint /bin/bash  \
-  hariszaf/microbetag:v1.0.2
+  hariszaf/microbetag:<version>
   ```
 
   The `--volume` flag allows you to mount a local directory to a specific path in the container.
@@ -140,7 +139,7 @@ The last is common in HPC systems and if you are about to use such a system, you
   Once you have fired a container, you can now run `microbetag` using the following command:
 
   ```bash
-  root@20510f8400f1:/microbetag# python3 microbetag.py /data/config.yml 
+  root@20510f8400f1:/data# microbetag --config /data/config.yml 
   ```
 
 
@@ -148,25 +147,23 @@ The last is common in HPC systems and if you are about to use such a system, you
 ## .. using Singularity/Apptainer
 
   These technologies are widely used in High Performance Computing (HPC) systems. 
-  In case you are about to use `microbetag` in such a system, you first need to build a Singularity image (`.simg`) based on the Docker one:
+  In case you are about to use `microbetag` in such a system, you first need to convert the Docker image to a Singularity image (`.sif`):
 
   ```bash
-  sudo singularity build microbetag_v102.simg docker://hariszaf/microbetag:v1.0.2
+  singularity pull microbetag.sif docker://hariszaf/microbetag:<version>
   ```
 
-  You will need to have sudo rights to run this command. 
-  If you do not have `sudo` rights, you can either ask your admin to do so or run the build command in a similar environment, e.g. your own Linux based laptop and move it to the HPC with a single `scp` command.
-  Also, you can ask your admin or check your HPC documentation site how they deal with Docker images and follow their lead. 
+  This does not need `sudo` rights.
 
-  Once a `.simg` image is available, you may run `microbetag` again by mounting the necessary paths:
+  Once the `.sif` image is available, you may run `microbetag` again by mounting the necessary paths:
 
   ```bash
   singularity exec 
-    -B tests/dev_io_microbetag/:/data  
-    -B microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/
+    -B $PWD/my_study:/data  
+    -B $PWD/kofam_database:/kofam_database
     -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro  
-    microbetag_v101.simg 
-    python3 /microbetag/microbetag.py /data/config.yml
+    microbetag.sif 
+    microbetag --config /data/config.yml
   ```
 
 [1]:../_static/download/local/config.yml

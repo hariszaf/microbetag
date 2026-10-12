@@ -240,10 +240,7 @@ class GEMSReconstruction:
         Use FragGeneScan to get .faa files.
         """
         cwd = os.getcwd()
-        if getattr(self.config, "mount", None):
-            FGS = "/opt/FragGeneScan/FragGeneScan"
-        else:
-            FGS = get_tool_location("FragGeneScan")
+        FGS = get_tool_location("FragGeneScan")
         COMPLETE = "complete"
         for bin_filename in self.config.bin_filenames:
             bin_file = os.path.join(self.config.bins_path, bin_filename)

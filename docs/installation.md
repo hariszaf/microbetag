@@ -327,11 +327,10 @@ So far, we have tested them using:
 
   ```bash
       docker run --rm -it  \
-          --volume=./tests/dev_io_microbetag/:/data \
-          --volume=./microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
-          --volume=gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-          --entrypoint /bin/bash  \
-          hariszaf/microbetag:v1.0.2
+          --volume=$PWD/my_study:/data \
+          --volume=$PWD/kofam_database:/kofam_database \
+          --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+          hariszaf/microbetag:<version>
   ```
 
   Note that `microbetag` is looking for the license under `/opt/gurobi/`.

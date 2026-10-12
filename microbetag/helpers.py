@@ -76,14 +76,15 @@ class PathwayComplementarity:
 
     def handle_missing_kofam_db(self):
         """Handles the case when the KOfam database path is missing."""
-        container_kofam_db = "/microbetag/microbetag/mtg_maps_models/kofam_database/"
-        if not os.path.exists(container_kofam_db):
+        # Set in the container image, where the database is mounted
+        container_kofam_db = os.environ.get("MICROBETAG_KOFAM_DB")
+        if not container_kofam_db or not os.path.exists(container_kofam_db):
             _logger_.error(
                 "Please provide the path to the KOfam database (kofam_database: dir_path in the YAML). \n"
                 "To download it into ext_data/kofam_database, run from the microbetag repository: \n\n"
                 "    bash install.sh --kofam\n\n"
-                "If running microbetag through a container, mount kofam_db under "
-                "/microbetag/microbetag/mtg_maps_models/kofam_database/."
+                "If running microbetag through its container, mount the database at "
+                "/kofam_database (docker run -v /path/to/kofam_database:/kofam_database ...)."
             )
             sys.exit(1)
         else:

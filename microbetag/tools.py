@@ -17,7 +17,6 @@ from .deps import init_flashweave, missing_tool_error, require_conda_env
 
 from .utils import (
     get_files_with_suffixes,
-    get_library_version,
     get_tool_location,
     ensure_flashweave_format,
     ensure_same_namespace_after_fw,
@@ -258,13 +257,11 @@ def phenotrex_genotype(config: "Config") -> None:
         bin_files = get_files_with_suffixes(config.bins_path, suffixes)
         bin_files_in_a_row = " ".join(bin_files)
 
-        # Build genotypes
-        compute_genotype_params = []
-        if not config.cwd.startswith("/microbetag"):
-            require_conda_env(_MTG_PHEN_ENV)
-            compute_genotype_params += ["conda run -n", _MTG_PHEN_ENV]
-
-        compute_genotype_params += [
+        # phenotrex runs in its own conda environment, both locally and in the container
+        require_conda_env(_MTG_PHEN_ENV)
+        compute_genotype_command = " ".join([
+            "conda run -n",
+            _MTG_PHEN_ENV,
             "phenotrex",
             "compute-genotype",
             "--out",
@@ -272,41 +269,12 @@ def phenotrex_genotype(config: "Config") -> None:
             "--threads",
             str(config.threads),
             bin_files_in_a_row,
-        ]
-
-        # Container - case
-        if config.cwd.startswith("/microbetag"):
-
-            sk_init_version = get_library_version("scikit-learn")
-            pheno_init_version = get_library_version("phenotrex")
-
-            sk_required_version = "1.3.2"
-            if sk_init_version != sk_required_version:
-                # os.system("python3 -m pip install scikit-learn==1.3.2")
-                get_sklearn_v = "==".join(["scikit-learn", sk_required_version])
-                subprocess.run([sys.executable, "-m", "pip", "install", get_sklearn_v])
-
-            pheno_required_version = "0.6.0"
-            if pheno_init_version != pheno_required_version:
-                get_pheno_v = "==".join(["phenotrex[fasta]", pheno_required_version])
-                subprocess.run([sys.executable, "-m", "pip", "install", get_pheno_v])
-
-            # Run the command
-            compute_genotype_command = " ".join(compute_genotype_params)
-            if os.system(compute_genotype_command) != 0:
-                _logger_.info("Try phenotrex genotype for the second time.")
-                if os.system(compute_genotype_command) != 0:
-                    _logger_.error("Phenotrex compute genotype command failed.")
-                    sys.exit(0)
-        # Local case
-        else:
-            compute_genotype_command = " ".join(compute_genotype_params)
-            print(compute_genotype_command)
-            try:
-                subprocess.run(compute_genotype_command, shell=True, check=True)
-            except Exception as e:
-                _logger_.error(e)
-                sys.exit(1)
+        ])
+        _logger_.info(compute_genotype_command)
+        try:
+            subprocess.run(compute_genotype_command, shell=True, check=True)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"phenotrex compute-genotype failed: {e}") from e
 
 
 def phenotrex_predict(config: "Config") -> None:
@@ -340,13 +308,10 @@ def phenotrex_predict(config: "Config") -> None:
 
         else:
 
-            predict_traits_params = []
-            # Local case
-            if not config.cwd.startswith("/microbetag"):
-                require_conda_env(_MTG_PHEN_ENV)
-                predict_traits_params = ["conda run -n", _MTG_PHEN_ENV]
-            # All cases: local and container
-            predict_traits_params += [
+            require_conda_env(_MTG_PHEN_ENV)
+            predict_traits_params = [
+                "conda run -n",
+                _MTG_PHEN_ENV,
                 "phenotrex",
                 "predict",
                 "--genotype",
@@ -407,7 +372,9 @@ def run_manta(config: "Config") -> None:
 
     # Run manta
     try:
-        if os.system(manta_command) != 0:
+        # manta writes a log file named "\\manta.log" in its working directory,
+        # so run it where microbetag can write
+        if subprocess.run(manta_command, shell=True, cwd=config.outdir).returncode != 0:
             warning_msg = (
                 "The manta clustering algorithm failed."
                 "Most likely this is because clusters could not be grouped based on the provided network "

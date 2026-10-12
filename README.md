@@ -93,85 +93,60 @@ For more, you can also check [on `microbetag`'s documentation page](https://micr
 
 ### Option 3: In a container
 
-To run `microbetag` as a [Docker](https://docs.docker.com/get-docker/) container, you can directly get it from DockerHub:
+The `hariszaf/microbetag` image holds the same environments as `bash install.sh --phenotrex`
+(everything except ModelSEEDpy and DNNGIOR). Get it from Docker Hub:
 
 ```bash
 docker pull hariszaf/microbetag:<version>
 ```
 
-Contrary, if you are interested in running it as a [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html) 
-or an [Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux) container,
-you need to first build its corresponding image based on a [Docker version of microbetag](https://hub.docker.com/repository/docker/hariszaf/microbetag/tags?page=1&ordering=last_updated).
-To do so, you can run:
+or build it from the root of this repository:
 
 ```bash
-sudo singularity build microbetag_v101.simg docker://hariszaf/microbetag:<version>
+docker build -t hariszaf/microbetag:<version> .
 ```
 
-🔴 To execute the `singularity build` command, you will (probably) need to have `sudo` rights.
-Thus, in case you are working on an HPC, you will have to:
-- either ask your admin to do so, or 
-- run the build command in a similar environment and move it to the HPC. 
+The container needs three things from your system, each mounted at a fixed path:
 
-Both in the Docker and Singularity cases, you will need to first get the kofam database 
-in case you are interested in pathway complementarities and kofam is not already available on your computing system.  
-You can get kofam database by running the following chunk of code:
+| What | Mount at | Needed for |
+|---|---|---|
+| The folder with your configuration YAML and input files | `/data` | always |
+| The kofam database (`bash install.sh --kofam`, or [download it](ftp://ftp.genome.jp/pub/db/kofam/)) | `/kofam_database` | pathway complementarities from your genomes |
+| A [Gurobi license](https://www.gurobi.com/downloads/) file | `/opt/gurobi/gurobi.lic` | GEM reconstruction with CarveMe |
 
-```bash
-cd ext_data/kofam_database &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-gzip -d ko_list.gz &&\
-tar zxvf profiles.tar.gz 
-```
-
-Also, if you are about to reconstruct Genome Scale Models, necessary for inferring seed complementarities, using CarveMe
-you would also need to get a Web License Service (WLS) [Gurobi license](https://www.gurobi.com/downloads/).
-To do so, you may find the following [link](https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu) useful on how to do that.
-Like the kofam case, this applies for both Docker and Singularity.
-
-To run `microbetag` in a container, you will need to ***pass*** kofam and/or the Gurobi license 
-(in case you do need them for the steps you wish `microbetag` to go for) to the running container, as well as your **input data** themselves. 
-
-Here is how you can do this in these two technologies.
+Paths in the configuration YAML are relative to the YAML's folder, so a configuration that works locally
+also works in the container. Leave the kofam path in the YAML empty to use the mounted `/kofam_database`.
 
 #### Docker
 
-We **mount** the [`test_microbetag`](./tests/data/microbetag/) and all its contents from our host system, 
-to the `/data` directory of the container. 
-**The `test_microbetag` folder should contain all our genomes/bins, abundance table, metadata or network (edge list) files.**
-**Anything `microbetag` will consider as input files. For example, in case you already have GEMs for your genomes, they should also be mounted.**
-
-Remember to **mount** the kofam database to the `/microbetag/microbetagDB/ref-dbs/kofam_database/` path of the container and the Gurobi license,
-if necessary.
-
-> Your configuration YAML in case of running on a container, needs to provide **the paths of your data in the container**,
-> not those on your host system.
-
 ```bash
-docker run --rm -it  \
-    --volume=./tests/data/microbetag/:/data \
-    --volume=./ext_data/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
-    --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-    microbetag:<version>
+docker run --rm \
+    -v $PWD/my_study:/data \
+    -v $PWD/ext_data/kofam_database:/kofam_database \
+    -v $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+    hariszaf/microbetag:<version> \
+    microbetag --config /data/config.yml
 ```
 
-You can also start an **interactive shell** inside the container by using the `--entrypoint` flag and setting it to `/bin/bash`. 
-This allows you to explore and work inside the container environment manually.
+Run it without the last line to get a shell inside the container.
 
+#### Singularity / Apptainer
 
-
-#### Singularity
-
-Like in the Docker case, you need to mount data and related files.
+Convert the Docker image once; this does not need `sudo`:
 
 ```bash
-singularity exec 
-    -B tests/dev_io_microbetag/:/data  
-    -B microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/
-    -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro  
-    microbetag_v101.simg 
-    python3 /microbetag/microbetag.py /data/config.yml
+singularity pull microbetag.sif docker://hariszaf/microbetag:<version>
+```
+
+Then run it with the same mounts:
+
+```bash
+singularity exec \
+    -B $PWD/my_study:/data \
+    -B $PWD/ext_data/kofam_database:/kofam_database \
+    -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
+    microbetag.sif \
+    microbetag --config /data/config.yml
 ```
 
 
@@ -181,8 +156,7 @@ singularity exec
 This is why [`install.sh`](./install.sh) builds separate conda environments, described in [`envs/`](./envs):
 `microbetag` for the main pipeline, plus optional `mtg-phenotrex`, `mtg-modelseed` and `mtg-dnngior`
 (`bash install.sh --help` lists the options).
-Similarly, it switches from a `scikit-learn` version to another while running. 
-This is not optional, and we hope in the future to find a better way.
+microbetag calls the tools in those environments with `conda run`, both locally and in its container.
 
 
 

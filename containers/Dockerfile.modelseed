@@ -1,27 +1,19 @@
-# Use official Python 3.9 image
-FROM python:3.9-slim
+# ModelSEEDpy reconstructions, used by the microbetag-nf pipeline.
+# Same environment as `bash install.sh --modelseed` (envs/mtg-modelseed.yml).
+#
+# Build, from the root of the repository:
+#   docker build -f containers/Dockerfile.modelseed -t hariszaf/modelseed:0.4.2 .
 
-# Set working directory
-WORKDIR /app
+ARG MINIFORGE_VERSION=25.11.0-1
+FROM condaforge/miniforge3:${MINIFORGE_VERSION}
 
-# Install system dependencies required by Python libraries (including libexpat)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    libexpat1 \
-    gcc \
-    g++ \
-    make && \
-    rm -rf /var/lib/apt/lists/*
+COPY envs/mtg-modelseed.yml /tmp/
+RUN conda env create -f /tmp/mtg-modelseed.yml \
+ && conda run -n mtg-modelseed python -c "from modelseedpy import MSBuilder, MSGenome" \
+ && conda clean -afy
 
-# Copy the requirements file into the image
-COPY modelseedpy.txt ./modelseedpy.txt
+ENV PATH=/opt/conda/envs/mtg-modelseed/bin:${PATH} \
+    CONDA_DEFAULT_ENV=mtg-modelseed
 
-# Upgrade pip and install dependencies
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --timeout 120 --retries 10 -r modelseedpy.txt
-
-
-RUN python -c "import modelseedpy; print('modelseedpy ready!')"
-
-# Default command (if used with Nextflow, Nextflow will override this anyway)
+WORKDIR /data
 CMD ["bash"]

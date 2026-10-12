@@ -66,16 +66,10 @@ class Config:
 
         self.cwd = os.path.dirname(os.path.realpath(__file__))
 
-        # Check if microbetag runs as a container
-        self.mount = None
-        if self.cwd == "/microbetag":
-            self.mount    = "/data"
-            self.base_dir = self.mount
+        if config_file is None:
+            self.base_dir = conf.get("__config_dir__", None)
         else:
-            if config_file is None:
-                self.base_dir = conf.get("__config_dir__", None)
-            else:
-                self.base_dir = os.path.dirname(config_file)
+            self.base_dir = os.path.dirname(config_file)
         if self.base_dir is None:
             raise SystemError("You need to provide a base directory, where your config is found.")
 
