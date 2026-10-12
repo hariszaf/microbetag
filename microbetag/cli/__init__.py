@@ -1,7 +1,7 @@
 """
 Command-line entry points used by the microbetag-nf Nextflow pipeline.
 
-Each module exposes a ``main(argv=None)`` function registered as a console script in setup.py.
+Each module exposes a ``main(argv=None)`` function registered as a console script in pyproject.toml.
 Positional arguments mirror the former ``nf/bin/mtg/*.py`` scripts so that pipeline modules
 only need to swap the command name.
 """

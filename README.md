@@ -63,9 +63,12 @@ bash setup_environment.sh
 Once `conda` environments and required tools and databases are installed, you can install the `microbetag` package by running:
 
 ```bash
-python setup.py sdist bdist_wheel
 pip install .
 ```
+
+Optional features are installed as extras, e.g. `pip install ".[genres,otf]"`:
+`genres` (CarveMe reconstructions), `flashweave` (network inference via Julia),
+`otf` (on-the-fly database queries) and `test`.
 In case you get the strip_trailing_zero error
 ```bash
 pip install --upgrade setuptools packaging

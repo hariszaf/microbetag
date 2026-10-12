@@ -23,7 +23,7 @@ import logging
 import colorlog
 import numpy as np
 import pandas as pd
-import pkg_resources
+from importlib import metadata
 from pathlib import Path
 from multiprocessing import Pool, cpu_count
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Set, Union
@@ -39,10 +39,10 @@ def get_library_version(library_name: str) -> str:
     """
 
     try:
-        version = pkg_resources.get_distribution(library_name).version
+        version = metadata.version(library_name)
         return version
 
-    except pkg_resources.DistributionNotFound:
+    except metadata.PackageNotFoundError:
         return "Library not found"
 
     except Exception as e:

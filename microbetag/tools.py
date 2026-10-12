@@ -11,7 +11,6 @@ import multiprocessing
 
 from tqdm import tqdm
 
-from julia.api import Julia
 from typing import TYPE_CHECKING, List
 
 from .utils import (
@@ -452,6 +451,7 @@ def run_flashweave(config: "Config") -> None:
     if not hasattr(config, 'julia_instance'):
 
         _logger_.info("Init Julia through Python!")
+        from julia.api import Julia  # optional dependency: microbetag[flashweave]
         config.jl = Julia(compiled_modules=False)
         config.jl.using("FlashWeave")
 

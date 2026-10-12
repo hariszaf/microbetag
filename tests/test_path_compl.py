@@ -93,9 +93,7 @@ class testPathCompl(unittest.TestCase):
 
     def test3_all_complements(self):
 
-        module_to_map = a_modules_maps(
-            microbetag._KEGG_MODULES_TO_MAPS
-        )  # self.map_paths.kegg_modules_to_maps
+        module_to_map = a_modules_maps(MappingPaths().kegg_modules_to_maps)
 
         complements = all_complements(
             self.bin_kos_per_module,
