@@ -91,7 +91,7 @@ RUN cd Prodigal &&\
 
 RUN pip install scikit-bio
 
-RUN apt-get install infernal infernal-doc
+RUN apt-get install -y infernal infernal-doc
 
 # To install DRAM (for KEGG annotation of the bins), we need the following
 # pandas [done], networkx[done], scikit-bio[done], prodigal[done], mmseqs2, hmmer and 
@@ -116,7 +116,7 @@ RUN git clone https://github.com/xuechunxu/DiTing.git
 # ------- FOR SEED COMPLEMENTS ----------
 WORKDIR /usr/local/
 RUN apt-get update &&\
-    apt install curl &&\
+    apt-get install -y curl &&\
     add-apt-repository universe &&\ 
     apt-get update
 RUN apt-get install -y gdebi-core

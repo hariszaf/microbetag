@@ -75,7 +75,7 @@ def run_microbetag(config: Config):
     _run_faprotax(config)
 
     # phen annotations
-    _get_phen_annotations(config, db) if (config.onthefly or config.api) else _get_phen_annotations(config)
+    _get_phen_annotations(config, db=db) if (config.onthefly or config.api) else _get_phen_annotations(config)
 
     # Prodigal - ORF prediction
     _run_prodigal(config)
@@ -90,10 +90,10 @@ def run_microbetag(config: Config):
         ) = otf_seqid_ncbi_gtdb_map(config)
 
     # Pathway complementarity
-    _get_path_compl(config, db) if (config.onthefly or config.api) else _get_path_compl(config)
+    _get_path_compl(config, db=db) if (config.onthefly or config.api) else _get_path_compl(config)
 
     # Seed complementarity
-    _get_seed_compl(config, db) if (config.onthefly or config.api) else _get_seed_compl(config)
+    _get_seed_compl(config, db=db) if (config.onthefly or config.api) else _get_seed_compl(config)
 
     # Network clustering
     _run_manta(config)

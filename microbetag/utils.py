@@ -476,8 +476,8 @@ def bin_kos_to_file(hmmout_dir: str, bin_id: str) -> None:
     # Remove .hmmout files
     bin_hmmout = os.path.join(hmmout_dir, ".".join([bin_id, "hmmout.all"]))
     many_to_one_files(hmmout_dir, bin_hmmout)
-    for p in glob.glob(hmmout_dir, recursive=True):
-        if os.path.isfile(p) and p.endswith(".hmmout"):
+    for p in glob.glob(os.path.join(hmmout_dir, "*.hmmout")):
+        if os.path.isfile(p):
             os.remove(p)
 
 
@@ -539,7 +539,10 @@ def load_merged_ko_file(merged_ko: str) -> pd.DataFrame:
         # Compress if uncompressed version found and no .gz exists
         gz_path = p.with_suffix(p.suffix + ".gz")
         if not gz_path.exists():
-            os.system(f"gzip {p}")
+            # Keep the original file: it is read right below
+            import gzip
+            with open(p, "rb") as f_in, gzip.open(gz_path, "wb") as f_out:
+                shutil.copyfileobj(f_in, f_out)
         merged_ko = p
 
     # Load the (decompressed) file

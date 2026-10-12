@@ -27,4 +27,5 @@ ADD microbetag/ ./microbetag/
 ADD tests/ ./tests
 ADD LICENSE ./
 
-ENTRYPOINT [ "python3", "microbetag.py", "/data/*.yml" ]
+# Shell form so that the config glob is expanded; extra args to `docker run` override the config path
+ENTRYPOINT [ "sh", "-c", "exec python3 /microbetag/microbetag/microbetag.py ${0:-$(ls /data/*.yml | head -n1)}" ]

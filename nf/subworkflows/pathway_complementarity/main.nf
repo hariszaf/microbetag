@@ -42,7 +42,7 @@ workflow PATHWAY_COMPLEMENTARITY {
             log.info "✓ Using existing alts_file and pc_file, skipping ALL upstream processing"
 
             // Continue pipeline with the generated/already available files
-            PC_EXTEND(pc_file)
+            pc_ext = PC_EXTEND(pc_file)
 
         } else {
 
@@ -74,7 +74,7 @@ workflow PATHWAY_COMPLEMENTARITY {
                 // Define KOFAM channels only when needed
                 def ko_list_ch; ko_list_ch   = Channel.fromPath(params.kegg_list, checkIfExists: true)
                 def hmm_prof_ch; hmm_prof_ch = Channel.fromPath(params.hmm_profiles, checkIfExists: true)
-                def hmm_sc_ch ; hmm_sc_ch    = Channel.fromPath('modules/kofam/kofam.sh')
+                def hmm_sc_ch ; hmm_sc_ch    = Channel.fromPath("${moduleDir}/../../modules/kofam/kofam.sh", checkIfExists: true)
 
                 // Handle FAA files
                 def has_faa_dir = params.faa_dir && file(params.faa_dir).exists()

@@ -77,7 +77,7 @@ workflow {
     hmm_prof_ch = Channel.fromPath("${params.hmm_profiles}")
 
     // Create a channel from input faa_dir
-    hmmsearch_sc_ch = Channel.fromPath('modules/kofam/kofam.sh')
+    hmmsearch_sc_ch = Channel.fromPath("${moduleDir}/kofam.sh", checkIfExists: true)
 
     // Combine the single channels with all faa_dir
     def inputs_ch

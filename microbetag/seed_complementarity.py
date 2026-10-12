@@ -164,10 +164,10 @@ class ExportSeedComplementarities:
 
         # Unpack the results
         for result in results:
-            try:
-                sbml_base, SeedSet, nonSeedSet, SeedSetConfidence = result
-            except Exception:
-                pass
+            if result is None:
+                # process_sbml() failed for this model; skip it instead of reusing the previous model's sets
+                continue
+            sbml_base, SeedSet, nonSeedSet, SeedSetConfidence = result
 
             tmp = {key: None for key in SeedSet}
 
@@ -399,14 +399,14 @@ def process_sbml(args: set):
     sbml_path, namespace, switch, bigg2seed, ixes = args
 
     filename  = os.path.basename(sbml_path)
-    sbml_base = filename.rstrip(".xml")
+    sbml_base = filename[:-len(".xml")] if filename.endswith(".xml") else os.path.splitext(filename)[0]
 
     # calculate SeedSets
     try:
         DG_sbml = BuildGraphNetX.buildDG(sbml_path)
     except Exception as e:
-        _logger_.error("Failed to run build directional graph for:", sbml_path)
-        return e
+        _logger_.error("Failed to run build directional graph for: %s (%s)", sbml_path, e)
+        return None
 
     # Get sets !
     # SeedSet: a dict_keys  |  nonSeedSet: a list already  |  SeedSetConfidence: a dict

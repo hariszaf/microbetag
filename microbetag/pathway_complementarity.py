@@ -80,7 +80,7 @@ def all_complements(
         for donor_bin_id in bin_kos_per_module:
             complements[beneficiary_bin_id][donor_bin_id] = []
             for module, alts in all_bin_module_alternatives.items():
-                donors_kos_relativ_to_module = bin_kos_per_module[donor_bin_id][module]
+                donors_kos_relativ_to_module = bin_kos_per_module[donor_bin_id].get(module, [])
                 for alternative, missing_kos_for_alternative in alts.items():
                     is_subset = set(missing_kos_for_alternative).issubset(
                         set(donors_kos_relativ_to_module)
