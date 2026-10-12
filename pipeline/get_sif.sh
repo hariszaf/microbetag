@@ -24,12 +24,14 @@ cd "$SIF_DIR"
 
 # Make a map of working-fine Docker to Singularity names 
 declare -A IMAGES=(
-               [hariszaf-microbetag-nf-0.1.0]="hariszaf/microbetag-nf:0.1.0"
+               [hariszaf-microbetag-nf-2.0.0]="hariszaf/microbetag-nf:2.0.0"
                      [hariszaf-carveme-1.6.6]="hariszaf/carveme:1.6.6"
                  [hariszaf-flashweave-0.19.2]="hariszaf/flashweave:0.19.2"
                    [hariszaf-phenotrex-0.6.0]="hariszaf/phenotrex:0.6.0"
   [biocontainers-prodigal-v1-2.6.3-4-deb_cv1]="biocontainers/prodigal:v1-2.6.3-4-deb_cv1"
                            [staphb-hmmer-3.4]="staphb/hmmer:3.4"
+                     [hariszaf-gapseq-1.4.0]="hariszaf/gapseq:1.4.0"
+  [quay.io-biocontainers-bioconductor-decipher-3.2.0--r44h3df3fcb_1]="quay.io/biocontainers/bioconductor-decipher:3.2.0--r44h3df3fcb_1"
 )
 
 # Pull Singularity images from DockerHub, if not already in the SIF_DIR
