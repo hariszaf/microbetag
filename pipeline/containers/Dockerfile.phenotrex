@@ -1,5 +1,5 @@
 # phenotrex 0.6 for trait prediction, used by the microbetag-nf pipeline.
-# Same environment as `bash install.sh --phenotrex` (envs/mtg-phenotrex.yml).
+# Its conda environment is envs/mtg-phenotrex.yml.
 #
 # Build, from the root of the repository:
 #   docker build -f containers/Dockerfile.phenotrex -t hariszaf/phenotrex:0.6.0 .
