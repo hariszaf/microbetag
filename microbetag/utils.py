@@ -776,7 +776,11 @@ def extend_faprotax(faprotax_sub_tables, sequence_id_column_name) -> Tuple[dict[
         # We replace '_' with a space for user's convenience in the MGG
         # Also, this needs to be synced with the MGG.MUtils code for the grouping in the node panel
         trait_name, _ = os.path.splitext(os.path.basename(file))
-        trait         = pd.read_csv(file, sep=",", skiprows=1)
+        # FAPROTAX writes the sub-tables with the abundance table's delimiter; line 1 is a comment
+        with open(file) as f:
+            f.readline()
+            sep = "\t" if "\t" in f.readline() else ","
+        trait         = pd.read_csv(file, sep=sep, skiprows=1)
 
         bins_with_trait = trait[sequence_id_column_name].dropna()
 

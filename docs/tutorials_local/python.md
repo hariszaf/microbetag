@@ -56,7 +56,7 @@ description: "how to run microbetag from Python"
   on the <a href="https://github.com/msysbio/microbetag/tree/develop/tests" target="_blank">`unittests` of ours</a>.
 
   Input/output for these tests can be found in the 
-  <a href="https://github.com/msysbio/microbetag/tree/develop/test_data" target="_blank">`test_data`</a>
+  <a href="https://github.com/msysbio/microbetag/tree/develop/tests/data" target="_blank">`tests/data`</a>
   folder where each case is explained further. 
   
   In the [.. using custom genomes](./local.md) tutorial, we provide an example on how to run a complete 

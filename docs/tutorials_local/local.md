@@ -86,7 +86,7 @@ a **precomputed network** file and a **two-column taxonomy file**,
 where the first column contains sequence IDs and the second contains their corresponding taxonomies.
 
 For such a case, you may check an example on microbetag's 
-<a href="https://github.com/msysbio/microbetag/tree/develop/test_data/test_microbetag" target="_blank">GitHub</a>.
+<a href="https://github.com/msysbio/microbetag/tree/develop/tests/data/microbetag" target="_blank">GitHub</a>.
 ```
 
 
@@ -137,8 +137,8 @@ If you need to run indipendent tasks, you can either build pseudo :class:`microb
 or even use directly the `microbetag` features you wish to. 
 
 The example cases we conver under the <a href="https://github.com/msysbio/microbetag/tree/develop/tests" target="_blank">`tests` folder on GitHub</a> they come along with their input/output data you will find on the 
-<a href="https://github.com/msysbio/microbetag/tree/develop/test_data" target="_blank">`test_data`</a> folder.
-Have a look on the <a href="https://github.com/msysbio/microbetag/blob/develop/test_data/README.md" target="_blank">`README`</a>
+<a href="https://github.com/msysbio/microbetag/tree/develop/tests/data" target="_blank">`tests/data`</a> folder.
+Have a look on the <a href="https://github.com/msysbio/microbetag/blob/develop/tests/data/README.md" target="_blank">`README`</a>
 for the cases covered and feel free to advise their corresponding pseudo-config classes, or their corresponding
 YAML configuration files.
 ```

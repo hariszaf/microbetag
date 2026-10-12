@@ -292,12 +292,13 @@ class Config:
         # ==========
         if not self.onthefly and self.phen_traits:
 
-            import torch
-            from deepnog.utils import get_weights_path
-            from deepnog.utils import set_device
-
-            device = set_device("auto")
+            # Locally, torch and deepnog live in the mtg-phenotrex environment, not this one
             try:
+                import torch
+                from deepnog.utils import get_weights_path
+                from deepnog.utils import set_device
+
+                device = set_device("auto")
                 weights_path = get_weights_path(
                     database="eggNOG5",
                     level=str(2),
@@ -305,10 +306,9 @@ class Config:
                 )
                 _ = torch.load(weights_path, map_location=device)
             except Exception:
-                _logger_.warn(
+                _logger_.warning(
                     "Could not load the deepnog weights. Please check the deepnog installation and setup."
                 )
-                pass
 
         _logger_.info("Configuration file loaded successfully.")
 

@@ -19,9 +19,9 @@
 
 ## For this `README` file
 
-  Under the [`tests`](../tests/) folder, there is a series of test files for the different `microbetag` features/modules.
+  Under the [`tests`](../) folder, there is a series of test files for the different `microbetag` features/modules.
 
-  Under[`test_data`](../test_data/), you can find the input/output files of each test.
+  Under [`tests/data`](./), you can find the input/output files of each test.
   In this README file, we explain what every test is supposed to test, what kind of input it expects and what it returns.
 
   Some tests have a pseudo-configuration file, **part of the one used when running the whole pipeline.**
@@ -34,23 +34,22 @@
   > Changes from version to version will be fixed on those only if needed.
   > The `microbetag` version specific YAML files can be found under the [`config_files`](../config_files/) folder.
 
-  Also, `unittest` performs test functions **alphabetically** not in the order on the script.
 
 
-## Infer co-occurrence network with FlashWeave ([`test_flashweave`](../tests/test_flashweave.py) | [IO](./test_flashweave/))
+## Infer co-occurrence network with FlashWeave ([`test_flashweave`](../integration/test_flashweave.py) | [IO](./flashweave/))
 
   Runs FlashWeave with and without a metadata file. 
 
   Check input files of this test to make sure you give `microbetag` you data in the proper format.
 
 
-## Literature based node annotation with FAPROTAX ([`test_faprotax.py`](../tests/test_faprotax.py) | [IO](./test_faprotax/))
+## Literature based node annotation with FAPROTAX ([`test_faprotax.py`](../unit/test_faprotax.py) | [IO](./faprotax/))
 
   Builds the merged `functional_otu_table.tsv` and the `sub_tables` folder with the `.tsv` files per trait found, 
   as FAPROTAX does.
 
 
-## Genome based node annotations using `phenotrex` predictions ([`test_phenotrex.py`](../tests/test_phenotrex.py) | [IO](./test_phenotrex/))
+## Genome based node annotations using `phenotrex` predictions ([`test_phenotrex.py`](../integration/test_phenotrex.py) | [IO](./phenotrex/))
 
   Runs both`phenotrex` programs used in `microbetag`:
 
@@ -73,7 +72,7 @@
     bin_101.fa      YES     0.6504
     ```
 
-## Gene prediction using Prodigal ([`test_prodigal.py`](../tests/test_prodigal.py) | [IO](./test_prodigal))
+## Gene prediction using Prodigal ([`test_prodigal.py`](../integration/test_prodigal.py) | [IO](./prodigal/))
 
   Runs the Prodigal gene predictor on a single bin (`.fa`) to build 3 files:
       - `.faa`
@@ -81,7 +80,7 @@
       - `.gbk`
 
 
-## KEGG ORTHOLOGY annotation ([`test_kegg_annotation.py`](../tests/test_kegg_annotation.py) | [IO](./test_kegg_annotation/))
+## KEGG ORTHOLOGY annotation ([`test_kegg_annotation.py`](../integration/test_kegg_annotation.py) | [IO](./kegg_annotation/))
 
   Takes as input a list of `.faa` files, as returned by the [gene prediction step](#gene-prediction-using-prodigal-test_prodigal)
   and also, a very small part of the `ko_list` file of the `kofam_database` ([ko_list_tests](../ext_data/kofam_database/ko_list_tests))
@@ -96,7 +95,7 @@
   In 
 
 
-## Pathway complementarity extraction ([`test_path_compl.py`](../tests/test_path_compl.py) | [IO](./test_path_compl/))
+## Pathway complementarity extraction ([`test_path_compl.py`](../unit/test_path_compl.py) | [IO](./path_compl/))
 
   Only input for this test is a `ko_merged`-like file, based on the 7 bins we've been using across all the tests, 
   namely: `bin_101`, `bin_151`, `bin_19`, `bin_38`, `bin_41`, `bin_45`, `bin_48`.
@@ -133,7 +132,7 @@
   - `URL`: URL to the KEGG MAP that the module under study is part of with colored nodes the terms coming from the beneficiary and the complements
 
 
-## Genome-scale metabolic reconstruction with ModelSEED ([`test_modelseed.py`](../tests/test_modelseed.py) | [IO](./test_modelseed/))
+## Genome-scale metabolic reconstruction with ModelSEED ([`test_modelseed.py`](../integration/test_modelseed.py) | [IO](./modelseed/))
 
   In this test case, the `microbetag.genres.TestGEMSReconstruction` class takes as input a `.fasta` file, to build the following 
   files:
@@ -147,7 +146,7 @@
   > necessary variables for the class. This result to an empty directory called `seeds_complementarity` in the output directory.
 
 
-## Genome-scale metabolic reconstruction with CarveMe ([`test_carve.py`](../tests/test_carve.py) | [IO](./test_carve/))
+## Genome-scale metabolic reconstruction with CarveMe ([`test_carve.py`](../integration/test_carve.py) | [IO](./carve/))
 
   Similar to the previous test, we provide 2 `.faa` files this time, and build GENREs using CarveMe.
 
@@ -157,7 +156,7 @@
   `seed_complementarity` argument in the configuration file.
 
 
-## Seed complementarity extraction ([`test_seed_compl.py`](../tests/test_seed_compl.py) | [IO](./test_seed_compl/))
+## Seed complementarity extraction ([`test_seed_compl.py`](../unit/test_seed_compl.py) | [IO](./seed_compl/))
 
   Here we give a set of GEMs as input files, and we build a pseudo `Config`-like class on the test. 
 
@@ -225,7 +224,7 @@
     ```
 
 
-## Network clustering using `manta` ([`test_manta.py`](../tests/./test_manta.py) | [IO](./test_manta/))
+## Network clustering using `manta` ([`test_manta.py`](../tests/./test_manta.py) | [IO](./manta/))
 
 
   We run two tests, one using an abundance table as input data and a second one using a network. 
@@ -239,7 +238,7 @@
     `microbetag` loads it when building the annotated network to assign clusters as node attributes.
 
 
-## Building a CX2 `microbetag`-annotated network ([`test_build_cx2.py`](../tests/test_build_cx2.py) | [IO](./test_build_cx2/))
+## Building a CX2 `microbetag`-annotated network ([`test_build_cx2.py`](../integration/test_build_cx2.py) | [IO](./build_cx2/))
 
 
   This test expects a complete annotation set from `microbetag`, i.e.
@@ -257,7 +256,7 @@
   > have at least a genome mapped.
 
 
-## Complete `microbetag` run ([`test_microbetag`](../tests/./test_microbetag.py) | [IO](./test_microbetag/))
+## Complete `microbetag` run ([`test_microbetag`](../tests/./test_microbetag.py) | [IO](./microbetag/))
 
   This test run the total `microbetag` pipeline with a set of 7 custom genomes -- **not on-the-fly**!
 

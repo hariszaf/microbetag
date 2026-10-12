@@ -1,7 +1,7 @@
 """
 Tests for the console scripts used by the microbetag-nf Nextflow pipeline (microbetag.cli).
 
-Expected values come from the outputs of test_seed_compl.py, stored in test_data/test_seed_compl.
+Expected values are the reference outputs in tests/data/seed_compl.
 """
 
 import json
@@ -13,8 +13,8 @@ import pytest
 
 from microbetag.cli import seed_compls, seed_sets
 
-root_dir  = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-seed_data = os.path.join(root_dir, "test_data", "test_seed_compl")
+tests_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+seed_data = os.path.join(tests_dir, "data", "seed_compl")
 
 CLI_MODULES = [
     "annotate", "format_fw", "format_manta", "pcompl", "pcompl_ext",

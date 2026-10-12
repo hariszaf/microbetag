@@ -19,18 +19,14 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install microbetag
-        run: pip install ".[test]"
+        run: |
+          pip install ".[test]"
+          pip install "git+https://github.com/hariszaf/manta.git@scipy-version"
 
-      # Tests that need only Python dependencies. The rest need external tools
-      # (prodigal, hmmer, CarveMe, Julia, phenotrex) or data not tracked in git.
+      # tests/unit needs only Python dependencies; tests/integration needs the external
+      # tools from install.sh and is skipped here.
       - name: Run tests
-        run: >
-          pytest -v
-          tests/test_cli.py
-          tests/test_path_compl.py
-          tests/test_seed_compl.py
-          tests/test_faprotax.py
-          tests/test_manta.py
+        run: pytest -v -rs tests/unit
 
   build:
     needs: test

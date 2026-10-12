@@ -74,3 +74,4 @@ microbetag = ["mtg_maps_models/**/*", "PhyloMint/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts   = "-rs"

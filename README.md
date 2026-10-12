@@ -77,7 +77,7 @@ pip install --upgrade setuptools packaging
 You are ready to go! 🚀
 
 Feel free to go through the [`tests`](./tests/) folder to check on how you can run specific modules or a complete pipeline of `microbetag`.
-A detailed description of those tests can be found [here](./test_data/README.md).
+A detailed description of those tests can be found [here](./tests/README.md).
 
 For more, you can also check [on `microbetag`'s documentation page](https://microbetag.readthedocs.io/en/v1.0.3/advanced_use/local.html).
 
@@ -129,7 +129,7 @@ Here is how you can do this in these two technologies.
 
 #### Docker
 
-We **mount** the [`test_microbetag`](./test_data/test_microbetag/) and all its contents from our host system, 
+We **mount** the [`test_microbetag`](./tests/data/microbetag/) and all its contents from our host system, 
 to the `/data` directory of the container. 
 **The `test_microbetag` folder should contain all our genomes/bins, abundance table, metadata or network (edge list) files.**
 **Anything `microbetag` will consider as input files. For example, in case you already have GEMs for your genomes, they should also be mounted.**
@@ -142,7 +142,7 @@ if necessary.
 
 ```bash
 docker run --rm -it  \
-    --volume=./test_data/test_microbetag/:/data \
+    --volume=./tests/data/microbetag/:/data \
     --volume=./ext_data/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
     --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
     microbetag:<version>
@@ -240,7 +240,7 @@ It also needs to be a string pointing to a directory (`path`) as mentioned in th
 The value of the variable needs to be set in the `path` field. 
 
 
-For more specific examples, you may have a look on [`tests`](./tests/) and their corresponding [`test_data`](./test_data/), 
+For more specific examples, you may have a look on [`tests`](./tests/) and their corresponding [`tests/data`](./tests/data/), 
 and of course on the [**running `microbetag` locally**](https://microbetag.readthedocs.io/en/latest/advanced_use/local.html) tutorial.
 
 

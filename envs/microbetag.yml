@@ -21,4 +21,6 @@ dependencies:
   # clears the executable-stack flag on Julia's libopenlibm, which newer kernels refuse to load
   - patchelf
   - pip:
-      - -e "..[genres,flashweave,otf]"
+      - -e "..[genres,flashweave,otf,test]"
+      # manta network clustering; a fork that is not on PyPI, so it can't be a pyproject extra
+      - git+https://github.com/hariszaf/manta.git@scipy-version

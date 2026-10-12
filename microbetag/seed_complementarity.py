@@ -141,6 +141,13 @@ class ExportSeedComplementarities:
             if f.endswith(".xml")
         ]
 
+        if not sbml_files:
+            raise RuntimeError(
+                f"No GEMs (.xml) found in {self.config.genres}, so seed complementarities can't be computed. "
+                "If microbetag was meant to build them, check the reconstruction step above "
+                "(e.g. CarveMe needs a valid Gurobi license)."
+            )
+
         _logger_.info(f"\n\n>> {sbml_files}")
         _logger_.info(self.config.threads)
 

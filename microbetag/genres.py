@@ -364,4 +364,5 @@ def run_carve(genome_files, outdir, dna=False):
         carve_params.append(fa)
         carve_command = " ".join(carve_params)
 
-        os.system(carve_command)
+        if os.system(carve_command) != 0:
+            _logger_.error("CarveMe failed for %s. Command: %s", fa, carve_command)

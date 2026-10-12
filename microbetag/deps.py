@@ -25,6 +25,7 @@ TOOLS = {
     "carve"       : "GEM reconstruction with CarveMe",
     "FragGeneScan": "ORF prediction for ModelSEEDpy reconstructions",
     "julia"       : "network inference with FlashWeave",
+    "manta"       : "network clustering with manta",
 }
 
 

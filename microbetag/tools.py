@@ -398,6 +398,13 @@ def run_manta(config: "Config") -> None:
     ]
     manta_command = " ".join(manta_params)
 
+    if shutil.which("manta") is None:
+        _logger_.warning(
+            "%s\nmicrobetag will continue without network clustering.", missing_tool_error("manta")
+        )
+        config.network_clustering = False
+        return
+
     # Run manta
     try:
         if os.system(manta_command) != 0:
@@ -518,7 +525,8 @@ def run_faprotax(config: "Config") -> None:
         delimiter = config.delimiter
 
     faprotax_params = [
-        "python",
+        # The interpreter running microbetag, not whichever `python` comes first on PATH
+        sys.executable,
         config.faprotax_script,
         "-i",
         config.abundance_table,
@@ -540,8 +548,5 @@ def run_faprotax(config: "Config") -> None:
     faprotax_command = " ".join(faprotax_params)
 
     _logger_.info(faprotax_command)
-    _logger_.info(os.system("which python"))
-    try:
-        os.system(faprotax_command)
-    except Exception:
-        raise "FAPROTAX failed."
+    if os.system(faprotax_command) != 0:
+        raise RuntimeError(f"FAPROTAX failed. Command: {faprotax_command}")
