@@ -8,9 +8,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../../modules/helpers'
-include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../modules/seed_compl'
-include { CARVE } from '../../modules/gem_recon'
+include { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../../../modules/helpers'
+include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../../modules/seed_compl'
+include { CARVE } from '../../../modules/gem_recon'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,7 +117,7 @@ workflow SEED_COMPLEMENTARITY {
 
 
 // Run on its own, with the parameters of its .yaml file:
-// nextflow run subworkflows/seed_complementarity/main.nf -params-file subworkflows/seed_complementarity/sc.yaml
+// nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file workflows/subworkflows/seed_complementarity/sc.yaml
 workflow {
     SEED_COMPLEMENTARITY(params.recon_files ? channel.fromPath("${params.recon_files}/*") : channel.empty())
 }

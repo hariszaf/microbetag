@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install julia
 
-COPY bin/fw/ /opt/fw/
+COPY scripts/flashweave/ /opt/fw/
 RUN chmod +x /opt/fw/*
 ENV PATH=/opt/fw/:$PATH
 

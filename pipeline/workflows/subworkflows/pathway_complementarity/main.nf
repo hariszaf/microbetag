@@ -2,7 +2,7 @@
 // Subworkflow for pathway complementarity pre-calculations for microbetag
 //
 // To run on its own:
-// nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
+// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
 //
 
 /*
@@ -11,9 +11,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { PRODIGAL } from '../../modules/prodigal'
-include { HMMSEARCH; MERGE_HMMOUT } from '../../modules/kofam'
-include { PC_PRECALC; PC_EXTEND } from '../../modules/pathway_compl'
+include { PRODIGAL } from '../../../modules/prodigal'
+include { HMMSEARCH; MERGE_HMMOUT } from '../../../modules/kofam'
+include { PC_PRECALC; PC_EXTEND } from '../../../modules/pathway_compl'
 
 
 /*
@@ -74,7 +74,7 @@ workflow PATHWAY_COMPLEMENTARITY {
                 // Define KOFAM channels only when needed
                 def ko_list_ch; ko_list_ch   = channel.fromPath(params.kegg_list, checkIfExists: true)
                 def hmm_prof_ch; hmm_prof_ch = channel.fromPath(params.hmm_profiles, checkIfExists: true)
-                def hmm_sc_ch ; hmm_sc_ch    = channel.fromPath("${moduleDir}/../../modules/kofam/kofam.sh", checkIfExists: true)
+                def hmm_sc_ch ; hmm_sc_ch    = channel.fromPath("${moduleDir}/../../../modules/kofam/kofam.sh", checkIfExists: true)
 
                 // Handle FAA files
                 def has_faa_dir = params.faa_dir && file(params.faa_dir).exists()
@@ -115,7 +115,7 @@ workflow PATHWAY_COMPLEMENTARITY {
 
 
 // Run on its own, with the parameters of its .yaml file:
-// nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
+// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
 workflow {
     PATHWAY_COMPLEMENTARITY(params.faa_dir ? channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}") : channel.empty())
 }

@@ -1,6 +1,6 @@
 # Only what the images copy is sent to the build
 *
 !assets/
-!bin/
+!scripts/
 !envs/
 **/__pycache__

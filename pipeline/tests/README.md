@@ -16,13 +16,14 @@ tests/
 | `expected/precalc` | the pre-calculations of `precalc.nf` on `data/genomes` | `workflows/annotate.yaml`, single modules |
 | `expected/annotate` | the annotated network of `annotate.nf` with `expected/precalc` and `data/abd_data/abund.tsv` | |
 
-The example parameter files (`workflows/*.yaml`, `modules/*/*.yaml`, `subworkflows/*/*.yaml`) read from here
+The example parameter files (`workflows/*.yaml`, `modules/*/*.yaml`, `workflows/subworkflows/*/*.yaml`) read from here
 and write to `tests/results/`, which is not tracked. To check a change, run a workflow and compare its `tests/results/` with
 `tests/expected/`, e.g.:
 
 ```bash
 nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
-diff <(sort tests/results/annotate/flashweave/fw_net.txt) <(sort tests/expected/annotate/flashweave/fw_net.txt)
+# same edges as the reference network; the weights may differ in their last decimals
+diff <(cut -f1,2 tests/results/annotate/flashweave/fw_net.txt | sort) <(cut -f1,2 tests/expected/annotate/flashweave/fw_net.txt | sort)
 ```
 
 Databases you download (e.g. the GTDB 16S training set for `prep`) go in `databases/`, which is not tracked either.

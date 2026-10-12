@@ -80,7 +80,7 @@ workflow TAXONOMY {
         training_set
 
     main:
-        classify_script = channel.fromPath("${moduleDir}/../../bin/taxonomy/classify.R", checkIfExists: true)
+        classify_script = channel.fromPath("${moduleDir}/../../scripts/taxonomy/classify.R", checkIfExists: true)
 
         fasta       = TO_FASTA(abundance_table)
         assignments = IDTAXA(fasta.fasta, training_set, classify_script)

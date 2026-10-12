@@ -10,8 +10,8 @@ nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
 
 include { PHENOTREX } from '../modules/phenotrex/'
 include { PRODIGAL } from '../modules/prodigal/'
-include { PATHWAY_COMPLEMENTARITY } from '../subworkflows/pathway_complementarity/'
-include { SEED_COMPLEMENTARITY } from '../subworkflows/seed_complementarity/'
+include { PATHWAY_COMPLEMENTARITY } from './subworkflows/pathway_complementarity/'
+include { SEED_COMPLEMENTARITY } from './subworkflows/seed_complementarity/'
 
 
 workflow MICROBETAG_PRECALC {

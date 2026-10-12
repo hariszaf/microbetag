@@ -1,6 +1,6 @@
 # Image for the microbetag steps of the pipeline: the microbetag package (pathway and seed
 # complementarities, annotated network), plus what the pipeline's own steps around it need:
-# manta, FAPROTAX, GNU parallel, jq and the scripts in bin/mtg.
+# manta, FAPROTAX, GNU parallel, jq and the scripts in scripts/microbetag-nf.
 #
 # Build, from the root of the repository:
 #   docker build -f containers/Dockerfile.microbetag-nf -t hariszaf/microbetag-nf:<version> .
@@ -21,7 +21,7 @@ RUN apt-get update \
 COPY assets/FAPROTAX_1.2.10/ /opt/faprotax/
 
 # The pipeline's helper scripts
-COPY bin/mtg/ /opt/microbetag-nf/bin/
+COPY scripts/microbetag-nf/ /opt/microbetag-nf/bin/
 RUN chmod +x /opt/microbetag-nf/bin/*
 ENV PATH=/opt/microbetag-nf/bin:${PATH}
 
