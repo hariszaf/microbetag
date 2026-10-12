@@ -77,7 +77,15 @@ pip install --upgrade setuptools packaging
 You are ready to go! 🚀
 
 Feel free to go through the [`tests`](./tests/) folder to check on how you can run specific modules or a complete pipeline of `microbetag`.
-A detailed description of those tests can be found [here](./tests/README.md).
+To check your installation, run the tests from the root of the repository:
+
+```bash
+conda activate microbetag
+pytest
+```
+
+Tests that need software you did not install are skipped, with the `install.sh` option that provides it.
+How to run single tests, or single microbetag steps on the test data, is described in [`tests/README.md`](./tests/README.md).
 
 For more, you can also check [on `microbetag`'s documentation page](https://microbetag.readthedocs.io/en/v1.0.3/advanced_use/local.html).
 
