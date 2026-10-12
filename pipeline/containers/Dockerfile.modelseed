@@ -1,0 +1,19 @@
+# ModelSEEDpy reconstructions, used by the microbetag-nf pipeline.
+# Same environment as `bash install.sh --modelseed` (envs/mtg-modelseed.yml).
+#
+# Build, from the root of the repository:
+#   docker build -f containers/Dockerfile.modelseed -t hariszaf/modelseed:0.4.2 .
+
+ARG MINIFORGE_VERSION=25.11.0-1
+FROM condaforge/miniforge3:${MINIFORGE_VERSION}
+
+COPY envs/mtg-modelseed.yml /tmp/
+RUN conda env create -f /tmp/mtg-modelseed.yml \
+ && conda run -n mtg-modelseed python -c "from modelseedpy import MSBuilder, MSGenome" \
+ && conda clean -afy
+
+ENV PATH=/opt/conda/envs/mtg-modelseed/bin:${PATH} \
+    CONDA_DEFAULT_ENV=mtg-modelseed
+
+WORKDIR /data
+CMD ["bash"]
