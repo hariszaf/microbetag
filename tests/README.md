@@ -2,43 +2,27 @@
 
 ```
 tests/
-  conftest.py     shared fixtures and skip markers
-  unit/           Python only; run in CI on every push and pull request
-  integration/    need external tools, conda environments or large data
+  conftest.py     shared fixtures
+  unit/           single microbetag steps
+  integration/    a complete microbetag run
   data/           inputs and reference outputs (see data/README.md)
 ```
 
-## Setup
-
-Install microbetag and its tools once, from the root of the repository
-(add `--phenotrex`, `--modelseed`, `--dnngior` or `--all` for the optional environments):
-
-```bash
-bash install.sh
-conda activate microbetag
-```
-
-`install.sh` installs the package in editable mode with the `test` extra, so pytest is included
-and changes to the code are picked up without reinstalling.
-If you only need the unit tests, `pip install -e ".[test]"` is enough.
+The tests need only the package; the external tools are tested in
+[microbetag-nf](https://github.com/msysbio/microbetag-nf).
 
 ## Running the tests
 
-Run pytest from the **root of the repository**, where `pyproject.toml` is:
+Install the package with the `test` extra, then run pytest from the **root of the repository**,
+where `pyproject.toml` is:
 
 ```bash
-pytest                                    # everything; tests whose requirements are missing are skipped
-pytest tests/unit                         # Python-only tests, what CI runs
-pytest tests/integration                  # tests that need external tools or conda environments
-pytest tests/integration/test_prodigal.py # a single file
+pip install -e ".[test]"
+pytest                                    # everything
+pytest tests/unit                         # single steps
+pytest tests/integration                  # the complete run
 pytest -k seed                            # tests whose name contains "seed"
 pytest tests/unit/test_cli.py -v -s       # verbose, showing microbetag's log output
-```
-
-A test whose requirements are missing is **skipped** with a hint on how to install them, e.g.
-
-```
-SKIPPED tests/integration/test_phenotrex.py: conda env mtg-phenotrex not found; run `bash install.sh --phenotrex`
 ```
 
 ## Trying single steps by hand
@@ -66,38 +50,20 @@ microbetag-seed-compls bin_101 \
 
 Every command has `--help`, e.g. `microbetag-annotate --help`.
 
-To run the whole pipeline, copy the example, since microbetag uses the folder of the
+To run the whole of microbetag, copy the example, since microbetag uses the folder of the
 configuration file as its working directory:
 
 ```bash
 cp -r $MTG/tests/data/microbetag ~/mtg-try/full && cd ~/mtg-try/full
-tar xzf input_files.tar.gz && gunzip input_files/ko_merged.txt.gz
-microbetag --config config_from_net.yml
+microbetag --config config.yml
 ```
 
-Results are written to `mtg_complete_output/`. This configuration builds GEMs with CarveMe,
-which needs a Gurobi license; set `seed_complementarity: value: false` in the YAML to run without it.
-
-| Test | Needs |
-|---|---|
-| `unit/*` | `pip install ".[test]"`; `test_manta.py::test_run_manta` also needs manta (included in `bash install.sh`) |
-| `integration/test_prodigal.py` | `bash install.sh` |
-| `integration/test_kegg_annotation.py` | `bash install.sh` (uses the kofam subset in `ext_data/kofam_database`) |
-| `integration/test_flashweave.py` | `bash install.sh` |
-| `integration/test_carve.py` | `bash install.sh` and a Gurobi license |
-| `integration/test_phenotrex.py` | `bash install.sh --phenotrex` |
-| `integration/test_modelseed.py` | `bash install.sh --modelseed --dnngior`, a Gurobi license, and RASTtk for genomes |
-| `integration/test_build_cx2.py` | expected to fail until `data/build_cx2/output_files` is regenerated |
-| `integration/test_microbetag.py` | `bash install.sh --phenotrex`; complete run, takes a while |
+Results are written to `output/`: the pathway and seed complementarities and the annotated network
+(`mtag_net_<date>.cx2`), which you can open in Cytoscape.
 
 ## Writing tests
 
 - Use plain pytest functions and fixtures; do not depend on the order tests run in.
 - Never write into `tests/data`. Write outputs under `tmp_path`, or use the `data_copy("<name>")` fixture
   when microbetag writes next to its config file.
-- Declare requirements with markers instead of failing:
-  `@pytest.mark.requires_tools("prodigal")`, `@pytest.mark.requires_conda_env("mtg-phenotrex")`,
-  `@pytest.mark.requires_data("microbetag/input_files")`, or the `gurobi_license` fixture.
 - Assert on the results, not only that nothing crashed.
-- `load_config(path_to_yaml)` from `conftest.py` builds microbetag's own `Config` from a test YAML.
-  microbetag uses the folder of the YAML as its working directory, so keep a test's inputs next to it.

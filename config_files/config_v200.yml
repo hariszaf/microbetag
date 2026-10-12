@@ -1,0 +1,86 @@
+# microbetag 2.0 configuration template
+#
+# microbetag annotates a co-occurrence network with the outputs of external tools and with the
+# pathway and seed complementarities it computes from them. The tools themselves (Prodigal, kofam,
+# phenotrex, FlashWeave, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, manta) run in the microbetag-nf
+# pipeline: https://github.com/msysbio/microbetag-nf
+#
+# Paths are relative to the folder of this file. Leave out, or set to false, the steps you don't need.
+#
+# Run:  microbetag --config config.yml
+
+# ---------------------------------------------------------------------------------------------------
+# Network and taxonomy
+# ---------------------------------------------------------------------------------------------------
+
+output_directory:
+  dir_path: microbetag_output
+
+# The co-occurrence network, as a 3-column edge list (node A, node B, weight). Required.
+edge_list:
+  file_path: edgelist.tsv
+
+# The taxonomy of the nodes, from one of:
+# - an abundance table: sequence ids in the first column, taxonomy in the last
+abundance_table_file:
+  file_path: abundance_table.tsv
+# - or a 2-column file: sequence id, taxonomy (needed when there is no abundance table)
+# sequence_id_taxonomy_map:
+#   file_path: seqid_taxonomy.tsv
+
+threads:
+  value: 2
+
+# ---------------------------------------------------------------------------------------------------
+# Node annotations
+# ---------------------------------------------------------------------------------------------------
+
+# FAPROTAX: the folder of sub-tables, one per trait (collapse_table.py -s). Needs the abundance table.
+faprotax_annotation:
+  value: true
+faprotax_sub_tables:
+  dir_path: faprotax/sub_tables
+
+# phenotrex: the folder of predictions, one .tsv per trait (phenotrex predict --verb).
+phenotrex_traits:
+  value: true
+phenotrex_predictions:
+  dir_path: phenotrex_predictions
+
+# manta: the clustered network (.cyjs). microbetag-format-manta builds manta's input.
+network_clustering:
+  value: true
+prev_clustered_network:
+  file_path: manta_clustered.cyjs
+
+# ---------------------------------------------------------------------------------------------------
+# Edge annotations: metabolic complementarities, computed by microbetag
+# ---------------------------------------------------------------------------------------------------
+
+# Pathway complementarity, from a 3-column KEGG ORTHOLOGY annotation file with a header line:
+# bin_id, contig_id, KO (as produced by kofam/hmmsearch in microbetag-nf).
+pathway_complementarity:
+  value: true
+ko_merged_file:
+  file_path: ko_merged.txt
+# Keep the complements that complete at least this fraction of a module (0 to 1).
+pc_percent:
+  value: 1
+# Shorten the KEGG map URLs with tinyurl (calls the tinyurl web service).
+tinyurl:
+  value: false
+# Previously computed pathway complementarities, to skip computing them again.
+# pc_file:
+#   file_path: microbetag_output/pathway_complementarity/pathCompls.json
+
+# Seed complementarity, from a folder with one genome-scale metabolic model (SBML .xml) per genome.
+# BiGG (CarveMe, gapseq) and ModelSEED models are recognised.
+seed_complementarity:
+  value: true
+genome_scale_models:
+  dir_path: gems
+# Previously computed seed sets, to skip computing them again (then the models are not needed).
+# prev_conf:
+#   file_path: microbetag_output/seeds_complementarity/confidenceDic.json
+# prev_nonseeds:
+#   file_path: microbetag_output/seeds_complementarity/nonSeedSetDic.json
