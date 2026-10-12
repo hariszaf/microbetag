@@ -134,7 +134,11 @@ For thorough descriptions on the format of each of these files,
 ### Locally
 
 `microbetag` needs a **configuration YAML file**. Each `microbetag` version comes with its own template,
-in the [`config_files`](./config_files/) folder; for this version, [`config_v200.yml`](./config_files/config_v200.yml).
+which this command writes out:
+
+```bash
+microbetag --template config.yml
+```
 
 It points to:
 - the **co-occurrence network**, as an edge list, and an **abundance table** or a sequence id to taxonomy map;

@@ -155,8 +155,8 @@ Here we provide instructions for installing the required components for each mod
   See the tutorial on [running `microbetag` on a container](./tutorials_local/containers.md).
 
   ```{note}
-  `microbetag` needs a **configuration YAML file**; get the template of the version you are using from the
-  <a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`microbetag` GitHub repository</a>.
+  `microbetag` needs a **configuration YAML file**; get the template of the version you are using with
+  `microbetag --template config.yml`.
   See [the configuration file](./tutorials_local/config.md).
   ```
 

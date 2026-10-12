@@ -55,7 +55,7 @@ version = { attr = "microbetag.__version__" }
 include = ["microbetag", "microbetag.*"]
 
 [tool.setuptools.package-data]
-microbetag = ["mtg_maps_models/**/*", "PhyloMint/**/*"]
+microbetag = ["mtg_maps_models/**/*", "PhyloMint/**/*", "templates/*"]
 
 [tool.setuptools.exclude-package-data]
 "*" = ["__pycache__/*", "*.pyc"]

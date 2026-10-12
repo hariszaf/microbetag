@@ -11,9 +11,14 @@ description: >
 
 # Configuration file
 
-A version-specific YAML configuration template accompanies every `microbetag` release, in the
-<a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`config_files`</a>
-folder of the repository. Use the one of the version you have installed (`microbetag --version`).
+Every `microbetag` release comes with its YAML configuration template. Get the one of the version you have
+installed with:
+
+```bash
+microbetag --template config.yml
+```
+
+and fill it in.
 
 From version 2.0, the configuration file points to:
 
@@ -45,10 +50,20 @@ The template describes every parameter, including those that let you reuse previ
 (`pc_file`, `prev_conf`, `prev_nonseeds`). The tutorial [.. using custom genomes](./local.md) goes through a
 complete example.
 
-```{note}
+## Upgrading from 1.x
+
 Up to version 1.0.4, `microbetag` ran the external tools itself, and the configuration file had their settings
 (`bins_fasta`, `kofam_database`, `sc_input_type`, `flashweave_args`, ...). These steps now run in the
-[microbetag-nf](./nf.md) pipeline. The
-<a href="https://github.com/msysbio/microbetag/blob/develop/config_files/README.md" target="_blank">`config_files` README</a>
-maps the 1.0.4 parameters to their 2.0 inputs.
-```
+[microbetag-nf](./nf.md) pipeline, and each step that used to run a tool takes that tool's output instead:
+
+| Step | 1.0.4 | 2.0 |
+|---|---|---|
+| Network | inferred with FlashWeave if `edge_list` was missing | `edge_list` is required |
+| Pathway complementarity | kofam annotation of `bins_fasta` with `kofam_database` | `ko_merged_file` |
+| Seed complementarity | GEMs built from `bins_fasta` (`sc_input_type`, `genre_reconstruction_with`, ...) | `genome_scale_models` |
+| Phenotypic traits | phenotrex on `bins_fasta` | `phenotrex_predictions` |
+| FAPROTAX | run on the abundance table | `faprotax_sub_tables` |
+| Network clustering | manta | `prev_clustered_network` |
+
+The 1.0.4 template also had `pc_percentage`, `prev_calc_path_compl` and `precalulations_only`, which microbetag
+did not read; the keys it reads are `pc_percent`, `pc_file` and `precalculations_only`.

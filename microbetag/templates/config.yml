@@ -1,4 +1,4 @@
-# microbetag 2.0 configuration template
+# microbetag 2.0 configuration template (microbetag --template config.yml)
 #
 # microbetag annotates a co-occurrence network with the outputs of external tools and with the
 # pathway and seed complementarities it computes from them. The tools themselves (Prodigal, kofam,

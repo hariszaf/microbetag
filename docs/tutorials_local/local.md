@@ -99,8 +99,7 @@ The formats of the tool outputs:
 ## The `config.yml` file
 
 `microbetag` takes the paths of these files from a YAML configuration file. Each `microbetag` version comes
-with its own template in the
-<a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`config_files`</a> folder;
+with its own template, which `microbetag --template config.yml` writes out;
 see [the configuration file](./config.md). The one of this tutorial:
 
 ```yaml

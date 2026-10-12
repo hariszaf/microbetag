@@ -39,10 +39,8 @@ class Config:
         config_file: Filepath to the configuration YAML file.
 
     Attention:
-        It is essential to use the corresponding to the microbetag version you are using configuration template file.
-        Otherwise, the Config class will fail to create an instance and microbetag will exit.
-        You may find microbetag configuration templates by version at:
-        https://github.com/hariszaf/microbetag/tree/fix-phylomint/config_files
+        Use the configuration template of the microbetag version you are running
+        (`microbetag --template config.yml`); otherwise the Config class may fail to create an instance.
 
     Example:
         >>> with open(args.config, "r") as yaml_file:

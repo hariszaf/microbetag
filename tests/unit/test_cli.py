@@ -79,3 +79,20 @@ def test_pcompl(tmp_path):
 
     with open(pcs) as f:
         assert len(json.load(f)) == 7
+
+
+def test_template(tmp_path):
+    import yaml
+
+    from microbetag.microbetag import main
+
+    out = tmp_path / "config.yml"
+    with pytest.raises(SystemExit):
+        main(["--template", str(out)])
+
+    conf = yaml.safe_load(out.read_text())
+    assert {"edge_list", "ko_merged_file", "genome_scale_models"} <= set(conf)
+
+    # An existing file is not overwritten
+    with pytest.raises(SystemExit, match="already exists"):
+        main(["--template", str(out)])

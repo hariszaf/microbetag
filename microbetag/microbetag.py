@@ -137,6 +137,9 @@ def _print_help():
     help_message = """
     Usage: microbetag --config <path_to_config_yml>
 
+    Get the configuration template of this version with:
+      microbetag --template config.yml
+
     Other options:
     -h        Display this help message.
     -v        Display version.
@@ -157,9 +160,8 @@ def _print_config_message():
     conf_message = """
     The config file you provided cannot be parsed properly.
     Please make sure you follow the instructions on the documentation site:
-    https://hariszaf.github.io/microbetag/docs/tutorials/local/#input-and-configyml-files.
-    Also, make sure that the configuration template you are using is the right one 
-    for the microbetag version you are running.
+    https://microbetag.readthedocs.io/en/latest/tutorials_local/config.html
+    Start from the template of the microbetag version you are running: microbetag --template config.yml
     """
     logger.error(conf_message)
 
@@ -180,7 +182,20 @@ def _annotate_network(config):
     return mtg_net
 
 # The main
-def main():
+def write_template(path: str) -> None:
+    """Writes the configuration template of the installed microbetag version to `path`."""
+    from importlib import resources
+
+    if os.path.exists(path):
+        sys.exit(f"{path} already exists; choose another file name.")
+
+    template = resources.files("microbetag").joinpath("templates", "config.yml").read_text()
+    with open(path, "w") as f:
+        f.write(template)
+    print(f"Configuration template written to {path}")
+
+
+def main(argv=None):
     """
     Loads and parses a configuration YAML file 
     and invokes the main function for running the microbetag pipeline.
@@ -189,13 +204,21 @@ def main():
 
     parser.add_argument("--config", "-c", help="Path to the configuration yaml file.")
     parser.add_argument(
+        "--template", metavar="FILE",
+        help="Write the configuration template of this microbetag version to FILE, then fill it in.",
+    )
+    parser.add_argument(
         "-v", "--version", action="store_true", help="Show Microbetag version"
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if args.version:
         _print_version()
+        sys.exit()
+
+    if args.template:
+        write_template(args.template)
         sys.exit()
 
     elif args.config is None:
