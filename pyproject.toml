@@ -35,7 +35,8 @@ dependencies = [
 
 [project.optional-dependencies]
 # Genome-scale metabolic model reconstruction with CarveMe
-genres = ["carveme==1.6.1", "reframed==1.5.0", "gurobipy>=10,<11"]
+# reframed 1.5.0 imports scipy.compress, removed in scipy 1.12
+genres = ["carveme==1.6.1", "reframed==1.5.0", "gurobipy>=10,<11", "scipy<1.12"]
 # Network inference with FlashWeave (also needs a Julia installation)
 flashweave = ["julia>=0.6.2"]
 # On-the-fly version, querying the microbetag database

@@ -1,0 +1,18 @@
+# Phenotrex trait prediction. Separate environment: phenotrex 0.6 needs scikit-learn<=0.23.2,
+# which has no builds for recent Python. Compiled dependencies come from conda-forge to avoid
+# building scipy/scikit-learn from source.
+# microbetag calls it through `conda run -n mtg-phenotrex`, so keep the name.
+name: mtg-phenotrex
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.8.*=*_cpython  # avoid conda picking PyPy
+  - numpy=1.21.6
+  - scipy=1.6
+  - scikit-learn=0.23.2
+  - pip
+  - pip:
+      # CPU-only PyTorch for deepnog; the default wheels pull in several GB of CUDA libraries
+      - --extra-index-url https://download.pytorch.org/whl/cpu
+      - phenotrex[fasta]==0.6.0

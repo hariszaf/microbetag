@@ -170,8 +170,9 @@ singularity exec
 ### Tricky parts for running locally
 
 `microbetag` makes use of a range of external software, some of which have conflicting dependencies.
-This is why `microbetag` builds for example **two environments** through the [`setup_environment.sh`](./setup_environment.sh),
-one called `microbetag` and a second one called `phendb`. 
+This is why [`setup_environment.sh`](./setup_environment.sh) builds separate conda environments, described in [`envs/`](./envs):
+`microbetag` for the main pipeline, plus optional `mtg-phenotrex`, `mtg-modelseed` and `mtg-dnngior`
+(`bash setup_environment.sh --help` lists the options).
 Similarly, it switches from a `scikit-learn` version to another while running. 
 This is not optional, and we hope in the future to find a better way.
 

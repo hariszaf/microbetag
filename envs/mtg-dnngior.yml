@@ -1,0 +1,14 @@
+# DNNGIOR gap-filling. Separate environment: dnngior 0.0.5 requires cobra<=0.23,
+# while microbetag and ModelSEEDpy need cobra>=0.29 (see envs/NOTES.md).
+# microbetag calls it through `conda run -n mtg-dnngior`, so keep the name.
+name: mtg-dnngior
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.9.*=*_cpython  # avoid conda picking PyPy
+  - numpy=1.23.5
+  - python-libsbml
+  - pip
+  - pip:
+      - dnngior==0.0.5

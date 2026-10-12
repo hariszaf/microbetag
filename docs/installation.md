@@ -174,25 +174,19 @@ Here we provide instructions for installing the required components for each mod
   is required for installing `RASTtk`.
 
   ```{note}
-  The `setup_environment.sh` script will build two `conda` environments:
-  - one for running the phenotrex tool alone, called `phendb`
-  - a second for all the rest requirements and the main `microbetag` features, called `microbetag`
+  Each environment is described in a file under [`envs/`](https://github.com/hariszaf/microbetag/tree/main/envs).
+  By default, `setup_environment.sh` only builds the `microbetag` environment, which includes Prodigal, HMMER,
+  DIAMOND, FragGeneScan and Julia with FlashWeave. Add `--phenotrex`, `--modelseed`, `--dnngior`, or `--all`
+  for the other environments, and `--kofam` to download the KOFAM database.
+  Run `bash setup_environment.sh --help` for all options.
 
-  The software installed, e.g. Prodigal, HMMER etc, will be installed under your `$HOME`:
-
-      cd
-      ls .microbetag
-      /home/my_user/.microbetag
-
+  Nothing is installed outside the conda environments; Julia packages are kept inside the `microbetag` environment.
   ```
 
-
-  ```{danger}
-  We have noticed a weird behavior on MacOS when installing `phenotrex` locally. 
-  In case the `setup_environment.sh` script fails, you may try to install dependecies required 
-  on MacOS for `phenotrex` based on the error message you get,
-  and then try to continue the `microbetag` installation. 
-  **Remember** to install phenotrex in the `phendb` conda environment.
+  ```{note}
+  RASTtk, needed by `--modelseed` to annotate genomes, can't be installed with conda
+  and requires admin rights; the script prints instructions when it is missing.
+  DNNGIOR and CarveMe need a [Gurobi license](#install-gurobi-license).
   ```
 
 ### .. as a container
