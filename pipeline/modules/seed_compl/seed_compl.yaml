@@ -1,0 +1,4 @@
+gems: tests/expected/precalc/reconstructions
+namespace: BiGG
+outdir: tests/results/modules
+kegg_modules_only: true

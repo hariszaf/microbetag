@@ -1,0 +1,23 @@
+# phenotrex 0.6 for trait prediction, used by the microbetag-nf pipeline.
+# Same environment as `bash install.sh --phenotrex` (envs/mtg-phenotrex.yml).
+#
+# Build, from the root of the repository:
+#   docker build -f containers/Dockerfile.phenotrex -t hariszaf/phenotrex:0.6.0 .
+
+ARG MINIFORGE_VERSION=25.11.0-1
+FROM condaforge/miniforge3:${MINIFORGE_VERSION}
+
+# deepnog weights in a fixed place, readable also when the image is run read-only (Singularity)
+ENV DEEPNOG_DATA=/opt/deepnog
+COPY envs/mtg-phenotrex.yml /tmp/
+RUN conda env create -f /tmp/mtg-phenotrex.yml \
+    # deepnog downloads its weights on first use; fetch them at build time instead
+ && conda run -n mtg-phenotrex python -c "from deepnog.utils import get_weights_path; \
+get_weights_path(database='eggNOG5', level='2', architecture='deepencoding')" \
+ && conda clean -afy
+
+ENV PATH=/opt/conda/envs/mtg-phenotrex/bin:${PATH} \
+    CONDA_DEFAULT_ENV=mtg-phenotrex
+
+WORKDIR /data
+CMD ["bash"]

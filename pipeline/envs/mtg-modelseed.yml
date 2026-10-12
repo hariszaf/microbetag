@@ -1,0 +1,13 @@
+# ModelSEEDpy reconstructions. Separate environment: see envs/NOTES.md for the version conflicts.
+# python-libsbml comes from conda-forge, since pip would compile it from source on Python 3.9.
+# microbetag calls it through `conda run -n mtg-modelseed`, so keep the name.
+name: mtg-modelseed
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.9.*=*_cpython  # avoid conda picking PyPy
+  - python-libsbml
+  - pip
+  - pip:
+      - ModelSEEDpy==0.4.2

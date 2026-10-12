@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+work/
+.nextflow*
+tests/results/
+databases/
+tests/data/kofam_database/profiles_test/
