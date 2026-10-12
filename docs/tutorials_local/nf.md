@@ -41,15 +41,15 @@ Paths in this page are relative to the root of the
 
 ## Overview with an example dataset
 
-The `data/genomes` folder of the repository contains 3 genomes in FASTA format; this is what we call a
+The `tests/data/genomes` folder of the repository contains 3 genomes in FASTA format; this is what we call a
 _genome catalogue_.
 
 * The `precalc.nf` workflow computes all pairwise relationships between the genomes of a catalogue.
 * The `annotate.nf` workflow infers a network, if one is not provided, and uses these pre-calculations to annotate it.
 
-The `test-precalc` folder has the pre-calculations obtained by running `precalc.nf` on the example genomes,
-and the `test-annotate` folder the results of `annotate.nf` with these pre-calculations and an example abundance
-table. `test-annotate/test.cx2` is the annotated network; you may [load it in Cytoscape](../tutorials_core/load.md)
+The `tests/expected/precalc` folder has the pre-calculations obtained by running `precalc.nf` on the example genomes,
+and `tests/expected/annotate` the results of `annotate.nf` with these pre-calculations and an example abundance
+table. `tests/expected/annotate/test.cx2` is the annotated network; you may [load it in Cytoscape](../tutorials_core/load.md)
 and go through it with the MGG app.
 
 Take extra care with the [Nextflow configuration](#nextflow-configuration), since you may need to edit it for your
@@ -123,14 +123,8 @@ This is needed for Julia (FlashWeave) to work inside the Singularity/Apptainer c
 
 ## Nextflow versions
 
-From version 25.10, Nextflow uses a stricter syntax for its scripts, which the pipeline does not follow yet,
-e.g. for `-entry`. Until it does, run, before `nextflow run`:
-
-```bash
-export NXF_SYNTAX_PARSER=v1
-```
-
-The pipeline was last tested with Nextflow 26.04 this way.
+The pipeline follows the strict syntax that Nextflow uses by default from version 25.10;
+it was last tested with Nextflow 26.04.
 
 
 ## Workflows
@@ -141,7 +135,12 @@ Three workflows, in the `workflows` folder:
 2. network annotation using a pre-calculation folder (`annotate.nf`)
 3. preparation of amplicon datasets for the on-the-fly version (`prep.nf`); see [the preparation steps](../tutorials_otf/prep.md)
 
-They are built on **modules** (`modules` folder) and **sub-workflows** (`subworkflows` folder), which can also run on their own.
+`main.nf` runs one of them, chosen with `--workflow`. They are built on **modules** (`modules` folder) and
+**sub-workflows** (`subworkflows` folder), which can also run on their own.
+
+The example parameter files read the test data in `tests/data` and `tests/expected`, and write to `tests/results`
+(not tracked); `tests/README.md` describes them. Put databases you download, like the KOfam database, in `databases/`
+(not tracked either), or anywhere you like and give their paths.
 
 ### `precalc`: one-time pre-calculation
 
@@ -179,8 +178,8 @@ apptainer.enabled = false
 singularity {
     enabled    = false
     autoMounts = true
-    cacheDir   = "${HOME}/.singularity/mtg-images/"
-    runOptions = getHPCBinds()
+    cacheDir   = "${System.getenv('HOME')}/.singularity/mtg-images/"
+    runOptions = [ ... ]   // binds common HPC folders (tmp, scratch, TMPDIR) when they exist
 }
 ```
 
@@ -220,17 +219,11 @@ in chunks of `max_forks` for parallel processing.
 
 ### .. workflows
 
-`workflows/precalc.yaml` is filled in assuming:
-- your genomes are in `data/genomes`,
-- the KOfam database is in `data/kofam_database`, and
-- a Gurobi WLS license is in the root folder of the repository.
-
-Run the workflow with:
+`workflows/precalc.yaml` is filled in for the example genomes in `tests/data/genomes`; set the paths to your genomes,
+the KOfam database and your Gurobi WLS license. Run the workflow with:
 
 ```bash
-nextflow run workflows/precalc.nf \
-    -params-file workflows/precalc.yaml \
-    -entry MICROBETAG_PRECALC
+nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
 ```
 
 ```{attention}
@@ -241,16 +234,20 @@ e.g. in an SBATCH script, you may need to load their modules before the `nextflo
 Then annotate the network with:
 
 ```bash
-nextflow run workflows/annotate.nf \
-    -params-file workflows/annotate.yaml \
-    -entry MICROBETAG_ANNOTATE
+nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
 ```
 
-`workflows/annotate.yaml` is filled in assuming the pre-calculations of the command above (the `test-precalc`
-folder) and an abundance table in `data/abd_data/`.
+`workflows/annotate.yaml` is filled in for the example pre-calculations (`tests/expected/precalc`) and the example
+abundance table in `tests/data/abd_data/`.
 Set `faprotax`, `phen_traits`, `path_compl` and `seed_compl` to `true` or `false`, for the annotation types you want.
 For the ones set to `true`, give their parameters too; for example, for `faprotax`, `taxonomy_colname` and
 `delimiter`. Otherwise, leave them blank.
+
+To prepare an amplicon dataset for the on-the-fly version, see [the preparation steps](../tutorials_otf/prep.md):
+
+```bash
+nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
+```
 
 ### .. sub-workflows
 
@@ -258,29 +255,17 @@ Edit the parameter files of the sub-workflows, `subworkflows/pathway_complementa
 `subworkflows/seed_complementarity/sc.yaml`, then run:
 
 ```bash
-nextflow run subworkflows/pathway_complementarity/main.nf \
-    -params-file subworkflows/pathway_complementarity/pc.yaml \
-    -entry PATHWAY_COMPLEMENTARITY
+nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
 ```
 
 ```bash
-nextflow run subworkflows/seed_complementarity/main.nf \
-    -params-file subworkflows/seed_complementarity/sc.yaml \
-    -entry SEED_COMPLEMENTARITY
+nextflow run subworkflows/seed_complementarity/main.nf -params-file subworkflows/seed_complementarity/sc.yaml
 ```
 
 ### .. modules
 
-Single modules, in the `modules` folder, run the same way, without an `-entry`. For example:
+Single modules, in the `modules` folder, run the same way. For example:
 
 ```bash
 nextflow run modules/faprotax/main.nf -params-file modules/faprotax/faprotax.yaml
 ```
-
-The only module that needs an `-entry` is phenotrex:
-
-```bash
-nextflow run modules/phenotrex/main.nf -params-file modules/phenotrex/phenotrex.yaml -entry PHENOTREX
-```
-
-The `mtg_annotate` module only runs with `-config`.

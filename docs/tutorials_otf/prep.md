@@ -53,7 +53,8 @@ That image is still available on Docker Hub, but it is no longer developed; the 
   cd microbetag-nf
   ```
 
-- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`)
+- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`): IDTAXA's training set
+  built from the 16S rRNA gene sequences of the GTDB r207 genomes, the GTDB release of microbetagDB
 - your **abundance table**, as a `.tsv` or `.csv` file:
   the sequence identifier in the first column, then the samples, and in the **last** column either the
   **sequence** (to assign taxonomies) or the **taxonomy** (if you only need the network)
@@ -119,12 +120,7 @@ In `prep.yaml`:
 Then run, from the `microbetag-nf` folder:
 
 ```bash
-nextflow run workflows/prep.nf -params-file my_microbetag_prep/prep.yaml -entry MICROBETAG_PREP
-```
-
-```{note}
-With Nextflow 25.10 or later, run `export NXF_SYNTAX_PARSER=v1` first;
-see [the pipeline page](../tutorials_local/nf.md#nextflow-versions).
+nextflow run main.nf -params-file my_microbetag_prep/prep.yaml --workflow prep
 ```
 
 Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`:
