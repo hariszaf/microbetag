@@ -128,10 +128,11 @@ Here we provide instructions for installing the required components for each mod
   After you have `Nextflow` and a containerization technology installed, you may get the `microbetag` Nextflow pipeline by running: 
 
   ```bash
-      git clone https://github.com/msysbio/microbetag
+      git clone https://github.com/msysbio/microbetag-nf
   ```
 
-  Then, you may run `microbetag` by executing either the `precalc.nf` or the `net_annotate.nf` workflow, located under the `nf/workflows/` folder of the cloned repository, following instructions [here](./tutorials_local/nf.md).
+  The pipeline is developed in its own repository, `microbetag-nf`.
+  Run either the `precalc.nf` or the `annotate.nf` workflow from its `workflows/` folder, following the instructions [here](./tutorials_local/nf.md).
 
 
 

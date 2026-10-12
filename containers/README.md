@@ -13,7 +13,6 @@ separate processes. Build them all from the **root** of the repository:
 | `hariszaf/phenotrex` | `Dockerfile.phenotrex` | phenotrex 0.6 (same as `envs/mtg-phenotrex.yml`) |
 | `hariszaf/modelseed` | `Dockerfile.modelseed` | ModelSEEDpy (same as `envs/mtg-modelseed.yml`) |
 | `hariszaf/carveme` | `Dockerfile.carveme` | CarveMe and DIAMOND |
-| `hariszaf/flashweave` | `Dockerfile.flashweave` | Julia and FlashWeave, with the pipeline's `nf/bin/fw` scripts |
 | `hariszaf/gapseq` | `Dockerfile.gapseq` | gapseq |
 
 ```bash
