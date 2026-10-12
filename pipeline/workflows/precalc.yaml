@@ -2,14 +2,14 @@
 # Global
 # -----------
 
-outdir: test-precalc
+outdir: tests/results/precalc
 
 threads: 4
 
 # Path to the genome catalogue. Required for phenotrex -- will be used for pathway and seed complementarities if not .faa and gems are available respectively.
-genomes: data/genomes/
+genomes: tests/data/genomes
 
-# You may provide a path with .faa files if already available -- they can also used for the GEM reconstruction step if GEMs not available, e.g. test-precalc/prodigal/. Leave empty if not available.
+# You may provide a path with .faa files if already available -- they can also used for the GEM reconstruction step if GEMs not available, e.g. tests/expected/precalc/prodigal/. Leave empty if not available.
 faa_dir:
 
 # -----------
@@ -18,7 +18,7 @@ faa_dir:
 
 phenotrex: true
 
-# Genotypes output file. Output file of the phenotrex training step with the EGGNOG annotation per genome, e.g. test-precalc/eggnog.genotype. Leave empty if not available.
+# Genotypes output file. Output file of the phenotrex training step with the EGGNOG annotation per genome, e.g. tests/expected/precalc/eggnog.genotype. Leave empty if not available.
 genotype_file:
 
 # Class probability threshold for displaying predictions. Predictions below the threshold will be given as "N/A".
@@ -30,7 +30,7 @@ min_proba: 0.75
 
 pathway_compl: true
 
-# A three column file with the genome id, the contig id and its corresponding KEGG ORTHOLOGY term, e.g. test-modules/hmmsearch/ko_merged.txt. Leave empty if not available.
+# A three column file with the genome id, the contig id and its corresponding KEGG ORTHOLOGY term, e.g. tests/expected/precalc/hmmsearch/ko_merged.txt. Leave empty if not available.
 # Example file:
 # bin_id  contig_id       ko_term
 # bin_101 c_000000006615_9        K00005
@@ -50,7 +50,7 @@ kegg_list:
 
 # Path to KOFAM database folder with HMM models, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz` command
 # It would look like:
-# ls data/kofam_database/profiles_test
+# ls tests/data/kofam_database/profiles_test
 # K00011.hmm  K00023.hmm  K00034.hmm
 # Important: Make sure you replace this with the path to the file you downloaded for the KOFAM database if you downloaded it in a different location!
 hmm_profiles:

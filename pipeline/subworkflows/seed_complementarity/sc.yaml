@@ -1,4 +1,4 @@
-outdir: test-subworkflows
+outdir: tests/results/subworkflows
 # ---
 # Genome-scale metabolic model reconstructions
 # ---
@@ -10,7 +10,7 @@ gems:
 
 # If gems already available, you may leave this blank
 # Otherwise, you may point either to .fa, .fna, .fasta or .faa files (compdessed or not)
-recon_files: data/faa
+recon_files: tests/expected/precalc/prodigal
 
 gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 recon_with:

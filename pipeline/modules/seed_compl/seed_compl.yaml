@@ -1,4 +1,4 @@
-gems: data/gems
+gems: tests/expected/precalc/reconstructions
 namespace: BiGG
-outdir: test-modules
+outdir: tests/results/modules
 kegg_modules_only: true

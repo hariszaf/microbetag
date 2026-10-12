@@ -1,13 +1,13 @@
 # FlashWeave configuration file
 
-outdir: test-modules
+outdir: tests/results/modules
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
-abundance_file: data/abd_data/testAbundMeta.tsv
+abundance_file: tests/data/abd_data/abund.tsv
 
 # Metadata file
 metadata_file:
-# data/abd_data/metadata.tsv
+# tests/data/abd_data/metadata.tsv
 
 flashweave_args:
   # Enable heterogeneous mode for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE).

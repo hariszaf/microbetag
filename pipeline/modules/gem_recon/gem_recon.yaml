@@ -1,8 +1,8 @@
-outdir: test-modules
+outdir: tests/results/modules
 
-recon_files: data/test_gapseq
-# data/faa
-# data/genomes
+# Genomes (.fa) or proteins (.faa) to reconstruct GEMs from
+recon_files: tests/expected/precalc/prodigal
+# tests/data/genomes
 
 recon_with:
   gapseq
@@ -57,10 +57,11 @@ gapseq:
 
   medium:
     # Path to medium file
-    file: data/gapseq-ecoli/ecoli-medium.csv
+    # e.g. the ecoli-medium.csv of the gapseq repository (dat/media); leave empty for gapseq's default
+    file:
     # bitscore threshold above which associated reactions are considered as core candidate reactions for gapfilling.
     b: 100
 
   # In case you already have gapseq files for your genomes, you may provide a path to them so microbetag can skip their corresponding steps
   # Please put all relative files in a single folder and microbetag will map them
-  prev_tbl: data/gapseq-ecoli/
+  prev_tbl:

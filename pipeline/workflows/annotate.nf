@@ -79,7 +79,7 @@ workflow MICROBETAG_ANNOTATE {
 
     } else {
 
-        faprotax_sub_tables = channel.of(null)
+        faprotax_sub_tables = channel.of([])
     }
 
 
@@ -106,7 +106,7 @@ workflow MICROBETAG_ANNOTATE {
         }
     } else {
 
-        net_cluster = channel.of(null)
+        net_cluster = channel.of([])
     }
 
 

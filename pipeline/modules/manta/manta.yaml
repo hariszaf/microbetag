@@ -1,13 +1,13 @@
-outdir: test-modules
-network: data/networks/salm_catalogue.txt
+outdir: tests/results/modules
+network: tests/data/manta/edgelist.csv
 
 # In case you already have your network in cyjs format
 cyjs_net:
 
-abundance_file: data/abd_data/salm_catalogue.tsv
+abundance_file: tests/data/manta/abundance_table.tsv
 
 # Clustered netwrok output filename
-manta_prefix: manta_salm_net
+manta_prefix: manta_net
 
 # todo: How to provide all the manta args if user wants to
 manta_args:

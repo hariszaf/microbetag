@@ -3,8 +3,8 @@ abundance_file: tests/data/prep/seq_ab_tab.tsv
 # IDTAXA training set: DECIPHER's LearnTaxa on the 16S rRNA gene sequences of the GTDB r207 genomes
 # (GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz, https://zenodo.org/records/6655692). Its GTDB release needs
 # to match the one of microbetagDB, since microbetag matches taxa to genomes by their GTDB names.
-gtdb_16s_training_set: data/gtdb_r207_ssu_idtaxa.RData
+gtdb_16s_training_set: databases/gtdb_r207_ssu_idtaxa.RData
 # IDTAXA confidence threshold: 60 (cautious) or 50 (sensible)
 idtaxa_threshold: 60
 threads: 2
-outdir: prep_output
+outdir: tests/results/prep

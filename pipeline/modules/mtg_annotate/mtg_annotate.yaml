@@ -1,37 +1,37 @@
-indir: data
+indir: tests/data/
 # Output directory of the precalc workflow, with the pre-calculations to annotate the network with
-precalculations: test-precalc
+precalculations: tests/expected/precalc
 onthefly: false
 
-outdir: test-annotate
+outdir: tests/results/annotate
 mtg_net: my.cx2
 
-abundance_file: data/abd_data/abund.tsv
+abundance_file: tests/data/abd_data/abund.tsv
 delimiter: ","
 sequence_id_column_name: null
 
 metadata_file:
-#data/abd_data/metadata.tsv
+#tests/data/abd_data/metadata.tsv
 
-network: test-annotate/flashweave//fw_net.txt
+network: tests/expected/annotate/flashweave/fw_net.txt
 
 # For each step, if false, you may leave the extra args blank
 faprotax: true
-faprotax_sub_tables: test-annotate/faprotax/sub_tables/
+faprotax_sub_tables: tests/expected/annotate/faprotax/sub_tables/
 
 phen_traits: true
-phen_traits_dir: test-precalc/phenotrex/predictions
+phen_traits_dir: tests/expected/precalc/phenotrex/predictions
 
 path_compl: true
 pc_percent: 1
-pc_dir: test-precalc/pathway_compl/
-pc_file: test-precalc/pathway_compl/pcompls.json
+pc_dir: tests/expected/precalc/pathway_compl/
+pc_file: tests/expected/precalc/pathway_compl/pcompls.json
 
 seed_compl: true
 tinyurl: false
-sc_pkl: test-precalc/seed_compl/seed_compls.pkl
-module_nonseeds: test-precalc/seed_compl/keggm_nonseeds.pkl
-seed_scores: test-precalc/seed_compl/seed_scores.tsv
+sc_pkl: tests/expected/precalc/seed_compl/seed_compls.pkl
+module_nonseeds: tests/expected/precalc/seed_compl/keggm_nonseeds.pkl
+seed_scores: tests/expected/precalc/seed_compl/seed_scores.tsv
 
 # true needs a manta-clustered network (.cyjs): set manta_net, or run the annotate workflow, which runs manta
 net_cluster: false

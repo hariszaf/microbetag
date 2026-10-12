@@ -1,9 +1,9 @@
 # Phenotrex parameters file
 
-outdir: test-modules
+outdir: tests/results/modules
 
 # Input file (tab-separated, samples in rows, variables in columns, header required)
-genomes: data/genomes
+genomes: tests/data/genomes
 threads: 10
 
 # Genotypes output file

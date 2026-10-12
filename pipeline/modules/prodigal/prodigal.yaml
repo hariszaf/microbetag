@@ -1,7 +1,7 @@
 # Prodigal testing parameters files
-outdir: test-modules
+outdir: tests/results/modules
 
-genomes: data/genomes
+genomes: tests/data/genomes
 
 cpus: 4
 
