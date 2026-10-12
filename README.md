@@ -1,4 +1,5 @@
-# `microbetag` stand-alone version
+# microbetag
+_annotating networks with phenotypic traits and potential metabolic interactions_
 
 ## About
 
