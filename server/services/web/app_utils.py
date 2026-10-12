@@ -6,7 +6,6 @@ from functools import wraps
 from datetime import datetime
 
 import pandas as pd
-from julia.api import Julia
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify
@@ -211,9 +210,11 @@ class Mappings:
     GENERA_NCBI_IDS   = os.path.join(TAXONOMY, "genera2ncbiId.tsv")
     FAMILIES_NCBI_IDS = os.path.join(TAXONOMY, "families2ncbiId.tsv")
 
-    ALL_CONFIDENCE      = os.path.join(app_dir, "mappings/kegg_seeds/all_conf.json.gz")
-    ALL_NONSEEDS        = os.path.join(app_dir, "mappings/kegg_seeds/all_nonseeds.json.gz")
-    ALL_NONSEEDS_MODULE = os.path.join(app_dir, "mappings/kegg_seeds/all_nonseeds_module_related.pckl")
+    # The seed sets of the database's genomes; SEEDS_DIR for those of a custom database (microbetag-export-db)
+    SEEDS_DIR           = os.environ.get("SEEDS_DIR", os.path.join(app_dir, "mappings/kegg_seeds"))
+    ALL_CONFIDENCE      = os.path.join(SEEDS_DIR, "all_conf.json.gz")
+    ALL_NONSEEDS        = os.path.join(SEEDS_DIR, "all_nonseeds.json.gz")
+    ALL_NONSEEDS_MODULE = os.path.join(SEEDS_DIR, "all_nonseeds_module_related.pckl")
     SEED_KO_MO          = os.path.join(app_dir, "mappings/kegg_seeds/seedId_keggId_module.tsv")
 
 
@@ -297,8 +298,13 @@ def init_app():
     load_dotenv()
     app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
-    jl = Julia(compiled_modules=False)
-    jl.using("FlashWeave")
+    # FlashWeave in the server's Julia (up to 1.0.4); from 2.0, the network is an input
+    jl = None
+    if os.environ.get("FLASHWEAVE", "true").lower() == "true":
+        from julia.api import Julia
+
+        jl = Julia(compiled_modules=False)
+        jl.using("FlashWeave")
 
     db = db_credentials()  # noqa: F405
 
@@ -469,20 +475,29 @@ def sync_yaml(out_dir: str, args: dict) -> str:
     # Taxonomy and flashweave arguments
     base_yaml["taxonomy"] = args[user_vars.TAXONOMY]
 
-    base_yaml["flashweave_args"]["heterogeneous"]["value"] = args[user_vars.HETEROGENEOUS]
-    base_yaml["flashweave_args"]["sensitive"]["value"]     = args[user_vars.SENSITIVE]
-    base_yaml["flashweave_args"]["max_k"]["value"]         = args[user_vars.MAX_K]
+    if "flashweave_args" in base_yaml:
+        base_yaml["flashweave_args"]["heterogeneous"]["value"] = args[user_vars.HETEROGENEOUS]
+        base_yaml["flashweave_args"]["sensitive"]["value"]     = args[user_vars.SENSITIVE]
+        base_yaml["flashweave_args"]["max_k"]["value"]         = args[user_vars.MAX_K]
 
-    # Steps
-    base_yaml["faprotax_annotation"]["value"]     = args[user_vars.FAPROTAX]
-    base_yaml["phenotrex_traits"]["value"]        = args[user_vars.PHEN_TRAITS]
-    base_yaml["pathway_complementarity"]["value"] = args[user_vars.PATH_COMPL]
-    base_yaml["seed_complementarity"]["value"]    = args[user_vars.SEED_COMPL]
-    base_yaml["network_clustering"]["value"]      = args[user_vars.NET_CLUSTER]
+    # Steps; those the base yaml lists as unavailable stay off
+    unavailable = base_yaml.pop("unavailable_steps", None) or []
+    for step, arg in [
+        ("faprotax_annotation", user_vars.FAPROTAX),
+        ("phenotrex_traits", user_vars.PHEN_TRAITS),
+        ("pathway_complementarity", user_vars.PATH_COMPL),
+        ("seed_complementarity", user_vars.SEED_COMPL),
+        ("network_clustering", user_vars.NET_CLUSTER),
+    ]:
+        if step in unavailable:
+            if args[arg]:
+                _logger_.warning(f"{step} is not available on this server; skipped.")
+            continue
+        base_yaml.setdefault(step, {})["value"] = args[arg]
 
     # User-indipendent, could be fixed in the base yaml template used as well
-    base_yaml["prev_conf"]["file_path"]     = mappings.ALL_CONFIDENCE
-    base_yaml["prev_nonseeds"]["file_path"] = mappings.ALL_NONSEEDS
+    base_yaml.setdefault("prev_conf", {})["file_path"]     = mappings.ALL_CONFIDENCE
+    base_yaml.setdefault("prev_nonseeds", {})["file_path"] = mappings.ALL_NONSEEDS
 
     base_yaml.setdefault("prev_nonseeds_module", {})
     base_yaml["prev_nonseeds_module"]["file_path"] = mappings.ALL_NONSEEDS_MODULE

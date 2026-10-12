@@ -78,6 +78,7 @@ def init_connection_pool() -> mysql.connector.pooling.MySQLConnectionPool:
         user      = DB_CREDENTIALS["user"],
         password  = DB_CREDENTIALS["password"],
         host      = DB_CREDENTIALS["host"],
+        port      = int(DB_CREDENTIALS.get("port", 3306)),
         database  = DB_CREDENTIALS["database"],
     )
     return connection_pool
@@ -148,24 +149,23 @@ def patric_from_gc_list(gc_accession_list: list):
     gc_to_patric_dict = {}
     for gc in gc_accession_list:
 
-        gc_alt = alt_genome_prefix(gc)
+        # GCA_/GCF_ accessions are looked up with both prefixes; the ids of a custom catalogue as they are
+        gc_alt = alt_genome_prefix(gc) or gc
 
-        if gc_alt != 0:
+        query = f"""
+            SELECT patricId
+            FROM patricId2genomeId
+            WHERE gtdbGenomeAccession = '{gc}'
+            OR gtdbGenomeAccession = '{gc_alt}';
+        """.strip()
 
-            query = f"""
-                SELECT patricId
-                FROM patricId2genomeId
-                WHERE gtdbGenomeAccession = '{gc}'
-                OR gtdbGenomeAccession = '{gc_alt}';
-            """.strip()
+        patricId = execute(query)
 
-            patricId = execute(query)
-
-            # NOTE (Haris Zafeiropoulos, 2025-05-08): Some PATRIC ids have a different suffix in the metadata file
-            # than in their corresponding assembies used for the seed complementarity step.
-            # Yet, keeping the part before the dot (.) - using int(patricId[0][0]) cannot be a solution since in
-            # many cases we have several strains for the same species, meaning, several after the dot parts.
-            gc_to_patric_dict[gc] = patricId[0][0] if patricId and patricId[0] else None
+        # NOTE (Haris Zafeiropoulos, 2025-05-08): Some PATRIC ids have a different suffix in the metadata file
+        # than in their corresponding assembies used for the seed complementarity step.
+        # Yet, keeping the part before the dot (.) - using int(patricId[0][0]) cannot be a solution since in
+        # many cases we have several strains for the same species, meaning, several after the dot parts.
+        gc_to_patric_dict[gc] = patricId[0][0] if patricId and patricId[0] else None
 
     return gc_to_patric_dict
 

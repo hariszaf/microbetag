@@ -14,6 +14,7 @@ server/services/db/schema/custom_init.sql, and the seed sets the server computes
     seed_complements.tsv          SeedComplements:          beneficiary, donor, compounds (comma-separated)
     non_seed_sets.tsv             nonSeedSets:              genome, compounds (comma-separated)
     all_conf.json.gz, all_nonseeds.json.gz                   seed set confidences and non-seed sets per genome
+    all_nonseeds_module_related.pckl                         KEGG module related non-seed sets (keggm_nonseeds.pkl)
 """
 
 import argparse
@@ -184,6 +185,9 @@ def export(precalc: str, genome_taxonomy: str, outdir: str) -> dict[str, int]:
         counts["nonSeedSets"]     = write_tsv(nonseeds, out("non_seed_sets.tsv"))
         gzip_copy(os.path.join(seed_dir, "confidence.json"), out("all_conf.json.gz"))
         gzip_copy(os.path.join(seed_dir, "nonseeds.json"), out("all_nonseeds.json.gz"))
+        module_nonseeds = os.path.join(seed_dir, "keggm_nonseeds.pkl")
+        if os.path.exists(module_nonseeds):
+            shutil.copyfile(module_nonseeds, out("all_nonseeds_module_related.pckl"))
 
     # The catalogue's genomes are their own "PATRIC" ids (the GTDB database maps GTDB genomes to PATRIC GEMs)
     genomes = set(taxonomy)

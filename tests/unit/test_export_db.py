@@ -35,6 +35,7 @@ def precalc(tmp_path):
     (sc / "all_compls.json").write_text(json.dumps({"bin_1": {"bin_2": ["cpd1", "cpd2"]}}))
     (sc / "nonseeds.json").write_text(json.dumps({"bin_1": ["cpd3"], "bin_2": ["cpd4", "cpd5"]}))
     (sc / "confidence.json").write_text(json.dumps({"bin_1": {"cpd1": 1.0}}))
+    (sc / "keggm_nonseeds.pkl").write_bytes(b"pickle")
 
     taxonomy = tmp_path / "taxonomy.tsv"
     taxonomy.write_text(f"bin_1\t{LINEAGE}\nbin_2\t{LINEAGE}\n")
@@ -75,6 +76,7 @@ def test_export(tmp_path, precalc):
     assert rows(out / "genome_ids.tsv") == [["bin_1", "bin_1"], ["bin_2", "bin_2"]]
     with gzip.open(out / "all_conf.json.gz", "rt") as f:
         assert json.load(f) == {"bin_1": {"cpd1": 1.0}}
+    assert (out / "all_nonseeds_module_related.pckl").read_bytes() == b"pickle"
 
 
 def test_cli(tmp_path, precalc, capsys):

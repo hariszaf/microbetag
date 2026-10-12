@@ -14,6 +14,7 @@ from app_utils import (
 )
 
 from app_taxonomy import map_seq_to_ncbi_tax_level_and_id
+from app_catalogue import custom_catalogue, map_seq_to_catalogue
 
 from api import (
     get_pathway_compls, val_compl_res,
@@ -341,14 +342,23 @@ def upload_dev():
         # Abundance data df
         data = prep_abundance_table(config)  # noqa: F405
         try:
-            config.otf_seq_tax_df, config.repr_genomes_present = map_seq_to_ncbi_tax_level_and_id(
-                abd_tab    = data,
-                tax_col    = mtg_app_vars.TAX_COL,
-                seqId      = mtg_app_vars.SEQ_COL,
-                tax_scheme = args[user_arg_vars.TAXONOMY],
-                tax_delim  = args[user_arg_vars.DELIMITER],
-                mappings   = Mappings()  # noqa: F405
-            )
+            if custom_catalogue():
+                # A database of the user's own genomes: the closest genomes of each taxon
+                config.otf_seq_tax_df, config.repr_genomes_present = map_seq_to_catalogue(
+                    abd_tab   = data,
+                    tax_col   = mtg_app_vars.TAX_COL,
+                    seqId     = mtg_app_vars.SEQ_COL,
+                    tax_delim = args[user_arg_vars.DELIMITER],
+                )
+            else:
+                config.otf_seq_tax_df, config.repr_genomes_present = map_seq_to_ncbi_tax_level_and_id(
+                    abd_tab    = data,
+                    tax_col    = mtg_app_vars.TAX_COL,
+                    seqId      = mtg_app_vars.SEQ_COL,
+                    tax_scheme = args[user_arg_vars.TAXONOMY],
+                    tax_delim  = args[user_arg_vars.DELIMITER],
+                    mappings   = Mappings()  # noqa: F405
+                )
 
         except Exception:
             # Catch and return any error that occurs
@@ -357,7 +367,7 @@ def upload_dev():
                 "and/or GTDB representative genomes."
                 "Please, check on the format of your taxonomy scheme, the delimiter provided etc."
             )
-            logger.error(error_msg)
+            logger.error(error_msg + "\n" + traceback.format_exc())
             raise FileFormatError(error_msg)  # noqa: F405
 
         taxonomy_file = os.path.join(out_dir, "map_tax_output.csv")

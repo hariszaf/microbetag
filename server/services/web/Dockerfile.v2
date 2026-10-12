@@ -1,0 +1,24 @@
+# The microbetag server on microbetag 2.0, the package of this repository.
+#
+# Build the package image first, from the root of the repository:
+#   docker build -t hariszaf/microbetag:2.0.0 .
+# then this one, from this folder:
+#   docker build -f Dockerfile.v2 -t microbetag-server:2.0.0 .
+#
+# There is no Julia/FlashWeave in this image (FLASHWEAVE=false): a network is required with the abundance table.
+# For a database of your own genomes, set CATALOGUE=custom and SEEDS_DIR to the folder of the seed files
+# microbetag-export-db exported (all_conf.json.gz, all_nonseeds.json.gz, all_nonseeds_module_related.pckl).
+
+ARG MICROBETAG_IMAGE=hariszaf/microbetag:2.0.0
+FROM ${MICROBETAG_IMAGE}
+
+RUN pip install --no-cache-dir Flask==2.3.2 Flask-Caching==2.1.0 gunicorn==20.1.0 python-dotenv \
+    biopython fuzzywuzzy
+
+ENV HOME=/home/app \
+    APP_HOME=/home/app/web \
+    FLASHWEAVE=false
+WORKDIR $APP_HOME
+COPY . $APP_HOME
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--workers", "2", "--timeout", "3500"]
