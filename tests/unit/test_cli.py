@@ -5,6 +5,7 @@ Expected values are the reference outputs in tests/data/seed_compl.
 """
 
 import json
+import shutil
 import os
 import subprocess
 import sys
@@ -65,3 +66,16 @@ def test_seed_compls(tmp_path):
     assert scores.read_text().splitlines() == ["bin_101\tGPB:bin_000083\t0.5\t0.22"]
     with open(compls) as f:
         assert list(json.load(f)) == ["GPB:bin_000083"]
+
+
+def test_pcompl(tmp_path):
+    from microbetag.cli import pcompl
+
+    shutil.copy(os.path.join(tests_dir, "data", "path_compl", "input_files", "ko_merged_7bins.txt.gz"), tmp_path)
+    alts, pcs = tmp_path / "alts.json", tmp_path / "pc.json"
+
+    # "false" must not enable tinyurl (it would call the tinyurl web service)
+    pcompl.main([str(alts), str(pcs), str(tmp_path / "ko_merged_7bins.txt.gz"), "false", "2"])
+
+    with open(pcs) as f:
+        assert len(json.load(f)) == 7
