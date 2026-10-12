@@ -25,7 +25,7 @@ process FORMAT_FW {
 
     tag "Bring abundance data to a FlashWeave-friendly format"
 
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
         path abundance_file
@@ -35,7 +35,7 @@ process FORMAT_FW {
 
     script:
         """
-        format_fw.py ${abundance_file} > flashweave_abd_table.tsv
+        format_fw.py ${abundance_file}
         """
 
 }

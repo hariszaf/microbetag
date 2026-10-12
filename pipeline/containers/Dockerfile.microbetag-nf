@@ -1,0 +1,29 @@
+# Image for the microbetag steps of the pipeline: the microbetag package (pathway and seed
+# complementarities, annotated network), plus what the pipeline's own steps around it need:
+# manta, FAPROTAX, GNU parallel, jq and the scripts in bin/mtg.
+#
+# Build, from the root of the repository:
+#   docker build -f containers/Dockerfile.microbetag-nf -t hariszaf/microbetag-nf:<version> .
+#
+# MICROBETAG_VERSION is the hariszaf/microbetag image (and package) version it builds on;
+# keep it in line with params.microbetag_image in nextflow.config.
+
+ARG MICROBETAG_VERSION=2.0.0
+FROM hariszaf/microbetag:${MICROBETAG_VERSION}
+
+# git: to install manta, a fork that is not on PyPI
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git parallel jq \
+ && rm -rf /var/lib/apt/lists/* \
+ && pip install --no-cache-dir "git+https://github.com/hariszaf/manta.git@scipy-version"
+
+# FAPROTAX 1.2.10 (collapse_table.py and its database)
+COPY assets/FAPROTAX_1.2.10/ /opt/faprotax/
+
+# The pipeline's helper scripts
+COPY bin/mtg/ /opt/microbetag-nf/bin/
+RUN chmod +x /opt/microbetag-nf/bin/*
+ENV PATH=/opt/microbetag-nf/bin:${PATH}
+
+WORKDIR /data
+CMD ["bash"]

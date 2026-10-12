@@ -12,7 +12,7 @@ process PC_PRECALC {
     tag "Pathway complementarity precalculations"
 
     publishDir "${params.outdir}/pathway_compl", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path ko_merged_ch
@@ -23,7 +23,7 @@ process PC_PRECALC {
 
     script:
     """
-    pcompl.py \
+    microbetag-pcompl \
         alternatives.json \
         pcompls.json \
         ${ko_merged_ch} \
@@ -37,7 +37,7 @@ process PC_EXTEND {
     tag "Extend pathway complementarities with URls to KEGG maps"
 
     publishDir "${params.outdir}/pathway_compl", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path pcompls
@@ -47,7 +47,7 @@ process PC_EXTEND {
 
     script:
     """
-    pcompl_ext.py \
+    microbetag-pcompl-ext \
         ${pcompls} \
         ${params.pc_percent} \
         ${params.threads}

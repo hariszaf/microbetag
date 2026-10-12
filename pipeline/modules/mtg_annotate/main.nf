@@ -13,7 +13,7 @@ nextflow run modules/mtg_annotate/main.nf -params-file modules/mtg_annotate/mtg_
 //     tag "Build microbetag-annotated network (.cx2 file) "
 
 //     publishDir "${params.outdir}", mode: 'copy'
-//     container "hariszaf/microbetag-nf:0.1.0"
+//     container params.microbetag_image
 
 //     input:
 //         path yaml
@@ -41,7 +41,7 @@ process ANNOTATE_NETWORK {
 
     tag "Build microbetag-annotated network (.cx2 file)"
     publishDir "${params.outdir}", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
         path yaml
@@ -58,7 +58,7 @@ process ANNOTATE_NETWORK {
         """
 
         # Build the command
-        cmd="mtg_annotate.py --config_file ${yaml} --network ${network}"
+        cmd="microbetag-annotate --config_file ${yaml} --network ${network}"
 
         [[ -s "${fapro_tables}" ]] && cmd+=" --faprotax ${fapro_tables}"
         [[ -s "${net_cluster}" ]] && cmd+=" --clustered ${net_cluster}"

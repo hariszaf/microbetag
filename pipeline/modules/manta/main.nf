@@ -4,7 +4,7 @@ process PREP_NETWORK {
 
     tag "Based on a 3-column edgelist, prepare the .cyjs format base network for running manta "
 
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path abd_file
@@ -15,7 +15,7 @@ process PREP_NETWORK {
 
     script: 
         """
-        format_manta.py ${abd_file} ${network}
+        microbetag-format-manta ${abd_file} ${network}
         """
 }
 
@@ -25,7 +25,7 @@ process RUN_MANTA {
     tag "Cluster network using the manta software"
 
     publishDir "${params.outdir}/manta", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
         path cyjs_net

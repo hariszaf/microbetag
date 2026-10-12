@@ -13,7 +13,7 @@ process FAPROTAX {
     tag "Annotate abundance table with FAPROTAX functional groups"
 
     publishDir "${params.outdir}/faprotax", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
         path abundance_table
@@ -24,10 +24,10 @@ process FAPROTAX {
     
     script:
         """
-        python /workspace/microbetag/mtg_maps_models/FAPROTAX_1.2.10/collapse_table.py \
+        python /opt/faprotax/collapse_table.py \
             -i ${abundance_table} \
             -o functional_otu_table.tsv \
-            -g /workspace/microbetag/mtg_maps_models/FAPROTAX_1.2.10/FAPROTAX.txt \
+            -g /opt/faprotax/FAPROTAX.txt \
             --table_delimiter ${params.delimiter} \
             -c "#" \
             -d ${params.taxonomy_colname} \

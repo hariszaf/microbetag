@@ -21,7 +21,7 @@ process GET_SEED_SETS {
     tag "Calculate seed and non-seed sets based on GEM reconstructions."
 
     publishDir "${params.outdir}/seed_compl/sets", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path gem
@@ -31,7 +31,7 @@ process GET_SEED_SETS {
 
     script:
     """
-    seed_sets.py ${gem} ${params.namespace} "${gem.baseName}_sets.json"
+    microbetag-seed-sets ${gem} ${params.namespace} "${gem.baseName}_sets.json"
     """
 }
 
@@ -41,7 +41,7 @@ process AGGREGATE_SEED_SETS {
     tag "Aggregate seed and non-seed sets, as JSON files, and filter them based on KEGG modules, pickle files."
 
     publishDir "${params.outdir}/seed_compl", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path seed_sets_json
@@ -60,7 +60,7 @@ process AGGREGATE_SEED_SETS {
     jq 'map({ (.base_name): .non_seed_set }) | add' all_seed_sets.json > nonseeds.json
     jq 'map({ (.base_name): .seed_set_confidence }) | add' all_seed_sets.json > confidence.json
 
-    ssets_pkls.py
+    microbetag-ssets-pkl
     """
 }
 
@@ -69,7 +69,7 @@ process SCORES_COMPLS_PRECALC {
     tag "Calculate seed complementarity scores and extract complements."
 
     publishDir "${params.outdir}/seed_compl/per_species", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     tuple val(species), path(nonseeds_json), path(confidence_json)
@@ -80,7 +80,7 @@ process SCORES_COMPLS_PRECALC {
 
     script:
     """
-    seed_compls.py \
+    microbetag-seed-compls \
         "${species}" \
         "${nonseeds_json}" \
         "${confidence_json}" \
@@ -96,7 +96,7 @@ process AGGREGATE_SCORES_COMPLS {
     tag "Aggregate the per species seed scores and complements to global files"
 
     publishDir "${params.outdir}/seed_compl", mode: 'copy'
-    container "hariszaf/microbetag-nf:0.1.0"
+    container params.microbetag_image
 
     input:
     path sp_seed_scores_json
@@ -120,7 +120,7 @@ process AGGREGATE_SCORES_COMPLS {
     cat *.tsv >> scores
     cat header scores > ${scores_outfile}
     
-    scompls_pkls.py ${compls_js_outfile} ${compls_pkl_outfile}
+    microbetag-scompls-pkl ${compls_js_outfile} ${compls_pkl_outfile}
     """
 }
 
