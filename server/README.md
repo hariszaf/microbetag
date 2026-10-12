@@ -62,11 +62,13 @@ docker tag <docker_image_id> microbetagapp-web-working-version
 and only then rebuild the Docker image. 
 
 
-Once you have rebuild the image, all you need to do is to attach to the tmux session, create a new window (`ctrl + b` and then `c`) 
-and fire again the `docker-compose up` command. 
-This will re-create your `web` docker container and after a few seconds you app will be up and running once again with your new code. 
+Once you have rebuilt the image, restart the service:
 
-Remember to detach from the tmux session, not exit! 
+```bash
+sudo systemctl restart microbetag
+```
+
+This re-creates the `web` container, and after a few seconds the app is up and running again with your new code.
 
 
 
