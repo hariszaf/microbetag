@@ -1,3 +1,32 @@
+## Your own database, from your own genomes
+
+Run the `precalc` workflow of the pipeline (`pipeline/`) on your genome catalogue, then export its output as the
+files of a database, with the taxonomy of each genome (e.g. GTDB-Tk's `gtdbtk.*.summary.tsv`, or a tab-separated
+genome and lineage):
+
+```bash
+microbetag-export-db --precalc <precalc output folder> --genome-taxonomy genome_taxonomy.tsv --outdir db_files
+```
+
+[`schema/custom_init.sql`](./schema/custom_init.sql) creates the tables and loads these files. MySQL runs it at its
+first start, from `/docker-entrypoint-initdb.d/`, with the files in `/var/lib/mysql-files/`:
+
+```bash
+docker run -d --name microbetag-db \
+    -e MYSQL_ROOT_PASSWORD=<password> \
+    -v $PWD/schema/custom_init.sql:/docker-entrypoint-initdb.d/custom_init.sql:ro \
+    -v $PWD/db_files:/var/lib/mysql-files \
+    -p 3306:3306 mysql:8.4
+```
+
+The `/var/lib/mysql-files` mount needs to be writable: MySQL changes its owner at start (on Fedora and other
+SELinux systems, add `:Z` to both mounts). Instead of matching taxa to genomes through NCBI taxonomy ids, as the
+GTDB database does, a database of your own matches them by taxonomy (`genomeTaxonomy` table), to the genomes that
+share their deepest rank.
+
+
+## The GTDB database
+
 ## The database container
 
 The idea is this 

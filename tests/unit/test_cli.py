@@ -19,7 +19,7 @@ seed_data = os.path.join(tests_dir, "data", "seed_compl")
 
 CLI_MODULES = [
     "annotate", "format_manta", "pcompl", "pcompl_ext",
-    "seed_sets", "seed_compls", "scompls_pkl", "ssets_pkl",
+    "seed_sets", "seed_compls", "scompls_pkl", "ssets_pkl", "export_db",
 ]
 
 
