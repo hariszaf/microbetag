@@ -136,7 +136,7 @@ Three workflows, in the `workflows` folder:
 3. preparation of amplicon datasets for the on-the-fly version (`prep.nf`); see [the preparation steps](../tutorials_otf/prep.md)
 
 `main.nf` runs one of them, chosen with `--workflow`. They are built on **modules** (`modules` folder) and
-**sub-workflows** (`subworkflows` folder), which can also run on their own.
+**sub-workflows** (`workflows/subworkflows` folder), which can also run on their own.
 
 The example parameter files read the test data in `tests/data` and `tests/expected`, and write to `tests/results`
 (not tracked); `tests/README.md` describes them. Put databases you download, like the KOfam database, in `databases/`
@@ -251,15 +251,15 @@ nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
 
 ### .. sub-workflows
 
-Edit the parameter files of the sub-workflows, `subworkflows/pathway_complementarity/pc.yaml` and
-`subworkflows/seed_complementarity/sc.yaml`, then run:
+Edit the parameter files of the sub-workflows, `workflows/subworkflows/pathway_complementarity/pc.yaml` and
+`workflows/subworkflows/seed_complementarity/sc.yaml`, then run:
 
 ```bash
-nextflow run subworkflows/pathway_complementarity/main.nf -params-file subworkflows/pathway_complementarity/pc.yaml
+nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
 ```
 
 ```bash
-nextflow run subworkflows/seed_complementarity/main.nf -params-file subworkflows/seed_complementarity/sc.yaml
+nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file workflows/subworkflows/seed_complementarity/sc.yaml
 ```
 
 ### .. modules
