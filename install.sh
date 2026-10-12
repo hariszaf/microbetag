@@ -5,9 +5,9 @@
 # Every environment is described in envs/*.yml; this script only creates them and runs the few
 # steps conda can't: installing FlashWeave inside Julia and, optionally, downloading the kofam database.
 #
-#   bash setup_environment.sh                 # microbetag environment only
-#   bash setup_environment.sh --phenotrex     # + the mtg-phenotrex environment
-#   bash setup_environment.sh --all --kofam   # everything
+#   bash install.sh                 # microbetag environment only
+#   bash install.sh --phenotrex     # + the mtg-phenotrex environment
+#   bash install.sh --all --kofam   # everything
 
 set -euo pipefail
 
@@ -24,7 +24,7 @@ usage() {
   cat <<EOF
 Installation script for microbetag.
 
-Usage: bash setup_environment.sh [options]
+Usage: bash install.sh [options]
 
 Always creates (or updates) the 'microbetag' conda environment from envs/microbetag.yml.
 

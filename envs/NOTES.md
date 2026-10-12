@@ -31,4 +31,4 @@ Based on which ModelSEEDpy version you are about to use, it requires a specific 
 
 For example, in `>= 1.2.0` version lock for pickle ML models
 
-We now install ModelSEEDpy on the setup_environment.sh since latest version in not on PiPY, but only on a fork.
+We now install ModelSEEDpy on the install.sh since latest version in not on PiPY, but only on a fork.

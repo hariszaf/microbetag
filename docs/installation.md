@@ -92,7 +92,7 @@ Here we provide instructions for installing the required components for each mod
 
   - KOFAM database for KEGG Orthology annotations -- if you plan to run the KEGG annotation step
   
-  In case you build `microbetag` from source code locally, you may add the `--kofam` in the `setup_environment.sh` script call,
+  In case you build `microbetag` from source code locally, you may add the `--kofam` in the `install.sh` script call,
   and it will automatically download the KOFAM database for you.
   Otherwise, you may download it manually by running the following commands:
 
@@ -151,13 +151,13 @@ Here we provide instructions for installing the required components for each mod
 
       cd microbetag
 
-      bash setup_environment.sh
+      bash install.sh
   ```
 
 
   _microbetag_ depends on several software packages that often have co-exclusive depdencies. 
   To address this challenge, _microbetag_ makes use of different `conda` environmets for each of these packages. 
-  Therefore, once the `setup_environment.sh` script is complete, you should have the folllowing list of `conda envs`:
+  Therefore, once the `install.sh` script is complete, you should have the folllowing list of `conda envs`:
 
   * `microbetag`       : a Python 3.10 based environment; the basic environment for the _microbetag_ pipeline 
   * `mtg-phenotrex`    : for predicting genome-based phenotypic traits with <a href="https://phenotrex.readthedocs.io/en/latest/usage.html" target="_blank">`phenotrex`</a>
@@ -175,10 +175,10 @@ Here we provide instructions for installing the required components for each mod
 
   ```{note}
   Each environment is described in a file under [`envs/`](https://github.com/hariszaf/microbetag/tree/main/envs).
-  By default, `setup_environment.sh` only builds the `microbetag` environment, which includes Prodigal, HMMER,
+  By default, `install.sh` only builds the `microbetag` environment, which includes Prodigal, HMMER,
   DIAMOND, FragGeneScan and Julia with FlashWeave. Add `--phenotrex`, `--modelseed`, `--dnngior`, or `--all`
   for the other environments, and `--kofam` to download the KOFAM database.
-  Run `bash setup_environment.sh --help` for all options.
+  Run `bash install.sh --help` for all options.
 
   Nothing is installed outside the conda environments; Julia packages are kept inside the `microbetag` environment.
   ```

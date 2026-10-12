@@ -40,9 +40,9 @@ To use `microbetag` on-the-fly, all you have to do is to make sure you have Cyto
 ### Option 2: On your host machine
 
 To run `microbetag` locally, you need to install a great range of software and dependencies. 
-To make this easier, we provide the [`setup_environment.sh`](./setup_environment.sh) script. 
+To make this easier, we provide the [`install.sh`](./install.sh) script. 
 
-**The `setup_environment.sh` expects `conda` is available on your computing system!**
+**The `install.sh` expects `conda` is available on your computing system!**
 
 If `conda` (or `Miniconda`) is not installed, then you may get it by following the instructions you may find 
 [here](https://www.anaconda.com/docs/getting-started/miniconda/install).
@@ -57,7 +57,7 @@ you can build its required environments by running:
 
 ```bash
 cd microbetag
-bash setup_environment.sh
+bash install.sh
 ```
 
 Once `conda` environments and required tools and databases are installed, you can install the `microbetag` package by running:
@@ -170,9 +170,9 @@ singularity exec
 ### Tricky parts for running locally
 
 `microbetag` makes use of a range of external software, some of which have conflicting dependencies.
-This is why [`setup_environment.sh`](./setup_environment.sh) builds separate conda environments, described in [`envs/`](./envs):
+This is why [`install.sh`](./install.sh) builds separate conda environments, described in [`envs/`](./envs):
 `microbetag` for the main pipeline, plus optional `mtg-phenotrex`, `mtg-modelseed` and `mtg-dnngior`
-(`bash setup_environment.sh --help` lists the options).
+(`bash install.sh --help` lists the options).
 Similarly, it switches from a `scikit-learn` version to another while running. 
 This is not optional, and we hope in the future to find a better way.
 

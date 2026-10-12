@@ -1,4 +1,5 @@
 import os
+import shutil
 import cobra
 
 import subprocess
@@ -6,6 +7,7 @@ import multiprocessing
 from pathlib import Path
 
 
+from .deps import missing_tool_error, require_conda_env
 from .utils import (
     split_list,
     run_until_done,
@@ -286,6 +288,7 @@ def ms_reconstruct(faa, outdir = None):
 
     if not os.path.exists(modelfile):
 
+        require_conda_env("mtg-modelseed")
         subprocess.run([
             "conda",
             "run",
@@ -307,6 +310,7 @@ def dnngior_gapfill(draft_model, medium=None, outdir=None):
 
     if not os.path.exists(str(draft_model).replace(".draft", "")):
 
+        require_conda_env("mtg-dnngior")
         # _MSGENRE_SCRIPT_ is a Path object; this would
         command = [
             "conda",
@@ -344,6 +348,8 @@ def run_carve(genome_files, outdir, dna=False):
         bin_id = os.path.splitext(os.path.basename(fa))[0]
         xml    = os.path.join(outdir, f"{bin_id}.xml")
 
+        if shutil.which("carve") is None:
+            raise missing_tool_error("carve")
         carve_params = ["carve", "--solver", "gurobi", "-o", xml]
 
         if os.path.exists(xml) and os.path.getsize(xml) > 0:

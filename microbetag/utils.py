@@ -955,7 +955,7 @@ def get_tool_location(software: str) -> str:
     or the full path to the software if it's found in the alternative location.
     In both cases, the return value will allow running the software.
 
-    If software not available, it will reaise a SystemExit() error with a message about the missing software.
+    If software not available, it raises a MissingDependencyError with a hint on how to install the software.
 
     Arguments:
         software: Name of the software program to be found
@@ -990,8 +990,10 @@ def get_tool_location(software: str) -> str:
 
     else:
         # If neither path works
-        _logger_.error(f"{software} is not available. Please install it first.")
-        raise SystemExit(f"{software} is not available. Please install it first.")
+        from .deps import missing_tool_error
+        err = missing_tool_error(software)
+        _logger_.error(str(err))
+        raise err
 
 
 _logger_ = mtg_logger(__name__)

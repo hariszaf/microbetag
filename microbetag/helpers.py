@@ -79,12 +79,13 @@ class PathwayComplementarity:
         container_kofam_db = "/microbetag/microbetag/mtg_maps_models/kofam_database/"
         if not os.path.exists(container_kofam_db):
             _logger_.error(
-                "Please provide the path to the KOfam database. \n"
-                "If not available, download it from ftp://ftp.genome.jp/pub/db/kofam/. \n"
+                "Please provide the path to the KOfam database (kofam_database: dir_path in the YAML). \n"
+                "To download it into ext_data/kofam_database, run from the microbetag repository: \n\n"
+                "    bash install.sh --kofam\n\n"
                 "If running microbetag through a container, mount kofam_db under "
                 "/microbetag/microbetag/mtg_maps_models/kofam_database/."
             )
-            sys.exit(0)
+            sys.exit(1)
         else:
             return container_kofam_db
 

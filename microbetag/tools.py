@@ -13,6 +13,8 @@ from tqdm import tqdm
 
 from typing import TYPE_CHECKING, List
 
+from .deps import init_flashweave, missing_tool_error, require_conda_env
+
 from .utils import (
     get_files_with_suffixes,
     get_library_version,
@@ -94,6 +96,9 @@ def hmmsearch(params: List) -> None:
         Freely distributed under the BSD open source license.
     """
     (threshold_method, threshold, outtype, output, hmm_db, faa) = params
+
+    if shutil.which("hmmsearch") is None:
+        raise missing_tool_error("hmmsearch")
 
     cmd_para = [
         "hmmsearch",
@@ -256,6 +261,7 @@ def phenotrex_genotype(config: "Config") -> None:
         # Build genotypes
         compute_genotype_params = []
         if not config.cwd.startswith("/microbetag"):
+            require_conda_env(_MTG_PHEN_ENV)
             compute_genotype_params += ["conda run -n", _MTG_PHEN_ENV]
 
         compute_genotype_params += [
@@ -337,6 +343,7 @@ def phenotrex_predict(config: "Config") -> None:
             predict_traits_params = []
             # Local case
             if not config.cwd.startswith("/microbetag"):
+                require_conda_env(_MTG_PHEN_ENV)
                 predict_traits_params = ["conda run -n", _MTG_PHEN_ENV]
             # All cases: local and container
             predict_traits_params += [
@@ -451,9 +458,7 @@ def run_flashweave(config: "Config") -> None:
     if not hasattr(config, 'julia_instance'):
 
         _logger_.info("Init Julia through Python!")
-        from julia.api import Julia  # optional dependency: microbetag[flashweave]
-        config.jl = Julia(compiled_modules=False)
-        config.jl.using("FlashWeave")
+        config.jl = init_flashweave()
 
     # Run FlashWeave based on presence/absence of a metadata file
     try:

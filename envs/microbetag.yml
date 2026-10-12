@@ -16,7 +16,7 @@ dependencies:
   - diamond=2.1.9
   # ORF prediction for ModelSEEDpy reconstructions
   - fraggenescan=1.32
-  # FlashWeave network inference; FlashWeave itself is added by setup_environment.sh
+  # FlashWeave network inference; FlashWeave itself is added by install.sh
   - julia=1.9.4
   # clears the executable-stack flag on Julia's libopenlibm, which newer kernels refuse to load
   - patchelf
