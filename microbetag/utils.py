@@ -9,44 +9,20 @@ Utility functions to be used across the `microbetag` library.
 """
 
 import os
-import re
 import sys
 import csv
 import ast
 import json
-import time
 import copy
-import glob
 import shutil
-import random
 import logging
 import colorlog
-import numpy as np
 import pandas as pd
-from importlib import metadata
 from pathlib import Path
 from multiprocessing import Pool, cpu_count
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Set, Union
-
-if TYPE_CHECKING:
-    from .config import Config
-
+from typing import Any, Dict, List, Tuple, Set, Union
 
 # Handling data related
-def get_library_version(library_name: str) -> str:
-    """
-    Returns the version of a Python library
-    """
-
-    try:
-        version = metadata.version(library_name)
-        return version
-
-    except metadata.PackageNotFoundError:
-        return "Library not found"
-
-    except Exception as e:
-        return str(f"lala{e}")
 
 
 def resolve_relative_path(base_dir: str, file_path: str) -> str:
@@ -206,32 +182,6 @@ def mtg_logger(filename: str) -> logging.getLogger:
     return logger
 
 
-def get_files_with_suffixes(directory: str, suffixes: List[str]) -> list[str]:
-    """
-    Recursively retrieves files from a specified directory and its subdirectories
-    that have extensions matching a given list of suffixes.
-
-    Arguments:
-        directory: The root directory to start the search.
-        suffixes: A list of file suffixes (extensions) to match.
-                  Each suffix should include the dot (e.g., '.txt', '.csv').
-
-    Returns:
-    ---------
-        A list of full paths to files that match any of the specified suffixes.
-
-    Example:
-    >>> get_files_with_suffixes('/path/to/directory', ['.txt', '.csv'])
-    ['/path/to/directory/file1.txt', '/path/to/directory/subdir/file2.csv']
-    """
-    matching_files = []
-    for root, _, files in os.walk(directory):
-        for file in files:
-            if any(file.endswith(suffix) for suffix in suffixes):
-                matching_files.append(os.path.join(root, file))
-    return matching_files
-
-
 def safe_literal_eval(value: Any):
     """
     Safely evaluates a string that may represent a Python literal (e.g., list, dict, int).
@@ -331,189 +281,6 @@ def flatten_list(lst: List, flat_list: List = None) -> set:
     return set(flat_list)
 
 
-def run_until_done(command: str):
-    """
-    Function to run recursively a command until
-    """
-    if os.system(command) == 0:
-        return 1
-    else:
-        time.sleep(random.randint(2, 10))
-        _logger_.warning("recurscive run of: %s", command)
-        run_until_done(command)
-
-
-def file_exists_and_nonzero(filename: str) -> bool:
-    """
-    Check if a file exists and its size is nonzero.
-
-    Args:
-        filename (str): The path to the file.
-
-    Returns:
-        bool: True if the file exists and its size is nonzero, False otherwise.
-    """
-    return os.path.exists(filename) and os.path.getsize(filename) > 0
-
-
-def split_list(input_list: list, chunk_size: int) -> list:
-    """
-    Split a list to sublists of a user defined size (`chunk_size`).
-    """
-    return [
-        input_list[i: i + chunk_size] for i in range(0, len(input_list), chunk_size)
-    ]
-
-
-def many_to_one_files(dir_with_files: str, merged_file: str) -> None:
-    """
-    Makes a single file out of all files in a directory by concatenating having rows of one after the other
-
-    Arguments:
-        dir_with_files: Path of the directory the files of which to be merged
-        merged_file: Path to merged output file
-    """
-    command = " ".join(
-        [
-            "find",
-            dir_with_files,
-            "-type",
-            "f",
-            "-name",
-            "K*",
-            "-print0",
-            "|",
-            "xargs",
-            "-0",
-            "cat",
-            ">",
-            merged_file,
-        ]
-    )
-    os.system(command)
-
-
-def ko_list_parser(ko_list: str) -> Dict:
-    """
-    Parses ko_list file into a dict object - based on DiTing
-
-    Arguments
-    ----------
-        ko_list: path to the `ko_list` file that comes from the kofam database https://www.genome.jp/ftp/db/kofam/
-
-    Returns
-    ---------
-        A dictionary mapping knum to threshold and score_type
-    """
-    # { knum : [threshold, score_type] }
-    ko_dic = {}
-    with open(ko_list) as fi:
-        # skip the first line (header)
-        next(fi)
-        for line in fi:
-            knum, threshold, score_type = line.split("\t")[0:3]
-            if threshold == "-":
-                continue
-            else:
-                ko_dic[knum] = [threshold, score_type]
-    return ko_dic
-
-
-def merge_ko(hmmout_dir: str, output: str) -> None:
-    """
-    Parses the KO<>.<bin>.hmmout files produced by the kegg_annotation() function
-    to create a single 3-column file (output) with the bin_id, the corresponding conting 
-    and the KO that was mapped to it.
-    The function then returns a dictionary with the bin ids as the keys and the set of KOs found to each as the value.
-
-    Args:
-        hmmout_dir: path to the .hmmout files
-        output: Path/filename to save the output file
-    """
-    hmmout_dir = Path(hmmout_dir)
-    output     = Path(output)
-
-    # Under any circumstances microbetag will overwrite the ko_merged.txt file
-    with open(output, "w") as fo:
-        fo.write("bin_id\tcontig_id\tko_term\n")
-
-    for bin_id in hmmout_dir.iterdir():
-        if not bin_id.is_dir():
-            continue
-
-        bin_file = Path(bin_id) / f"{bin_id.name}_kos.tsv"
-        if not bin_file.exists():
-            continue
-
-        # Append file contents
-        with output.open("ab") as out_f, bin_file.open("rb") as in_f:
-            # The copyfileobj() efficiently appends the contents of each KO file, to the merged file.
-            shutil.copyfileobj(in_f, out_f)
-
-
-def bin_kos_to_file(hmmout_dir: str, bin_id: str) -> None:
-    """
-    Builds a 3-col file for a bin and removes the KO-specific output files of `hmmsearch`
-
-    Arguments:
-        hmmout_dir: Directory to the hmmout files
-        bin_id: Name of the sequence id under study
-    """
-    # Write 3-cols entries in tmp file
-    bin_kos_file = os.path.join(hmmout_dir, "".join([bin_id, "_kos.tsv"]))
-    if not os.path.exists(bin_kos_file):
-        open(bin_kos_file, "w").close()
-
-    for hmmout_file in os.listdir(hmmout_dir):
-        try:
-            basename, gene_id, k_number = parse_hmmout(hmmout_file, hmmout_dir)
-            with open(bin_kos_file, "a") as fo:
-                fo.write(basename + "\t" + gene_id + "\t" + k_number + "\n")
-        except Exception:
-            # Ignore non-informative lines
-            pass
-
-    # Remove .hmmout files
-    bin_hmmout = os.path.join(hmmout_dir, ".".join([bin_id, "hmmout.all"]))
-    many_to_one_files(hmmout_dir, bin_hmmout)
-    for p in glob.glob(os.path.join(hmmout_dir, "*.hmmout")):
-        if os.path.isfile(p):
-            os.remove(p)
-
-
-def parse_hmmout(hmmout_file: str, hmmout_dir: str) -> Tuple[str, str, str]:
-    """
-    Parses the output of the hmmsearch to return the the sequence id along with the
-    a gene and its corresponding KEGG ORTHOLOGY term as mentioned in the `hmmout_file`.
-
-    Arguments:
-        hmmout_file: Filename of the .hmmout file
-        hmmout_dir: Directory where hmmout_file is located
-
-    Returns:
-        A tuple consisting of:
-            - basename: Sequence id
-            - gene_id: Gene id
-            - k_number: KEGG ORTHOLOGY term found
-    """
-    if hmmout_file.endswith(".hmmout"):
-
-        kobasename       = hmmout_file.rsplit(".", 1)[0]
-        basename         = kobasename.split(".", 1)[1]
-        hmmout_file_path = os.path.join(hmmout_dir, hmmout_file)
-
-        with open(hmmout_file_path, "r") as fi:
-            for line in fi:
-                if not line.startswith("#"):
-                    gene_id, _ = line.split()[0:2]  # under _ the accession
-                    lines = line.split()
-                    if re.match(r"[0-9]+$", lines[2]):
-                        k_number = lines[3]
-                    else:
-                        k_number = lines[2]
-                    return basename, gene_id, k_number
-
-
 def load_merged_ko_file(merged_ko: str) -> pd.DataFrame:
     """
     Load the 3-columns KEGG annotations file as built from the merge_ko()
@@ -588,91 +355,6 @@ def convert_to_json_serializable(obj: Any) -> Any:
             return json.dumps(obj)
         except TypeError:
             return str(obj)
-
-
-def ensure_flashweave_format(conf: "Config") -> None:
-    """
-    Build an OTU table that will be in a FlashWeave-based format.
-
-    Note:
-        Saves abundance data to be used with FlashWeave in the output directory.
-    """
-
-    flashweave_table = pd.read_csv(
-        conf.abundance_table, sep=conf.delimiter
-    ).iloc[:, :-1]
-
-    float_col = flashweave_table.select_dtypes(include=["float64"])
-
-    try:
-
-        for col in float_col.columns.values:
-            flashweave_table[col] = flashweave_table[col].astype("int64")
-
-        flashweave_table.iloc[:, 0] = flashweave_table.iloc[:, 0].astype(str)
-        flashweave_table.to_csv(conf.flashweave_abd_table, sep="\t", index=False)
-
-    except Exception as e:
-        _logger_.error(
-            """Error in ensuring FlashWeave format: %s.
-            Please check your FlashWeave parameters, especially `n_obs_min` and `k_max`.""",
-            e,
-        )
-        raise Exception
-
-
-def ensure_same_namespace_after_fw(conf: "Config") -> None:
-    """
-    Reads FlashWeave edgelist file and tries to map sequence ids of node columns of the edgelist
-    to their corresponding in the abundance table.
-
-    Attention:
-        The need of this was first met with a local data set where sequence ids were like:
-        D300244:bin_000023 in the abundance table
-        and then in the edgelist returned by FlashWeave, those idsz to D300244.bin_000023 in FlashWeave.
-
-        # NOTE (Haris Zafeiropoulos, 2025-05-16):
-        After a few changes this behavior changed but I am not sure why.
-        Thus, maybe this step is not necessary anymore and it could be removed.
-        Yet, tests are required.
-
-    Note:
-        Apparently, the conf.network in this case is in the format FlashWeave networks, thus the `skiprows=2`
-    """
-    import difflib
-
-    # Function to find the closest match and its index
-    def _find_closest_match_with_index(element, list2, cutoff=0.6):
-        matches = difflib.get_close_matches(element, list2, n=1, cutoff=cutoff)
-        if matches:
-            closest_match = matches[0]
-            index         = list2.index(closest_match)
-            return closest_match, index
-        return None, None
-
-    abd_df        = pd.read_csv(conf.flashweave_abd_table, sep="\t")
-    abd_df_seqids = abd_df[abd_df.columns[0]].tolist()
-
-    net_df         = pd.read_csv(conf.network, sep="\t", skiprows=2, header=None)
-    net_df.columns = ["bin_a", "bind_b", "weight"]
-
-    col1   = net_df["bin_a"].tolist()
-    col2   = net_df["bind_b"].tolist()
-    weight = net_df["weight"].tolist()
-
-    # Replace closest match in both col1 and col2 with the element from abd_df_seqids
-    for element in abd_df_seqids:
-        for col in [col1, col2]:  # Iterate over both columns
-            closest_match, index = _find_closest_match_with_index(element, col)
-            if closest_match:
-                # Replace the closest match in the current column
-                col[index] = element
-
-    net_df = pd.DataFrame(
-        list(zip(col1, col2, weight)), columns=["bin_a", "bind_b", "microbetag::weight"]
-    )
-
-    net_df.to_csv(conf.network, sep="\t", index=False, header=False)
 
 
 def _extend_for_pair(args):
@@ -927,55 +609,6 @@ def find_three_column_format(file_path: str, delimiter: str) -> tuple[int, Union
     raise TypeError(
         f"The network file {file_path} is not in the 3-columns format required with a numeric weight column."
     )
-
-
-def get_tool_location(software: str) -> str:
-    """
-    Check if a software program is available in the system path or in the alternative location.
-
-    Will return either the sofware name itself which will then be ok to run as is (globally)
-    or the full path to the software if it's found in the alternative location.
-    In both cases, the return value will allow running the software.
-
-    If software not available, it raises a MissingDependencyError with a hint on how to install the software.
-
-    Arguments:
-        software: Name of the software program to be found
-
-    """
-
-    # Try running prodigal and check if it exists
-    # NOTE: This does not meat that the software is not installed under ~/.microbetag
-    # If ~/.microbetag was added in PATH, it's gonna still be in this case
-    if shutil.which(software) is not None:
-        return software
-    else:
-        _logger_.info(f"No {software} system-wide installation found.")
-
-    # If software is not found, check the alternative location
-    HOME = os.path.expanduser("~")
-    microbetag_installation = os.path.join(HOME, ".microbetag")
-    software_path = os.path.join(microbetag_installation, software)
-
-    # Try running prodigal from the alternative location
-    if shutil.which(software_path) is not None:
-        # e.g. ~/.microbetag/prodigal
-        return software_path
-
-    elif shutil.which(os.path.join(software_path, software)) is not None:
-        # e.g. ~/.microbetag/prodigal/prodigal
-        return os.path.join(software_path, software)
-
-    elif shutil.which(os.path.join(software_path, "bin", software)) is not None:
-        # e.g. ~/.microbetag/prodigal/bin/prodigal
-        return os.path.join(software_path, "bin", software)
-
-    else:
-        # If neither path works
-        from .deps import missing_tool_error
-        err = missing_tool_error(software)
-        _logger_.error(str(err))
-        raise err
 
 
 _logger_ = mtg_logger(__name__)

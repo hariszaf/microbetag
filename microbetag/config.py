@@ -11,12 +11,12 @@ import pandas as pd
 from .helpers import (
     Emojis,
     Faprotax,
-    BinsHandler,
     MappingPaths,
     NetworkHandler,
     AbdTableHandler,
     PathwayComplementarity,
     SeedComplementarityHandler,
+    missing_input_error,
 )
 from .networks import get_edgelist
 from .utils import (
@@ -101,13 +101,7 @@ class Config:
         self.seed_compl  = get_value(conf, "seed_complementarity", False)
         self.net_cluster = get_value(conf, "network_clustering", False)
 
-        # Bins/MAGs/genomes
-        self.bins_path = resolve_file_path(self.base_dir, conf.get("bins_fasta", {}).get("dir_path"))
-        if self.bins_path is None:
-            _logger_.warn("No genomes/bins were provided as input files.")
-
-        # The abundance table is now optional, if no abundance table and no network provided,
-        # then it will only run pre-calculations
+        # The abundance table is optional; without it, a sequence id to taxonomy map is needed
         abd_tbl_filename     = conf.get("abundance_table_file", {}).get("file_path")
         self.abundance_table = resolve_file_path(self.base_dir, abd_tbl_filename)
 
@@ -126,12 +120,11 @@ class Config:
         precalc_only      = get_value(conf, "precalculations_only", False)
         self.precalc_only = precalc_only if precalc_only in [0, 1] else False
 
-        if (
-            self.abundance_table is None and self.network is None and precalc_only is False
-        ):
+        if self.network is None and not self.precalc_only:
             raise ValueError(
-                "You need to provide at least one between an abundance table"
-                "and a network's edgelist in 3-column format."
+                "Please provide the co-occurrence network to annotate (`edge_list: file_path`), "
+                "as a 3-column edge list. To infer one from your abundance table with FlashWeave, "
+                "use the microbetag-nf pipeline (https://github.com/msysbio/microbetag-nf)."
             )
 
         # IMPORTANT: Sequence to taxonomy map -- required if no abundance table is needed
@@ -141,7 +134,7 @@ class Config:
         )
 
         if (
-            self.abundance_table is None and self.sequence_taxonomy_map is None and precalc_only is False
+            self.abundance_table is None and self.sequence_taxonomy_map is None and not self.precalc_only
         ):
             raise ValueError(
                 "Since an abundance table is not provided, you need to provide a 2-column file "
@@ -203,12 +196,6 @@ class Config:
                 "microbetag will only run some pre-calculations not requiring them.\n"
             )
 
-        # Set bins
-        self.bins_ids = None
-        if self.bins_path is not None:
-            bn = BinsHandler(config=self)
-            self.__dict__.update(vars(bn))
-
         # Load abundance table with taxonomy
         nsc = AbdTableHandler(config=self)
         self.__dict__.update(vars(nsc))
@@ -217,58 +204,39 @@ class Config:
         nh = NetworkHandler(config=self)
         self.__dict__.update(vars(nh))
 
-        # Flashweave arguments
-        self.flashweave_args = conf.get("flashweave_args", {})
-
-        metadata_file      = conf.get("metadata_file", {}).get("file_path")
-        self.metadata_file = resolve_file_path(self.base_dir, metadata_file)
-        self.metadata      = "false" if self.metadata_file in ("false", None) else "true"
-
         # Update conf variables for pathway complementarity module
         if self.path_compl:
             pc = PathwayComplementarity(config=self)
             self.__dict__.update(vars(pc))
 
-        # Open Reading Frames
-        if not self.onthefly and (self.path_compl or self.seed_compl):
-            orfs = conf.get("orfs", {}).get("path")
-            if orfs is None:
-                self.prodigal = os.path.join(self.outdir, "ORFs")
-                os.makedirs(self.prodigal, exist_ok=True)
-            else:
-                self.prodigal = os.path.join(self.base_dir, orfs)
-
-        # ModelSEEDpy arguments
-        self.gapfill_model = get_value(conf, "gapfill_model", False)
-        self.gapfill_media = conf.get("gapfill_media", {}).get("value")
-
-        # Phenotrex
+        # Phenotrex: the predictions are an input; in the on-the-fly version they come from microbetagDB
         if self.phen_traits:
-
-            self.phen_traits_dir = os.path.join(self.outdir, "phen_predictions")
-            self.phen_classes    = os.path.join(self.cwd, "mtg_maps_models/phenDB/classes/")
-            self.genotypes_file  = os.path.join(self.outdir, "train.genotype")
-            self.min_proba       = conf.get("min_proba", {}).get("value", 0.75)
-
-            os.makedirs(self.phen_traits_dir, exist_ok=True)
+            if self.onthefly:
+                self.phen_traits_dir = os.path.join(self.outdir, "phen_predictions")
+                os.makedirs(self.phen_traits_dir, exist_ok=True)
+            else:
+                predictions = conf.get("phenotrex_predictions", {}).get("dir_path")
+                if predictions is None:
+                    raise missing_input_error(
+                        "Phenotypic trait annotation", "phenotrex_predictions", "folder of predictions",
+                        "phenotrex (phenotrex predict, one .tsv per trait)",
+                    )
+                self.phen_traits_dir = resolve_file_path(self.base_dir, predictions)
 
         # FAPROTAX
         if self.abundance_table is not None and self.faprotax:
             faprotax = Faprotax(config=self)
             self.__dict__.update(vars(faprotax))
 
-        # Manta
-        # net_clust = conf.get("network_clustering").get("value")
-        # self.net_cluster = net_clust if net_clust in [0, 1] else False
+        # manta: the clustered network is an input
         if self.net_cluster:
-
-            self.prev_manta_net = conf.get("prev_clustered_network", {}).get("file_path", None)
-
-            if self.prev_manta_net:
-                self.manta_net = resolve_file_path(self.base_dir, self.prev_manta_net)
-            else:
-                self.base_network_file = os.path.join(self.outdir, "basenet.cyjs")
-                self.manta_net         = os.path.join(self.outdir, "manta_annotated.cyjs")
+            manta_net = conf.get("prev_clustered_network", {}).get("file_path")
+            if manta_net is None:
+                raise missing_input_error(
+                    "Network clustering", "prev_clustered_network", "clustered network (.cyjs)",
+                    "manta (its input can be built with microbetag-format-manta)",
+                )
+            self.manta_net = resolve_file_path(self.base_dir, manta_net)
 
         # Seed complementarity
         if self.seed_compl:
@@ -280,29 +248,6 @@ class Config:
             self.outdir, "pseudo_cx_annotated_net.cx"
         )
         self.tinyurl = get_value(conf, "tinyurl", False)
-
-        # ==========
-        # Init torch -- machine learning library
-        # ==========
-        if not self.onthefly and self.phen_traits:
-
-            # Locally, torch and deepnog live in the mtg-phenotrex environment, not this one
-            try:
-                import torch
-                from deepnog.utils import get_weights_path
-                from deepnog.utils import set_device
-
-                device = set_device("auto")
-                weights_path = get_weights_path(
-                    database="eggNOG5",
-                    level=str(2),
-                    architecture="deepencoding",
-                )
-                _ = torch.load(weights_path, map_location=device)
-            except Exception:
-                _logger_.warning(
-                    "Could not load the deepnog weights. Please check the deepnog installation and setup."
-                )
 
         _logger_.info("Configuration file loaded successfully.")
 

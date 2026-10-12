@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name            = "microbetag"
 dynamic         = ["version"]
-description     = "A library for microbial co-occurrence network annotation."
+description     = "Annotation of microbial co-occurrence networks with phenotypic traits and metabolic complementarities."
 readme          = "README.md"
 license         = "GPL-3.0-or-later"
 license-files   = ["LICENSE"]
@@ -15,39 +15,27 @@ classifiers     = [
     "Programming Language :: Python :: 3",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
-# Core dependencies: what `import microbetag` and the microbetag-* commands need.
-# Exact pins belong in the container build, not here.
 dependencies = [
     "numpy>=1.24,<2",
     "pandas>=2.0",
-    "scipy>=1.10",
     "networkx>=3.1",
     "PyYAML>=5.4.1",
     "tqdm>=4.66",
     "colorlog>=6.9",
-    "requests",
     "ndex2>=3.10",
     "pyshorteners>=1.0.1",
     "python-libsbml>=5.20",
-    "biom-format",
-    "cobra>=0.29",
 ]
 
 [project.optional-dependencies]
-# Genome-scale metabolic model reconstruction with CarveMe
-# reframed 1.5.0 imports scipy.compress, removed in scipy 1.12
-genres = ["carveme==1.6.1", "reframed==1.5.0", "gurobipy>=10,<11", "scipy<1.12"]
-# Network inference with FlashWeave (also needs a Julia installation)
-flashweave = ["julia>=0.6.2"]
 # On-the-fly version, querying the microbetag database
-otf = ["mysql-connector-python"]
+otf  = ["mysql-connector-python"]
 test = ["pytest>=7"]
 
 [project.scripts]
 microbetag              = "microbetag.microbetag:main"
 # Used by the microbetag-nf Nextflow pipeline
 microbetag-annotate     = "microbetag.cli.annotate:main"
-microbetag-format-fw    = "microbetag.cli.format_fw:main"
 microbetag-format-manta = "microbetag.cli.format_manta:main"
 microbetag-pcompl       = "microbetag.cli.pcompl:main"
 microbetag-pcompl-ext   = "microbetag.cli.pcompl_ext:main"

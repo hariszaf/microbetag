@@ -9,15 +9,12 @@ from .helpers import (
     NetworkHandler,
     AbdTableHandler,
     SeedComplementarityHandler,
-    BinsHandler,
     manta_input_net,
     otf_seqid_ncbi_gtdb_map
 )
 
 from .utils import (
     mtg_logger,
-    ko_list_parser,
-    merge_ko,
     extend_complements,
     load_phenotypic_traits,
     extend_faprotax,
@@ -35,6 +32,7 @@ from .seed_complementarity import (
     load_seed_complement_files,
     build_url_with_seed_complements,
     kegg_module_related_intersect,
+    run_seed_complementarity,
 )
 
 try:
@@ -53,26 +51,10 @@ except Exception:
     pass
 
 
-from .genres import (
-    GEMSReconstruction
-)
-
 from .networks import (
     get_edgelist,
     build_base_graph,
     read_cyjson
-)
-
-from .tools import (
-    run_faprotax,
-    run_flashweave,
-    run_manta,
-    phenotrex_predict,
-    phenotrex_genotype,
-    kegg_annotation,
-    run_prodigal,
-    hmmsearch,
-    run_seed_complementarity,
 )
 
 from .build_mtg_cx2 import mtg_annotate_network
@@ -87,10 +69,7 @@ _KEGG_MAPPINGS         = os.path.join(os.path.dirname(__file__), "mtg_maps_model
 # _MODULE_DEFINITION_MAP = os.path.join(_KEGG_MAPPINGS, "module_definition_map.json")
 # _KEGG_MODULES_TO_MAPS  = os.path.join(_KEGG_MAPPINGS, "module_map_pairs.tsv")
 
-_MTG_PHEN_ENV      = "mtg-phenotrex"
-# _MTG_MODELSEED_ENV = "mtg-modelseed"
-
-__version__ = "1.0.4"
+__version__ = "2.0.0"
 __license__ = "GNU GPL3"
 __authors__ = ["Haris Zafeiropoulos <haris.zafeiropoulos@kuleuven.be>"]
 __cite__    = (

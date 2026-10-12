@@ -18,7 +18,7 @@ tests_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 seed_data = os.path.join(tests_dir, "data", "seed_compl")
 
 CLI_MODULES = [
-    "annotate", "format_fw", "format_manta", "pcompl", "pcompl_ext",
+    "annotate", "format_manta", "pcompl", "pcompl_ext",
     "seed_sets", "seed_compls", "scompls_pkl", "ssets_pkl",
 ]
 

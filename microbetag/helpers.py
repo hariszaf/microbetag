@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 
 from .utils import (
     mtg_logger,
-    detect_separator,
     safe_literal_eval,
     resolve_file_path,
     convert_to_json_serializable,
@@ -32,6 +31,16 @@ _logger_ = mtg_logger(__name__)
 emojis   = Emojis()
 
 
+def missing_input_error(step: str, key: str, kind: str, produced_by: str) -> ValueError:
+    """Error for a step that is switched on in the YAML, without the input it needs."""
+    path_key = "dir_path" if kind == "folder" else "file_path"
+    return ValueError(
+        f"{step} is switched on, but `{key}: {path_key}` is not set in the configuration file.\n"
+        f"microbetag uses the {kind} produced by {produced_by}; run that step with the microbetag-nf "
+        f"pipeline (https://github.com/msysbio/microbetag-nf), or point `{key}` to its output."
+    )
+
+
 class PathwayComplementarity:
     """
     Sets variables regarding pathway complementarity tasks based on user's config (.yml) file
@@ -44,7 +53,6 @@ class PathwayComplementarity:
             - `base_dir`
             - `ouput_dir`
             - `prev_path_compl`
-            - `kofam_database`
             - `complement_max_length`
             - `ko_merged_file`
             - `pc_percentage`
@@ -58,61 +66,24 @@ class PathwayComplementarity:
         # Init
         self.initialize(config)
 
-    def setup_kegg_annotations(self):
-        """Sets up KEGG annotations and directories."""
-        self.kegg_annotations = os.path.join(self.outdir, "KEGG_annotations")
-        os.makedirs(self.kegg_annotations, exist_ok=True)
-
-        self.kegg_pieces_dir = os.path.join(self.kegg_annotations, "hmmout")
-        os.makedirs(self.kegg_pieces_dir, exist_ok=True)
-
-    def get_kofam_db_path(self):
-        """Returns the KOfam database path."""
-        kofam_db = self.conf.yaml.get("kofam_database", {}).get("dir_path")
-        if kofam_db is None:
-            return self.handle_missing_kofam_db()
-        else:
-            return os.path.join(self.base_dir, kofam_db)
-
-    def handle_missing_kofam_db(self):
-        """Handles the case when the KOfam database path is missing."""
-        # Set in the container image, where the database is mounted
-        container_kofam_db = os.environ.get("MICROBETAG_KOFAM_DB")
-        if not container_kofam_db or not os.path.exists(container_kofam_db):
-            _logger_.error(
-                "Please provide the path to the KOfam database (kofam_database: dir_path in the YAML). \n"
-                "To download it into ext_data/kofam_database, run from the microbetag repository: \n\n"
-                "    bash install.sh --kofam\n\n"
-                "If running microbetag through its container, mount the database at "
-                "/kofam_database (docker run -v /path/to/kofam_database:/kofam_database ...)."
-            )
-            sys.exit(1)
-        else:
-            return container_kofam_db
-
     def initialize(self, conf):
         """Main function to initialize pathway complementarity settings."""
 
         # Get pathways
         self.output_dirs()
 
-        # Set up KEGG annotations 3-column file
+        # 3-column file with the KEGG ORTHOLOGY terms of each genome
         self.ko_merged = None
-
-        # if not self.prev_path_compl:
-
         ko_merged = self.conf.yaml.get("ko_merged_file", {}).get("file_path")
 
         if ko_merged:
-
             self.ko_merged = resolve_file_path(self.base_dir, ko_merged)
 
-        else:
-
-            if not conf.onthefly:
-
-                self.setup_kegg_annotations()
-                self.kegg_db_dir = self.get_kofam_db_path()
+        elif not conf.onthefly and not self.prev_path_compl:
+            raise missing_input_error(
+                "Pathway complementarity", "ko_merged_file", "KEGG ORTHOLOGY annotation file",
+                "annotating the genomes with kofam (hmmsearch)",
+            )
 
     def output_dirs(self):
         """Paths to output folders and files"""
@@ -160,25 +131,16 @@ class MappingPaths:
 
 
 class Faprotax:
-    """Paths to FAPROTAX `collapse_table.py` script and database"""
+    """Path to the FAPROTAX sub-tables (one per trait) used to annotate the network nodes."""
 
     def __init__(self, config):
-        """
-        Sets paths to files to be used when running FAPROTAX
-        """
-        self.faprotax_txt = os.path.join(
-            config.cwd, "mtg_maps_models/FAPROTAX_1.2.10/FAPROTAX.txt"
-        )
-        self.faprotax_script = os.path.join(
-            config.cwd, "mtg_maps_models/FAPROTAX_1.2.10/collapse_table.py"
-        )
-        self.faprotax_output_dir  = os.path.join(config.outdir, "faprotax")
-        self.faprotax_funct_table = os.path.join(
-            self.faprotax_output_dir, "functional_otu_table.tsv"
-        )
-        self.faprotax_sub_tables = os.path.join(self.faprotax_output_dir, "sub_tables")
-        os.makedirs(self.faprotax_output_dir, exist_ok=True)
-        os.makedirs(self.faprotax_sub_tables, exist_ok=True)
+        sub_tables = config.yaml.get("faprotax_sub_tables", {}).get("dir_path")
+        if sub_tables is None:
+            raise missing_input_error(
+                "FAPROTAX annotation", "faprotax_sub_tables", "folder of sub-tables",
+                "FAPROTAX (collapse_table.py -s)",
+            )
+        self.faprotax_sub_tables = resolve_file_path(config.base_dir, sub_tables)
 
 
 class NetworkHandler:
@@ -190,13 +152,14 @@ class NetworkHandler:
 
     def __init__(self, config):
 
-        self.flashweave = False
-
         if config.network:
             self.process_network(config)
-        else:
-            self.network    = os.path.join(config.outdir, "network_output.edgelist")
-            self.flashweave = True
+        elif not config.precalc_only:
+            raise ValueError(
+                "Please provide the co-occurrence network to annotate (`edge_list: file_path`). "
+                "To infer one from your abundance table with FlashWeave, use the microbetag-nf pipeline "
+                "(https://github.com/msysbio/microbetag-nf)."
+            )
 
     def process_network(self, config):
         """Process network edgelist and check bin consistency."""
@@ -205,20 +168,7 @@ class NetworkHandler:
 
         bins_in_net = set(f.iloc[:, 0]).union(f.iloc[:, 1])  # Get unique bin names
 
-        if config.abundance_table is not None and config.bins_ids is not None:
-
-            bins_in_abundance_file = set(
-                config.bins_ids
-            )  # Assuming bins is a list or set
-
-            if not bins_in_net.issubset(bins_in_abundance_file):
-                missing_bins = bins_in_net - bins_in_abundance_file
-                _logger_.warn(
-                    "These bins are nodes on your provided network"
-                    f"but not in your provided list of bins: {missing_bins}"
-                )
-
-        elif config.abundance_table is None:
+        if config.abundance_table is None:
             self.seq_ids = (
                 bins_in_net  # Store sequence IDs if no abundance table is provided
             )
@@ -236,7 +186,6 @@ class AbdTableHandler:
 
         if config.abundance_table is not None:
             self.load_abundance_table(config)
-            self.load_metadata_file(config)
 
     def load_abundance_table(self, config):
         """Reads and validates the abundance table."""
@@ -259,79 +208,11 @@ class AbdTableHandler:
         self.sequence_id_column_name = df.columns[0]
         self.seq_ids                 = df.iloc[:, 0].tolist()
 
-        # Validate bin names if provided
-        if config.bins_ids is not None:
-            missing_bins    = set(config.bins_ids) - set(self.seq_ids)
-            missing_seq_ids = set(self.seq_ids) - set(config.bins_ids)
-
-            if missing_seq_ids:
-                for c in missing_seq_ids:
-                    if not isinstance(c, str):
-                        missing_seq_ids.remove(c)
-                        missing_seq_ids.add(str(c))
-                missing_seq_ids_str = ", ".join(missing_seq_ids)
-                _logger_.warn(
-                    "There are sequence ids on your abundance table for which there are no"
-                    f"bins provided in the `bins_fasta` folder: {missing_seq_ids_str}"
-                )
-
-            elif missing_bins:
-                missing_bins_str = ", ".join(missing_bins)
-                _logger_.warn(
-                    f"Bin names do not match with those in the abundance table: {missing_bins_str}"
-                )
-
-        # microbetag data product to enable running FlashWeave; the user will never have to worry for it.
-        abd_flashweave            = "abd_table_for_flashweave.tsv"
-        self.flashweave_abd_table = os.path.join(config.base_dir, abd_flashweave)
-
-    def load_metadata_file(self, config):
-        """Load metadata file if provided"""
-        # Metadata file
-        metadata_file      = config.yaml.get("metadata_file", {}).get("file_path")
-        self.metadata_file = (
-            os.path.join(config.base_dir, metadata_file) if metadata_file else None
-        )
-        if metadata_file is not None:
-            df                      = pd.read_csv(self.metadata_file, sep="\t", index_col=0, header=None)
-            self.metadata_variables = df.index.to_list()
-
-
-class BinsHandler:
-    """
-    Handles bin/genomes/MAGs related variables in case of using microbetag with local/custom genomes.
-    """
-
-    def __init__(self, config):
-
-        self.bins_ids      = None
-        self.bin_filenames = None
-        self._validate_and_load_bins(config)
-
-    def _validate_and_load_bins(self, config):
-        """Validates bin file paths and loads bin filenames."""
-
-        if config.bins_path is None:
-
-            if config.precalc_only:
-                raise ValueError("Please provide a path to the bins FASTA files.")
-
-            _logger_.warning(
-                "No bins FASTA files provided. microbetag will proceed with annotation using precalculated data."
-            )
-
-        # Try loading filenames from the given path
-        try:
-            self.bin_filenames = os.listdir(config.bins_path)
-            self.bins_ids      = [os.path.splitext(fname)[0] for fname in self.bin_filenames]
-
-        except FileNotFoundError:
-            raise ValueError("Invalid path provided for the bins FASTA files.")
-
 
 class SeedComplementarityHandler:
     """
-    Handles variables related to building GENRES and the seed complementarity module.
+    Handles variables related to the seed complementarity module.
+    The genome-scale metabolic models (GEMs) are an input: a folder with one SBML (.xml) file per genome.
 
     Args:
         config: Instance of the :class:`Config` class
@@ -339,151 +220,55 @@ class SeedComplementarityHandler:
 
     def __init__(self, config):
 
-        self.base_dir  = config.base_dir
-        self.bins_path = config.bins_path
-
-        # Get seed complementarity value, defaulting to True if invalid
-        scompl = config.yaml.get("seed_complementarity", {}).get("value", True)
-        if not isinstance(scompl, bool):
-            error_msg = (
-                "Value for 'seed_complementarity' was not provided properly (true|false)."
-                f"microbetag will proceed without seed complementarity. {emojis.WARNING_EMOJI}"
-            )
-            raise error_msg
-
-        self.seed_compl = scompl
-
-        if not config.onthefly:
-            self._validate_input_type(config)
-            self._set_reconstruction_files(config)
-            self.reconstrucion_paths(config)
-            self._validate_model_namespace()
+        self.base_dir   = config.base_dir
+        self.seed_compl = True
+        self.user_models = True
 
         self.seeds_paths(config)
 
-    def _validate_input_type(self, config):
-        """Validates and sets the input type for seed complementarity reconstructions."""
+        if config.onthefly:
+            return
 
-        sc_input_type = config.yaml.get("sc_input_type", {}).get(
-            "value"
-        )
-
-        if not sc_input_type:
-            _logger_.error(
-                "Please select an input type for 'sc_input_type'."
+        models = config.yaml.get("genome_scale_models", {}).get("dir_path")
+        if models is None:
+            if self.skip_sets:
+                # Scores and complements only need the previously computed sets
+                self.genres = None
+                return
+            raise missing_input_error(
+                "Seed complementarity", "genome_scale_models", "folder of GEMs (.xml)",
+                "a reconstruction tool (CarveMe, gapseq or ModelSEEDpy)",
             )
-            sys.exit(1)
 
-        allowed_values = config.yaml.get(
-            "sc_input_type", {}
-        ).get("value_from", [])
+        self.genres = resolve_file_path(self.base_dir, models)
+        self._detect_namespace()
 
-        if sc_input_type not in allowed_values:
-            _logger_.error(
-                f"Error: Input value '{sc_input_type}' is not among the allowed values: {allowed_values}"
-            )
-            sys.exit(1)
+    def _detect_namespace(self):
+        """
+        Detects whether the GEMs use the BiGG (CarveMe, gapseq) or the ModelSEED namespace,
+        from the first species of the first model.
+        """
+        from libsbml import readSBML
 
-        self.sc_input_type = sc_input_type
-        self.user_models   = sc_input_type == "models"
+        model_files = sorted(f for f in os.listdir(self.genres) if f.endswith(".xml"))
+        if not model_files:
+            raise ValueError(f"No GEMs (.xml) found in {self.genres}.")
 
-    def _set_reconstruction_files(self, config):
-        """Determines the correct path for sequence files needed for reconstructions."""
-        if self.sc_input_type == "bins_fasta":
-            self.for_reconstructions = self.bins_path
+        model = readSBML(os.path.join(self.genres, model_files[0])).getModel()
+        if model is None or model.getNumSpecies() == 0:
+            raise ValueError(f"Could not read the metabolites of {model_files[0]}.")
+
+        first_species = model.getSpecies(0).getId()
+        if first_species.startswith("M_"):
+            first_species = first_species[2:]
+
+        if first_species.startswith("cpd"):
+            self.namespace                 = "modelseed"
+            self.genre_reconstruction_with = "modelseedpy"
         else:
-            reconstr_files = config.yaml.get(
-                "sequence_files_for_reconstructions", {}
-            ).get("dir_path")
-            if reconstr_files is None:
-                raise ValueError(
-                    "Please provide a valid path for sequence files for reconstructions."
-                )
-            self.for_reconstructions = os.path.join(self.base_dir, reconstr_files)
-
-    def _validate_model_namespace(self):
-        """Validates whether the model namespace matches the selected reconstruction tool."""
-        import cobra
-
-        if not self.user_models:
-            return  # No user models provided, no need to check
-
-        # Select a random model file from the directory
-        try:
-            model_files = os.listdir(self.for_reconstructions)
-            if not model_files:
-                raise ValueError(
-                    "No models found in the provided reconstruction directory."
-                )
-
-            random_model = os.path.join(self.for_reconstructions, model_files[0])
-            model        = cobra.io.read_sbml_model(random_model)
-
-        except FileNotFoundError:
-            raise ValueError(f"Invalid path: {self.for_reconstructions}")
-
-        except Exception as e:
-            raise ValueError(f"Error loading model: {str(e)}")
-
-        first_metabolite_id = model.metabolites[0].id[:3]
-
-        # Check namespace compatibility
-        if first_metabolite_id == "cpd":
-            self.namespace = "modelseed"
-            if self.genre_reconstruction_with == "carveme":
-                raise ValueError(
-                    "Your models appear to use the ModelSEED namespace (prefix 'cpd'), "
-                    "but the selected reconstruction tool ('carveme') expects BiGG namespace."
-                )
-            elif self.genre_reconstruction_with != "modelseedpy":
-                _logger_.warning(
-                    "WARNING: Namespace mismatch detected. Switching to 'modelseedpy'."
-                )
-                self.genre_reconstruction_with = "modelseedpy"
-
-        else:  # Models are expected to use BiGG namespace
-            self.namespace = "BiGG"
-            if self.genre_reconstruction_with == "modelseedpy":
-                raise ValueError(
-                    "Your models appear to use the BiGG namespace, but 'modelseedpy' "
-                    "expects ModelSEED namespace (prefix 'cpd'). Please check your configuration."
-                )
-            elif self.genre_reconstruction_with != "carveme":
-                _logger_.warning(
-                    "WARNING: Assuming BiGG namespace. Switching to 'carveme'."
-                )
-                self.genre_reconstruction_with = "carveme"
-
-    def reconstrucion_paths(self, config):
-        """Set pathways for seeds related files and folders"""
-
-        self.gene_predictor            = config.yaml.get("gene_predictor", {}).get("value")
-        self.genre_reconstruction_with = config.yaml.get("genre_reconstruction_with", {}).get("value")
-
-        if self.genre_reconstruction_with == "modelseedpy":
-
-            # ModelSEEDpy arguments
-            self.gapfill_model = config.yaml.get("gapfill_model", {}).get("value", True)
-
-            gapfill_media = config.yaml.get("gapfill_media", {}).get("file_path", None)
-            if gapfill_media:
-                delimiter = detect_separator(gapfill_media)
-                gf = pd.read_csv(gapfill_media, sep=delimiter)
-                # NOTE (Haris Zafeiropoulos, 2025-05-20):  NOT DONE !!
-
-        if self.user_models is False:
-
-            # Directory for tmp reconstruction files
-            self.reconstructions = os.path.join(config.outdir, "reconstructions")
-
-            # Directory for final reconstructions
-            self.genres = os.path.join(self.reconstructions, "GENREs")
-            os.makedirs(self.reconstructions, exist_ok=True)
-            os.makedirs(self.genres, exist_ok=True)
-
-        else:
-            self.reconstructions = self.for_reconstructions
-            self.genres = self.for_reconstructions
+            # BiGG compounds are mapped to ModelSEED for the complements
+            self.namespace                 = "BiGG"
+            self.genre_reconstruction_with = "carveme"
 
     def seeds_paths(self, config):
 
@@ -492,8 +277,8 @@ class SeedComplementarityHandler:
         os.makedirs(self.seeds_outdir, exist_ok=True)
 
         # NOTE (Haris Zafeiropoulos, 2025-04-29): These 2 are supposed to be the .json files.
-        self.prev_conf     = config.yaml.get("prev_conf", {}).get("file_path")
-        self.prev_nonseeds = config.yaml.get("prev_nonseeds", {}).get("file_path")
+        self.prev_conf     = resolve_file_path(self.base_dir, config.yaml.get("prev_conf", {}).get("file_path"))
+        self.prev_nonseeds = resolve_file_path(self.base_dir, config.yaml.get("prev_nonseeds", {}).get("file_path"))
 
         self.skip_sets     = self.prev_conf is not None and self.prev_nonseeds is not None
 

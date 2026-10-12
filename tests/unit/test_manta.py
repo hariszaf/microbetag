@@ -1,6 +1,6 @@
 """
-manta network clustering, with node taxonomies taken either from a sequence-to-taxonomy
-file or from an abundance table.
+The input network of manta (.cyjs), with node taxonomies taken either from a sequence-to-taxonomy
+file or from an abundance table. manta itself runs in the microbetag-nf pipeline.
 """
 
 import os
@@ -10,7 +10,6 @@ import pytest
 
 from microbetag.config import load_abundance
 from microbetag.helpers import manta_input_net
-from microbetag.tools import run_manta
 
 
 class NetConfig:
@@ -54,10 +53,3 @@ def config(request, tmp_path, data_dir):
 def test_manta_input_net(config):
     assert manta_input_net(config)
     assert os.path.getsize(config.base_network_file) > 0
-
-
-@pytest.mark.requires_tools("manta")
-def test_run_manta(config):
-    assert manta_input_net(config)
-    run_manta(config)
-    assert os.path.exists(os.path.join(config.outdir, "manta_annotated.cyjs"))

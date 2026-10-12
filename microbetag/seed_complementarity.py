@@ -667,3 +667,26 @@ def load_nonseeds(nonseeds, remove_suffix=False):
     if remove_suffix:
         nonseeds = {k.split(".")[0]: v for k, v in nonseeds.items()}
     return nonseeds
+
+
+def run_seed_complementarity(config: "Config") -> None:
+    """
+    Computes seed and non-seed sets of the GEMs in ``config.genres`` (unless previously computed
+    sets are provided) and, from those, the seed scores and complements, using
+    :class:`ExportSeedComplementarities`.
+
+    Args:
+        config: Instance of the microbetag :class:`.Config` class
+    """
+    if config.prev_conf is None or not os.path.exists(config.prev_conf):
+        config.skip_sets = False
+
+    seeds = ExportSeedComplementarities(config)
+
+    if config.skip_sets is False and config.api is False:
+        _logger_.info("[INTERMEDIATE STEP] COMPUTING SEED SETS")
+        seeds.get_sets()
+
+    if seeds.get_scores or seeds.get_complements:
+        _logger_.info("[INTERMEDIATE STEP] COMPUTING SEED SCORES AND COMPLS")
+        seeds.get_scores_and_compls()
