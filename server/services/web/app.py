@@ -15,6 +15,7 @@ from app_utils import (
 
 from app_taxonomy import map_seq_to_ncbi_tax_level_and_id
 from app_catalogue import custom_catalogue, map_seq_to_catalogue
+from app_pipeline import pipeline_available, run_network_workflow
 
 from api import (
     get_pathway_compls, val_compl_res,
@@ -318,9 +319,35 @@ def upload_dev():
 
         ) = build_data_files(users_input, out_dir, abd_data_df)  # noqa: F405
 
+        # FlashWeave (no network given), FAPROTAX and manta: the network workflow of the pipeline
+        pipeline_outputs = None
+        if pipeline_available() and (
+            not args["edge_list_file"] or args[user_arg_vars.FAPROTAX] or args[user_arg_vars.NET_CLUSTER]
+        ):
+            try:
+                pipeline_outputs = run_network_workflow(
+                    out_dir,
+                    abundance_table = args["abd_table_file"],
+                    network         = args["edge_list_file"],
+                    metadata        = args["metadata_file"],
+                    faprotax        = bool(args[user_arg_vars.FAPROTAX]),
+                    net_cluster     = bool(args[user_arg_vars.NET_CLUSTER]),
+                    flashweave_args = {
+                        "heterogeneous": args[user_arg_vars.HETEROGENEOUS],
+                        "sensitive"    : args[user_arg_vars.SENSITIVE],
+                        "max_k"        : args[user_arg_vars.MAX_K],
+                    },
+                )
+            except Exception:
+                logger.error(traceback.format_exc())
+                raise RuntimeError(
+                    "microbetag could not run FlashWeave, FAPROTAX or manta on your data. "
+                    "Please, check your abundance table and network."
+                )
+
         # Load config.yml based on user's args
         try:
-            conf_modified_yaml = sync_yaml(out_dir, args)  # noqa: F405
+            conf_modified_yaml = sync_yaml(out_dir, args, pipeline_outputs)  # noqa: F405
 
         except Exception:
             raise ArgumentMissing(

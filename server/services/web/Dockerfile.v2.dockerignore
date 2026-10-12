@@ -1,0 +1,10 @@
+# Build context: the root of the repository; only what Dockerfile.v2 copies
+*
+!pipeline/main.nf
+!pipeline/nextflow.config
+!pipeline/workflows/
+!pipeline/modules/
+!server/services/web/
+server/services/web/.env*
+**/__pycache__
+**/*.pyc

@@ -28,9 +28,9 @@ process FAPROTAX {
             -i ${abundance_table} \
             -o functional_otu_table.tsv \
             -g /opt/faprotax/FAPROTAX.txt \
-            --table_delimiter ${params.delimiter} \
+            --table_delimiter '${params.delimiter}' \
             -c "#" \
-            -d ${params.taxonomy_colname} \
+            -d '${params.taxonomy_colname}' \
             -v \
             --force \
             -s sub_tables

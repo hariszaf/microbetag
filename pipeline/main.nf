@@ -8,6 +8,7 @@ Choose the workflow with --workflow:
     precalc   pre-calculations for a genome catalogue (annotations, complementarities)
     annotate  annotate a network with a pre-calculation folder
     prep      prepare an amplicon dataset for the on-the-fly version of microbetag
+    network   FlashWeave, FAPROTAX and manta only; used by the microbetag server
 
 Usage:
 
@@ -17,6 +18,7 @@ Usage:
 include { MICROBETAG_PRECALC  } from './workflows/precalc'
 include { MICROBETAG_ANNOTATE } from './workflows/annotate'
 include { MICROBETAG_PREP     } from './workflows/prep'
+include { MICROBETAG_NETWORK  } from './workflows/network'
 
 
 workflow {
@@ -27,7 +29,9 @@ workflow {
         MICROBETAG_ANNOTATE()
     } else if (params.workflow == 'prep') {
         MICROBETAG_PREP()
+    } else if (params.workflow == 'network') {
+        MICROBETAG_NETWORK()
     } else {
-        error "Choose the workflow to run with --workflow: precalc, annotate or prep (got: ${params.workflow})"
+        error "Choose the workflow to run with --workflow: precalc, annotate, prep or network (got: ${params.workflow})"
     }
 }

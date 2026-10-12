@@ -52,10 +52,11 @@ A WLS license allows a limited number of sessions at a time (5 for the academic 
 ```
 main.nf                  entry point: runs the workflow chosen with --workflow
 nextflow.config          container engine (Docker, Singularity, Apptainer) and the microbetag-nf image version
-workflows/               the three workflows and their example parameter files
+workflows/               the four workflows and their example parameter files
   precalc.nf/.yaml         pre-calculations for a genome catalogue
   annotate.nf/.yaml        annotate a network with a pre-calculation folder
   prep.nf/.yaml            prepare an amplicon dataset for the on-the-fly version of microbetag
+  network.nf/.yaml         FlashWeave, FAPROTAX and manta only; run by the microbetag server (profile `local`)
   subworkflows/            pathway and seed complementarity, used by precalc.nf; also runnable on their own
 modules/                 one folder per step (a process and an example parameter file), runnable on their own
 scripts/                 helper scripts, by the image they run in:
@@ -99,6 +100,7 @@ tests/
 | `nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
 | `nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
 | `nextflow run main.nf -params-file workflows/prep.yaml --workflow prep` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
+| `nextflow run main.nf -params-file workflows/network.yaml --workflow network` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
 | `nextflow run workflows/subworkflows/<name>/main.nf -params-file workflows/subworkflows/<name>/<pc or sc>.yaml` | the inputs named in its `.yaml` | `tests/results/subworkflows` | the matching folder of `tests/expected/precalc` |
 | `nextflow run modules/<step>/main.nf -params-file modules/<step>/<step>.yaml` | the inputs named in its `.yaml` | `tests/results/modules` | the matching folder of `tests/expected/precalc` |
 

@@ -447,7 +447,7 @@ def build_data_files(input_data: dict, out_dir: str, data: pd.DataFrame) -> tupl
     return abundance_table_file, edge_list_file, metadata_file
 
 
-def sync_yaml(out_dir: str, args: dict) -> str:
+def sync_yaml(out_dir: str, args: dict, pipeline_outputs: dict = None) -> str:
     """
     This function edits the base yaml file based on the user's arguments.
     It will save a new run-specific .yaml file in the output folder of the run, 
@@ -480,8 +480,12 @@ def sync_yaml(out_dir: str, args: dict) -> str:
         base_yaml["flashweave_args"]["sensitive"]["value"]     = args[user_vars.SENSITIVE]
         base_yaml["flashweave_args"]["max_k"]["value"]         = args[user_vars.MAX_K]
 
-    # Steps; those the base yaml lists as unavailable stay off
-    unavailable = base_yaml.pop("unavailable_steps", None) or []
+    # Steps; from 2.0, FAPROTAX and manta run in the pipeline, so without it they stay off
+    from app_pipeline import pipeline_available
+
+    unavailable = []
+    if "flashweave_args" not in base_yaml and not pipeline_available():
+        unavailable = ["faprotax_annotation", "network_clustering"]
     for step, arg in [
         ("faprotax_annotation", user_vars.FAPROTAX),
         ("phenotrex_traits", user_vars.PHEN_TRAITS),
@@ -501,6 +505,15 @@ def sync_yaml(out_dir: str, args: dict) -> str:
 
     base_yaml.setdefault("prev_nonseeds_module", {})
     base_yaml["prev_nonseeds_module"]["file_path"] = mappings.ALL_NONSEEDS_MODULE
+
+    # Outputs of the network workflow of the pipeline (app_pipeline.run_network_workflow)
+    pipeline_outputs = pipeline_outputs or {}
+    if "edge_list" in pipeline_outputs:
+        base_yaml["edge_list"]["file_path"] = pipeline_outputs["edge_list"]
+    if "faprotax_sub_tables" in pipeline_outputs:
+        base_yaml["faprotax_sub_tables"] = {"dir_path": pipeline_outputs["faprotax_sub_tables"]}
+    if "manta_net" in pipeline_outputs:
+        base_yaml["prev_clustered_network"] = {"file_path": pipeline_outputs["manta_net"]}
 
     modified_yaml = os.path.join(out_dir, "config.yml")
 
@@ -542,12 +555,11 @@ def prep_abundance_table(conf: Config):
 
 
 def _onthefly_outdir() -> str:
-    """Create output dir for the session using timestamp"""
-    now       = datetime.now()
-    dt_string = now.strftime("%d-%m-%Y--%H.%M.%S")
-    out_dir   = os.path.join(mtg_vars.UPLOAD_FOLDER, dt_string)
-    os.mkdir(out_dir)
-    return out_dir
+    """Create output dir for the session: its timestamp, and a random suffix for requests of the same second"""
+    import tempfile
+
+    dt_string = datetime.now().strftime("%d-%m-%Y--%H.%M.%S")
+    return tempfile.mkdtemp(prefix=f"{dt_string}-", dir=mtg_vars.UPLOAD_FOLDER)
 
 
 def _read_abundance_table(filepath) -> pd.DataFrame | FileFormatError:

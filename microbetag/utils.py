@@ -19,7 +19,7 @@ import logging
 import colorlog
 import pandas as pd
 from pathlib import Path
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, get_context
 from typing import Any, Dict, List, Tuple, Set, Union
 
 # Handling data related
@@ -424,8 +424,7 @@ def extend_complements(
         for donor, compls in donors.items():
             tasks.append((beneficiary_bin, donor, compls, descrps, pc_percent))
 
-    with Pool(n_workers) as pool:
-        results = pool.map(_extend_for_pair, tasks)
+    results = parallel_map(_extend_for_pair, tasks, n_workers)
 
     # merge
     for bin, donor, data in results:
@@ -433,6 +432,19 @@ def extend_complements(
 
     json.dump(complements_dict_ext, open(out_json, "w"))
     return complements_dict_ext
+
+
+def parallel_map(func, tasks: list, n_workers: int, min_tasks: int = 50) -> list:
+    """
+    map() over the tasks, in parallel when there are at least `min_tasks` of them.
+
+    The workers are started with forkserver rather than fork: a forked child of a process with threads,
+    e.g. a server worker, may inherit a held lock and hang.
+    """
+    if len(tasks) < min_tasks or n_workers < 2:
+        return [func(task) for task in tasks]
+    with get_context("forkserver").Pool(n_workers) as pool:
+        return pool.map(func, tasks)
 
 
 def extend_faprotax(faprotax_sub_tables, sequence_id_column_name) -> Tuple[dict[str, list], list[str]]:
