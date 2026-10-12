@@ -27,7 +27,7 @@ abundance_table_file:
 
 # This is added for the specific case where no abundance table is provided, only the edgelist
 sequence_id_taxonomy_map:
-  file_path: input_files/bin2taxonomy.tsv
+  file_path: bin2taxonomy.tsv
   description: >
     A file
   required:
@@ -63,7 +63,7 @@ orfs:
   type: Path
 
 edge_list:
-  file_path: input_files/hessler_net.csv
+  file_path: hessler_net.csv
   description: >
     If co-occurrence network already available, please provide its edge list; a 2 column tab separated file.
   required: false

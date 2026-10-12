@@ -1,7 +1,6 @@
 """
-Complete microbetag run from the command line: 8 bins and an abundance table, with the
-network inferred by FlashWeave. (config_from_net.yml needs input_files/hessler_net.csv and
-input_files/bin2taxonomy.tsv, which are not in input_files.tar.gz.)
+Complete microbetag run from the command line on the Hessler data set: a co-occurrence network
+(hessler_net.csv), its sequence-to-taxonomy map (bin2taxonomy.tsv) and 8 bins.
 """
 
 import gzip
@@ -13,7 +12,7 @@ import tarfile
 import pytest
 
 pytestmark = [
-    pytest.mark.requires_tools("prodigal", "hmmsearch", "julia"),
+    pytest.mark.requires_tools("prodigal", "hmmsearch"),
     pytest.mark.requires_conda_env("mtg-phenotrex"),
 ]
 
@@ -28,7 +27,7 @@ def test_microbetag_run(data_copy, gurobi_license):
         shutil.copyfileobj(f_in, f_out)
 
     res = subprocess.run(
-        [sys.executable, "-m", "microbetag.microbetag", "--config", str(work / "config_mtg.yml")],
+        [sys.executable, "-m", "microbetag.microbetag", "--config", str(work / "config_from_net.yml")],
         cwd=work, capture_output=True, text=True,
     )
     assert res.returncode == 0, res.stderr[-2000:]
