@@ -136,6 +136,8 @@ nf/test-*
 
 # pyvis writes its JavaScript/CSS next to rendered networks
 lib/
+# ... but PhyloMint/lib is the package's own code
+!microbetag/src/microbetag/PhyloMint/lib/
 
 
 # From pipeline
