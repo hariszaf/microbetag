@@ -32,6 +32,7 @@ declare -A IMAGES=(
                            [staphb-hmmer-3.4]="staphb/hmmer:3.4"
                      [hariszaf-gapseq-1.4.0]="hariszaf/gapseq:1.4.0"
                   [hariszaf-modelseed-0.4.2]="hariszaf/modelseed:0.4.2"
+          [hariszaf-dnngior-0.0.3-develop]="hariszaf/dnngior:0.0.3-develop"
   [quay.io-biocontainers-bioconductor-decipher-3.2.0--r44h3df3fcb_1]="quay.io/biocontainers/bioconductor-decipher:3.2.0--r44h3df3fcb_1"
 )
 

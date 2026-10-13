@@ -11,6 +11,7 @@
 include { getInputFiles; sanitizeChannel; SAFENAME_FILES; GUNZIP } from '../../../modules/helpers'
 include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../../modules/seed_compl'
 include { CARVE } from '../../../modules/gem_recon'
+include { DNNGIOR } from '../../../modules/gem_recon/dnngior'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,6 +55,11 @@ workflow SEED_COMPLEMENTARITY {
 
                 // gems_ch = CARVE(infiles_chunk_ch, recon_in.is_faa)
                 gems_ch = CARVE(infiles_chunk_ch, true)
+
+                // gapfill_with: dnngior -- DNNGIOR gap-fills CarveMe's models
+                if (params.gapfill_with == 'dnngior') {
+                    gems_ch = DNNGIOR(gems_ch.flatten()).model
+                }
 
             }
 

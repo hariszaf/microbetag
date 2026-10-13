@@ -11,18 +11,13 @@ or
 nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 */
 
-include  { getInputFiles; sanitizeChannel; gurobiSessions; gurobiRetry; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
+include  { getInputFiles; sanitizeChannel; gurobiBind; gurobiRetry; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
 include { GAPSEQ } from './gapseq'
 include { MODELSEED } from './modelseed'
+include { DNNGIOR } from './dnngior'
 include { PRODIGAL } from '../prodigal'
 
 
-// Mount the Gurobi license in the CarveMe containers
-def gurobiBind() {
-    return workflow.containerEngine == 'singularity'
-        ? "-B ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
-        : "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
-}
 
 
 
@@ -30,7 +25,9 @@ process CARVE {
 
     tag "GEM reconstruction with CarveMe"
 
-    publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
+    // The models; with gapfill_with: dnngior, the drafts DNNGIOR gap-fills
+    publishDir path: { params.gapfill_with == 'dnngior' ? "${params.outdir}/reconstructions/carveme_drafts" : "${params.outdir}/reconstructions" },
+        mode: 'copy', overwrite: true
     container "hariszaf/carveme:1.6.6"
     containerOptions { gurobiBind() }
 
@@ -76,7 +73,7 @@ process CARVE {
 workflow {
 
     def recon_in; def prep; def decomp
-    def mapped_files
+    def mapped_files; def models
 
     // sanitize filenames if for example filenames like BATCH:set1.fastq
     recon_in = getInputFiles(params.recon_files)
@@ -94,12 +91,12 @@ workflow {
 
     if (params.recon_with == "carveme") {
         // One genome per task; CARVE runs at most gurobi_sessions of them at the same time
-        CARVE(decomp_ch.flatten(), recon_in.is_faa)
+        models = CARVE(decomp_ch.flatten(), recon_in.is_faa).carve_model
 
     } else if (params.recon_with == "gapseq") {
 
         // gapseq reconstructs from the genomes (DNA), one genome per task (gapseq.nf)
-        GAPSEQ(decomp_ch.flatten().map { genome -> [genome.getBaseName(), genome] })
+        models = GAPSEQ(decomp_ch.flatten().map { genome -> [genome.getBaseName(), genome] }).model
 
     } else if (params.recon_with == "modelseed") {
 
@@ -107,10 +104,15 @@ workflow {
         def files_ch = decomp_ch.flatten()
         def faa_ch = recon_in.is_faa ? files_ch : PRODIGAL(files_ch).faa
 
-        MODELSEED(faa_ch.map { faa -> [faa.getBaseName(), faa] })
+        models = MODELSEED(faa_ch.map { faa -> [faa.getBaseName(), faa] }).model
 
     } else {
         error "recon_with needs to be carveme, gapseq or modelseed (got: ${params.recon_with})"
+    }
+
+    // gapfill_with: dnngior -- the tools gave their drafts, which DNNGIOR gap-fills
+    if (params.gapfill_with == 'dnngior') {
+        DNNGIOR(models)
     }
 
 }

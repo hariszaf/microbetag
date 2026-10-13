@@ -251,14 +251,17 @@ workflow GAPSEQ {
     def draft = GAPSEQ_DRAFT(draft_input)
     def draft_ch = draft_prev_ch.concat(draft.draft_recon_files)
 
-    // gapseq fill, on the medium file; without one, the models are the drafts
+    // gapseq fill, on the medium file; without one, or with gapfill_with: dnngior (dnngior.nf), the models
+    // are the drafts
     def med_file = params.gapseq?.medium?.file ?: null
     def models
-    if (med_file) {
+    if (med_file && params.gapfill_with != 'dnngior') {
         def med_ch = channel.value(file(med_file, checkIfExists: true))
         models = GAPSEQ_FILL(draft_ch.combine(med_ch)).filled_xml
     } else {
-        log.warn "No medium file for gapseq (gapseq.medium.file): the models are not gap-filled"
+        if (params.gapfill_with != 'dnngior') {
+            log.warn "No medium file for gapseq (gapseq.medium.file): the models are not gap-filled"
+        }
         def draft_xml_prev = genomes_with_base
             .filter { base, _genome -> hasGapseqPrev(base, draft_files + ["-draft.xml"]) }
             .map { base, _genome -> gapseqPrev(base, "-draft.xml") }

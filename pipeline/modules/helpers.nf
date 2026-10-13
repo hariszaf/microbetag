@@ -12,6 +12,13 @@ def gurobiSessions() {
     return params.gurobi_sessions ?: 2
 }
 
+// Mount the Gurobi licence (params.gurobi_lic) in the containers of the processes that solve with Gurobi
+def gurobiBind() {
+    return workflow.containerEngine == 'singularity'
+        ? "-B ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+        : "-v ${params.gurobi_lic}:/opt/gurobi/gurobi.lic"
+}
+
 // A bash function, gurobi_run <command>, for the scripts of those processes: when all the sessions of the
 // licence are in use (by other tasks, or other jobs on the same licence), it waits and runs the command again,
 // params.gurobi_retries times (10 by default), after 1, 2, 3, ... times params.gurobi_wait seconds (60).

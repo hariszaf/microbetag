@@ -99,6 +99,18 @@ gurobi_sessions: 2
 gurobi_retries: 10
 gurobi_wait: 60
 
+# Gap-filling of the reconstructed GEMs: native (by the reconstruction tool itself; CarveMe does not gap-fill
+# by default) or dnngior (DNNGIOR gap-fills the drafts of CarveMe, gapseq or ModelSEEDpy; it solves with Gurobi,
+# like CarveMe: see gurobi_lic and gurobi_sessions)
+gapfill_with: native
+dnngior:
+  medium:
+    # Medium file to gap-fill on, with the compound ids of the models' namespace (BiGG for CarveMe, ModelSEED for
+    # gapseq and ModelSEEDpy): a gapseq medium (.csv: compounds, name, maxFlux), a DNNGIOR medium (.tsv: id, name,
+    # concentration, minflux, maxflux) or a 2-column tab-separated file (compound id, maximum uptake).
+    # Leave empty to gap-fill with every compound available.
+    file:
+
 # Namespace of the GEMs to be used; can be either BiGG or ModelSEED
 namespace: BiGG
 

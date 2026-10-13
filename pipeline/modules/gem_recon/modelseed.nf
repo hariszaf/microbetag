@@ -161,13 +161,19 @@ workflow MODELSEED {
         .join(rast_ch)
     def draft_ch = draft_prev_ch.concat(MODELSEED_DRAFT(draft_input_ch).draft)
 
-    // Gap-filling, on the medium if one is given, otherwise on the complete medium
-    def med_file = params.modelseed?.medium?.file ?: null
-    def med_ch   = med_file ? channel.value(file(med_file, checkIfExists: true)) : channel.value([])
-    def models   = MODELSEED_GAPFILL(draft_ch, med_ch)
+    // Gap-filling, on the medium if one is given, otherwise on the complete medium;
+    // with gapfill_with: dnngior, the drafts are the output, for DNNGIOR (dnngior.nf)
+    def models
+    if (params.gapfill_with == 'dnngior') {
+        models = draft_ch.map { _base, draft -> draft }
+    } else {
+        def med_file = params.modelseed?.medium?.file ?: null
+        def med_ch   = med_file ? channel.value(file(med_file, checkIfExists: true)) : channel.value([])
+        models = MODELSEED_GAPFILL(draft_ch, med_ch).model
+    }
 
     emit:
-    model = models.model
+    model = models
 }
 
 
