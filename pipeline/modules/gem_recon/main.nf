@@ -11,7 +11,7 @@ or
 nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 */
 
-include  { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
+include  { getInputFiles; sanitizeChannel; gurobiSessions; gurobiRetry; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
 include { GAPSEQ } from './gapseq'
 include { MODELSEED } from './modelseed'
 include { PRODIGAL } from '../prodigal'
@@ -34,6 +34,9 @@ process CARVE {
     container "hariszaf/carveme:1.6.6"
     containerOptions { gurobiBind() }
 
+    // One Gurobi session per task: at most as many tasks as the licence has sessions
+    maxForks params.gurobi_sessions ?: 2
+
     input:
         path in_chunk
         val is_faa
@@ -47,6 +50,7 @@ process CARVE {
     script:
         """
         export GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
+        ${gurobiRetry()}
 
         # Create a clean file list to safely iterate
         for f in ${in_chunk}; do
@@ -59,10 +63,10 @@ process CARVE {
 
             if [ ${is_faa} == "true" ]; then
                 echo "Running CarveMe on \$f (FAA mode)" >&2
-                carve --solver gurobi --output "\${base}.xml" "\$f"
+                gurobi_run carve --solver gurobi --output "\${base}.xml" "\$f" || exit \$?
             else
                 echo "Running CarveMe on \$f (DNA mode)" >&2
-                carve --dna --solver gurobi --output "\${base}.xml" "\$f"
+                gurobi_run carve --dna --solver gurobi --output "\${base}.xml" "\$f" || exit \$?
             fi
 
         done < chunk.list
@@ -72,7 +76,7 @@ process CARVE {
 workflow {
 
     def recon_in; def prep; def decomp
-    def mapped_files;  def infiles_chunk_ch
+    def mapped_files
 
     // sanitize filenames if for example filenames like BATCH:set1.fastq
     recon_in = getInputFiles(params.recon_files)
@@ -89,11 +93,8 @@ workflow {
 
 
     if (params.recon_with == "carveme") {
-        // Use the COLLECTED channel for chunking, not the original decomp channel
-        infiles_chunk_ch = chunkFiles(decomp_ch, params.max_forks)
-
-        // Pass chunks to your carve process
-        CARVE(infiles_chunk_ch, recon_in.is_faa)
+        // One genome per task; CARVE runs at most gurobi_sessions of them at the same time
+        CARVE(decomp_ch.flatten(), recon_in.is_faa)
 
     } else if (params.recon_with == "gapseq") {
 

@@ -8,7 +8,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../../../modules/helpers'
+include { getInputFiles; sanitizeChannel; SAFENAME_FILES; GUNZIP } from '../../../modules/helpers'
 include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../../modules/seed_compl'
 include { CARVE } from '../../../modules/gem_recon'
 
@@ -46,7 +46,8 @@ workflow SEED_COMPLEMENTARITY {
             def prep; def decomp
             def mapped_files; def infiles_chunk_ch
 
-            infiles_chunk_ch = chunkFiles(faa_ch, params.max_forks)
+            // One genome per task; CARVE runs at most gurobi_sessions of them at the same time
+            infiles_chunk_ch = faa_ch
 
             // Reconstruct using software of user's choice
             if (params.recon_with =="carveme") {

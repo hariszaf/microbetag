@@ -6,6 +6,41 @@ def sanitize(name) {
     return name.bytes.encodeBase64().toString() //.replace('+','-').replace('/','_').replaceAll('=+$','')
 }
 
+// Gurobi: a WLS licence allows a limited number of sessions at the same time (params.gurobi_sessions, 2 by
+// default), shared by all the processes that solve with Gurobi (CarveMe, DNNGIOR): their maxForks.
+def gurobiSessions() {
+    return params.gurobi_sessions ?: 2
+}
+
+// A bash function, gurobi_run <command>, for the scripts of those processes: when all the sessions of the
+// licence are in use (by other tasks, or other jobs on the same licence), it waits and runs the command again,
+// params.gurobi_retries times (10 by default), after 1, 2, 3, ... times params.gurobi_wait seconds (60).
+// Other errors fail at once.
+def gurobiRetry() {
+    def retries = params.gurobi_retries ?: 10
+    def wait    = params.gurobi_wait ?: 60
+    return """
+    gurobi_run() {
+        local attempt=1 status
+        while true; do
+            # (as a condition, so that a failure does not end the script under bash -e)
+            "\$@" 2> gurobi_run.err && status=0 || status=\$?
+            cat gurobi_run.err >&2
+            if ! grep -q -i -E "too many sessions|session limit|maximum number of sessions" gurobi_run.err; then
+                return \$status
+            fi
+            if [ \$attempt -gt ${retries} ]; then
+                echo "[gurobi] all the sessions of the licence still in use after ${retries} retries" >&2
+                return 75
+            fi
+            echo "[gurobi] all the sessions of the licence in use; retry \$attempt of ${retries} in \$(( ${wait} * attempt )) s" >&2
+            sleep \$(( ${wait} * attempt ))
+            attempt=\$(( attempt + 1 ))
+        done
+    }
+    """
+}
+
 def sanitizeChannel(fileList) {    
     return channel.fromList(fileList)
         .map { file ->

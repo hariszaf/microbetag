@@ -44,8 +44,11 @@ issued for and does not work inside containers. Academics can get a WLS license 
 
    The pipeline mounts it in the CarveMe container as `/opt/gurobi/gurobi.lic`.
 
-A WLS license allows a limited number of sessions at a time (5 for the academic one), so CarveMe runs on at most
-`max_forks` (5 by default) chunks of genomes in parallel.
+A WLS license allows a limited number of sessions at the same time; Gurobi tells how many when they are all in
+use ("Too many sessions, ... for a baseline of 2"). Set it as `gurobi_sessions` (2 by default): the tasks that
+solve with Gurobi (CarveMe, DNNGIOR) run at most that many at once, one genome per task, and a task that finds
+all the sessions in use (e.g. by your other jobs on the same licence) waits and tries again (`gurobi_retries`,
+`gurobi_wait`).
 
 ## Repository layout
 

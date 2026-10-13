@@ -91,8 +91,13 @@ gurobi_lic:
 # Path to the CPLEX installation, e.g. /opt/ibm/ILOG/CPLEX_Studio2211/
 cplex:
 
-# Gurobi WLS allows up to 5 parallel sessions, so in that case max could not be higher than 5.
-max_forks: 5
+# Gurobi (CarveMe, DNNGIOR): the sessions your WLS licence allows at the same time -- 2 by default
+# (see the licence's "Too many sessions ... for a baseline of N" message). The tasks that solve with Gurobi run at
+# most that many at once; one that finds all the sessions in use waits (gurobi_wait seconds, then twice that, ...)
+# and tries again, up to gurobi_retries times.
+gurobi_sessions: 2
+gurobi_retries: 10
+gurobi_wait: 60
 
 # Namespace of the GEMs to be used; can be either BiGG or ModelSEED
 namespace: BiGG

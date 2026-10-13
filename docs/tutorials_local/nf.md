@@ -240,8 +240,10 @@ D300443:bin_000002.fa   COG1040 COG0329 COG4636 COG1373 COG4461 COG2202 COG2084 
 If you have it, give its path; otherwise leave the parameter blank.
 
 For `seed_compl` with CarveMe, give the path to your Gurobi WLS license in the `gurobi_lic` parameter.
-A WLS license allows up to 5 parallel sessions, so `max_forks` is 5 by default, and the genomes are split
-in chunks of `max_forks` for parallel processing.
+A WLS license allows a limited number of sessions at the same time (Gurobi tells how many when they are all
+in use: "Too many sessions, ... for a baseline of 2"); set it as `gurobi_sessions`, 2 by default. CarveMe runs
+one genome per task, at most `gurobi_sessions` at once, and a task that finds all the sessions in use waits and
+tries again (`gurobi_retries`, `gurobi_wait`).
 
 
 ## Run

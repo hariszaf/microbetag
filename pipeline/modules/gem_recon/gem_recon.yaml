@@ -16,10 +16,13 @@ gurobi_lic: /opt/gurobi/gurobi_wlm.lic
 # In case of gapseq, cplex is optional
 cplex: /opt/ibm/ILOG/CPLEX_Studio2211/
 
-# Since we can have up to 5 parallel sessions with the WLS license of Gurobi,
-# which is the only way to go on with a Docker container, we set by defalt max_forks to 5.
-# Then, our input files will be split in chunks of max_forks size for parallel processing.
-max_forks: 3
+# Gurobi (CarveMe, DNNGIOR): the sessions your WLS licence allows at the same time -- 2 by default
+# (see the licence's "Too many sessions ... for a baseline of N" message). The tasks that solve with Gurobi run at
+# most that many at once; one that finds all the sessions in use waits (gurobi_wait seconds, then twice that, ...)
+# and tries again, up to gurobi_retries times.
+gurobi_sessions: 2
+gurobi_retries: 10
+gurobi_wait: 60
 
 debug_decompress:
 
