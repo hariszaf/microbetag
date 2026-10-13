@@ -108,7 +108,6 @@ gurobi.lic
 # Ignore the output folder of the stand alone tool
 #microbetag_run/
 hmmout/
-MetaNetX/
 
 microbetagDB/mappings/gtdb_ncbi/
 .vscode/
