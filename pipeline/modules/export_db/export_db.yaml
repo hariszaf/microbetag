@@ -1,0 +1,6 @@
+# Output folder of the precalc workflow
+precalc: tests/results/precalc
+# Tab-separated genome and lineage of each genome of the catalogue, e.g. GTDB-Tk's summary
+genome_taxonomy: tests/data/genomes/genome_taxonomy.tsv
+# The database files are written to <outdir>/db_files
+outdir: tests/results/precalc

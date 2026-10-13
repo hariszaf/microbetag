@@ -1,0 +1,46 @@
+# Base configuration of the on-the-fly runs of the server, for microbetag 2.0.
+# app_utils.sync_yaml() fills in each run's files and steps and saves it in the run's output folder.
+#
+# The phenotypic traits, pathway and seed complementarities come from microbetagDB.
+# FAPROTAX, network inference (FlashWeave) and clustering (manta) run in the network workflow of the
+# pipeline (app_pipeline.py); without the pipeline (MICROBETAG_PIPELINE), they are not available and a
+# network is required.
+
+onthefly:
+  value: true
+api:
+  value: false
+
+output_directory:
+  dir_path:
+abundance_table_file:
+  file_path:
+edge_list:
+  file_path:
+metadata_file:
+  file_path:
+
+threads:
+  value: 2
+
+faprotax_annotation:
+  value: false
+phenotrex_traits:
+  value: true
+pathway_complementarity:
+  value: true
+seed_complementarity:
+  value: true
+network_clustering:
+  value: false
+
+# Filled in by sync_yaml() from app_utils.Mappings
+prev_conf:
+  file_path:
+prev_nonseeds:
+  file_path:
+prev_nonseeds_module:
+  file_path:
+
+tinyurl:
+  value: false

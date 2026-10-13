@@ -1,0 +1,8 @@
+# Only what the image copies is sent to the build
+*
+!src/
+!pyproject.toml
+!README.md
+!LICENSE
+**/__pycache__
+**/*.pyc

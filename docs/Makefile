@@ -18,11 +18,13 @@ PREPROCESS_SCRIPT = replace_myst_links.py
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 
+
 html:
-	@echo "Preprocessing markdown files...\n"
-	@find . -name "*.md" -exec python $(PREPROCESS_SCRIPT) {} \;
-	@echo "\n\nBuild RTD"
-	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	@echo "Preprocessing Markdown files..."
+	@find . -path "./_build" -prune -o -name "*.md" -exec python $(PREPROCESS_SCRIPT) {} \;
+	@echo "Building HTML documentation..."
+	@$(SPHINXBUILD) -E -a -v -b html "$(SOURCEDIR)" "$(BUILDDIR)/html" $(SPHINXOPTS)
+
 
 clean:
 	@echo "Cleaning build directory..."

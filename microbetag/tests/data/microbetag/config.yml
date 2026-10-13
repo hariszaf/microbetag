@@ -1,0 +1,41 @@
+# microbetag 2.0 configuration for the end-to-end test (tests/integration/test_microbetag.py).
+# Hessler data set: 7 bins, their co-occurrence network and the outputs of the external tools,
+# as the microbetag-nf pipeline would produce them. Paths are relative to this file.
+
+output_directory:
+  dir_path: output
+
+threads:
+  value: 2
+
+# Network and taxonomy
+edge_list:
+  file_path: inputs/edgelist.csv
+abundance_table_file:
+  file_path: inputs/abundance_table.tsv
+
+# Steps, each with the tool output it uses
+faprotax_annotation:
+  value: true
+faprotax_sub_tables:
+  dir_path: inputs/faprotax_sub_tables
+
+phenotrex_traits:
+  value: true
+phenotrex_predictions:
+  dir_path: inputs/phenotrex_predictions
+
+pathway_complementarity:
+  value: true
+ko_merged_file:
+  file_path: inputs/ko_merged.txt
+
+seed_complementarity:
+  value: true
+genome_scale_models:
+  dir_path: inputs/gems
+
+network_clustering:
+  value: true
+prev_clustered_network:
+  file_path: inputs/manta_clustered.cyjs

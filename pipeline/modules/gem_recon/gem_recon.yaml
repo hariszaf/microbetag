@@ -1,0 +1,104 @@
+outdir: tests/results/modules
+
+# Genomes (.fa) or proteins (.faa) to reconstruct GEMs from
+recon_files: tests/expected/precalc/prodigal
+# tests/data/genomes
+
+recon_with:
+  gapseq
+  # carveme
+  # modelseed
+
+# In case of CarveMe, Gurobi is required!
+# Attention! You will need a Gurobi license specifically for containers -- WLS
+gurobi_lic: /opt/gurobi/gurobi_wlm.lic
+
+# In case of gapseq, cplex is optional
+cplex: /opt/ibm/ILOG/CPLEX_Studio2211/
+
+# Gurobi (CarveMe, DNNGIOR): the sessions your WLS licence allows at the same time -- 2 by default
+# (see the licence's "Too many sessions ... for a baseline of N" message). The tasks that solve with Gurobi run at
+# most that many at once; one that finds all the sessions in use waits (gurobi_wait seconds, then twice that, ...)
+# and tries again, up to gurobi_retries times.
+gurobi_sessions: 2
+gurobi_retries: 10
+gurobi_wait: 60
+
+# Gap-filling of the reconstructed GEMs: native (by the reconstruction tool itself; CarveMe does not gap-fill
+# by default) or dnngior (DNNGIOR gap-fills the drafts of CarveMe, gapseq or ModelSEEDpy; it solves with Gurobi,
+# like CarveMe: see gurobi_lic and gurobi_sessions)
+gapfill_with: native
+dnngior:
+  medium:
+    # Medium file to gap-fill on, with the compound ids of the models' namespace (BiGG for CarveMe, ModelSEED for
+    # gapseq and ModelSEEDpy): a gapseq medium (.csv: compounds, name, maxFlux), a DNNGIOR medium (.tsv: id, name,
+    # concentration, minflux, maxflux) or a 2-column tab-separated file (compound id, maximum uptake).
+    # tests/data/media has a glucose minimal medium with each: MM_glu.csv (ModelSEED) and MM_glu_bigg.csv (BiGG).
+    # Leave empty to gap-fill with every compound available.
+    file:
+
+debug_decompress:
+
+gapseq:
+  # For more in gapseq params, you may check on https://gapseq.readthedocs.io/en/latest/usage/parameters.html
+  find:
+    # keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)
+    p: polyamine
+    # Bit score cutoff for local alignment (default: 200)
+    b: 200
+    # Identity cutoff for local alignment (default: 0)
+    i: 0
+    # Coverage cutoff for local alignment (default: 75)
+    c: 75
+    # Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: Bacteria). See Details.
+    t: Bacteria
+
+  find_transport:
+    # bit score cutoff for local alignment (default: 50)
+    b: 50
+    # identity cutoff for local alignment (default: 0)
+    i: 0
+    # coverage cutoff for local alignment (default: 75)
+    c: 75
+
+  draft:
+    # Biomass reaction for network model.
+    # Values from: "pos", "neg", "archaea", "auto", or path to user-defined biomass reaction
+    b: auto
+    # "Reactions with an associated blast-hit with a bitscore above this value will be added to the draft model as core reactions
+    # (i.e. high-sequence-evidence reactions). Default: 200
+    u: 200
+    # Reactions with an associated blast-hit with a bitscore below this value will be considered just as reactions that have no blast hit
+    # Default: 50
+    l: 50
+
+  medium:
+    # Path to medium file
+    # e.g. the ecoli-medium.csv of the gapseq repository (dat/media); leave empty for gapseq's default
+    file:
+    # bitscore threshold above which associated reactions are considered as core candidate reactions for gapfilling.
+    b: 100
+
+  # In case you already have gapseq files for your genomes, you may provide a path to them so microbetag can skip their corresponding steps
+  # Please put all relative files in a single folder and microbetag will map them
+  prev_tbl:
+
+modelseed:
+  # ModelSEED template the models are built from: gram_neg, gram_pos or core.
+  # (ModelSEEDpy's genome classifier, which would choose it per genome, does not load with ModelSEEDpy 0.4.2.)
+  template: gram_neg
+  medium:
+    # Medium file to gap-fill the models on: a gapseq medium (.csv: compounds, name, maxFlux), e.g. MM_glu.csv
+    # of the gapseq repository (dat/media), or a 2-column tab-separated file (compound id, maximum uptake).
+    # Leave empty to gap-fill on the complete medium.
+    file:
+  # A folder with files of a previous run (<genome>-rast.tsv, <genome>-draft.xml), so that their steps are skipped.
+  prev_files:
+  # RAST annotation, on the public RAST server (it needs an internet connection)
+  rast:
+    # Genomes annotated at the same time
+    max_forks: 4
+    # Proteins per request to RAST
+    batch_size: 2000
+    # true: a genome RAST fails on (after the retries) is left out, and the others go on; false: the run stops
+    ignore_failed: false
