@@ -30,7 +30,7 @@ process CARVE {
 
     publishDir "${params.outdir}/reconstructions", mode: 'copy', overwrite: true
     container "hariszaf/carveme:1.6.6"
-    containerOptions = gurobiBind
+    containerOptions gurobiBind
 
     input:
         path in_chunk
