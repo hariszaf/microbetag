@@ -14,9 +14,10 @@ from microbetag.helpers import MappingPaths
 from microbetag.seed_complementarity import ExportSeedComplementarities
 
 # Reference scores for the two test GEMs: beneficiary, donor, competition, cooperation
+# (seed sets per compound: PhyloMint/lib/BuildGraphNetX.py, see "How microbetag gets seed sets" in the README)
 EXPECTED_SCORES = {
-    "GPB:bin_000083\tbin_101\t0.58\t0.28",
-    "bin_101\tGPB:bin_000083\t0.5\t0.22",
+    "GPB:bin_000083\tbin_101\t0.39\t0.48",
+    "bin_101\tGPB:bin_000083\t0.31\t0.27",
 }
 MODELS = {"GPB:bin_000083", "bin_101"}
 

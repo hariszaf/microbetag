@@ -12,6 +12,7 @@ GitHub: https://github.com/mgtools/PhyloMint
 # 1. get reaction and product and construct directed graph ignoring the exchange reactions
 # 2. for the reversible reactions, keep both directions as source and target
 import logging
+import re
 
 import cobra
 import networkx as nx
@@ -153,11 +154,37 @@ def get_transport_reactions(model, exclude_boundary=True):
     return transport_rxns
 
 
+# The use of the biomass reaction's substrates: a sink node, neither a seed nor a non-seed
+BIOMASS_SINK = "__biomass__"
+
+# Compartment suffix of a metabolite id: BiGG _c, _e, _p; ModelSEED _c0, _e0
+COMPARTMENT_SUFFIX = re.compile(r"_([a-z]\d?)$")
+
+
+def merge_compartment_forms(DG: nx.DiGraph) -> nx.DiGraph:
+    """
+    One node per compound: the forms of a compound in the compartments of the model (ac_c, ac_e, ac_p) are merged
+    into a single node (ac). Edges between the forms of a compound (transport) become self-loops and are dropped.
+
+    Seeds are then per compound: a compound the model makes in the cytosol is not a seed because its extracellular
+    form is a source node; and a compound is never both a seed and a non-seed once its compartment is stripped.
+    """
+    merged = nx.DiGraph(**DG.graph)
+    for node in DG.nodes():
+        merged.add_node(COMPARTMENT_SUFFIX.sub("", node))
+    for a, b in DG.edges():
+        a, b = COMPARTMENT_SUFFIX.sub("", a), COMPARTMENT_SUFFIX.sub("", b)
+        if a != b:
+            merged.add_edge(a, b)
+    return merged
+
+
 def buildDG(
     sbml: str,
     filter_currency: bool = True,
     check_blocked: bool = False,
     currency_set: set = None,
+    merge_compartments: bool = True,
 ) -> nx.DiGraph:
     """
     Reads an SBML model (via cobrapy) and builds a directed compound
@@ -175,6 +202,9 @@ def buildDG(
             evaluated under the same defined medium, or set
             check_blocked=False for a medium-agnostic graph.
         currency_set: set of currency compound base-IDs to filter.
+        merge_compartments: whether to merge the forms of each compound in the compartments into one node
+            (merge_compartment_forms), so that seeds and non-seeds are per compound; True by default. Transports
+            (the same compounds on both sides, in other compartments) are then left out.
             Defaults to CURRENCY (BiGG-style). Pass CURRENCY_MODELSEED
             for ModelSEED-derived models (cpdXXXXX namespace).
 
@@ -207,11 +237,28 @@ def buildDG(
 
     blocked_ids = set()
     if check_blocked:
-        blocked_ids = set(find_blocked_reactions(model))
+        # With every exchange open: blocked on any medium, so that the seeds do not depend on the model's medium
+        blocked_ids = set(find_blocked_reactions(model, open_exchanges=True))
         logger.info("Identified %d blocked reactions via FVA", len(blocked_ids))
+
+    # Per compound (merge_compartments): every compound of the model is a node, also those only transported or only
+    # taken by the biomass (e.g. metal ions), so that one nothing produces is a source; and the biomass reaction
+    # is a use of its substrates (an edge to BIOMASS_SINK), for require_downstream_use
+    biomass_ids = set()
+    if merge_compartments:
+        biomass_ids = {r.id for r in model.reactions if r.objective_coefficient != 0}
+        for m in model.metabolites:
+            if not (filter_currency and is_currency(m.id, currency_set)):
+                DG.add_node(m.id)
 
     for rxn in model.reactions:
         logger.info("\n ~~ Processing reaction: %s ~~", rxn.id)
+        if rxn.id in biomass_ids:
+            for m in rxn.reactants:
+                if not (filter_currency and is_currency(m.id, currency_set)):
+                    DG.add_edge(m.id, BIOMASS_SINK)
+            logger.info("Biomass reaction %s: its substrates are used (-> %s)", rxn.id, BIOMASS_SINK)
+            continue
         if rxn.lower_bound == 0 and rxn.upper_bound == 0:
             logger.info(
                 "Skipping reaction %s - zero bounds [%.2f, %.2f], "
@@ -271,6 +318,16 @@ def buildDG(
             )
             continue
 
+        # With the compartments merged, a transport (the same compounds on both sides, only in other compartments:
+        # uniport, symport, antiport, ATP-driven) adds no conversion: it would only link the co-transported compounds
+        # to each other (Ca2+ "produced" from Na+), so it is left out
+        if merge_compartments:
+            merged_react = {COMPARTMENT_SUFFIX.sub("", m) for m in react_f}
+            merged_prod = {COMPARTMENT_SUFFIX.sub("", m) for m in prod_f}
+            if merged_react == merged_prod:
+                logger.info("Skipping reaction %s - a transport of %s", rxn.id, sorted(merged_react))
+                continue
+
         for r in react_f:
             for p in prod_f:
                 DG.add_edge(r, p)
@@ -280,6 +337,9 @@ def buildDG(
             for r in prod_f:
                 for p in react_f:
                     DG.add_edge(r, p)
+
+    if merge_compartments:
+        DG = merge_compartment_forms(DG)
 
     return DG
 
@@ -411,7 +471,9 @@ def getSeedSet(DG, maxComponentSize=5, require_downstream_use=True):
             )
 
     SeedSet = set(SeedSetConfidence.keys())
-    nonSeedSet = list(set(DG.nodes()) - SeedSet)
+    # Non-seeds: what the network produces. Dead-end sources (require_downstream_use) are neither seeds nor
+    # non-seeds: nothing produces them, so they are not something the model could offer to another one.
+    nonSeedSet = list(set(DG.nodes()) - SeedSet - set(dead_end_seeds) - {BIOMASS_SINK})
 
     logger.info("Dead-end seeds: %s", dead_end_seeds)
 
