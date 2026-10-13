@@ -13,6 +13,8 @@ nextflow run seed_compl/seed_compl.nf -params-file params/seed_compl.yaml
 
 include  { getInputFiles; sanitizeChannel; chunkFiles; SAFENAME_FILES; GUNZIP } from '../helpers.nf'
 include {GAPSEQ_FIND; GAPSEQ_FIND_TRANSPORTER; GAPSEQ_DRAFT; GAPSEQ_FILL} from './gapseq'
+include { MODELSEED } from './modelseed'
+include { PRODIGAL } from '../prodigal'
 
 
 // Mount the Gurobi license and CPLEX in the containers
@@ -241,6 +243,16 @@ workflow {
         // Pass chunks to your gapseq process
         GAPSEQ(decomp_ch, gapseq_prev_ch, med_ch)
 
+    } else if (params.recon_with == "modelseed") {
+
+        // ModelSEEDpy reconstructs from proteins: genomes (DNA) are translated with Prodigal first
+        def files_ch = decomp_ch.flatten()
+        def faa_ch = recon_in.is_faa ? files_ch : PRODIGAL(files_ch).faa
+
+        MODELSEED(faa_ch.map { faa -> [faa.getBaseName(), faa] })
+
+    } else {
+        error "recon_with needs to be carveme, gapseq or modelseed (got: ${params.recon_with})"
     }
 
 }

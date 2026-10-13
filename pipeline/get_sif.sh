@@ -31,6 +31,7 @@ declare -A IMAGES=(
   [biocontainers-prodigal-v1-2.6.3-4-deb_cv1]="biocontainers/prodigal:v1-2.6.3-4-deb_cv1"
                            [staphb-hmmer-3.4]="staphb/hmmer:3.4"
                      [hariszaf-gapseq-1.4.0]="hariszaf/gapseq:1.4.0"
+                  [hariszaf-modelseed-0.4.2]="hariszaf/modelseed:0.4.2"
   [quay.io-biocontainers-bioconductor-decipher-3.2.0--r44h3df3fcb_1]="quay.io/biocontainers/bioconductor-decipher:3.2.0--r44h3df3fcb_1"
 )
 

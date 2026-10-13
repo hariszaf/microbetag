@@ -1,7 +1,8 @@
-# ModelSEEDpy reconstructions, used by the microbetag-nf pipeline.
-# Same environment as `bash install.sh --modelseed` (envs/mtg-modelseed.yml).
+# ModelSEEDpy reconstructions, used by the microbetag-nf pipeline (modules/gem_recon/modelseed.nf):
+# the scripts in scripts/modelseed (RAST annotation, draft reconstruction, gap-filling) and ModelSEEDpy,
+# in the conda environment of envs/mtg-modelseed.yml.
 #
-# Build, from the root of the repository:
+# Build, from the pipeline folder:
 #   docker build -f containers/Dockerfile.modelseed -t hariszaf/modelseed:0.4.2 .
 
 ARG MINIFORGE_VERSION=25.11.0-1
@@ -14,6 +15,16 @@ RUN conda env create -f /tmp/mtg-modelseed.yml \
 
 ENV PATH=/opt/conda/envs/mtg-modelseed/bin:${PATH} \
     CONDA_DEFAULT_ENV=mtg-modelseed
+
+# ModelSEEDpy downloads its templates into its own folder the first time they are used; download them now,
+# so that the reconstructions run offline and in read-only (Singularity/Apptainer) images
+RUN python -c "from modelseedpy.helpers import get_template; \
+[get_template(t) for t in ('template_core', 'template_gram_neg', 'template_gram_pos')]" \
+ && python -c "import json, glob; [json.load(open(f)) for f in glob.glob('/opt/conda/envs/mtg-modelseed/lib/python3*/site-packages/modelseedpy/data/templates/*.json')]"
+
+COPY scripts/modelseed/ /opt/modelseed/
+RUN chmod +x /opt/modelseed/*.py
+ENV PATH=/opt/modelseed:${PATH}
 
 WORKDIR /data
 CMD ["bash"]

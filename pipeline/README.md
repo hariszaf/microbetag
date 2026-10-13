@@ -63,6 +63,7 @@ scripts/                 helper scripts, by the image they run in:
   microbetag-nf/           copied into the microbetag-nf image (FlashWeave input, KO table, taxonomy table)
   flashweave/              copied into the FlashWeave image (runs FlashWeave)
   taxonomy/                IDTAXA, passed to the DECIPHER image
+  modelseed/               copied into the ModelSEEDpy image (RAST annotation, draft reconstruction, gap-filling)
 containers/              Dockerfiles of the images built for the pipeline
 envs/                    conda environments of the phenotrex, ModelSEEDpy and DNNGIOR images
 assets/                  FAPROTAX 1.2.10
