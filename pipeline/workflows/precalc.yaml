@@ -80,10 +80,30 @@ seed_compl: true
 # Path to previously reconstructed genome-scale models. Leave empty if not available.
 gems:
 
-# Tool to reconstruct GEMs with; gapseq requires much more computing resources and time.
+# Tool to reconstruct GEMs with, from the proteins: carveme (needs gurobi_lic) or modelseed (ModelSEEDpy: RAST
+# annotation on the RAST server, so it needs an internet connection). For gapseq, which needs the genomes, run
+# modules/gem_recon with recon_with: gapseq and give its reconstructions folder as gems.
 recon_with:
   carveme
-  # gapseq
+  # modelseed
+
+# ModelSEEDpy (recon_with: modelseed)
+modelseed:
+  # ModelSEED template the models are built from: gram_neg, gram_pos or core
+  template: gram_neg
+  medium:
+    # Medium file to gap-fill the models on (gapfill_with: native): a gapseq medium (.csv: compounds, name,
+    # maxFlux), e.g. MM_glu.csv of gapseq (dat/media), or a 2-column tab-separated file. Leave empty for the
+    # complete medium.
+    file:
+  # A folder with files of a previous run (<genome>-rast.tsv, <genome>-draft.xml), so that their steps are skipped
+  prev_files:
+  rast:
+    # Genomes annotated at the same time on the RAST server, and proteins per request
+    max_forks: 4
+    batch_size: 2000
+    # true: a genome RAST fails on (after the retries) is left out, and the others go on; false: the run stops
+    ignore_failed: false
 
 # Path to the Gurobi WLS license, e.g. /opt/gurobi/gurobi_wlm.lic -- Attention! Please provide absolute path to the license file.
 gurobi_lic:
@@ -111,7 +131,8 @@ dnngior:
     # Leave empty to gap-fill with every compound available.
     file:
 
-# Namespace of the GEMs to be used; can be either BiGG or ModelSEED
+# Namespace of the GEMs: BiGG or ModelSEED. For models reconstructed with recon_with: modelseed it is ModelSEED,
+# whatever is set here; it is for your own GEMs (gems) and CarveMe's (BiGG).
 namespace: BiGG
 
 # Nonseed set per genome, e.g. nonseeds.json. Skip steps before SCORES_COMPLS_PRECALC. Leave empty if not available.

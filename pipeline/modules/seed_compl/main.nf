@@ -7,6 +7,17 @@ Usage:
 nextflow run seed_compl/seed_compl.nf -c seed_compl/seed_compl.config
 */
 
+// Namespace of the GEMs: ModelSEED for the models ModelSEEDpy or gapseq reconstruct in the pipeline,
+// otherwise params.namespace (BiGG for CarveMe's, or that of your own GEMs)
+def seedNamespace() {
+    def own_gems = params.gems && file(params.gems).exists() &&
+        file(params.gems).list().any { name -> name.endsWith('.xml') || name.endsWith('.sbml') }
+    def namespace = (!own_gems && ['modelseed', 'gapseq'].contains(params.recon_with)) ? 'modelseed' : params.namespace
+    // as microbetag-seed-sets expects it: BiGG or modelseed
+    return namespace.toString().toLowerCase() == 'modelseed' ? 'modelseed' : namespace
+}
+
+
 process GET_SEED_SETS {
 
     tag "Calculate seed and non-seed sets based on GEM reconstructions."
@@ -22,7 +33,7 @@ process GET_SEED_SETS {
 
     script:
     """
-    microbetag-seed-sets ${gem} ${params.namespace} "${gem.baseName}_sets.json"
+    microbetag-seed-sets ${gem} ${seedNamespace()} "${gem.baseName}_sets.json"
     """
 }
 

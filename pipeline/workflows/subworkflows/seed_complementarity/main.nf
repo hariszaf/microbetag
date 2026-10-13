@@ -12,6 +12,7 @@ include { getInputFiles; sanitizeChannel; SAFENAME_FILES; GUNZIP } from '../../.
 include { GET_SEED_SETS; AGGREGATE_SEED_SETS; SCORES_COMPLS_PRECALC; AGGREGATE_SCORES_COMPLS } from '../../../modules/seed_compl'
 include { CARVE } from '../../../modules/gem_recon'
 include { DNNGIOR } from '../../../modules/gem_recon/dnngior'
+include { MODELSEED } from '../../../modules/gem_recon/modelseed'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,17 +51,27 @@ workflow SEED_COMPLEMENTARITY {
             // One genome per task; CARVE runs at most gurobi_sessions of them at the same time
             infiles_chunk_ch = faa_ch
 
-            // Reconstruct using software of user's choice
-            if (params.recon_with =="carveme") {
+            // Reconstruct using software of user's choice, from the proteins
+            if (params.recon_with == "carveme") {
 
-                // gems_ch = CARVE(infiles_chunk_ch, recon_in.is_faa)
                 gems_ch = CARVE(infiles_chunk_ch, true)
 
-                // gapfill_with: dnngior -- DNNGIOR gap-fills CarveMe's models
-                if (params.gapfill_with == 'dnngior') {
-                    gems_ch = DNNGIOR(gems_ch.flatten()).model
-                }
+            } else if (params.recon_with == "modelseed") {
 
+                // RAST annotation, draft and (gapfill_with: native) gap-filling (modules/gem_recon/modelseed.nf)
+                gems_ch = MODELSEED(
+                    faa_ch.map { faa -> [faa.getName().replaceFirst(/\.faa(\.gz)?$/, ''), faa] }
+                ).model
+
+            } else {
+                error "In precalc, the GEMs can be reconstructed with recon_with: carveme or modelseed " +
+                    "(got: ${params.recon_with}); gapseq needs the genomes: run modules/gem_recon with recon_with: " +
+                    "gapseq, and give its reconstructions folder as gems."
+            }
+
+            // gapfill_with: dnngior -- the tools gave their drafts, which DNNGIOR gap-fills
+            if (params.gapfill_with == 'dnngior') {
+                gems_ch = DNNGIOR(gems_ch.flatten()).model
             }
 
             // species_ch = gems_ch.map { file -> file.baseName }
