@@ -110,9 +110,13 @@ to jump into the container, and then:
 
 ```bash 
 cd /docker-entrypoint-initdb.d/scripts/
-./load_db.py <env>
+./load_db.py
 ```
-`<env>` should be an environment mentioned in the `.env_dev.json` file. 
+
+`load_db.py` connects with the credentials of the container (`MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE` of
+`services/db/.env`), or with `USER_NAME`, `PASSWORD`, `HOST`, `PORT` and `DB_NAME` when it runs elsewhere.
+`./load_db.py <env>` takes them from that environment of a `.env_dev.json` file instead.
+It loads the GTDB database of our server; a database of your own genomes is loaded by `custom_init.sql`.
 
 
 

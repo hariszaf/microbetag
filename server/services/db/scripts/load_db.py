@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+"""
+Loads the GTDB microbetagDB of our public server from its data files (in /var/lib/mysql-files/mappings and
+annotations, or data/mappings and data/annotations).
+
+The connection comes from the environment:
+    USER_NAME, PASSWORD, HOST, PORT, DB_NAME     as for the web app (server/.env.example), or
+    MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE   as in the database container (services/db/.env)
+or, with an argument, from that environment of a .env_dev.json file: ./load_db.py <env>
+
+A database of your own genomes does not need it: see custom_init.sql and README.md.
+"""
 import argparse
 import gzip
 import json
@@ -62,13 +74,24 @@ def create_sqlalchemy_engine(credentials):
     return engine
 
 
-def load_db_credentials(database):
-    with open(".env_dev.json", "r") as f:
-        credentials = json.load(f)
+def load_db_credentials(database=None):
+    """From an environment of .env_dev.json if `database` is given, otherwise from the environment variables."""
+    if database:
+        with open(".env_dev.json", "r") as f:
+            credentials = json.load(f)
+        USER_NAME, PASSWORD, HOST, DB_NAME, PORT = credentials[database].values()
+        return Credentials(USER_NAME, PASSWORD, HOST, DB_NAME, PORT)
 
-    USER_NAME, PASSWORD, HOST, DB_NAME, PORT = credentials[database].values()
-
-    return Credentials(USER_NAME, PASSWORD, HOST, DB_NAME, PORT)
+    env = os.environ
+    user     = env.get("USER_NAME") or env.get("MYSQL_USER") or "root"
+    password = env.get("PASSWORD") or (env.get("MYSQL_PASSWORD") if user != "root" else env.get("MYSQL_ROOT_PASSWORD"))
+    db_name  = env.get("DB_NAME") or env.get("MYSQL_DATABASE")
+    if password is None or not db_name:
+        raise SystemExit(
+            "No database credentials: set USER_NAME, PASSWORD and DB_NAME (or MYSQL_USER, MYSQL_PASSWORD and "
+            "MYSQL_DATABASE), or give an environment of .env_dev.json."
+        )
+    return Credentials(user, password, env.get("HOST", "localhost"), db_name, env.get("PORT", "3306"))
 
 
 def get_table_columns(engine, table_name):
@@ -210,7 +233,7 @@ def get_time():
 # ---------------------------
 
 
-def main(database):
+def main(database=None):
     # import sqlalchemy
     credentials = load_db_credentials(database)
     engine = create_sqlalchemy_engine(credentials)
@@ -260,8 +283,8 @@ if __name__ == "__main__":
 
     # Add arguments
     parser.add_argument(
-        "name",
-        help="Name of the working environment to get credentials from .env_dev.json",
+        "name", nargs="?",
+        help="An environment of .env_dev.json to get the credentials from; by default, the environment variables",
     )
 
     # Parse the arguments
