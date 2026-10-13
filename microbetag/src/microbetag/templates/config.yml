@@ -28,6 +28,12 @@ abundance_table_file:
 # sequence_id_taxonomy_map:
 #   file_path: seqid_taxonomy.tsv
 
+# Metadata, if the network has nodes for them (e.g. inferred by FlashWeave with metadata): one variable per row,
+# its name in the first column, then its value in each sample. Nodes named after a variable (ENV1, or ENV4_A for
+# a value of a categorical one) are marked as metadata variables (metavar). Optional.
+# metadata_file:
+#   file_path: metadata.tsv
+
 threads:
   value: 2
 

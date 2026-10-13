@@ -239,6 +239,10 @@ def get_node_attributes(seq_id: str, seqId_to_tax: Dict, ncbi_ids_dict: Dict = N
         for rank in __RANKS__:
             attrs[f"{_TAXONOMY}::{rank}"] = ncbi_info.get(rank)
 
+    # Nodes of metadata variables, also without the on-the-fly mapping (a local run with metadata_file)
+    elif metavars and any(seq_id.startswith(prefix) for prefix in metavars):
+        attrs[_M_TAX_LEVEL] = ["metavar"]
+
     return attrs
 
 
