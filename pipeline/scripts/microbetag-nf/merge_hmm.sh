@@ -32,7 +32,7 @@ output_file="$2"
 # Build the 3-column file 
 echo -e "bin_id\tcontig_id\tko_term" > $output_file
 
-find -L hmmout_* -name "*.hmmout" -print0 | parallel -0 -j $threads --bar --no-notice '
+find hmmout_*/ -name "*.hmmout" -print0 | parallel -0 -j $threads --bar --no-notice '
       f={}
 
       # Skip file if it has no non-comment lines
