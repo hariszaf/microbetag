@@ -11,7 +11,8 @@ For each model, per compound (compartments merged, as the seed sets are):
 - seeds, non-seeds and their overlap (none expected)
 - required nutrients: on the complete medium (every uptake open), the model does not grow without them, so nothing
   in the network can replace them; each of them should be a seed (completeness)
-- seeds the model can make: on the complete medium, with the seed's own uptake closed, a demand reaction for it
+- seeds the model can make: on the complete medium, with the uptake of the seed and of the other seeds of its strongly
+  connected component closed (alternatives to each other, e.g. L-fucose and L-fuculose), a demand reaction for it
   carries flux; these should not be seeds (precision)
 - biomass precursors reached by network expansion from the seeds (and the currency metabolites, always available)
 
@@ -26,6 +27,7 @@ import re
 import sys
 
 import cobra
+import networkx as nx
 
 from microbetag.PhyloMint.lib import BuildGraphNetX
 
@@ -36,7 +38,8 @@ def compound(met_id):
     return SUFFIX.sub("", re.sub(r"^M_", "", met_id))
 
 
-CURRENCY = {compound(c) for c in BuildGraphNetX.CURRENCY}
+# The currency metabolites, but for the nutrients among them, which have a seed / non-seed status
+CURRENCY = {compound(c) for c in BuildGraphNetX.CURRENCY} - BuildGraphNetX.NUTRIENT_CURRENCY
 
 
 def complete_medium(model):
@@ -72,8 +75,12 @@ def required_nutrients(model):
     return needed
 
 
-def producible(model, seeds):
-    """Seeds the model can make, with their own uptake closed (their cytosolic form, if any)."""
+def producible(model, seeds, scc_of=None):
+    """
+    Seeds the model can make (their cytosolic form, if any), with the uptake of the seed and of the other seeds of its
+    SCC closed: the seeds of an SCC are alternatives to each other.
+    """
+    scc_of = scc_of or {}
     model = model.copy()
     complete_medium(model)
     exchanges = exchanges_by_compound(model)
@@ -86,8 +93,9 @@ def producible(model, seeds):
             continue
         met = sorted(forms[c], key=lambda m: (m.compartment not in ("c", "c0"), m.id))[0]
         with model:
-            for r in exchanges.get(c, []):
-                r.lower_bound = 0
+            for member in scc_of.get(c, {c}) & set(seeds) | {c}:
+                for r in exchanges.get(member, []):
+                    r.lower_bound = 0
             model.objective = model.add_boundary(met, type="demand")
             if grows(model.slim_optimize()):
                 made.append(c)
@@ -120,10 +128,14 @@ def expansion(model, seeds):
 
 def check(path, max_component_size=2):
     model = cobra.io.read_sbml_model(str(path))
-    _, seeds, nonseeds = BuildGraphNetX.getSeedSet(
-        BuildGraphNetX.buildDG(str(path)), maxComponentSize=max_component_size
-    )
+    dg = BuildGraphNetX.buildDG(str(path))
+    _, seeds, nonseeds = BuildGraphNetX.getSeedSet(dg, maxComponentSize=max_component_size)
     seeds, nonseeds = {compound(s) for s in seeds}, {compound(n) for n in nonseeds}
+    scc_of = {}
+    for scc in nx.strongly_connected_components(dg):
+        members = {compound(n) for n in scc}
+        for n in members:
+            scc_of[n] = members
     needed = required_nutrients(model)
     biomass = {compound(m.id) for r in model.reactions if r.objective_coefficient for m in r.reactants} - CURRENCY
     reached = expansion(model, seeds)
@@ -133,7 +145,7 @@ def check(path, max_component_size=2):
         "overlap": sorted(seeds & nonseeds),
         "required": needed,
         "required not seeds": [c for c in needed if c not in seeds],
-        "seeds producible": producible(model, seeds),
+        "seeds producible": producible(model, seeds, scc_of),
         "biomass not reached": sorted(biomass - reached),
         "n non-seeds": len(nonseeds),
         "n biomass precursors": len(biomass),

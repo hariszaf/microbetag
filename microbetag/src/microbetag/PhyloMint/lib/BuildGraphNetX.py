@@ -157,6 +157,15 @@ def get_transport_reactions(model, exclude_boundary=True):
 # The use of the biomass reaction's substrates: a sink node, neither a seed nor a non-seed
 BIOMASS_SINK = "__biomass__"
 
+# The currency metabolites, always present in a cell: a source node for what reactions make from them alone (e.g.
+# bicarbonate from CO2 and water, ADP-ribose from NAD), neither a seed nor a non-seed
+CURRENCY_SOURCE = "__currency__"
+
+# Currency metabolites that are also nutrients, and that species can provide to each other (ammonium from nitrogen
+# fixation or deamination, sulfate from desulfation of mucin, iron): after the seed sets, getSeedSet decides whether
+# each is a seed or a non-seed, by network expansion (BiGG and ModelSEED ids)
+NUTRIENT_CURRENCY = {"nh4", "so4", "fe2", "fe3", "cpd00013", "cpd00048", "cpd10515", "cpd10516"}
+
 # Compartment suffix of a metabolite id: BiGG _c, _e, _p; ModelSEED _c0, _e0
 COMPARTMENT_SUFFIX = re.compile(r"_([a-z]\d?)$")
 
@@ -245,6 +254,11 @@ def buildDG(
     # taken by the biomass (e.g. metal ions), so that one nothing produces is a source; and the biomass reaction
     # is a use of its substrates (an edge to BIOMASS_SINK), for require_downstream_use
     biomass_ids = set()
+    expansion_steps = []
+    nutrients = set(NUTRIENT_CURRENCY) & set(currency_set)
+    DG.graph["expansion_steps"] = expansion_steps
+    DG.graph["always_available"] = set(currency_set) - nutrients
+    DG.graph["nutrients"] = nutrients
     if merge_compartments:
         biomass_ids = {r.id for r in model.reactions if r.objective_coefficient != 0}
         for m in model.metabolites:
@@ -290,6 +304,17 @@ def buildDG(
         react_f = [m.id for m in react_f]
         prod_f = [m.id for m in prod_f]
 
+        # For the nutrient round of getSeedSet: the reaction in its allowed directions, per compound, with the
+        # nutrients among the currency metabolites kept
+        if merge_compartments:
+            keep = lambda m: not (filter_currency and is_currency(m, currency_set)) or is_currency(m, nutrients)
+            subs = {COMPARTMENT_SUFFIX.sub("", m) for m in react_f if keep(m)}
+            prods = {COMPARTMENT_SUFFIX.sub("", m) for m in prod_f if keep(m)}
+            if subs:
+                expansion_steps.append((subs, prods))
+            if prods and rxn.lower_bound < 0 and rxn.upper_bound > 0:
+                expansion_steps.append((prods, subs))
+
         if filter_currency:
             react_kept, react_dropped = [], []
             for m in react_f:
@@ -309,6 +334,17 @@ def buildDG(
                 )
 
             react_f, prod_f = react_kept, prod_kept
+
+        # Made from currency metabolites alone (which every cell has): an edge from the currency pool
+        if merge_compartments and filter_currency:
+            made = prod_f if not react_f else []
+            if not prod_f and rxn.lower_bound < 0 and rxn.upper_bound > 0:
+                made = react_f
+            if made:
+                for m in made:
+                    DG.add_edge(CURRENCY_SOURCE, m)
+                logger.info("Reaction %s makes %s from currency metabolites alone", rxn.id, made)
+                continue
 
         if not react_f or not prod_f:
             logger.info(
@@ -401,6 +437,8 @@ def getSeedSet(DG, maxComponentSize=5, require_downstream_use=True):
 
     for cc in nx.strongly_connected_components(DG):
         cc_nodes = set(cc)
+        if CURRENCY_SOURCE in cc_nodes:
+            continue
 
         # Guard against giant non-informative hub SCCs
         if len(cc_nodes) > maxComponentSize:
@@ -473,7 +511,35 @@ def getSeedSet(DG, maxComponentSize=5, require_downstream_use=True):
     SeedSet = set(SeedSetConfidence.keys())
     # Non-seeds: what the network produces. Dead-end sources (require_downstream_use) are neither seeds nor
     # non-seeds: nothing produces them, so they are not something the model could offer to another one.
-    nonSeedSet = list(set(DG.nodes()) - SeedSet - set(dead_end_seeds) - {BIOMASS_SINK})
+    nonSeedSet = set(DG.nodes()) - SeedSet - set(dead_end_seeds) - {BIOMASS_SINK, CURRENCY_SOURCE}
+
+    # Nutrient round: the nutrients among the currency metabolites (NUTRIENT_CURRENCY) are left out of the graph, so
+    # they have no status yet. A nutrient is a non-seed if the network makes it from its seeds alone: network expansion
+    # over the model's reactions, which fires a reaction once all its substrates other than currency metabolites are
+    # available. The currency pool is not a starting point: a reaction from currency metabolites alone (e.g. NH4+
+    # from AMP via adenosine) does not fire, so nitrogen, sulfur or iron cannot come from cofactors. Otherwise a seed.
+    steps = DG.graph.get("expansion_steps")
+    if steps:
+        nutrients = DG.graph["nutrients"]
+        present = {n for subs, prods in steps for n in (subs | prods) & nutrients}
+        available = set(SeedSet)
+        changed = True
+        while changed:
+            changed = False
+            for subs, prods in steps:
+                if subs <= available and not prods <= available:
+                    available |= prods
+                    changed = True
+        for n in sorted(present):
+            if n in available:
+                nonSeedSet.add(n)
+                logger.info("Non-seed: %s - nutrient the network makes from its seeds", n)
+            else:
+                SeedSetConfidence[n] = 1.0
+                logger.info("Seed: %s - nutrient the network cannot make from its seeds", n)
+        SeedSet = set(SeedSetConfidence.keys())
+
+    nonSeedSet = list(nonSeedSet)
 
     logger.info("Dead-end seeds: %s", dead_end_seeds)
 

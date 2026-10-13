@@ -3,14 +3,17 @@ Seed sets of a GEM (PhyloMint/lib/BuildGraphNetX.py), on what they should be bio
 
 - per compound, a compound is a seed or a non-seed, never both;
 - the nutrients a model cannot do without, and cannot make from anything (iML1515, E. coli K-12: its metal ions
-  chloride and molybdate), are seeds.
+  chloride and molybdate), are seeds;
+- the nutrients among the currency metabolites get a status: NH4+ and SO4 2- are non-seeds of iML1515 (made from its
+  seeds: NH4+ from dopamine, SO4 2- from H2S), iron a seed (only released from imported siderophore complexes);
+- compounds made from currency metabolites alone (ADP-ribose from NAD) are non-seeds.
 
 scripts/check_seed_sets.py runs these checks, and others, on any model.
 """
 
 import pytest
 
-from microbetag.PhyloMint.lib.BuildGraphNetX import BIOMASS_SINK, buildDG, getSeedSet
+from microbetag.PhyloMint.lib.BuildGraphNetX import BIOMASS_SINK, CURRENCY_SOURCE, buildDG, getSeedSet
 
 # Found with scripts/check_seed_sets.py: on the complete medium, iML1515 does not grow without them
 IML1515_REQUIRED = {"ca2", "cl", "cobalt2", "k", "mg2", "mn2", "mobd", "ni2", "zn2"}
@@ -26,10 +29,17 @@ def test_seeds_and_nonseeds_are_disjoint(data_dir, model):
     seeds, nonseeds = seed_sets(data_dir / "seed_compl" / "input_files" / model)
     assert seeds and nonseeds
     assert not seeds & nonseeds
-    assert BIOMASS_SINK not in seeds | nonseeds
+    assert not {BIOMASS_SINK, CURRENCY_SOURCE} & (seeds | nonseeds)
 
 
 def test_iml1515_required_nutrients_are_seeds(data_dir):
     seeds, nonseeds = seed_sets(data_dir / "seed_compl" / "iML1515.xml.gz")
     assert IML1515_REQUIRED <= seeds
     assert not seeds & nonseeds
+
+
+def test_iml1515_nutrient_round_and_currency_products(data_dir):
+    seeds, nonseeds = seed_sets(data_dir / "seed_compl" / "iML1515.xml.gz")
+    assert {"nh4", "so4"} <= nonseeds
+    assert {"fe2", "fe3"} <= seeds
+    assert {"adprib", "camp", "nmn"} <= nonseeds
