@@ -77,5 +77,12 @@ modelseed:
     # Leave empty to gap-fill on the complete medium.
     file:
   # A folder with files of a previous run (<genome>-rast.tsv, <genome>-draft.xml), so that their steps are skipped.
-  # The RAST annotation needs an internet connection.
   prev_files:
+  # RAST annotation, on the public RAST server (it needs an internet connection)
+  rast:
+    # Genomes annotated at the same time
+    max_forks: 4
+    # Proteins per request to RAST
+    batch_size: 2000
+    # true: a genome RAST fails on (after the retries) is left out, and the others go on; false: the run stops
+    ignore_failed: false

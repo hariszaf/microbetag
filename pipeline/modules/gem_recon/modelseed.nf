@@ -31,6 +31,30 @@ def hasPrev(base, suffix) {
 }
 
 
+// RAST, on its public server: is it reachable, before the genomes are sent?
+process MODELSEED_RAST_CHECK {
+
+    tag "Is RAST reachable?"
+
+    container "hariszaf/modelseed:0.4.2"
+
+    input:
+    path faa
+
+    output:
+    val true, emit: ok
+
+    script:
+    """
+    rast_annotate.py --faa ${faa} --check --retries 3 || {
+        echo "RAST (https://tutorial.theseed.org/services/genome_annotation) cannot be reached: it is needed to"
+        echo "reconstruct GEMs with ModelSEEDpy. Check the internet connection of the compute nodes, or try later."
+        exit 1
+    } >&2
+    """
+}
+
+
 process MODELSEED_RAST {
 
     tag "RAST annotation of ${base}"
@@ -38,15 +62,25 @@ process MODELSEED_RAST {
     container "hariszaf/modelseed:0.4.2"
     publishDir path: { "${params.outdir}/reconstructions/${base}" }, mode: 'copy', overwrite: true
 
+    // Not too many genomes at the same time on the public RAST server. A genome RAST failed on (exit status 1),
+    // after the retries of rast_annotate.py, is tried again by Nextflow; then, as one with input that is not right
+    // (exit status 2: e.g. nucleotides), it stops the run, or is left out with rast.ignore_failed
+    maxForks params.modelseed?.rast?.max_forks ?: 4
+    errorStrategy {
+        task.exitStatus == 1 && task.attempt <= 2 ? 'retry' : (params.modelseed?.rast?.ignore_failed ? 'ignore' : 'terminate')
+    }
+    maxRetries 2
+
     input:
     tuple val(base), path(faa)
+    val rast_ok
 
     output:
     tuple val(base), path("${base}-rast.tsv"), emit: rast
 
     script:
     """
-    rast_annotate.py --faa ${faa} --out ${base}-rast.tsv
+    rast_annotate.py --faa ${faa} --out ${base}-rast.tsv --batch-size ${params.modelseed?.rast?.batch_size ?: 2000}
     """
 }
 
@@ -114,9 +148,9 @@ workflow MODELSEED {
     def rast_prev_ch = faa_ch
         .filter { base, _faa -> hasPrev(base, "-rast.tsv") }
         .map { base, _faa -> [base, prevFile(base, "-rast.tsv")] }
-    def rast_ch = rast_prev_ch.concat(
-        MODELSEED_RAST(faa_ch.filter { base, _faa -> !hasPrev(base, "-rast.tsv") && !hasPrev(base, "-draft.xml") }).rast
-    )
+    def rast_todo = faa_ch.filter { base, _faa -> !hasPrev(base, "-rast.tsv") && !hasPrev(base, "-draft.xml") }
+    def rast_ok = MODELSEED_RAST_CHECK(rast_todo.first().map { _base, faa -> faa }).ok
+    def rast_ch = rast_prev_ch.concat(MODELSEED_RAST(rast_todo, rast_ok).rast)
 
     // Draft models, unless available from a previous run
     def draft_prev_ch = faa_ch
