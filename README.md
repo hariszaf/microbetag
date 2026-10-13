@@ -184,6 +184,19 @@ The steps are also available as separate commands (`microbetag-pcompl`, `microbe
 `microbetag` can also be used as a Python library, e.g. to get the seed complementarities of a set of GEMs
 without a network (see [`microbetag/tests/unit/test_seed_compl.py`](./microbetag/tests/unit/test_seed_compl.py)).
 
+#### Tests of the seed sets
+
+The seed-set examples of [`microbetag/tests/unit/test_get_seeds.py`](./microbetag/tests/unit/test_get_seeds.py)
+run with the other tests. To draw their graphs as well (needs `matplotlib`), run, from the `microbetag/` folder:
+
+```
+pytest tests/unit/test_get_seeds.py --draw --graph-dir tests/data/test_graphs
+```
+
+<!-- Issue where different findings from carveme using cplex and gurobi is mentioned:
+https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
+
+
 
 ## RTD
 
