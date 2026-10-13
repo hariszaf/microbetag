@@ -61,6 +61,25 @@ def read_medium(path):
         return uptakes
 
 
+def check_medium(model, uptakes, db, path):
+    """
+    An error message if the medium does not fit the model: compound ids of the other namespace (ModelSEED's
+    cpd00027 for a BiGG model, or the other way round), or most of its compounds without an exchange in the model.
+    """
+    ids = [re.sub(r"_e0?$", "", cpd) for cpd in uptakes]
+    n_seed = sum(1 for cpd in ids if re.fullmatch(r"cpd\d{5}", cpd))
+    if db == "BiGG" and n_seed > len(ids) / 2:
+        return f"the medium {path} has ModelSEED compound ids (cpd...), the model BiGG ids: give a BiGG medium"
+    if db == "ModelSEED" and n_seed < len(ids) / 2:
+        return f"the medium {path} has no ModelSEED compound ids (cpd...), as the model has: give a ModelSEED medium"
+    exchanges = {r.id for r in model.exchanges}
+    found = sum(1 for cpd in ids if f"EX_{cpd}{EXCHANGE_SUFFIX[db]}" in exchanges)
+    if found < len(ids) / 2:
+        return (f"only {found} of the {len(ids)} compounds of the medium {path} have an exchange reaction in the model; "
+                "is it the medium for these models?")
+    return None
+
+
 def apply_medium(model, uptakes, db):
     """
     Set the exchange bounds of the model to the medium: its compounds can be taken up (at most their uptake),
@@ -122,6 +141,14 @@ def main(argv=None):
         return 2
 
     uptakes = read_medium(args.medium) if args.medium else None
+    if uptakes is not None:
+        if not uptakes:
+            log(f"No compounds in the medium file {args.medium}")
+            return 2
+        problem = check_medium(model, uptakes, db, args.medium)
+        if problem:
+            log(f"{args.model}: {problem}")
+            return 2
     missing = apply_medium(model, uptakes, db)
     medium_name = os.path.basename(args.medium) if args.medium else "all exchanges open"
     if missing:

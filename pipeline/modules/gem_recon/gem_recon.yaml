@@ -33,6 +33,7 @@ dnngior:
     # Medium file to gap-fill on, with the compound ids of the models' namespace (BiGG for CarveMe, ModelSEED for
     # gapseq and ModelSEEDpy): a gapseq medium (.csv: compounds, name, maxFlux), a DNNGIOR medium (.tsv: id, name,
     # concentration, minflux, maxflux) or a 2-column tab-separated file (compound id, maximum uptake).
+    # tests/data/media has a glucose minimal medium with each: MM_glu.csv (ModelSEED) and MM_glu_bigg.csv (BiGG).
     # Leave empty to gap-fill with every compound available.
     file:
 

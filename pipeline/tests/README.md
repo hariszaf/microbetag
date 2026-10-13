@@ -11,6 +11,7 @@ tests/
 | `data/genomes` | the example genome catalogue (3 genomes) | `workflows/precalc.yaml`, prodigal, phenotrex |
 | `data/abd_data` | example abundance tables and metadata | `workflows/annotate.yaml`, FAPROTAX, FlashWeave, manta |
 | `data/prep` | an amplicon table with sequences, its metadata, and the output of the former `microbetag_prep` tool | `workflows/prep.yaml`, taxonomy |
+| `data/media` | gapseq's glucose minimal medium (`MM_glu.csv`, ModelSEED ids, from gapseq's `dat/media`), and the same in BiGG ids (`MM_glu_bigg.csv`, through MetaNetX; without chromate, which has no BiGG id) | gap-filling: ModelSEEDpy, gapseq, DNNGIOR |
 | `data/kofam_database` | `ko_list`, and a subset of the KOfam profiles for tests (`profiles_test.tar.gz`; unpack it first) | kofam |
 | `data/<tool>` | inputs of the single-tool tests, moved from the microbetag repository (see `data/README.md`) | |
 | `expected/precalc` | the pre-calculations of `precalc.nf` on `data/genomes` | `workflows/annotate.yaml`, single modules |
