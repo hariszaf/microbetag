@@ -1,0 +1,32 @@
+# DNNGIOR gap-filling of draft GEMs, used by the microbetag-nf pipeline (modules/gem_recon/dnngior.nf):
+# DNNGIOR (MGXlab/DNNGIOR, develop branch: ModelSEED and BiGG models) and scripts/dnngior.
+#
+# DNNGIOR solves with Gurobi: it needs a Gurobi licence, for containers a WLS licence, mounted when it runs
+# (params.gurobi_lic, as for CarveMe).
+#
+# Build, from the pipeline folder, with your Gurobi WLS licence (used during the build only, see below):
+#   docker build --secret id=gurobi_lic,src=/path/to/gurobi.lic -f containers/Dockerfile.dnngior -t hariszaf/dnngior:0.0.3-develop .
+
+
+FROM python:3.9-slim
+
+# The develop branch of DNNGIOR, at a fixed commit
+ARG DNNGIOR_REF=3f9a1ceb4b5ba1838995f5a536699b7b7e5226ab
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git libexpat1 \
+ && rm -rf /var/lib/apt/lists/* \
+ && pip install --no-cache-dir "numpy==1.23.5" "pandas<2" "git+https://github.com/MGXlab/DNNGIOR.git@${DNNGIOR_REF}"
+# (DNNGIOR needs cobra<=0.23, which uses numpy.object: numpy<1.24)
+
+# DNNGIOR extracts its databases on the first import: do it now, so that it also runs in read-only images.
+# The import starts Gurobi, so it needs a licence: given as a build secret, it is not kept in the image.
+RUN --mount=type=secret,id=gurobi_lic,target=/opt/gurobi/gurobi.lic \
+    GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic python -c "import dnngior; print('dnngior', dnngior.__file__)"
+
+COPY scripts/dnngior/ /opt/dnngior/
+ENV PATH=/opt/dnngior:${PATH} \
+    GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
+
+WORKDIR /data
+CMD ["bash"]

@@ -1,0 +1,78 @@
+# The microbetag server: the web app, its database and nginx in front of them.
+#
+# Before the first start:
+#   cp .env.example .env.dev                         # the web app's settings
+#   cp services/db/.env.example services/db/.env     # the database's settings
+# and fill them in. Then:
+#   docker compose up -d --build
+# or run it as a service with deploy/microbetag.service (see README.md).
+
+services:
+
+  # The web app (Flask, served by gunicorn), on the microbetag package of this repository.
+  # Its image (services/web/Dockerfile.v2) also has the pipeline's tools and Nextflow, to run FlashWeave,
+  # FAPROTAX and manta (the network workflow of pipeline/), so it is built from the root of the repository.
+  web:
+
+    build:
+      context: ..
+      dockerfile: server/services/web/Dockerfile.v2
+
+    # gunicorn's timeout needs to be at least nginx's proxy_read_timeout, so that nginx does not end long runs
+    command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
+
+    # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
+    # also CATALOGUE=custom and SEEDS_DIR=/seeds (see .env.example)
+    env_file:
+      - ./.env.dev
+
+    volumes:
+      # The seed sets of the database's genomes (microbetag-export-db's all_conf.json.gz, all_nonseeds.json.gz
+      # and all_nonseeds_module_related.pckl), read by the app when SEEDS_DIR=/seeds
+      - ./services/db/data:/seeds:ro
+
+    expose:
+      - 5000
+
+    depends_on:
+      - db
+
+    restart: unless-stopped
+
+  # The database: microbetagDB, in MySQL. Its files are in services/db/data (a link to /data/mysql/data/microbetagDB
+  # on our server), loaded at its first start.
+  db:
+
+    build:
+      context: ./services/db
+      dockerfile: Dockerfile
+
+    env_file:
+      - ./services/db/.env
+
+    volumes:
+      - ./services/db/data:/var/lib/mysql-files/:rw
+      - ./services/db/tmp:/var/tmp:rw
+
+    ports:
+      - "3307:3306"
+
+    restart: unless-stopped
+
+  # nginx: passes the requests on port 1337 to the web app (services/nginx/nginx.conf)
+  nginx:
+
+    build: ./services/nginx
+
+    volumes:
+      - ./services/nginx/certs/domain.crt:/etc/nginx/certs/certificate.crt
+      - ./services/nginx/certs/new_domain.key:/etc/nginx/certs/certificate.key
+      - ./services/nginx/certs/domain.csr:/etc/nginx/certs/certificate.csr
+
+    ports:
+      - 1337:80
+
+    depends_on:
+      - web
+
+    restart: unless-stopped

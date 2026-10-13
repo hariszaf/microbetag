@@ -1,0 +1,25 @@
+# systemd unit for the microbetag server: runs the docker compose stack (web service, database, nginx).
+#
+# Install (adapt WorkingDirectory first):
+#   sudo cp deploy/microbetag.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now microbetag
+
+[Unit]
+Description=microbetag web server (docker compose: web, db, nginx)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+# The folder with docker-compose.yml (and its .env files)
+WorkingDirectory=/path/to/microbetag/server
+# In the foreground, so that systemd watches the stack and its output goes to the journal
+ExecStart=/usr/bin/docker compose up --remove-orphans
+ExecStop=/usr/bin/docker compose down
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

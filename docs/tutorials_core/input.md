@@ -101,7 +101,7 @@ how to get them.
 
 ```{important}
 To get the optimal annotations in the more robust way, we **strongly suggest** you first 
-[prepare your data](../tutorials_otf/prep.md) using the `microbetag_prep` Docker/Singularity image.
+[prepare your data](../tutorials_otf/prep.md) with the prep workflow of the microbetag-nf pipeline.
 
 That will be almost always the case when you have large datasets with more than a thousand of sequences and no network for them. 
 Yet, even if you have a network, we still **strongly suggest** running the *taxonomy assignment* step of the preprocessing step, 

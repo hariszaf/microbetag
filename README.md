@@ -1,4 +1,5 @@
-# `microbetag` stand-alone version
+# microbetag
+_annotating networks with phenotypic traits and potential metabolic interactions_
 
 ## About
 
@@ -14,12 +15,38 @@ You can [download `MGG`](https://apps.cytoscape.org/apps/mgg) directly from the 
 However, using the on-the-fly version, means `microbetag` will try to match your taxa to their closest GTDB representative genomes.
 Then, it will annotate your network based on pre-calculations of those GTDB genomes available on `microbetagDB`.
 
-In case, you prefer to annotate your network using information from a local/custom set of genomes, then you can go ahead
-and install `microbetag` locally, since pre-calculations are computationally expensive tasks making it impossible to run on a web-server.
+To annotate your network using your own genomes, run microbetag locally.
+The steps that run external tools on the genomes (gene prediction, KEGG annotation, trait prediction,
+genome-scale model reconstruction, FAPROTAX, network inference and clustering) are computationally
+expensive; they run in the [**microbetag-nf**](pipeline) Nextflow pipeline,
+on your computer or an HPC. The `microbetag` package then computes the pathway and seed complementarities
+from their outputs and builds the annotated network, e.g. `mtag_net_2025-05-08_17-47.cx2`.
+Load this file in Cytoscape to go through its annotations as in the on-the-fly version.
 
-Once you install and run `microbetag` locally, you end up with an annotated network in CX2 format on your output directory, 
-e.g. `mtag_net_2025-05-08_17-47.cx2`.
-All you need to do then, is to load this file on Cytoscape and you are ready to go through its annotations as in the on-the-fly version. 
+## Repository layout
+
+The repository has three parts, one folder each:
+
+```
+microbetag/
+├── microbetag/   the Python package: src/microbetag/, its tests, pyproject.toml and Dockerfile
+├── pipeline/     the Nextflow pipeline (microbetag-nf)
+├── server/       the on-the-fly server and its database (microbetagDB)
+└── docs/         documentation (readthedocs)
+```
+
+| Part | What it does | Used by | Install / run |
+|---|---|---|---|
+| [**`microbetag/`**](microbetag) — the package | Computes pathway and seed complementarities from KEGG annotations and GEMs, and builds the annotated network (`.cx2`). It does not run external tools. Also exports pre-calculations as a database (`microbetag-export-db`) and matches taxonomies to genomes (`microbetag.taxonomy`). | you, the pipeline, the server | `pip install ./microbetag`, or the `hariszaf/microbetag` image; see [microbetag/README.md](microbetag/README.md) |
+| [**`pipeline/`**](pipeline) — microbetag-nf | Runs the external tools in containers: Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta, then the package. Workflows: `precalc` (your genomes → pre-calculations), `annotate` (→ an annotated network), `prep` (inputs for the on-the-fly version). | you, on a computer or an HPC | Nextflow and Docker/Singularity; see [pipeline/README.md](pipeline/README.md) |
+| [**`server/`**](server) — on-the-fly server | The Flask app behind Cytoscape's `MGG`, and the MySQL microbetagDB it queries: GTDB genomes on the public server, or your own genomes after `precalc` and `microbetag-export-db`. | `MGG` | Docker Compose and systemd; see [server/README.md](server/README.md) |
+
+How they fit together: the **pipeline** runs the tools and calls the **package**. The **package** builds the
+annotated networks. The **server** serves the package's on-the-fly version from a database built from the
+pipeline's `precalc` output.
+
+If you already have the outputs of those tools, for example GEMs or a KEGG annotation of your genomes,
+you can run `microbetag` on them directly.
 
 
 For more on how to use `microbetag`, `MGG` and their features, feel free to have a look 
@@ -37,149 +64,69 @@ To use `microbetag` on-the-fly, all you have to do is to make sure you have Cyto
 * **After firing Cytoscape you can [add `MGG` by downloading it from the Cytoscape AppStore](https://apps.cytoscape.org/apps/mgg).**
 
 
-### Option 2: On your host machine
+### Option 2: The microbetag-nf pipeline
 
-To run `microbetag` locally, you need to install a great range of software and dependencies. 
-To make this easier, we provide the [`setup_environment.sh`](./setup_environment.sh) script. 
+To go from your genomes to an annotated network, use the [microbetag-nf](pipeline)
+pipeline. It runs the external tools in containers and then `microbetag`.
 
-**The `setup_environment.sh` expects `conda` is available on your computing system!**
 
-If `conda` (or `Miniconda`) is not installed, then you may get it by following the instructions you may find 
-[here](https://www.anaconda.com/docs/getting-started/miniconda/install).
+### Option 3: The microbetag package
 
-After cloning the `microbetag` GitHub repository locally in a directory of your choice
+`microbetag` needs Python 3.10 or later. From a clone of this repository:
 
 ```bash
 git clone https://github.com/hariszaf/microbetag.git
-```
-
-you can build its required environments by running:
-
-```bash
-cd microbetag
-bash setup_environment.sh
-```
-
-Once `conda` environments and required tools and databases are installed, you can install the `microbetag` package by running:
-
-```bash
-python setup.py sdist bdist_wheel
+cd microbetag/microbetag
 pip install .
 ```
-In case you get the strip_trailing_zero error
+
+Add `".[otf]"` for the on-the-fly version, which queries the microbetag database, and `".[test]"` to run the tests.
+
+To check your installation, run the tests from the same folder:
+
 ```bash
-pip install --upgrade setuptools packaging
+pip install ".[test]"
+pytest
 ```
 
-You are ready to go! 🚀
+[`microbetag/tests/README.md`](./microbetag/tests/README.md) describes how to run single tests, or single microbetag steps on the test data.
 
-Feel free to go through the [`tests`](./tests/) folder to check on how you can run specific modules or a complete pipeline of `microbetag`.
-A detailed description of those tests can be found [here](./test_data/README.md).
+#### In a container
 
-For more, you can also check [on `microbetag`'s documentation page](https://microbetag.readthedocs.io/en/v1.0.3/advanced_use/local.html).
-
-
-
-### Option 3: In a container
-
-To run `microbetag` as a [Docker](https://docs.docker.com/get-docker/) container, you can directly get it from DockerHub:
+The `hariszaf/microbetag` image holds the package and its commands:
 
 ```bash
 docker pull hariszaf/microbetag:<version>
 ```
 
-Contrary, if you are interested in running it as a [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html) 
-or an [Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux) container,
-you need to first build its corresponding image based on a [Docker version of microbetag](https://hub.docker.com/repository/docker/hariszaf/microbetag/tags?page=1&ordering=last_updated).
-To do so, you can run:
+or build it from the `microbetag/` folder of this repository:
 
 ```bash
-sudo singularity build microbetag_v101.simg docker://hariszaf/microbetag:<version>
+docker build -t hariszaf/microbetag:<version> .
 ```
 
-🔴 To execute the `singularity build` command, you will (probably) need to have `sudo` rights.
-Thus, in case you are working on an HPC, you will have to:
-- either ask your admin to do so, or 
-- run the build command in a similar environment and move it to the HPC. 
-
-Both in the Docker and Singularity cases, you will need to first get the kofam database 
-in case you are interested in pathway complementarities and kofam is not already available on your computing system.  
-You can get kofam database by running the following chunk of code:
+Mount the folder with your configuration YAML and the files it points to at `/data`.
+Paths in the YAML are relative to the YAML's folder, so a configuration that works locally also works in the container:
 
 ```bash
-cd ext_data/kofam_database &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-gzip -d ko_list.gz &&\
-tar zxvf profiles.tar.gz 
+docker run --rm -v $PWD/my_study:/data hariszaf/microbetag:<version> microbetag --config /data/config.yml
 ```
 
-Also, if you are about to reconstruct Genome Scale Models, necessary for inferring seed complementarities, using CarveMe
-you would also need to get a Web License Service (WLS) [Gurobi license](https://www.gurobi.com/downloads/).
-To do so, you may find the following [link](https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu) useful on how to do that.
-Like the kofam case, this applies for both Docker and Singularity.
-
-To run `microbetag` in a container, you will need to ***pass*** kofam and/or the Gurobi license 
-(in case you do need them for the steps you wish `microbetag` to go for) to the running container, as well as your **input data** themselves. 
-
-Here is how you can do this in these two technologies.
-
-#### Docker
-
-We **mount** the [`test_microbetag`](./test_data/test_microbetag/) and all its contents from our host system, 
-to the `/data` directory of the container. 
-**The `test_microbetag` folder should contain all our genomes/bins, abundance table, metadata or network (edge list) files.**
-**Anything `microbetag` will consider as input files. For example, in case you already have GEMs for your genomes, they should also be mounted.**
-
-Remember to **mount** the kofam database to the `/microbetag/microbetagDB/ref-dbs/kofam_database/` path of the container and the Gurobi license,
-if necessary.
-
-> Your configuration YAML in case of running on a container, needs to provide **the paths of your data in the container**,
-> not those on your host system.
+For Singularity / Apptainer, convert the image once (no `sudo` needed) and run it with the same mount:
 
 ```bash
-docker run --rm -it  \
-    --volume=./test_data/test_microbetag/:/data \
-    --volume=./ext_data/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
-    --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-    microbetag:<version>
+singularity pull microbetag.sif docker://hariszaf/microbetag:<version>
+singularity exec -B $PWD/my_study:/data microbetag.sif microbetag --config /data/config.yml
 ```
-
-You can also start an **interactive shell** inside the container by using the `--entrypoint` flag and setting it to `/bin/bash`. 
-This allows you to explore and work inside the container environment manually.
-
-
-
-#### Singularity
-
-Like in the Docker case, you need to mount data and related files.
-
-```bash
-singularity exec 
-    -B tests/dev_io_microbetag/:/data  
-    -B microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/
-    -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro  
-    microbetag_v101.simg 
-    python3 /microbetag/microbetag.py /data/config.yml
-```
-
-
-### Tricky parts for running locally
-
-`microbetag` makes use of a range of external software, some of which have conflicting dependencies.
-This is why `microbetag` builds for example **two environments** through the [`setup_environment.sh`](./setup_environment.sh),
-one called `microbetag` and a second one called `phendb`. 
-Similarly, it switches from a `scikit-learn` version to another while running. 
-This is not optional, and we hope in the future to find a better way.
-
 
 
 ## Further `microbetag` links
 
 Overall, `microbetag` is a software ecosystem composed of a collection of modular code components:
 
-- `microbetagDB` : `db` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/db)
-- `microbetag_prep`: `preprocess` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/preprocess)
+- `microbetag-nf`: the Nextflow pipeline running the external tools, and preparing amplicon data for the on-the-fly version; in [`pipeline/`](pipeline)
+- `microbetagDB` : the database of the server, in [`server/services/db`](server/services/db)
+- `microbetag_prep`: replaced by the prep workflow of `microbetag-nf`; the former tool is on the `preprocess` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/preprocess)
 - `microbetagApp`: individual [GitHub repo](https://github.com/msysbio/microbetagApp-public)
 - `MGG` source code: individual [GitHub repo](https://github.com/hariszaf/MGG)
 - pre-calculations: Seed and non-seed sets for GTDB representative genomes available in `microbetag`, their corresponding GEMs, models for `phenotrex`-based predictions and KEGG annotations of each of those genomes are available on [Zenodo](https://zenodo.org/records/15102937).
@@ -204,66 +151,38 @@ For thorough descriptions on the format of each of these files,
 
 ### Locally
 
-If you are about to use `microbetag` locally, then besides the input files mentioned in the on-the-fly case,
-you have, apparently, several other input data files. 
-For example, you may have a set of genomes, or already annotated genomes. You may also have your own GEMs or not etc. 
-All these files are *optional*. 
+`microbetag` needs a **configuration YAML file**. Each `microbetag` version comes with its own template,
+which this command writes out:
 
-🔴 Yet, **a `config.yml` file is mandatory!** Each `microbetag` **version** comes with **its own template** configuration file,
-that you can find in the [`config_files`](./config_files/) folder.
-
-❗ Properly filling in the configuration file is crucial for the successful operation of `microbetag`.
-
-To do so, take your time and read each argument's description; also check on their allowed values if provided and/or 
-when an argument is required. For example:
-
-```yaml
-kofam_database:
-  path: /home/user/kofam_database
-  description: >
-    Provide the path to the kofam directory_database directory.
-    This variable is not required unless `pathway_complementarity` is set to true
-    and `ko_merged_file` is not provided.
-  required: 
-    value: false
-    when: >
-      pc_percentage is true and ko_merged_file is null
-  type: Path
+```bash
+microbetag --template config.yml
 ```
 
-The `kofam_database` variable is **not always required** as the `required` field is `false`.  
-It also needs to be a string pointing to a directory (`path`) as mentioned in the `type` field. 
-The value of the variable needs to be set in the `path` field. 
+It points to:
+- the **co-occurrence network**, as an edge list, and an **abundance table** or a sequence id to taxonomy map;
+- for each annotation you want, the **output of the tool** it comes from:
 
+| Annotation | Input | Produced by |
+|---|---|---|
+| Pathway complementarity | `ko_merged_file`: KEGG ORTHOLOGY terms per genome | kofam (hmmsearch) on the predicted genes |
+| Seed complementarity | `genome_scale_models`: one GEM (.xml) per genome | CarveMe, gapseq or ModelSEEDpy |
+| Phenotypic traits | `phenotrex_predictions` | phenotrex |
+| FAPROTAX traits | `faprotax_sub_tables` | FAPROTAX |
+| Network clusters | `prev_clustered_network` | manta |
 
-For more specific examples, you may have a look on [`tests`](./tests/) and their corresponding [`test_data`](./test_data/), 
-and of course on the [**running `microbetag` locally**](https://microbetag.readthedocs.io/en/latest/advanced_use/local.html) tutorial.
+microbetag-nf produces all of them. Switch off (`value: false`) the steps you have no input for.
+Then run:
 
-
-❗ The configuration files are considered **templates** since you can use them partially, including only the variables required for the tasks 
-you wish to go for. This is shown in several [`tests`](./tests/).
-
-<!-- Issue where different findings from carveme using cplex and gurobi is mentioned:
-https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
-
-
-#### Tests
-
-To run the `tests/` locally, you may use `pytest`. 
-
-For the case of getting the seed inference example cases, you may run:
-
-```
-pytest tests/test-get-seeds.py --draw --graph-dir test_data/test_graphs
+```bash
+microbetag --config config.yml
 ```
 
----
+[`microbetag/tests/data/microbetag`](./microbetag/tests/data/microbetag/) is a complete example, with its [`config.yml`](./microbetag/tests/data/microbetag/config.yml).
 
-🚀 Once setting `microbetag` locally, you can use it as a Python library to a great extent, meaning you can perform a great range 
-of specific tasks out of the main pipeline concept. 
-For example, given you have a set of GEMs, you may 
-[get their seed complementarities](./tests/test_seed_compl.py), 
-without an abundance table or network. 
+The steps are also available as separate commands (`microbetag-pcompl`, `microbetag-seed-sets`,
+`microbetag-annotate`, ...), which the microbetag-nf pipeline uses; each has `--help`.
+`microbetag` can also be used as a Python library, e.g. to get the seed complementarities of a set of GEMs
+without a network (see [`microbetag/tests/unit/test_seed_compl.py`](./microbetag/tests/unit/test_seed_compl.py)).
 
 
 ## RTD
@@ -273,6 +192,15 @@ without an abundance table or network.
 > **For contributors**
 >
 > To test changes locally first, run:
+>
+> Make sure you install `requirements.txt` on a conda environment: 
+> 
+>```
+> cd docs/
+> pip install -r requirements.txt
+>```
+>
+> and then, you may run:
 > ```
 > sphinx-build -b html -d _build/doctrees -D language=en . _build/html -v
 > ```
@@ -287,9 +215,9 @@ A new RTD is being produced every time a new _microbetag_ `tag` is released auto
 
 If you use `microbetag`, please consider citing us:
 
-Zafeiropoulos H, Michail Delopoulos EI, Erega A, Schneider A, Geirnaert A, Morris J, Faust K. 
-microbetag: simplifying microbial network interpretation through annotation, enrichment tests and metabolic complementarity analysis. 
-*bioRxiv*. 2024:2024-10. DOI: [10.1101/2024.10.01.616208 ](https://doi.org/10.1101/2024.10.01.616208 )
+Zafeiropoulos H, Michail Delopoulos EI, Erega A, Schneider A, Geirnaert A, Morris J, Faust K.
+microbetag: simplifying microbial network interpretation through annotation, enrichment tests and metabolic complementarity analysis.
+*Genome Biology* 26, 292 (2025). DOI: [10.1186/s13059-025-03769-2](https://doi.org/10.1186/s13059-025-03769-2)
 
 
 ## Funding

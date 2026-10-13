@@ -1,0 +1,68 @@
+[build-system]
+requires      = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name            = "microbetag"
+dynamic         = ["version"]
+description     = "Annotation of microbial co-occurrence networks with phenotypic traits and metabolic complementarities."
+readme          = "README.md"
+license         = "GPL-3.0-or-later"
+license-files   = ["LICENSE"]
+authors         = [{ name = "Haris Zafeiropoulos", email = "haris.zafeiropoulos@kuleuven.be" }]
+requires-python = ">=3.10"
+classifiers     = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "numpy>=1.24,<2",
+    "pandas>=2.0",
+    "networkx>=3.1",
+    "PyYAML>=5.4.1",
+    "tqdm>=4.66",
+    "colorlog>=6.9",
+    "ndex2>=3.10",
+    "pyshorteners>=1.0.1",
+    "python-libsbml>=5.20",
+]
+
+[project.optional-dependencies]
+# On-the-fly version, querying the microbetag database
+otf  = ["mysql-connector-python"]
+test = ["pytest>=7"]
+
+[project.scripts]
+microbetag              = "microbetag.microbetag:main"
+# Used by the microbetag-nf Nextflow pipeline
+microbetag-annotate     = "microbetag.cli.annotate:main"
+microbetag-format-manta = "microbetag.cli.format_manta:main"
+microbetag-pcompl       = "microbetag.cli.pcompl:main"
+microbetag-pcompl-ext   = "microbetag.cli.pcompl_ext:main"
+microbetag-seed-sets    = "microbetag.cli.seed_sets:main"
+microbetag-seed-compls  = "microbetag.cli.seed_compls:main"
+microbetag-scompls-pkl  = "microbetag.cli.scompls_pkl:main"
+microbetag-ssets-pkl    = "microbetag.cli.ssets_pkl:main"
+# Export the pre-calculations of a genome catalogue as the files of a microbetag database
+microbetag-export-db    = "microbetag.cli.export_db:main"
+
+[project.urls]
+Documentation = "https://microbetag.readthedocs.io/"
+Source        = "https://github.com/hariszaf/microbetag"
+
+[tool.setuptools.dynamic]
+version = { attr = "microbetag.__version__" }
+
+[tool.setuptools.packages.find]
+where   = ["src"]
+include = ["microbetag", "microbetag.*"]
+
+[tool.setuptools.package-data]
+microbetag = ["mtg_maps_models/**/*", "PhyloMint/**/*", "templates/*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["__pycache__/*", "*.pyc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "-rs"

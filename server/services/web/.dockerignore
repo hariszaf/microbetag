@@ -1,0 +1,7 @@
+old-microbetag-app/
+tests/
+__pycache__/
+microbetag/test_data/
+microbetag/ext_data/
+build/
+.*egg-info/ 
