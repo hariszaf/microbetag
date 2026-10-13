@@ -1,7 +1,10 @@
 
 
-// Mount CPLEX in the containers
+// Mount CPLEX in the containers, if given (params.cplex); gapseq uses its default solver otherwise
 def cplexBind() {
+    if (!params.cplex) {
+        return ""
+    }
     return workflow.containerEngine == 'singularity'
         ? "-B ${params.cplex}:/opt/CPLEX"
         : "-v ${params.cplex}:/opt/CPLEX"
@@ -193,105 +196,82 @@ process GAPSEQ_FILL {
 }
 
 
+// A file of a previous gapseq run (params.gapseq.prev_tbl), e.g. gapseqPrev('bin_101', '-draft.RDS'): in the folder
+// itself, or in a folder per genome, as this module publishes them (reconstructions/bin_101/bin_101-draft.RDS)
+def gapseqPrev(base, suffix) {
+    def prev = params.gapseq?.prev_tbl
+    if (!prev) {
+        return null
+    }
+    def flat = file("${prev}/${base}${suffix}")
+    return flat.exists() ? flat : file("${prev}/${base}/${base}${suffix}")
+}
+
+def hasGapseqPrev(base, suffixes) {
+    return suffixes.every { suffix -> def f = gapseqPrev(base, suffix); f != null && f.exists() }
+}
+
+
 workflow GAPSEQ {
 
-    def genome_ch
-    def genomes_with_base
-    def updated_tbl_ch
-    def draft_input
-    def gf_input
-    def med_ch
+    take:
+    // [base, genome] of each genome
+    genomes_with_base
 
-    genome_ch = channel.fromPath("${params.recon_files}/*")
+    main:
+    def p = params.gapseq.find.p
+    def find_files  = ["-${p}-Reactions.tbl", "-${p}-Pathways.tbl"]
+    def trp_files   = ["-Transporter.tbl"]
+    def draft_files = ["-draft.RDS", "-rxnWeights.RDS", "-rxnXgenes.RDS"]
 
-    // ${params.gapseq.find.p} genomes, with their base name -- genome is a Path object from the previous channel.
-    genomes_with_base = genome_ch.map { genome -> [genome.getBaseName(), genome] }
+    // gapseq find (reactions and pathways), unless available from a previous run or not needed (draft available)
+    def find_prev_ch = genomes_with_base
+        .filter { base, _genome -> hasGapseqPrev(base, find_files) }
+        .map { base, _genome -> [base, gapseqPrev(base, find_files[0]), gapseqPrev(base, find_files[1])] }
+    def find_ch = find_prev_ch.concat(
+        GAPSEQ_FIND(genomes_with_base.filter { base, _genome -> !hasGapseqPrev(base, find_files) && !hasGapseqPrev(base, draft_files) }).find
+    )
 
-    // Genomes with existing tbls
-    def existing_tbl_ch = genomes_with_base.filter { base, genome ->
-        new File("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Reactions.tbl").exists() &&
-        new File("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Pathways.tbl").exists()
-    }.map { base, genome ->
-        def rxn_tbl = file("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Reactions.tbl")
-        def pwt_tbl = file("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Pathways.tbl")
-        [base, rxn_tbl, pwt_tbl]
-    }
+    // gapseq find-transport, likewise
+    def trp_prev_ch = genomes_with_base
+        .filter { base, _genome -> hasGapseqPrev(base, trp_files) }
+        .map { base, _genome -> [base, gapseqPrev(base, trp_files[0])] }
+    def trp_ch = trp_prev_ch.concat(
+        GAPSEQ_FIND_TRANSPORTER(genomes_with_base.filter { base, _genome -> !hasGapseqPrev(base, trp_files) && !hasGapseqPrev(base, draft_files) }).trp_tbl
+    )
 
-    // Genomes missing tbls → need to run process
-    def missing_genomes_ch = genomes_with_base.filter { base, genome ->
-        !(
-            new File("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Reactions.tbl").exists() &&
-            new File("${params.gapseq.prev_tbl}/${base}-${params.gapseq.find.p}-Pathways.tbl").exists()
-        )
-    }
+    // gapseq draft, unless available from a previous run: [base, draft.RDS, rxnWeights.RDS, rxnXgenes.RDS]
+    def draft_prev_ch = genomes_with_base
+        .filter { base, _genome -> hasGapseqPrev(base, draft_files) }
+        .map { base, _genome -> [base] + draft_files.collect { suffix -> gapseqPrev(base, suffix) } }
+    def draft_input = genomes_with_base
+        .filter { base, _genome -> !hasGapseqPrev(base, draft_files) }
+        .join(find_ch)
+        .join(trp_ch)
+    def draft = GAPSEQ_DRAFT(draft_input)
+    def draft_ch = draft_prev_ch.concat(draft.draft_recon_files)
 
-    // Run the find step for those missing Reactions and Pathways tbs files for the -p under study
-    pathways = GAPSEQ_FIND(missing_genomes_ch)
-
-    // All genomes' find-related files
-    updated_tbl_ch = existing_tbl_ch.concat(pathways.find)
-
-    // Genomes with existing tbls
-    def existing_trp_ch = genomes_with_base.filter { base, genome ->
-        new File("${params.gapseq.prev_tbl}/${base}-Transporter.tbl").exists()
-    }.map { base, genome ->
-        def trp_tbl = file("${params.gapseq.prev_tbl}/${base}-Transporter.tbl")
-        [base, trp_tbl]
-    }
-
-    // Genomes missing tbls → need to run process
-    def missing_trp_ch = genomes_with_base.filter { base, genome ->
-        !(
-            new File("${params.gapseq.prev_tbl}/${base}-Transporter.tbl").exists()
-        )
-    }
-
-    // Run the find step for those missing Reactions and Pathways tbs files for the -p under study
-    transporters = GAPSEQ_FIND_TRANSPORTER(missing_trp_ch)
-
-    all_trp_tbl_ch = existing_trp_ch.concat(transporters.trp_tbl)
-
-
-    // Genomes with existing tbls
-    def existing_xml_ch = genomes_with_base.filter { base, genome ->
-        new File("${params.gapseq.prev_tbl}/${base}-draft.xml").exists()
-        new File("${params.gapseq.prev_tbl}/${base}-rxnXgenes.RDS").exists()
-        new File("${params.gapseq.prev_tbl}/${base}-rxnWeights.RDS").exists()
-    }.map { base, genome ->
-        def draft_xml = file("${params.gapseq.prev_tbl}/${base}-draft.RDS")
-        def rxn_genes = file("${params.gapseq.prev_tbl}/${base}-rxnXgenes.RDS")
-        def rxn_wghts = file("${params.gapseq.prev_tbl}/${base}-rxnWeights.RDS")
-        [base, draft_xml, rxn_genes, rxn_wghts]
-    }
-
-    def missing_xml_ch = genomes_with_base.filter { base, genome ->
-        !(
-            new File("${params.gapseq.prev_tbl}/${base}-draft.xml").exists()
-        )
-    }
-
-    // Input tuple for cases whith missing draft reconstruction 
-    draft_input = missing_xml_ch.combine(updated_tbl_ch, by: 0).combine(all_trp_tbl_ch, by: 0)
-
-    // DRAFT RECONSTRUCTIONS
-    draft = GAPSEQ_DRAFT(draft_input)
-
-
-    // Now run GAPSEQ_FILL only when the channel is not empty
+    // gapseq fill, on the medium file; without one, the models are the drafts
     def med_file = params.gapseq?.medium?.file ?: null
-    def has_medium = (med_file && file(med_file).exists())
-    
-    if( has_medium ) {
-        println "GO FOR GAP-FILLING WITH MEDIUM FILE"
-        med_ch   = channel.value(file(med_file))
-        gf_input = existing_xml_ch.concat(draft.draft_recon_files).combine(med_ch)
-        gf_input.view{ base, xml_rds, rxn_wghts, rxn_genes, medim -> 
-        """
-        xml_rds: ${xml_rds}
-        """
-        }
-        gapfilled = GAPSEQ_FILL(gf_input)
+    def models
+    if (med_file) {
+        def med_ch = channel.value(file(med_file, checkIfExists: true))
+        models = GAPSEQ_FILL(draft_ch.combine(med_ch)).filled_xml
     } else {
-        println "No medium file provided - skipping GAPSEQ_FILL"
+        log.warn "No medium file for gapseq (gapseq.medium.file): the models are not gap-filled"
+        def draft_xml_prev = genomes_with_base
+            .filter { base, _genome -> hasGapseqPrev(base, draft_files + ["-draft.xml"]) }
+            .map { base, _genome -> gapseqPrev(base, "-draft.xml") }
+        models = draft_xml_prev.concat(draft.draft_xml)
     }
+
+    emit:
+    model = models
+}
+
+
+workflow {
+
+    def genomes = channel.fromPath("${params.recon_files}/*.{fa,fna,fasta}")
+    GAPSEQ(genomes.map { genome -> [genome.getBaseName(), genome] })
 }
