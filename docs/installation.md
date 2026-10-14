@@ -151,7 +151,7 @@ There are two things to install, depending on [how you use `microbetag`](./modes
 
   ```{note}
   `microbetag` needs a **configuration YAML file**; get the template of the version you are using with
-  `microbetag --template config.yml`.
+  `microbetag --write-template config.yml`.
   See [the configuration file](./tutorials_local/config.md).
   ```
 

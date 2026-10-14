@@ -88,11 +88,11 @@ def test_template(tmp_path):
 
     out = tmp_path / "config.yml"
     with pytest.raises(SystemExit):
-        main(["--template", str(out)])
+        main(["--write-template", str(out)])
 
     conf = yaml.safe_load(out.read_text())
     assert {"edge_list", "ko_merged_file", "genome_scale_models"} <= set(conf)
 
     # An existing file is not overwritten
     with pytest.raises(SystemExit, match="already exists"):
-        main(["--template", str(out)])
+        main(["--write-template", str(out)])

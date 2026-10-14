@@ -1,0 +1,163 @@
+# The parameters of the microbetag configuration: the one place where they are described.
+#
+# Each parameter has, under `value`, `file_path` or `dir_path` (the key the configuration uses), its default: what
+# microbetag uses when the configuration leaves it out. Then a `description`, and optionally:
+#   template   what the template writes, if not the default (e.g. a step on, or the name of an input file)
+#   example    an example value, shown in the template for a parameter that is not set there
+#   required   the configuration must set it
+# From this file:
+#   - microbetag --write-template config.yml    writes the configuration template, the descriptions as comments
+#   - microbetag --describe [PARAMETER]          prints the descriptions
+#   - Config takes the defaults, and checks the configuration for unknown parameters (e.g. a typo)
+#   - the docs page of the parameters (docs/conf.py writes it at build time)
+
+title: microbetag configuration
+intro: |
+  microbetag annotates a co-occurrence network with the outputs of external tools and with the
+  pathway and seed complementarities it computes from them. The tools themselves (Prodigal, kofam,
+  phenotrex, FlashWeave, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, manta) run in the pipeline/ of the
+  microbetag repository.
+
+  Paths are relative to the folder of this file. A parameter set to null (or false) is not used.
+  microbetag --describe PARAMETER explains a parameter.
+
+  Run:  microbetag --config config.yml
+
+sections:
+
+  - title: Network and taxonomy
+    parameters:
+
+      output_directory:
+        dir_path: null
+        template: microbetag_output
+        required: true
+        description: The folder of the outputs.
+
+      edge_list:
+        file_path: null
+        template: edgelist.tsv
+        required: true
+        description: The co-occurrence network, as a 3-column edge list (node A, node B, weight).
+
+      abundance_table_file:
+        file_path: null
+        template: abundance_table.tsv
+        description: >
+          The taxonomy of the nodes, from an abundance table: sequence ids in the first column, taxonomy in the
+          last. Either this or sequence_id_taxonomy_map.
+
+      sequence_id_taxonomy_map:
+        file_path: null
+        example: seqid_taxonomy.tsv
+        description: >
+          The taxonomy of the nodes, from a 2-column file: sequence id, taxonomy. Needed when there is no
+          abundance table.
+
+      metadata_file:
+        file_path: null
+        example: metadata.tsv
+        description: >
+          Metadata, if the network has nodes for them (e.g. inferred by FlashWeave with metadata): one variable
+          per row, its name in the first column, then its value in each sample. Nodes named after a variable
+          (ENV1, or ENV4_A for a value of a categorical one) are marked as metadata variables (metavar).
+
+      threads:
+        value: 2
+        description: Number of threads.
+
+  - title: Node annotations
+    parameters:
+
+      faprotax_annotation:
+        value: false
+        template: true
+        description: Annotate the nodes with FAPROTAX functional traits. Needs the abundance table.
+
+      faprotax_sub_tables:
+        dir_path: null
+        template: faprotax/sub_tables
+        description: The FAPROTAX folder of sub-tables, one per trait (collapse_table.py -s).
+
+      phenotrex_traits:
+        value: false
+        template: true
+        description: Annotate the nodes with phenotrex trait predictions.
+
+      phenotrex_predictions:
+        dir_path: null
+        template: phenotrex_predictions
+        description: The folder of phenotrex predictions, one .tsv per trait (phenotrex predict --verb).
+
+      network_clustering:
+        value: false
+        template: true
+        description: Add the manta clusters of the network.
+
+      prev_clustered_network:
+        file_path: null
+        template: manta_clustered.cyjs
+        description: The manta clustered network (.cyjs). microbetag-format-manta builds manta's input.
+
+  - title: "Edge annotations: metabolic complementarities, computed by microbetag"
+    parameters:
+
+      pathway_complementarity:
+        value: false
+        template: true
+        description: Compute the pathway complementarities of the pairs of genomes.
+
+      ko_merged_file:
+        file_path: null
+        template: ko_merged.txt
+        description: >
+          The KEGG ORTHOLOGY annotation, a 3-column file with a header line: bin_id, contig_id, KO (as produced
+          by kofam/hmmsearch in the pipeline).
+
+      pc_percent:
+        value: 1
+        description: Keep the complements that complete at least this fraction of a module (0 to 1).
+
+      tinyurl:
+        value: false
+        description: Shorten the KEGG map URLs with tinyurl (calls the tinyurl web service).
+
+      pc_file:
+        file_path: null
+        example: microbetag_output/pathway_complementarity/pathCompls.json
+        description: Previously computed pathway complementarities, to skip computing them again.
+
+      seed_complementarity:
+        value: false
+        template: true
+        description: Compute the seed complementarities of the pairs of genomes.
+
+      genome_scale_models:
+        dir_path: null
+        template: gems
+        description: >
+          A folder with one genome-scale metabolic model (SBML .xml) per genome. BiGG (CarveMe, gapseq) and
+          ModelSEED models are recognised.
+
+      prev_conf:
+        file_path: null
+        example: microbetag_output/seeds_complementarity/confidenceDic.json
+        description: >
+          Previously computed seed confidences; with prev_nonseeds, the seed sets are not computed again (and
+          the models are not needed).
+
+      prev_nonseeds:
+        file_path: null
+        example: microbetag_output/seeds_complementarity/nonSeedSetDic.json
+        description: Previously computed non-seed sets; see prev_conf.
+
+# Set by microbetag itself (the on-the-fly server, precalculations), not in the template
+internal:
+  onthefly: {value: false, description: Run as the on-the-fly server.}
+  api: {value: false, description: Called through the server API.}
+  precalculations_only:
+    value: false
+    description: Only the pre-calculations that need neither a network nor an abundance table.
+  prev_nonseeds_module:
+    file_path: null
+    description: The KEGG-module related non-seeds of the database's genomes (on the fly only).

@@ -178,6 +178,7 @@ server/services/web/mappings/kegg_seeds/all_nonseeds_module_related.pckl
 .localdb_credentials.json
 server/services/nginx/certs/
 server/db/db-password
+docs/tutorials_local/config_parameters.md
 
 # Ignore lib being produced by Jupyter notebook
 notebooks/lib/

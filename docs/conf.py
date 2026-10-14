@@ -16,6 +16,23 @@ author = "Lab of Microbial Systems Biology"
 with open(os.path.join(os.path.dirname(__file__), "..", "microbetag/src/microbetag/", "__init__.py")) as f:
     release = re.search(r'__version__\s*=\s*"([^"]+)"', f.read()).group(1)
 
+# The parameters of the configuration, from microbetag/src/microbetag/templates/parameters.yaml, as Markdown
+# tables (tutorials_local/config.md includes them). parameters.py is loaded on its own: the docs do not install
+# microbetag.
+def _write_parameters_page():
+    import importlib.util
+
+    src  = os.path.join(os.path.dirname(__file__), "..", "microbetag", "src", "microbetag")
+    spec = importlib.util.spec_from_file_location("mtg_parameters", os.path.join(src, "parameters.py"))
+    mod  = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    table = mod.render_markdown(mod.load_parameters(os.path.join(src, "templates", "parameters.yaml")))
+    with open(os.path.join(os.path.dirname(__file__), "tutorials_local", "config_parameters.md"), "w") as f:
+        f.write("<!-- Written by docs/conf.py from templates/parameters.yaml; do not edit. -->\n\n" + table)
+
+
+_write_parameters_page()
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
@@ -79,7 +96,7 @@ autoapi_ignore = [
 ]  # "*mtg_maps_models*",
 
 templates_path   = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tutorials_local/config_parameters.md"]
 
 
 # ------------------
