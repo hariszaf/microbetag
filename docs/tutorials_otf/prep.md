@@ -123,7 +123,7 @@ In `prep.yaml`:
 Then run, from the `pipeline` folder:
 
 ```bash
-nextflow run main.nf -params-file my_microbetag_prep/prep.yaml --workflow prep
+nextflow run main.nf -params-file my_microbetag_prep/prep.yaml
 ```
 
 Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`

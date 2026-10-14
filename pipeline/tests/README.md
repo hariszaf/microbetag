@@ -22,7 +22,7 @@ and write to `tests/results/`, which is not tracked. To check a change, run a wo
 `tests/expected/`, e.g.:
 
 ```bash
-nextflow run main.nf -params-file tests/params/annotate.yaml --workflow annotate
+nextflow run main.nf -params-file tests/params/annotate.yaml
 # same edges as the reference network; the weights may differ in their last decimals
 diff <(cut -f1,2 tests/results/annotate/flashweave/fw_net.txt | sort) <(cut -f1,2 tests/expected/annotate/flashweave/fw_net.txt | sort)
 ```

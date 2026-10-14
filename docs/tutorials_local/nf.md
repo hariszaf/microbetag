@@ -225,7 +225,13 @@ parameter it takes, its default and its description:
 nextflow run main.nf --workflow precalc --template precalc.yaml
 ```
 
-and fill it in. A parameter you leave out takes its default, so a params file may set only what you change; a
+and fill it in. The template sets its workflow (`workflow: precalc`), so the file runs on its own:
+
+```bash
+nextflow run main.nf -params-file precalc.yaml
+```
+
+A parameter you leave out takes its default, so a params file may set only what you change; a
 group of settings (e.g. `flashweave_args`, `modelseed`) may be given in part too. Before a run, the pipeline
 reports parameters it does not know (e.g. a typo) and stops if a required one is missing. To describe a parameter,
 or all those of a workflow:
@@ -276,7 +282,7 @@ With the `precalc` params file filled in (the paths to your genomes, the KOfam d
 license), run the workflow with:
 
 ```bash
-nextflow run main.nf -params-file precalc.yaml --workflow precalc
+nextflow run main.nf -params-file precalc.yaml
 ```
 
 `tests/params/precalc.yaml` runs it on the example genomes in `tests/data/genomes`.
@@ -290,7 +296,7 @@ Then annotate the network with:
 
 ```bash
 nextflow run main.nf --workflow annotate --template annotate.yaml
-nextflow run main.nf -params-file annotate.yaml --workflow annotate
+nextflow run main.nf -params-file annotate.yaml
 ```
 
 `tests/params/annotate.yaml` is filled in for the example pre-calculations (`tests/expected/precalc`) and the example
@@ -303,7 +309,7 @@ To prepare an amplicon dataset for the on-the-fly version, see [the preparation 
 
 ```bash
 nextflow run main.nf --workflow prep --template prep.yaml
-nextflow run main.nf -params-file prep.yaml --workflow prep
+nextflow run main.nf -params-file prep.yaml
 ```
 
 ### .. sub-workflows

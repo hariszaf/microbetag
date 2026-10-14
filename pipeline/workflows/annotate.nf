@@ -4,7 +4,7 @@
 
 Usage:
 
-nextflow run main.nf -params-file annotate.yaml --workflow annotate
+nextflow run main.nf -params-file annotate.yaml
 
 (nextflow run main.nf --workflow annotate --template annotate.yaml writes its template; tests/params/annotate.yaml is
 the example of the tests)

@@ -1,3 +1,6 @@
+# The workflow this file runs: nextflow run main.nf -params-file tests/params/network.yaml
+workflow: network
+
 # FlashWeave, FAPROTAX and manta on an abundance table (--workflow network); used by the microbetag server.
 
 # Abundance table, with the taxonomy in its last column (taxonomy_colname)

@@ -52,11 +52,11 @@ all the sessions in use (e.g. by your other jobs on the same licence) waits and 
 
 ## Parameters
 
-Write the template of a workflow, fill it in, and run it:
+Write the template of a workflow, fill it in, and run it; the template sets its workflow (`workflow: precalc`):
 
 ```bash
 nextflow run main.nf --workflow precalc --template precalc.yaml
-nextflow run main.nf -params-file precalc.yaml --workflow precalc
+nextflow run main.nf -params-file precalc.yaml
 ```
 
 A parameter you leave out takes its default. `nextflow run main.nf --help [PARAMETER] [--workflow W]` describes
@@ -118,10 +118,10 @@ tests/
 
 | Command | Uses | Writes to | Compare with |
 |---|---|---|---|
-| `nextflow run main.nf -params-file tests/params/annotate.yaml --workflow annotate` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
-| `nextflow run main.nf -params-file tests/params/precalc.yaml --workflow precalc` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
-| `nextflow run main.nf -params-file tests/params/prep.yaml --workflow prep` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
-| `nextflow run main.nf -params-file tests/params/network.yaml --workflow network` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
+| `nextflow run main.nf -params-file tests/params/annotate.yaml` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
+| `nextflow run main.nf -params-file tests/params/precalc.yaml` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
+| `nextflow run main.nf -params-file tests/params/prep.yaml` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
+| `nextflow run main.nf -params-file tests/params/network.yaml` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
 | `nextflow run workflows/subworkflows/<name>/main.nf -params-file workflows/subworkflows/<name>/<pc or sc>.yaml` | the inputs named in its `.yaml` | `tests/results/subworkflows` | the matching folder of `tests/expected/precalc` |
 | `nextflow run modules/<step>/main.nf -params-file modules/<step>/<step>.yaml` | the inputs named in its `.yaml` | `tests/results/modules` | the matching folder of `tests/expected/precalc` |
 
@@ -129,7 +129,7 @@ The `annotate` example is the quickest check that the pipeline works (a few minu
 FlashWeave, runs FAPROTAX, and annotates the network with the example pre-calculations.
 
 ```bash
-nextflow run main.nf -params-file tests/params/annotate.yaml --workflow annotate
+nextflow run main.nf -params-file tests/params/annotate.yaml
 
 # the inferred network should have the same edges as the reference one
 # (the weights may differ in their last decimals)

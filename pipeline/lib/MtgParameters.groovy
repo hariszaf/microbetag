@@ -104,10 +104,12 @@ class MtgParameters {
 
     // ---------------- Templates ----------------
 
-    String template(String wf) {
+    // The template of a workflow, to be written to `file`; it sets the workflow, so that the file runs on its own
+    String template(String wf, String file = "${wf}.yaml") {
         def rule = '# ' + '-' * (WIDTH - 2)
-        def intro = (spec.intro as String).replace('{workflow}', wf).replace('{file}', "${wf}.yaml")
-        def out = ["# ${spec.title}, ${wf} workflow: ${spec.workflows[wf]}".toString(), '#', comment(intro), '']
+        def intro = (spec.intro as String).replace('{workflow}', wf).replace('{file}', new File(file).name)
+        def out = ["# ${spec.title}, ${wf} workflow: ${spec.workflows[wf]}".toString(), '#', comment(intro), '',
+                   '# The workflow this file runs (precalc, annotate, prep or network).', "workflow: ${wf}".toString(), '']
         sectionsOf(wf).each { title, params ->
             out += [rule, "# ${title}".toString(), rule, '']
             params.each { name, p -> out += entry(name as String, p as Map, 0) + [''] }

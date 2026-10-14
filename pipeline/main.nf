@@ -13,7 +13,7 @@ Choose the workflow with --workflow:
 Usage:
 
     nextflow run main.nf --workflow precalc --template precalc.yaml     write the template of a workflow
-    nextflow run main.nf -params-file precalc.yaml --workflow precalc   run it
+    nextflow run main.nf -params-file precalc.yaml                      run it (the file sets its workflow)
     nextflow run main.nf --help [PARAMETER] [--workflow precalc]        describe the parameters
 
 The parameters, their defaults and descriptions are in parameters.yaml (lib/MtgParameters.groovy reads it).
@@ -52,13 +52,14 @@ workflow {
         if (target.exists()) {
             error "${target} already exists; choose another file name."
         }
-        target.text = parameters.template(params.workflow as String) + '\n'
-        println "Template of the ${params.workflow} workflow written to ${target}"
+        target.text = parameters.template(params.workflow as String, params.template as String) + '\n'
+        println "Template of the ${params.workflow} workflow written to ${target}; fill it in, then run it with:"
+        println "    nextflow run main.nf -params-file ${params.template}"
         return
     }
 
     if (!params.workflow) {
-        error "Choose the workflow to run with --workflow: ${workflows.join(', ')}. See: nextflow run main.nf --help"
+        error "Choose the workflow to run: workflow in the params file (the templates set it), or --workflow: ${workflows.join(', ')}. See: nextflow run main.nf --help"
     }
 
     def unknown = parameters.unknown(params)

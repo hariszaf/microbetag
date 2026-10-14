@@ -1,3 +1,6 @@
+# The workflow this file runs: nextflow run main.nf -params-file tests/params/annotate.yaml
+workflow: annotate
+
 # The input and output directories in this workflow will be mounted
 # so that all relevant files can be accessed during the network annotation step.
 

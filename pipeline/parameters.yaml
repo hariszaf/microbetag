@@ -21,7 +21,7 @@ intro: |
   Paths are relative to the folder you run Nextflow from, or absolute. A parameter left out takes its
   default; one set to null (left empty) is not used.
 
-  Run:  nextflow run main.nf -params-file {file} --workflow {workflow}
+  Run:  nextflow run main.nf -params-file {file}
 
   Help: nextflow run main.nf --help [PARAMETER] --workflow {workflow}
 

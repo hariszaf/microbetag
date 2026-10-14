@@ -1,5 +1,8 @@
+# The workflow this file runs: nextflow run main.nf -params-file tests/params/prep.yaml
+workflow: prep
+
 # Prepare an amplicon dataset for the on-the-fly version of microbetag (MGG).
-# Run with: nextflow run main.nf -params-file tests/params/prep.yaml --workflow prep
+# Run with: nextflow run main.nf -params-file tests/params/prep.yaml
 
 # Abundance table: sequence ids (ASVs/OTUs) in the first column, then the samples,
 # and the sequences in the last column.

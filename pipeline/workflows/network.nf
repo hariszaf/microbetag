@@ -7,7 +7,7 @@
 
 Usage:
 
-nextflow run main.nf -params-file tests/params/network.yaml --workflow network
+nextflow run main.nf -params-file tests/params/network.yaml
 
 Output, in params.outdir: flashweave/fw_net.txt, faprotax/sub_tables/ and manta/manta_net.cyjs
 */
