@@ -15,7 +15,7 @@ Every `microbetag` release comes with its YAML configuration template. Get the o
 installed with:
 
 ```bash
-microbetag --template config.yml
+microbetag --write-template config.yml
 ```
 
 and fill it in.

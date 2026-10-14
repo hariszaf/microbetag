@@ -13,20 +13,20 @@ Output:
     - An annotated network in .cx2 format
 """
 
+import argparse
 import os
 import sys
+
 import yaml
-import argparse
 
-from .utils import (
-    mtg_logger,
-    load_merged_ko_file,
-)
-from .config import load_config, Config
 from .build_mtg_cx2 import mtg_annotate_network
-from .seed_complementarity import run_seed_complementarity
+from .config import Config, load_config
 from .pathway_complementarity import export_pathway_complementarities
-
+from .seed_complementarity import run_seed_complementarity
+from .utils import (
+    load_merged_ko_file,
+    mtg_logger,
+)
 
 logger = mtg_logger(__name__)
 
@@ -138,7 +138,7 @@ def _print_help():
     Usage: microbetag --config <path_to_config_yml>
 
     Get the configuration template of this version with:
-      microbetag --template config.yml
+      microbetag --write-template config.yml
 
     Other options:
     -h        Display this help message.
@@ -161,7 +161,7 @@ def _print_config_message():
     The config file you provided cannot be parsed properly.
     Please make sure you follow the instructions on the documentation site:
     https://microbetag.readthedocs.io/en/latest/tutorials_local/config.html
-    Start from the template of the microbetag version you are running: microbetag --template config.yml
+    Start from the template of the microbetag version you are running: microbetag --write-template config.yml
     """
     logger.error(conf_message)
 
@@ -203,7 +203,7 @@ def main(argv=None):
 
     parser.add_argument("--config", "-c", help="Path to the configuration yaml file.")
     parser.add_argument(
-        "--template", metavar="FILE",
+        "--write-template", metavar="FILE",
         help="Write the configuration template of this microbetag version to FILE, then fill it in.",
     )
     parser.add_argument(
@@ -220,8 +220,8 @@ def main(argv=None):
         _print_version()
         sys.exit()
 
-    if args.template:
-        write_template(args.template)
+    if args.write_template:
+        write_template(args.write_template)
         sys.exit()
 
     if args.describe is not None:

@@ -65,7 +65,7 @@ def test_unknown_parameters():
 
 def test_cli_template_and_describe(tmp_path, capsys):
     with pytest.raises(SystemExit):
-        main(["--template", str(tmp_path / "config.yml")])
+        main(["--write-template", str(tmp_path / "config.yml")])
     assert "metadata_file" in yaml.safe_load((tmp_path / "config.yml").read_text())
     capsys.readouterr()
 

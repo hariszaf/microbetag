@@ -41,7 +41,7 @@ class Config:
 
     Attention:
         Use the configuration template of the microbetag version you are running
-        (`microbetag --template config.yml`); otherwise the Config class may fail to create an instance.
+        (`microbetag --write-template config.yml`); otherwise the Config class may fail to create an instance.
 
     Example:
         >>> with open(args.config, "r") as yaml_file:
