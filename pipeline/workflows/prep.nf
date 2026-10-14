@@ -27,8 +27,8 @@ workflow MICROBETAG_PREP {
     if (params.assign_taxonomy && !(params.gtdb_16s_reference && file(params.gtdb_16s_reference).exists())) {
         error """\
             assign_taxonomy needs the GTDB r207 16S reference of IDTAXA (gtdb_16s_reference), not found: ${params.gtdb_16s_reference}
-            Download gtdb_r207_ssu_idtaxa.RData from the microbetag data on Zenodo (https://doi.org/10.5281/zenodo.6345382)
-            and set its path; or set assign_taxonomy: false to only infer the network.""".stripIndent()
+            Download it with: ./microbetag-nf get-gtdb-16s (into databases/), or from the microbetag data on Zenodo
+            (https://doi.org/10.5281/zenodo.23368237), and set its path; or set assign_taxonomy: false to only infer the network.""".stripIndent()
     }
 
     abundance_ch = channel.fromPath(params.abundance_file, checkIfExists: true)

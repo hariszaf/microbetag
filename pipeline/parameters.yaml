@@ -506,8 +506,9 @@ sections:
         template: databases/gtdb_r207_ssu_idtaxa.RData
         workflows: [prep]
         description: >
-          The GTDB r207 16S reference that IDTAXA classifies the sequences against (gtdb_r207_ssu_idtaxa.RData,
-          from the microbetag data on Zenodo, https://doi.org/10.5281/zenodo.6345382), so that they get the GTDB
+          The GTDB r207 16S reference that IDTAXA classifies the sequences against (gtdb_r207_ssu_idtaxa.RData;
+          microbetag-nf get-gtdb-16s downloads it, from the microbetag data on Zenodo,
+          https://doi.org/10.5281/zenodo.23368237), so that they get the GTDB
           taxonomies of the genomes of the server's database. Nothing is trained: the file is ready to use (DECIPHER
           calls it a training set; it was made once, from GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz of
           https://zenodo.org/records/6655692). Its GTDB release needs to match the one of the server's database,

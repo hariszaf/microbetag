@@ -6,6 +6,7 @@
 #   microbetag-nf run <params file> [nextflow options]   run it (the file names its workflow; e.g. -profile local)
 #   microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
 #   microbetag-nf pull-images [--sif-dir DIR] [params file]   pull the images ahead, for nodes without internet
+#   microbetag-nf get-gtdb-16s [--dir DIR]               download the GTDB 16S reference of prep (IDTAXA)
 #   microbetag-nf help
 #
 # It runs main.nf of the folder it is in, so it works from any folder; the paths of a params file are relative to
@@ -18,6 +19,12 @@ MAIN="${PIPELINE}/main.nf"
 # main.nf then gives its hints as microbetag-nf commands
 export MICROBETAG_NF=1
 WORKFLOWS="precalc annotate prep network"
+
+# The GTDB r207 16S reference of IDTAXA (prep's gtdb_16s_reference), in the microbetag data on Zenodo: this version
+# of the record, so that a later one cannot change what is downloaded
+GTDB_16S_URL="https://zenodo.org/records/23368237/files/gtdb_r207_ssu_idtaxa.RData?download=1"
+GTDB_16S_FILE="gtdb_r207_ssu_idtaxa.RData"
+GTDB_16S_MD5="0580083eeebdff235683eeae26f17def"
 
 usage() {
     cat <<EOF
@@ -34,6 +41,8 @@ Usage:
                                                        pull the Singularity/Apptainer images of the pipeline
                                                        ahead of a run: only needed where the compute nodes have
                                                        no internet (Nextflow pulls them itself otherwise)
+  microbetag-nf get-gtdb-16s [--dir DIR]               download the GTDB 16S reference of prep (IDTAXA), 125 MB,
+                                                       into DIR (default: databases/ of the pipeline)
   microbetag-nf help                                   this message
 
 A run, step by step:
@@ -161,6 +170,37 @@ EOF
         if [[ "${sif_dir}" != "${HOME}/.singularity/mtg-images" ]]; then
             echo "Set singularity.cacheDir (or apptainer.cacheDir) of nextflow.config to ${sif_dir}"
         fi
+        ;;
+
+    get-gtdb-16s)
+        dir="${PIPELINE}/databases"
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                -d | --dir) dir="$2"; shift 2 ;;
+                *) echo "Usage: microbetag-nf get-gtdb-16s [--dir DIR]" >&2; exit 1 ;;
+            esac
+        done
+        target="${dir}/${GTDB_16S_FILE}"
+        md5_of() { md5sum "$1" 2>/dev/null | cut -d' ' -f1 || md5 -q "$1"; }
+        if [[ -s "${target}" && "$(md5_of "${target}")" == "${GTDB_16S_MD5}" ]]; then
+            echo "${target} is already there."
+        else
+            mkdir -p "${dir}"
+            echo "Downloading the GTDB r207 16S reference (125 MB) from Zenodo (doi:10.5281/zenodo.23368237)"
+            if command -v curl >/dev/null 2>&1; then
+                curl -fL --retry 3 --progress-bar -o "${target}.part" "${GTDB_16S_URL}"
+            else
+                wget -q --show-progress -O "${target}.part" "${GTDB_16S_URL}"
+            fi
+            if [[ "$(md5_of "${target}.part")" != "${GTDB_16S_MD5}" ]]; then
+                rm -f "${target}.part"
+                echo "The download is not the expected file (MD5 differs); try again." >&2
+                exit 1
+            fi
+            mv "${target}.part" "${target}"
+            echo "Saved to ${target}"
+        fi
+        echo "In the params file of prep:  gtdb_16s_reference: ${target}"
         ;;
 
     help | -h | --help)

@@ -108,7 +108,7 @@ description and workflows). `python3 tests/check_parameters.py` checks it agains
 ## Repository layout
 
 ```
-microbetag-nf            write-params, run, describe, pull-images: the pipeline without its Nextflow options
+microbetag-nf            write-params, run, describe, pull-images, get-gtdb-16s: the pipeline without Nextflow's options
 main.nf                  entry point: runs the workflow of a params file; --write-params, --help
 parameters.yaml          every parameter of the workflows: default, description, workflows (the one place)
 lib/MtgParameters.groovy reads parameters.yaml: templates, help, checks of a run
@@ -161,7 +161,7 @@ tests/
 |---|---|---|---|
 | `nextflow run main.nf -params-file tests/params/annotate.yaml` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
 | `nextflow run main.nf -params-file tests/params/precalc.yaml` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
-| `nextflow run main.nf -params-file tests/params/prep.yaml` | `tests/data/prep`; needs the GTDB 16S reference in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
+| `nextflow run main.nf -params-file tests/params/prep.yaml` | `tests/data/prep`; needs the GTDB 16S reference in `databases/` (`./microbetag-nf get-gtdb-16s`) | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
 | `nextflow run main.nf -params-file tests/params/network.yaml` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
 | `nextflow run workflows/subworkflows/<name>/main.nf -params-file workflows/subworkflows/<name>/<pc or sc>.yaml` | the inputs named in its `.yaml` | `tests/results/subworkflows` | the matching folder of `tests/expected/precalc` |
 | `nextflow run modules/<step>/main.nf -params-file modules/<step>/<step>.yaml` | the inputs named in its `.yaml` | `tests/results/modules` | the matching folder of `tests/expected/precalc` |

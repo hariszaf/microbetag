@@ -53,8 +53,9 @@ That image is still available on Docker Hub, but it is no longer developed; the 
   cd microbetag/pipeline
   ```
 
-- for the taxonomy assignment, the **GTDB 16S reference** (`gtdb_r207_ssu_idtaxa.RData`), from the
-  <a href="https://doi.org/10.5281/zenodo.6345382" target="_blank">microbetag data on Zenodo</a>: IDTAXA classifies
+- for the taxonomy assignment, the **GTDB 16S reference** (`gtdb_r207_ssu_idtaxa.RData`, 125 MB), from the
+  <a href="https://doi.org/10.5281/zenodo.23368237" target="_blank">microbetag data on Zenodo</a>; in the
+  `pipeline` folder, `./microbetag-nf get-gtdb-16s` downloads it into `databases/` and checks it. IDTAXA classifies
   your sequences against it, so that they get GTDB taxonomies. Nothing is trained on your side; the file is ready to
   use (DECIPHER calls it a "training set", made once from the
   <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>).
