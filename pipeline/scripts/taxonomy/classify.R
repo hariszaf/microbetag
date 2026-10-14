@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
 #
-# Taxonomy assignment of amplicon sequences with IDTAXA (DECIPHER), against a training set built
+# Taxonomy assignment of amplicon sequences with IDTAXA (DECIPHER), against a reference (a DECIPHER "training set") built
 # from the 16S rRNA gene sequences of the GTDB genomes.
 #
-# Usage: classify.R <sequences.fasta> <training_set.RData> <threshold> <assignments.tsv>
+# Usage: classify.R <sequences.fasta> <reference.RData> <threshold> <assignments.tsv>
 #
 # Output: a tab-separated file with the sequence id and its taxonomy (ranks separated by ';').
 
@@ -11,7 +11,7 @@ suppressPackageStartupMessages(library(DECIPHER))
 
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) != 4) {
-  stop("Usage: classify.R <sequences.fasta> <training_set.RData> <threshold> <assignments.tsv>")
+  stop("Usage: classify.R <sequences.fasta> <reference.RData> <threshold> <assignments.tsv>")
 }
 fasta_file    <- args[1]
 training_file <- args[2]
@@ -23,9 +23,12 @@ seqs <- RemoveGaps(readDNAStringSet(fasta_file))
 # Loads the `trainingSet` object
 load(training_file)
 
+# IdTaxa bootstraps: without a seed, ~10% of the assignments change between runs (one rank more or less)
+set.seed(1)
+
 ids <- IdTaxa(seqs,
               trainingSet,
-              strand     = "both",     # or "top" if the sequences have the orientation of the training set
+              strand     = "both",     # or "top" if the sequences have the orientation of the reference
               threshold  = threshold,  # 60 (cautious) or 50 (sensible)
               processors = NULL)       # all available processors
 

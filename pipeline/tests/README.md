@@ -27,4 +27,4 @@ nextflow run main.nf -params-file tests/params/annotate.yaml
 diff <(cut -f1,2 tests/results/annotate/flashweave/fw_net.txt | sort) <(cut -f1,2 tests/expected/annotate/flashweave/fw_net.txt | sort)
 ```
 
-Databases you download (e.g. the GTDB 16S training set for `prep`) go in `databases/`, which is not tracked either.
+Databases you download (e.g. the GTDB 16S reference for `prep`) go in `databases/`, which is not tracked either.

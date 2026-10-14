@@ -501,7 +501,7 @@ sections:
         workflows: [prep]
         description: Assign GTDB taxonomies to the sequences with IDTAXA.
 
-      gtdb_16s_training_set:
+      gtdb_16s_reference:
         value: null
         template: databases/gtdb_r207_ssu_idtaxa.RData
         workflows: [prep]

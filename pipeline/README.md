@@ -131,7 +131,7 @@ envs/                    conda environments of the phenotrex, ModelSEEDpy and DN
 assets/                  FAPROTAX 1.2.10
 get_sif.sh               download all images as Singularity/Apptainer images, e.g. on an HPC
 tests/                   example data, the params files of the tests (params/), reference outputs (below)
-databases/               databases you download, e.g. KOfam or the GTDB 16S training set (not tracked)
+databases/               databases you download, e.g. KOfam or the GTDB 16S reference (not tracked)
 ```
 
 
@@ -162,7 +162,7 @@ tests/
 |---|---|---|---|
 | `nextflow run main.nf -params-file tests/params/annotate.yaml` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
 | `nextflow run main.nf -params-file tests/params/precalc.yaml` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
-| `nextflow run main.nf -params-file tests/params/prep.yaml` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
+| `nextflow run main.nf -params-file tests/params/prep.yaml` | `tests/data/prep`; needs the GTDB 16S reference in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
 | `nextflow run main.nf -params-file tests/params/network.yaml` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
 | `nextflow run workflows/subworkflows/<name>/main.nf -params-file workflows/subworkflows/<name>/<pc or sc>.yaml` | the inputs named in its `.yaml` | `tests/results/subworkflows` | the matching folder of `tests/expected/precalc` |
 | `nextflow run modules/<step>/main.nf -params-file modules/<step>/<step>.yaml` | the inputs named in its `.yaml` | `tests/results/modules` | the matching folder of `tests/expected/precalc` |

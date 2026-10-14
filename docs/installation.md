@@ -115,7 +115,7 @@ There are two things to install, depending on [how you use `microbetag`](./modes
   - the [KOfam database](https://www.genome.jp/ftp/db/kofam/), for the KEGG ORTHOLOGY annotation;
   - a [Gurobi license](#install-gurobi-license), for GEM reconstruction with CarveMe or gap-filling with DNNGIOR
     (or [CPLEX](#install-cplex), for gapseq);
-  - the GTDB 16S training set, for the taxonomy assignment of the [prep workflow](./tutorials_otf/prep.md).
+  - the GTDB 16S reference, for the taxonomy assignment of the [prep workflow](./tutorials_otf/prep.md).
 
 
 ### The package

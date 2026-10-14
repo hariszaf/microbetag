@@ -23,10 +23,10 @@ workflow MICROBETAG_PREP {
         error "Set assign_taxonomy and/or build_network to true."
     }
 
-    // Before anything runs: the training set is not part of the pipeline, and is easy to miss
-    if (params.assign_taxonomy && !(params.gtdb_16s_training_set && file(params.gtdb_16s_training_set).exists())) {
+    // Before anything runs: the GTDB 16S reference is not part of the pipeline, and is easy to miss
+    if (params.assign_taxonomy && !(params.gtdb_16s_reference && file(params.gtdb_16s_reference).exists())) {
         error """\
-            assign_taxonomy needs the GTDB r207 16S reference of IDTAXA (gtdb_16s_training_set), not found: ${params.gtdb_16s_training_set}
+            assign_taxonomy needs the GTDB r207 16S reference of IDTAXA (gtdb_16s_reference), not found: ${params.gtdb_16s_reference}
             Download gtdb_r207_ssu_idtaxa.RData from the microbetag data on Zenodo (https://doi.org/10.5281/zenodo.6345382)
             and set its path; or set assign_taxonomy: false to only infer the network.""".stripIndent()
     }
@@ -35,8 +35,8 @@ workflow MICROBETAG_PREP {
 
     if (params.assign_taxonomy) {
         log.info "Assigning GTDB taxonomies to the sequences with IDTAXA."
-        training_set = channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
-        TAXONOMY(abundance_ch, training_set)
+        reference = channel.fromPath(params.gtdb_16s_reference, checkIfExists: true)
+        TAXONOMY(abundance_ch, reference)
     }
 
     if (params.build_network) {

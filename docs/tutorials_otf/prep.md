@@ -28,7 +28,7 @@ Two tasks before the annotation can be computationally expensive, especially for
 
 - the **taxonomy assignment** of your ASVs/OTUs with GTDB taxonomies, so that `microbetag` can match them to the
   GTDB genomes of our server as well as possible. It uses the IDTAXA algorithm of the
-  <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a training set
+  <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a reference
   built from the 16S rRNA gene sequences of the GTDB genomes
   (based on <a href="https://zenodo.org/records/6655692" target="_blank">these reference sequences</a>);
 - the **network inference** with FlashWeave, needed when you have more than 1,000 ASVs/OTUs and no network.
@@ -81,7 +81,7 @@ The parameters are set in a YAML file; [`prep.yaml`][2] is a template.
 |`abundance_file`          | The abundance table |
 |`outdir`                  | The output folder |
 |`assign_taxonomy`         | Assign GTDB taxonomies to the sequences with IDTAXA (`true`/`false`) |
-|`gtdb_16s_training_set`   | The GTDB 16S training set (`gtdb_r207_ssu_idtaxa.RData`) |
+|`gtdb_16s_reference`   | The GTDB 16S reference (`gtdb_r207_ssu_idtaxa.RData`) |
 |`idtaxa_threshold`        | IDTAXA confidence threshold: 60 (cautious) or 50 (sensible) |
 |`build_network`           | Infer the co-occurrence network with FlashWeave (`true`/`false`) |
 |`metadata_file`           | Metadata file for FlashWeave; leave empty if not available |
@@ -107,7 +107,7 @@ and the <a href="https://github.com/meringlab/flashweave.jl" target="_blank">Fla
 In its last column there is the ASV sequence instead of a taxonomy, since we want GTDB taxonomies, from the 16S rRNA gene,
 to map our ASVs to their closest GTDB genomes.
 
-In the `pipeline` folder, create a folder for the data, and move the table, the training set and the [`prep.yaml`][2]
+In the `pipeline` folder, create a folder for the data, and move the table, the GTDB 16S reference and the [`prep.yaml`][2]
 template there:
 
 ```bash
