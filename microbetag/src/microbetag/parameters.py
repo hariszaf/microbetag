@@ -1,6 +1,9 @@
 """
 The parameters of the microbetag configuration, from templates/parameters.yaml: the one place where they are
-described. The configuration template, `microbetag --describe` and the check for unknown parameters come from it.
+described. The configuration template, `microbetag --describe`, the defaults of Config, its check for unknown
+parameters and the docs page of the parameters come from it.
+
+This module imports nothing of microbetag, so that docs/conf.py can load it on its own.
 """
 
 import textwrap
@@ -12,8 +15,32 @@ FIELDS = ("value", "file_path", "dir_path")
 WIDTH  = 110
 
 
-def load_parameters() -> dict:
+def load_parameters(path: str = None) -> dict:
+    if path is not None:
+        with open(path) as f:
+            return yaml.safe_load(f)
     return yaml.safe_load(resources.files("microbetag").joinpath("templates", "parameters.yaml").read_text())
+
+
+_PARAMETERS = None
+
+
+def default(name: str):
+    """What microbetag uses for a parameter that the configuration leaves out."""
+    global _PARAMETERS
+    if _PARAMETERS is None:
+        _PARAMETERS = all_parameters()
+    p = _PARAMETERS[name]
+    return p[field(p)]
+
+
+def get_value(conf: dict, key: str):
+    """
+    The 'value' of a parameter of the configuration (conf[key]['value']), or its default if the configuration leaves
+    it out or sets it to null.
+    """
+    value = (conf.get(key) or {}).get("value")
+    return default(key) if value is None else value
 
 
 def all_parameters(spec: dict = None) -> dict:
@@ -37,8 +64,17 @@ def _comment(text: str, width: int = WIDTH) -> str:
     return "\n".join(f"# {line}".rstrip() for line in lines[:-1])
 
 
+def template_value(param: dict):
+    """What the template writes for a parameter: its `template` value if any, else its default."""
+    return param["template"] if "template" in param else param[field(param)]
+
+
+def _show(value) -> str:
+    return "not set" if value is None else str(value).lower() if isinstance(value, bool) else str(value)
+
+
 def render_template(spec: dict = None) -> str:
-    """The configuration template: every parameter, with its default, and its description as a comment."""
+    """The configuration template: every parameter, with its template value, and its description as a comment."""
     spec = spec or load_parameters()
     rule = "# " + "-" * (WIDTH - 2)
     out  = [f"# {spec['title']} (microbetag --template config.yml)", "#", _comment(spec["intro"]), ""]
@@ -48,8 +84,7 @@ def render_template(spec: dict = None) -> str:
             desc = p["description"] + (" Required." if p.get("required") else "")
             if p.get("example") is not None:
                 desc += f" E.g. {p['example']}"
-            key, default = field(p), p[field(p)]
-            out += [_comment(desc), yaml.safe_dump({name: {key: default}}, sort_keys=False).rstrip(), ""]
+            out += [_comment(desc), yaml.safe_dump({name: {field(p): template_value(p)}}, sort_keys=False).rstrip(), ""]
     return "\n".join(out)
 
 
@@ -61,8 +96,8 @@ def describe(name: str = None) -> str:
     lines = []
     for n, p in params.items():
         if name is None or n == name:
-            default = p[field(p)]
-            lines.append(f"{n}  ({field(p)}, default: {default if default is not None else 'not set'})")
+            info = f"{field(p)}, default: {_show(p[field(p)])}" + (", required" if p.get("required") else "")
+            lines.append(f"{n}  ({info})")
             lines.append(textwrap.indent(textwrap.fill(" ".join(p["description"].split()), WIDTH - 4), "    "))
     return "\n".join(lines)
 
@@ -71,3 +106,30 @@ def unknown_parameters(conf: dict) -> list:
     """Parameters of a configuration that microbetag does not know (e.g. a typo)."""
     known = set(all_parameters())
     return sorted(k for k in conf if not k.startswith("__") and k not in known)
+
+
+def render_markdown(spec: dict = None) -> str:
+    """The parameters as Markdown tables, one per section of the template, for the docs."""
+    spec = spec or load_parameters()
+
+    def cell(text):
+        return " ".join(str(text).split()).replace("|", "\\|")
+
+    out = []
+    for section in spec["sections"]:
+        out += [f"### {section['title']}", "", "| Parameter | Key | Default | In the template | Description |",
+                "|---|---|---|---|---|"]
+        for name, p in section["parameters"].items():
+            desc = cell(p["description"]) + (" **Required.**" if p.get("required") else "")
+            if p.get("example") is not None:
+                desc += f" E.g. `{p['example']}`."
+            shown = template_value(p)
+            out.append(f"| `{name}` | `{field(p)}` | `{_show(p[field(p)])}` | "
+                       f"{'`' + _show(shown) + '`' if shown is not None else ''} | {desc} |")
+        out.append("")
+    out += ["### Set by microbetag", "",
+            "Not in the template: the on-the-fly server and the pre-calculations set them.", "",
+            "| Parameter | Key | Default | Description |", "|---|---|---|---|"]
+    for name, p in spec.get("internal", {}).items():
+        out.append(f"| `{name}` | `{field(p)}` | `{_show(p[field(p)])}` | {cell(p['description'])} |")
+    return "\n".join(out) + "\n"

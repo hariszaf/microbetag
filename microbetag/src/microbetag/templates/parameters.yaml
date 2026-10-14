@@ -1,11 +1,15 @@
 # The parameters of the microbetag configuration: the one place where they are described.
 #
-# Each parameter has its value under `value`, `file_path` or `dir_path` (the key the configuration uses), its
-# default there, and a `description`. Optional: `example` (shown in the template for a parameter off by default) and
-# `required`. From this file:
+# Each parameter has, under `value`, `file_path` or `dir_path` (the key the configuration uses), its default: what
+# microbetag uses when the configuration leaves it out. Then a `description`, and optionally:
+#   template   what the template writes, if not the default (e.g. a step on, or the name of an input file)
+#   example    an example value, shown in the template for a parameter that is not set there
+#   required   the configuration must set it
+# From this file:
 #   - microbetag --template config.yml          writes the configuration template, the descriptions as comments
 #   - microbetag --describe [PARAMETER]          prints the descriptions
-#   - the configuration is checked for unknown parameters (e.g. a typo)
+#   - Config takes the defaults, and checks the configuration for unknown parameters (e.g. a typo)
+#   - the docs page of the parameters (docs/conf.py writes it at build time)
 
 title: microbetag configuration
 intro: |
@@ -25,16 +29,20 @@ sections:
     parameters:
 
       output_directory:
-        dir_path: microbetag_output
+        dir_path: null
+        template: microbetag_output
+        required: true
         description: The folder of the outputs.
 
       edge_list:
-        file_path: edgelist.tsv
+        file_path: null
+        template: edgelist.tsv
         required: true
         description: The co-occurrence network, as a 3-column edge list (node A, node B, weight).
 
       abundance_table_file:
-        file_path: abundance_table.tsv
+        file_path: null
+        template: abundance_table.tsv
         description: >
           The taxonomy of the nodes, from an abundance table: sequence ids in the first column, taxonomy in the
           last. Either this or sequence_id_taxonomy_map.
@@ -62,38 +70,46 @@ sections:
     parameters:
 
       faprotax_annotation:
-        value: true
+        value: false
+        template: true
         description: Annotate the nodes with FAPROTAX functional traits. Needs the abundance table.
 
       faprotax_sub_tables:
-        dir_path: faprotax/sub_tables
+        dir_path: null
+        template: faprotax/sub_tables
         description: The FAPROTAX folder of sub-tables, one per trait (collapse_table.py -s).
 
       phenotrex_traits:
-        value: true
+        value: false
+        template: true
         description: Annotate the nodes with phenotrex trait predictions.
 
       phenotrex_predictions:
-        dir_path: phenotrex_predictions
+        dir_path: null
+        template: phenotrex_predictions
         description: The folder of phenotrex predictions, one .tsv per trait (phenotrex predict --verb).
 
       network_clustering:
-        value: true
+        value: false
+        template: true
         description: Add the manta clusters of the network.
 
       prev_clustered_network:
-        file_path: manta_clustered.cyjs
+        file_path: null
+        template: manta_clustered.cyjs
         description: The manta clustered network (.cyjs). microbetag-format-manta builds manta's input.
 
   - title: "Edge annotations: metabolic complementarities, computed by microbetag"
     parameters:
 
       pathway_complementarity:
-        value: true
+        value: false
+        template: true
         description: Compute the pathway complementarities of the pairs of genomes.
 
       ko_merged_file:
-        file_path: ko_merged.txt
+        file_path: null
+        template: ko_merged.txt
         description: >
           The KEGG ORTHOLOGY annotation, a 3-column file with a header line: bin_id, contig_id, KO (as produced
           by kofam/hmmsearch in the pipeline).
@@ -112,11 +128,13 @@ sections:
         description: Previously computed pathway complementarities, to skip computing them again.
 
       seed_complementarity:
-        value: true
+        value: false
+        template: true
         description: Compute the seed complementarities of the pairs of genomes.
 
       genome_scale_models:
-        dir_path: gems
+        dir_path: null
+        template: gems
         description: >
           A folder with one genome-scale metabolic model (SBML .xml) per genome. BiGG (CarveMe, gapseq) and
           ModelSEED models are recognised.

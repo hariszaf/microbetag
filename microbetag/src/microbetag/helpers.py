@@ -15,6 +15,7 @@ from .utils import (
     convert_to_json_serializable,
 )
 from .networks import build_base_graph, get_edgelist
+from .parameters import get_value
 
 if TYPE_CHECKING:
     from .config import Config
@@ -90,7 +91,7 @@ class PathwayComplementarity:
 
         pc_file      = (self.conf.yaml.get("pc_file") or {}).get("file_path")
         self.pc_dir     = os.path.join(self.outdir, "pathway_complementarity")
-        self.pc_percent = (self.conf.yaml.get("pc_percent") or {}).get("value", 1)
+        self.pc_percent = get_value(self.conf.yaml, "pc_percent")
 
         os.makedirs(self.pc_dir, exist_ok=True)
 

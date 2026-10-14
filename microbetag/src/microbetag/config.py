@@ -19,7 +19,7 @@ from .helpers import (
     missing_input_error,
 )
 from .networks import get_edgelist
-from .parameters import unknown_parameters
+from .parameters import get_value, unknown_parameters
 from .utils import (
     mtg_logger,
     detect_separator,
@@ -92,18 +92,18 @@ class Config:
         self.__dict__.update(vars(mappings))
 
         # Checks whether microbetag is running on the on-the-fly version, by default False
-        self.onthefly = get_value(conf, "onthefly", False)
-        self.api      = get_value(conf, "api", False)
+        self.onthefly = get_value(conf, "onthefly")
+        self.api      = get_value(conf, "api")
 
         # Threads to be used
-        self.threads = get_value(conf, "threads", 2)
+        self.threads = get_value(conf, "threads")
 
         # Steps
-        self.faprotax    = get_value(conf, "faprotax_annotation", False)
-        self.phen_traits = get_value(conf, "phenotrex_traits", False)
-        self.path_compl  = get_value(conf, "pathway_complementarity", False)
-        self.seed_compl  = get_value(conf, "seed_complementarity", False)
-        self.net_cluster = get_value(conf, "network_clustering", False)
+        self.faprotax    = get_value(conf, "faprotax_annotation")
+        self.phen_traits = get_value(conf, "phenotrex_traits")
+        self.path_compl  = get_value(conf, "pathway_complementarity")
+        self.seed_compl  = get_value(conf, "seed_complementarity")
+        self.net_cluster = get_value(conf, "network_clustering")
 
         # The abundance table is optional; without it, a sequence id to taxonomy map is needed
         abd_tbl_filename     = (conf.get("abundance_table_file") or {}).get("file_path")
@@ -126,7 +126,7 @@ class Config:
         # for partial/specific tasks of microbetag.
         # -------
 
-        precalc_only      = get_value(conf, "precalculations_only", False)
+        precalc_only      = get_value(conf, "precalculations_only")
         self.precalc_only = precalc_only if precalc_only in [0, 1] else False
 
         if self.network is None and not self.precalc_only:
@@ -256,7 +256,7 @@ class Config:
         self.microbetag_annotated_network_file = os.path.join(
             self.outdir, "pseudo_cx_annotated_net.cx"
         )
-        self.tinyurl = get_value(conf, "tinyurl", False)
+        self.tinyurl = get_value(conf, "tinyurl")
 
         _logger_.info("Configuration file loaded successfully.")
 
@@ -265,17 +265,6 @@ class Config:
         args = convert_to_json_serializable(self.__dict__)
         with open(log_file, "w") as f:
             json.dump(args, f)
-
-
-def get_value(conf, key, default=None):
-    """
-    Retrieves the 'value' field for a given key from a nested configuration dictionary.
-
-    Returns:
-    any: The value associated with conf[key]['value'], or the provided default if not found or None.
-    """
-    value = (conf.get(key) or {}).get("value", default)
-    return default if value is None else value
 
 
 def load_config(yaml_file):

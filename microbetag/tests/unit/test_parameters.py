@@ -21,13 +21,32 @@ def test_every_parameter_is_described():
         assert sum(f in p for f in parameters.FIELDS) == 1, name
 
 
-def test_template_has_every_parameter_with_its_default():
+def test_template_has_every_parameter():
     spec     = parameters.load_parameters()
     template = yaml.safe_load(parameters.render_template(spec))
     params   = {n: p for s in spec["sections"] for n, p in s["parameters"].items()}
     assert list(template) == list(params)
     for name, p in params.items():
-        assert template[name] == {parameters.field(p): p[parameters.field(p)]}
+        assert template[name] == {parameters.field(p): parameters.template_value(p)}
+    assert template["seed_complementarity"] == {"value": True}
+    assert template["metadata_file"] == {"file_path": None}
+
+
+def test_defaults():
+    # What Config uses for a parameter left out, or set to null
+    assert parameters.get_value({}, "threads") == 2
+    assert parameters.get_value({"threads": None}, "threads") == 2
+    assert parameters.get_value({"threads": {"value": None}}, "threads") == 2
+    assert parameters.get_value({"threads": {"value": 8}}, "threads") == 8
+    assert parameters.get_value({}, "seed_complementarity") is False
+    assert parameters.get_value({}, "pc_percent") == 1
+
+
+def test_docs_tables():
+    md = parameters.render_markdown()
+    for name in parameters.all_parameters():
+        assert f"| `{name}` |" in md
+    assert "| `seed_complementarity` | `value` | `false` | `true` |" in md
 
 
 def test_code_reads_only_described_parameters():
@@ -35,7 +54,7 @@ def test_code_reads_only_described_parameters():
     for py in SRC.rglob("*.py"):
         text  = py.read_text()
         read |= set(re.findall(r'(?:conf|yaml)\.get\("(\w+)"', text))
-        read |= set(re.findall(r'get_value\((?:self\.)?conf, "(\w+)"', text))
+        read |= set(re.findall(r'get_value\([\w.]+, "(\w+)"', text))
     read -= {"__config_dir__"}
     assert read and read <= set(parameters.all_parameters())
 
