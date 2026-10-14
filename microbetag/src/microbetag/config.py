@@ -19,6 +19,7 @@ from .helpers import (
     missing_input_error,
 )
 from .networks import get_edgelist
+from .parameters import unknown_parameters
 from .utils import (
     mtg_logger,
     detect_separator,
@@ -71,8 +72,13 @@ class Config:
         if self.base_dir is None:
             raise SystemError("You need to provide a base directory, where your config is found.")
 
+        # Parameters microbetag does not know (e.g. a typo): see templates/parameters.yaml
+        unknown = unknown_parameters(conf)
+        if unknown:
+            _logger_.warning(f"Unknown parameters in the configuration, ignored: {', '.join(unknown)}")
+
         # Output dir
-        outdir = conf.get("output_directory", {}).get("dir_path")
+        outdir = (conf.get("output_directory") or {}).get("dir_path")
         if outdir:
             self.outdir = os.path.join(self.base_dir, outdir)
         else:
@@ -100,11 +106,11 @@ class Config:
         self.net_cluster = get_value(conf, "network_clustering", False)
 
         # The abundance table is optional; without it, a sequence id to taxonomy map is needed
-        abd_tbl_filename     = conf.get("abundance_table_file", {}).get("file_path")
+        abd_tbl_filename     = (conf.get("abundance_table_file") or {}).get("file_path")
         self.abundance_table = resolve_file_path(self.base_dir, abd_tbl_filename)
 
         # Edgelist of provided network
-        edge_list    = conf.get("edge_list", {}).get("file_path")
+        edge_list    = (conf.get("edge_list") or {}).get("file_path")
         self.network = resolve_file_path(
             self.base_dir, edge_list
         )
@@ -131,7 +137,7 @@ class Config:
             )
 
         # IMPORTANT: Sequence to taxonomy map -- required if no abundance table is needed
-        sequence_taxonomy_map      = conf.get("sequence_id_taxonomy_map", {}).get("file_path")
+        sequence_taxonomy_map      = (conf.get("sequence_id_taxonomy_map") or {}).get("file_path")
         self.sequence_taxonomy_map = resolve_file_path(
             self.base_dir, sequence_taxonomy_map
         )
@@ -218,7 +224,7 @@ class Config:
                 self.phen_traits_dir = os.path.join(self.outdir, "phen_predictions")
                 os.makedirs(self.phen_traits_dir, exist_ok=True)
             else:
-                predictions = conf.get("phenotrex_predictions", {}).get("dir_path")
+                predictions = (conf.get("phenotrex_predictions") or {}).get("dir_path")
                 if predictions is None:
                     raise missing_input_error(
                         "Phenotypic trait annotation", "phenotrex_predictions", "folder of predictions",
@@ -233,7 +239,7 @@ class Config:
 
         # manta: the clustered network is an input
         if self.net_cluster:
-            manta_net = conf.get("prev_clustered_network", {}).get("file_path")
+            manta_net = (conf.get("prev_clustered_network") or {}).get("file_path")
             if manta_net is None:
                 raise missing_input_error(
                     "Network clustering", "prev_clustered_network", "clustered network (.cyjs)",
@@ -268,7 +274,7 @@ def get_value(conf, key, default=None):
     Returns:
     any: The value associated with conf[key]['value'], or the provided default if not found or None.
     """
-    value = conf.get(key, {}).get("value", default)
+    value = (conf.get(key) or {}).get("value", default)
     return default if value is None else value
 
 

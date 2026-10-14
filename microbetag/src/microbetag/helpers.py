@@ -74,7 +74,7 @@ class PathwayComplementarity:
 
         # 3-column file with the KEGG ORTHOLOGY terms of each genome
         self.ko_merged = None
-        ko_merged = self.conf.yaml.get("ko_merged_file", {}).get("file_path")
+        ko_merged = (self.conf.yaml.get("ko_merged_file") or {}).get("file_path")
 
         if ko_merged:
             self.ko_merged = resolve_file_path(self.base_dir, ko_merged)
@@ -88,9 +88,9 @@ class PathwayComplementarity:
     def output_dirs(self):
         """Paths to output folders and files"""
 
-        pc_file      = self.conf.yaml.get("pc_file", {}).get("file_path")
+        pc_file      = (self.conf.yaml.get("pc_file") or {}).get("file_path")
         self.pc_dir     = os.path.join(self.outdir, "pathway_complementarity")
-        self.pc_percent = self.conf.yaml.get("pc_percent", {}).get("value", 1)
+        self.pc_percent = (self.conf.yaml.get("pc_percent") or {}).get("value", 1)
 
         os.makedirs(self.pc_dir, exist_ok=True)
 
@@ -134,7 +134,7 @@ class Faprotax:
     """Path to the FAPROTAX sub-tables (one per trait) used to annotate the network nodes."""
 
     def __init__(self, config):
-        sub_tables = config.yaml.get("faprotax_sub_tables", {}).get("dir_path")
+        sub_tables = (config.yaml.get("faprotax_sub_tables") or {}).get("dir_path")
         if sub_tables is None:
             raise missing_input_error(
                 "FAPROTAX annotation", "faprotax_sub_tables", "folder of sub-tables",
@@ -229,7 +229,7 @@ class SeedComplementarityHandler:
         if config.onthefly:
             return
 
-        models = config.yaml.get("genome_scale_models", {}).get("dir_path")
+        models = (config.yaml.get("genome_scale_models") or {}).get("dir_path")
         if models is None:
             if self.skip_sets:
                 # Scores and complements only need the previously computed sets
@@ -277,8 +277,8 @@ class SeedComplementarityHandler:
         os.makedirs(self.seeds_outdir, exist_ok=True)
 
         # NOTE (Haris Zafeiropoulos, 2025-04-29): These 2 are supposed to be the .json files.
-        self.prev_conf     = resolve_file_path(self.base_dir, config.yaml.get("prev_conf", {}).get("file_path"))
-        self.prev_nonseeds = resolve_file_path(self.base_dir, config.yaml.get("prev_nonseeds", {}).get("file_path"))
+        self.prev_conf     = resolve_file_path(self.base_dir, (config.yaml.get("prev_conf") or {}).get("file_path"))
+        self.prev_nonseeds = resolve_file_path(self.base_dir, (config.yaml.get("prev_nonseeds") or {}).get("file_path"))
 
         self.skip_sets     = self.prev_conf is not None and self.prev_nonseeds is not None
 
@@ -291,7 +291,7 @@ class SeedComplementarityHandler:
         self.module_seeds    = os.path.join(self.seeds_outdir, "kegg_module_related_seeds.pkl")
 
         if config.onthefly:
-            self.module_nonseeds = config.yaml.get("prev_nonseeds_module", {}).get("file_path")
+            self.module_nonseeds = (config.yaml.get("prev_nonseeds_module") or {}).get("file_path")
         else:
             self.module_nonseeds = os.path.join(
                 self.seeds_outdir, "kegg_module_related_nonseeds.pkl"

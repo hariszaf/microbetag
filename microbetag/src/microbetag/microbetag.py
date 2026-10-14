@@ -184,14 +184,13 @@ def _annotate_network(config):
 # The main
 def write_template(path: str) -> None:
     """Writes the configuration template of the installed microbetag version to `path`."""
-    from importlib import resources
+    from .parameters import render_template
 
     if os.path.exists(path):
         sys.exit(f"{path} already exists; choose another file name.")
 
-    template = resources.files("microbetag").joinpath("templates", "config.yml").read_text()
     with open(path, "w") as f:
-        f.write(template)
+        f.write(render_template())
     print(f"Configuration template written to {path}")
 
 
@@ -208,6 +207,10 @@ def main(argv=None):
         help="Write the configuration template of this microbetag version to FILE, then fill it in.",
     )
     parser.add_argument(
+        "--describe", metavar="PARAMETER", nargs="?", const="",
+        help="Describe a parameter of the configuration, or all of them.",
+    )
+    parser.add_argument(
         "-v", "--version", action="store_true", help="Show Microbetag version"
     )
 
@@ -219,6 +222,14 @@ def main(argv=None):
 
     if args.template:
         write_template(args.template)
+        sys.exit()
+
+    if args.describe is not None:
+        from .parameters import describe
+        try:
+            print(describe(args.describe or None))
+        except KeyError as e:
+            sys.exit(e.args[0])
         sys.exit()
 
     elif args.config is None:
