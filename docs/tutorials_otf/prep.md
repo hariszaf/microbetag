@@ -53,9 +53,11 @@ That image is still available on Docker Hub, but it is no longer developed; the 
   cd microbetag/pipeline
   ```
 
-- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`): IDTAXA's training set,
-  built with DECIPHER's `LearnTaxa` from the
-  <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>.
+- for the taxonomy assignment, the **GTDB 16S reference** (`gtdb_r207_ssu_idtaxa.RData`), from the
+  <a href="https://doi.org/10.5281/zenodo.6345382" target="_blank">microbetag data on Zenodo</a>: IDTAXA classifies
+  your sequences against it, so that they get GTDB taxonomies. Nothing is trained on your side; the file is ready to
+  use (DECIPHER calls it a "training set", made once from the
+  <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>).
   r207 is the GTDB release of our server's database: the taxonomies need to be of the same release, since the
   server matches taxa to genomes by their names
 - your **abundance table**, as a `.tsv` or `.csv` file:
