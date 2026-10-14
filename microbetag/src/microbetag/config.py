@@ -111,7 +111,7 @@ class Config:
 
         # Metadata of the network: one variable per row, its name in the first column. The nodes of the network
         # named after them (e.g. FlashWeave's, inferred with the metadata) are its metadata variables (metavar).
-        metadata_file      = conf.get("metadata_file", {}).get("file_path")
+        metadata_file      = (conf.get("metadata_file") or {}).get("file_path")
         self.metadata_file = resolve_file_path(self.base_dir, metadata_file)
 
         # -------

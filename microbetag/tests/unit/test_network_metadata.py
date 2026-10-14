@@ -45,3 +45,13 @@ def test_config_reads_metadata_file(data_copy):
 
     config = Config(conf, str(work / "config.yml"))
     assert config.metadata_file == str(work / "inputs" / "metadata.tsv")
+
+
+def test_config_empty_metadata_file(data_copy):
+    work = data_copy("microbetag")
+    with open(work / "config.yml") as f:
+        conf = yaml.safe_load(f)
+    conf["metadata_file"] = None  # "metadata_file:" with nothing under it
+
+    config = Config(conf, str(work / "config.yml"))
+    assert config.metadata_file is None
