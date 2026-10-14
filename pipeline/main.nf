@@ -54,24 +54,24 @@ workflow {
         }
         target.text = parameters.template(params.workflow as String, params.writeParams as String) + '\n'
         println "Params file of the ${params.workflow} workflow written to ${target}; fill it in, then run it with:"
-        println "    nextflow run main.nf -params-file ${params.writeParams}"
+        println "    ${MtgParameters.runCommand(params.writeParams as String)}"
         return
     }
 
     if (!params.workflow) {
-        error "Choose the workflow to run: workflow in the params file (the templates set it), or --workflow: ${workflows.join(', ')}. See: nextflow run main.nf --help"
+        error "Choose the workflow to run: workflow in the params file (the templates set it), or --workflow: ${workflows.join(', ')}. See: ${MtgParameters.helpCommand()}"
     }
 
     def unknown = parameters.unknown(params)
     if (unknown) {
-        log.warn "Unknown parameters, ignored: ${unknown.join(', ')}. See: nextflow run main.nf --help --workflow ${params.workflow}"
+        log.warn "Unknown parameters, ignored: ${unknown.join(', ')}. See: ${MtgParameters.helpCommand(params.workflow as String)}"
     }
 
     parameters.applyDefaults(params)
 
     def missing = parameters.missing(params, params.workflow as String)
     if (missing) {
-        error "The ${params.workflow} workflow needs: ${missing.join(', ')}. See: nextflow run main.nf --help --workflow ${params.workflow}"
+        error "The ${params.workflow} workflow needs: ${missing.join(', ')}. See: ${MtgParameters.helpCommand(params.workflow as String)}"
     }
 
     if (params.workflow == 'precalc') {

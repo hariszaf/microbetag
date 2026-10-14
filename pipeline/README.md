@@ -62,36 +62,53 @@ all the sessions in use (e.g. by your other jobs on the same licence) waits and 
 ## Parameters
 
 A run of the pipeline is described by a **params file** (YAML): the workflow to run and its parameters. You do not
-write it from scratch: the pipeline writes a template for the workflow you want, with every parameter it takes,
-its default and a description of it, as comments.
+write it from scratch: the pipeline writes it for the workflow you want, with every parameter it takes, its
+default and a description of it, as comments.
 
-1. Write the template of a workflow (here `precalc`) to a file of your choice:
+The `microbetag-nf` script, in this folder, does the steps below; it runs `main.nf` for you, from any folder (add
+this folder to your `PATH`, or call it as `./microbetag-nf`). `microbetag-nf help` lists its commands.
+
+1. Write the params file of a workflow (here `precalc`) to a file of your choice:
 
    ```bash
-   nextflow run main.nf --workflow precalc --write-params my_precalc.yaml
+   microbetag-nf write-params precalc my_precalc.yaml
    ```
 
 2. Open `my_precalc.yaml` and fill it in: the paths to your data (e.g. `genomes`), and the steps you want (e.g.
    `phenotrex: true`). You may delete the parameters you leave at their default, since a parameter missing from
    the file takes its default.
 
-3. Run it. The template already says which workflow it is for (`workflow: precalc`), so the file is all Nextflow
-   needs:
+3. Run it. The file already says which workflow it is for (`workflow: precalc`), so it is all the pipeline needs;
+   Nextflow options, such as `-profile local` or `-resume`, go after it:
 
    ```bash
-   nextflow run main.nf -params-file my_precalc.yaml
+   microbetag-nf run my_precalc.yaml
    ```
 
-The other workflows work the same way (`--workflow annotate`, `prep` or `network`).
+The other workflows work the same way (`microbetag-nf workflows` lists them). To read the description of a
+parameter, or of all those of a workflow, without writing a params file:
 
-To read the description of a parameter, or of all those of a workflow, without writing a template:
-`nextflow run main.nf --help [PARAMETER] [--workflow W]`. All the parameters are in [`parameters.yaml`](./parameters.yaml), where a new parameter is added (with its default,
+```bash
+microbetag-nf describe gurobi_sessions
+microbetag-nf describe annotate
+```
+
+Without the script, the same with Nextflow:
+
+| `microbetag-nf` | Nextflow |
+|---|---|
+| `microbetag-nf write-params precalc my_precalc.yaml` | `nextflow run main.nf --workflow precalc --write-params my_precalc.yaml` |
+| `microbetag-nf run my_precalc.yaml` | `nextflow run main.nf -params-file my_precalc.yaml` |
+| `microbetag-nf describe [PARAMETER] [WORKFLOW]` | `nextflow run main.nf --help [PARAMETER] [--workflow WORKFLOW]` |
+
+All the parameters are in [`parameters.yaml`](./parameters.yaml), where a new parameter is added (with its default,
 description and workflows). `python3 tests/check_parameters.py` checks it against the parameters the workflows read
 (also in CI).
 
 ## Repository layout
 
 ```
+microbetag-nf            write-params, run, describe: the pipeline without its Nextflow options
 main.nf                  entry point: runs the workflow of a params file; --write-params, --help
 parameters.yaml          every parameter of the workflows: default, description, workflows (the one place)
 lib/MtgParameters.groovy reads parameters.yaml: templates, help, checks of a run

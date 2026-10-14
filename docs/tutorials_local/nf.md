@@ -218,17 +218,21 @@ In the [HPC case](#the-hpc-case), `cacheDir` needs to be the folder the images w
 
 ### Parameters
 
-At this level, you choose the steps to run and your input data. Write the template of a workflow, with every
-parameter it takes, its default and its description:
+At this level, you choose the steps to run and your input data, in a **params file**. The `microbetag-nf`
+script of the `pipeline/` folder writes it for a workflow, with every parameter it takes, its default and its
+description, and runs it; it calls `main.nf` for you, from any folder (`microbetag-nf help` lists its commands).
 
 ```bash
-nextflow run main.nf --workflow precalc --write-params precalc.yaml
+microbetag-nf write-params precalc my_precalc.yaml   # write the params file of the precalc workflow
+                                                     # fill it in: your data, the steps you want
+microbetag-nf run my_precalc.yaml                    # run it; Nextflow options (-profile, -resume) go after it
 ```
 
-and fill it in. The template sets its workflow (`workflow: precalc`), so the file runs on its own:
+The params file sets its workflow (`workflow: precalc`), so it is all the pipeline needs. Without the script:
 
 ```bash
-nextflow run main.nf -params-file precalc.yaml
+nextflow run main.nf --workflow precalc --write-params my_precalc.yaml
+nextflow run main.nf -params-file my_precalc.yaml
 ```
 
 A parameter you leave out takes its default, so a params file may set only what you change; a
@@ -237,8 +241,8 @@ reports parameters it does not know (e.g. a typo) and stops if a required one is
 or all those of a workflow:
 
 ```bash
-nextflow run main.nf --help gurobi_sessions
-nextflow run main.nf --help --workflow annotate
+microbetag-nf describe gurobi_sessions     # or: nextflow run main.nf --help gurobi_sessions
+microbetag-nf describe annotate            # or: nextflow run main.nf --help --workflow annotate
 ```
 
 All of them are listed [below](#all-the-parameters). The params files of the tests, in `tests/params/`, are
@@ -282,7 +286,7 @@ With the `precalc` params file filled in (the paths to your genomes, the KOfam d
 license), run the workflow with:
 
 ```bash
-nextflow run main.nf -params-file precalc.yaml
+microbetag-nf run my_precalc.yaml
 ```
 
 `tests/params/precalc.yaml` runs it on the example genomes in `tests/data/genomes`.
@@ -295,8 +299,8 @@ e.g. in an SBATCH script, you may need to load their modules before the `nextflo
 Then annotate the network with:
 
 ```bash
-nextflow run main.nf --workflow annotate --write-params annotate.yaml
-nextflow run main.nf -params-file annotate.yaml
+microbetag-nf write-params annotate my_annotate.yaml
+microbetag-nf run my_annotate.yaml
 ```
 
 `tests/params/annotate.yaml` is filled in for the example pre-calculations (`tests/expected/precalc`) and the example
@@ -308,8 +312,8 @@ For the ones set to `true`, give their parameters too; for example, for `faprota
 To prepare an amplicon dataset for the on-the-fly version, see [the preparation steps](../tutorials_otf/prep.md):
 
 ```bash
-nextflow run main.nf --workflow prep --write-params prep.yaml
-nextflow run main.nf -params-file prep.yaml
+microbetag-nf write-params prep my_prep.yaml
+microbetag-nf run my_prep.yaml
 ```
 
 ### .. sub-workflows

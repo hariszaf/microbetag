@@ -10,6 +10,22 @@ class MtgParameters {
 
     static final int WIDTH = 110
 
+    // ---------------- Commands, as the user runs them: through microbetag-nf (which sets MICROBETAG_NF), or not ----
+
+    static boolean viaWrapper() { System.getenv('MICROBETAG_NF') as boolean }
+
+    static String runCommand(String file) {
+        viaWrapper() ? "microbetag-nf run ${file}" : "nextflow run main.nf -params-file ${file}"
+    }
+
+    static String helpCommand(String wf = null) {
+        viaWrapper() ? "microbetag-nf describe${wf ? ' ' + wf : ''}" : "nextflow run main.nf --help${wf ? ' --workflow ' + wf : ''}"
+    }
+
+    static String writeCommand(String wf = '<workflow>', String file = '<file>.yaml') {
+        viaWrapper() ? "microbetag-nf write-params ${wf} ${file}" : "nextflow run main.nf --workflow ${wf} --write-params ${file}"
+    }
+
     final Map spec
 
     MtgParameters(String path) {
@@ -107,7 +123,10 @@ class MtgParameters {
     // The template of a workflow, to be written to `file`; it sets the workflow, so that the file runs on its own
     String template(String wf, String file = "${wf}.yaml") {
         def rule = '# ' + '-' * (WIDTH - 2)
-        def intro = (spec.intro as String).replace('{workflow}', wf).replace('{file}', new File(file).name)
+        def fileName = new File(file).name
+        def intro = (spec.intro as String).replace('{workflow}', wf).replace('{file}', fileName)
+            .replace('{run}', "microbetag-nf run ${fileName}  (or: nextflow run main.nf -params-file ${fileName})")
+            .replace('{help}', "microbetag-nf describe [PARAMETER] ${wf}  (or: nextflow run main.nf --help [PARAMETER] --workflow ${wf})")
         def out = ["# ${spec.title}, ${wf} workflow: ${spec.workflows[wf]}".toString(), '#', comment(intro), '',
                    '# The workflow this file runs (precalc, annotate, prep or network).', "workflow: ${wf}".toString(), '']
         sectionsOf(wf).each { title, params ->
@@ -184,17 +203,32 @@ class MtgParameters {
             def p = params[path[0]] as Map
             path.drop(1).each { k -> p = p && isGroup(p) ? (p.parameters as Map)[k] as Map : null }
             if (p == null) {
-                throw new IllegalArgumentException("Unknown parameter: ${name}. See: nextflow run main.nf --help")
+                throw new IllegalArgumentException("Unknown parameter: ${name}. See: ${helpCommand()}")
             }
             return describeOne(name, p, '')
         }
-        def out = [wf ? "Parameters of the ${wf} workflow (${spec.workflows[wf]}):" : 'Parameters of the pipeline:', '']
+        def out = []
+        if (!wf) {
+            def describeOne = viaWrapper() ? 'microbetag-nf describe <parameter>' : 'nextflow run main.nf --help <parameter>'
+            out += ['microbetag pipeline: from your genomes to a microbetag-annotated co-occurrence network', '',
+                    'Workflows:']
+            spec.workflows.each { k, v -> out << "  ${k.padRight(10)} ${v}".toString() }
+            out += ['', 'A run, step by step:',
+                    "  1. write the params file of a workflow:  ${writeCommand('precalc', 'my_precalc.yaml')}".toString(),
+                    '  2. fill it in: your data, the steps you want; a parameter left out takes its default',
+                    "  3. run it:                                ${runCommand('my_precalc.yaml')}".toString(),
+                    '',
+                    "Describe a parameter:                     ${describeOne}".toString(),
+                    "Only the parameters of a workflow:        ${helpCommand('<workflow>')}".toString(),
+                    '', '']
+        }
+        out += [wf ? "Parameters of the ${wf} workflow (${spec.workflows[wf]}):" : 'All the parameters:', '']
         sectionsOf(wf).each { title, ps ->
             out << "${title}".toString()
             ps.each { n, p -> out << describeOne(n as String, p as Map, '  ') }
             out << ''
         }
-        out << 'Params files: nextflow run main.nf --workflow <workflow> --write-params <file>.yaml'
+        out << "Write the params file of a workflow, to fill in: ${writeCommand()}".toString()
         return out.join('\n')
     }
 

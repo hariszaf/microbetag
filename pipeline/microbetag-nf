@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# microbetag-nf: run the microbetag pipeline without its Nextflow options.
+#
+#   microbetag-nf workflows                              the workflows, and what each does
+#   microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
+#   microbetag-nf run <params file> [nextflow options]   run it (e.g. -profile local, -resume)
+#   microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
+#   microbetag-nf help
+#
+# It runs main.nf of the folder it is in, so it works from any folder; the paths of a params file are relative to
+# the folder you run it from, and Nextflow's work/ folder is made there.
+
+set -euo pipefail
+
+PIPELINE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+MAIN="${PIPELINE}/main.nf"
+# main.nf then gives its hints as microbetag-nf commands
+export MICROBETAG_NF=1
+WORKFLOWS="precalc annotate prep network"
+
+usage() {
+    cat <<EOF
+microbetag-nf: from your genomes to a microbetag-annotated co-occurrence network
+
+Usage:
+  microbetag-nf workflows                              the workflows, and what each does
+  microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
+  microbetag-nf run <params file> [nextflow options]   run it (e.g. -profile local, -resume)
+  microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
+                                                       (e.g. describe gurobi_sessions, describe annotate)
+  microbetag-nf help                                   this message
+
+A run, step by step:
+  1. microbetag-nf write-params precalc my_precalc.yaml
+  2. fill in my_precalc.yaml (your data, the steps you want); a parameter left out takes its default
+  3. microbetag-nf run my_precalc.yaml
+
+Workflows: ${WORKFLOWS// /, }. The parameters are described in ${PIPELINE}/parameters.yaml.
+EOF
+}
+
+nextflow_quiet() {
+    # Only the output of main.nf (no Nextflow banner or run summary), with Nextflow's exit status
+    set +o pipefail
+    NXF_ANSI_LOG=false nextflow -q run "${MAIN}" "$@" 2>&1 \
+        | grep -v -E '^\[(PIPELINE|WORKDIR|SUCCESS|FAILED)\]|^Nextflow .* is available|Check script|\.nextflow\.log' \
+        | cat -s | awk 'NF { started = 1 } started'
+    local status=${PIPESTATUS[0]}
+    set -o pipefail
+    return "${status}"
+}
+
+is_workflow() {
+    [[ " ${WORKFLOWS} " == *" $1 "* ]]
+}
+
+command -v nextflow >/dev/null 2>&1 || {
+    echo "microbetag-nf needs Nextflow: https://www.nextflow.io/docs/latest/install.html" >&2
+    exit 1
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "${cmd}" in
+    workflows)
+        cat <<EOF
+precalc    pre-calculations for a genome catalogue (annotations, complementarities)
+annotate   annotate a network with a pre-calculation folder
+prep       prepare an amplicon dataset for the on-the-fly version of microbetag
+network    FlashWeave, FAPROTAX and manta only; used by the microbetag server
+EOF
+        ;;
+
+    write-params)
+        if [[ $# -ne 2 ]] || ! is_workflow "$1"; then
+            echo "Usage: microbetag-nf write-params <workflow> <file>   (workflow: ${WORKFLOWS// /, })" >&2
+            exit 1
+        fi
+        nextflow_quiet --workflow "$1" --write-params "$2"
+        [[ -f "$2" ]] || exit 1
+        ;;
+
+    run)
+        if [[ $# -lt 1 || ! -f "$1" ]]; then
+            echo "Usage: microbetag-nf run <params file> [nextflow options]" >&2
+            echo "No params file yet? microbetag-nf write-params <workflow> <file>" >&2
+            exit 1
+        fi
+        params_file="$1"
+        shift
+        exec nextflow run "${MAIN}" -params-file "${params_file}" "$@"
+        ;;
+
+    describe)
+        # [parameter] [workflow]; a single argument that names a workflow is the workflow
+        # (network is both: microbetag-nf describe network network describes the parameter)
+        name=""
+        workflow=""
+        if [[ $# -eq 1 ]] && is_workflow "$1"; then
+            workflow="$1"
+        elif [[ $# -ge 1 ]]; then
+            name="$1"
+            workflow="${2:-}"
+        fi
+        args=(--help)
+        [[ -n "${name}" ]] && args=(--help "${name}")
+        [[ -n "${workflow}" ]] && args+=(--workflow "${workflow}")
+        nextflow_quiet "${args[@]}"
+        ;;
+
+    help | -h | --help)
+        usage
+        ;;
+
+    *)
+        echo "Unknown command: ${cmd}" >&2
+        echo >&2
+        usage >&2
+        exit 1
+        ;;
+esac
