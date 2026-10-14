@@ -81,12 +81,29 @@ The parameters are set in a YAML file; [`prep.yaml`][2] is a template.
 |`abundance_file`          | The abundance table |
 |`outdir`                  | The output folder |
 |`assign_taxonomy`         | Assign GTDB taxonomies to the sequences with IDTAXA (`true`/`false`) |
-|`gtdb_16s_reference`   | The GTDB 16S reference (`gtdb_r207_ssu_idtaxa.RData`) |
+|`gtdb_16s_reference`      | The GTDB 16S reference (`gtdb_r207_ssu_idtaxa.RData`) |
 |`idtaxa_threshold`        | IDTAXA confidence threshold: 60 (cautious) or 50 (sensible) |
+|`idtaxa_seed`             | The seed of IDTAXA's random sampling (1 by default); see below |
 |`build_network`           | Infer the co-occurrence network with FlashWeave (`true`/`false`) |
 |`metadata_file`           | Metadata file for FlashWeave; leave empty if not available |
 |`flashweave_args`         | FlashWeave arguments, e.g. `sensitive`, `heterogeneous`, `n_obs_min`; see the [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) |
 |`threads`                 | Number of threads |
+
+### Same data, different taxonomies?
+
+IDTAXA is randomized. To tell how confident an assignment is, it repeatedly takes a random subset of the
+sequence's k-mers (bootstrap replicates) and checks which taxon each subset points to; the confidence of a rank is
+the share of replicates that agree on it, and the ranks below `idtaxa_threshold` are left out (they read
+`unclassified_<the last rank kept>`). A sequence whose confidence is close to the threshold can land on either side
+of it from one random sample to another, so the same sequence may be assigned one rank deeper in one run and one
+rank shallower in another, e.g. `...;Bacteroidaceae;Prevotella;Prevotella_stercoripullorum` or
+`...;Bacteroidaceae;unclassified_Bacteroidaceae`. On our test data, about 10% of the sequences (99 of 996) changed
+this way between two runs.
+
+The `prep` workflow therefore fixes the seed of this sampling (`idtaxa_seed`, 1 by default): the same abundance table,
+reference, threshold and seed give the same taxonomies. Another seed, or taxonomies assigned without one (e.g. by
+the former `microbetag_prep` image), differ in the same way: in the depth of the assignments near the threshold,
+not in their lineages.
 
 
 ## An example case

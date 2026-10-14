@@ -94,20 +94,22 @@ CPLEX; see [installing a Gurobi license](../installation.md#install-gurobi-licen
 
 ### The HPC case
 
-On an HPC, we suggest you first download the images you need. Make sure you have access to Singularity/Apptainer;
-if they are available as a [module](https://hpc-wiki.info/hpc/Modules), load it first.
-
-Then choose where to store the images; you may need to ask your admin, or use a folder of your choice, for example
-`${HOME}/.singularity/mtg-images`, which is the default of:
+With Singularity or Apptainer, Nextflow pulls each image itself the first time a task needs it, into its cache
+(`singularity.cacheDir` of `nextflow.config`, `${HOME}/.singularity/mtg-images/` by default). If the compute nodes
+of your HPC have no internet, pull the images ahead, from a node that has (e.g. the login node). Make sure you have
+access to Singularity/Apptainer; if they are available as a [module](https://hpc-wiki.info/hpc/Modules), load it
+first. Then:
 
 ```bash
-./get_sif.sh
+./microbetag-nf pull-images
 ```
 
-To store them somewhere else, use `--sif-dir`:
+pulls the images of all the workflows into that cache: those the modules name, and the microbetag one
+(`microbetag_image`; give your params file, e.g. `./microbetag-nf pull-images my_precalc.yaml`, if it sets another
+one). Images already there are skipped. To store them somewhere else, e.g. a folder your admin suggests:
 
 ```bash
-./get_sif.sh --sif-dir /opt/sing/mtg-images
+./microbetag-nf pull-images --sif-dir /opt/sing/mtg-images
 ```
 
 Once you have the images, set the containerization technology to Singularity or Apptainer, as shown in the
@@ -193,7 +195,7 @@ There are **two** configuration levels, with their own files:
 
 The microbetag steps run in the `hariszaf/microbetag-nf` image, set by the `microbetag_image` parameter; its version
 is the version of the `microbetag` package it holds.
-The external tools have their own images (see `containers/` and `get_sif.sh`).
+The external tools have their own images (see `containers/`; `microbetag-nf pull-images` pulls them ahead).
 
 ### Nextflow configuration
 
@@ -213,7 +215,7 @@ singularity {
 
 ```{attention}
 In the [HPC case](#the-hpc-case), `cacheDir` needs to be the folder the images were downloaded to
-(`--sif-dir` of `get_sif.sh`; by default `${HOME}/.singularity/mtg-images/`).
+(`--sif-dir` of `microbetag-nf pull-images`; by default `${HOME}/.singularity/mtg-images/`).
 ```
 
 ### Parameters

@@ -47,7 +47,7 @@ process IDTAXA {
 
     script:
         """
-        Rscript ${classify_script} ${fasta} ${reference} ${params.idtaxa_threshold ?: 60} assignments.tsv
+        Rscript ${classify_script} ${fasta} ${reference} ${params.idtaxa_threshold ?: 60} assignments.tsv ${params.idtaxa_seed ?: 1}
         """
 }
 

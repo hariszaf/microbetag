@@ -108,7 +108,7 @@ description and workflows). `python3 tests/check_parameters.py` checks it agains
 ## Repository layout
 
 ```
-microbetag-nf            write-params, run, describe: the pipeline without its Nextflow options
+microbetag-nf            write-params, run, describe, pull-images: the pipeline without its Nextflow options
 main.nf                  entry point: runs the workflow of a params file; --write-params, --help
 parameters.yaml          every parameter of the workflows: default, description, workflows (the one place)
 lib/MtgParameters.groovy reads parameters.yaml: templates, help, checks of a run
@@ -129,7 +129,6 @@ scripts/                 helper scripts, by the image they run in:
 containers/              Dockerfiles of the images built for the pipeline
 envs/                    conda environments of the phenotrex, ModelSEEDpy and DNNGIOR images
 assets/                  FAPROTAX 1.2.10
-get_sif.sh               download all images as Singularity/Apptainer images, e.g. on an HPC
 tests/                   example data, the params files of the tests (params/), reference outputs (below)
 databases/               databases you download, e.g. KOfam or the GTDB 16S reference (not tracked)
 ```

@@ -518,6 +518,15 @@ sections:
         workflows: [prep]
         description: "IDTAXA confidence threshold: 60 (cautious) or 50 (sensible)."
 
+      idtaxa_seed:
+        value: 1
+        workflows: [prep]
+        description: >
+          The seed of IDTAXA's random sampling. IDTAXA samples k-mers of each sequence at random (bootstrap) to
+          estimate its confidence, so sequences close to the threshold can be assigned one rank deeper or shallower
+          from one run to another (~10% of the test data without a seed); with the same seed, the same data give
+          the same assignments.
+
 # Set by the pipeline or the microbetag server, not in the templates
 internal:
   workflow: {value: null, description: "The workflow to run (--workflow): precalc, annotate, prep or network."}
