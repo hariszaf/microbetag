@@ -3,7 +3,7 @@
 #
 #   microbetag-nf workflows                              the workflows, and what each does
 #   microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
-#   microbetag-nf run <params file> [nextflow options]   run it (e.g. -profile local, -resume)
+#   microbetag-nf run <params file> [nextflow options]   run it (the file names its workflow; e.g. -profile local)
 #   microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
 #   microbetag-nf help
 #
@@ -25,7 +25,8 @@ microbetag-nf: from your genomes to a microbetag-annotated co-occurrence network
 Usage:
   microbetag-nf workflows                              the workflows, and what each does
   microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
-  microbetag-nf run <params file> [nextflow options]   run it (e.g. -profile local, -resume)
+  microbetag-nf run <params file> [nextflow options]   run it: the file names its workflow (workflow: precalc);
+                                                       Nextflow options after it (e.g. -profile local, -resume)
   microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
                                                        (e.g. describe gurobi_sessions, describe annotate)
   microbetag-nf help                                   this message
@@ -83,7 +84,7 @@ EOF
 
     run)
         if [[ $# -lt 1 || ! -f "$1" ]]; then
-            echo "Usage: microbetag-nf run <params file> [nextflow options]" >&2
+            echo "Usage: microbetag-nf run <params file> [nextflow options]   (the file names its workflow)" >&2
             echo "No params file yet? microbetag-nf write-params <workflow> <file>" >&2
             exit 1
         fi
