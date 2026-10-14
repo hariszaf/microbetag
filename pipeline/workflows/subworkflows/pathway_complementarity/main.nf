@@ -2,7 +2,7 @@
 // Subworkflow for pathway complementarity pre-calculations for microbetag
 //
 // To run on its own:
-// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
+// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file tests/params/pathway_compl.yaml
 //
 
 /*
@@ -115,7 +115,7 @@ workflow PATHWAY_COMPLEMENTARITY {
 
 
 // Run on its own, with the parameters of its .yaml file:
-// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
+// nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file tests/params/pathway_compl.yaml
 workflow {
     PATHWAY_COMPLEMENTARITY(params.faa_dir ? channel.fromPath("${params.faa_dir}/*.{faa,faa.gz}") : channel.empty())
 }

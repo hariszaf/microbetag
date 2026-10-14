@@ -36,7 +36,7 @@ issued for and does not work inside containers. Academics can get a WLS license 
 2. Request an [academic WLS license](https://www.gurobi.com/features/academic-wls-license/) and download its
    license file from the [Web License Manager](https://license.gurobi.com/); keep it private, it holds your
    license key.
-3. Point the pipeline to it, with an absolute path, in the parameter file (e.g. `workflows/precalc.yaml`):
+3. Point the pipeline to it, with an absolute path, in your params file (e.g. `precalc.yaml`):
 
    ```yaml
    gurobi_lic: /home/you/gurobi/gurobi_wls.lic
@@ -50,16 +50,32 @@ solve with Gurobi (CarveMe, DNNGIOR) run at most that many at once, one genome p
 all the sessions in use (e.g. by your other jobs on the same licence) waits and tries again (`gurobi_retries`,
 `gurobi_wait`).
 
+## Parameters
+
+Write the template of a workflow, fill it in, and run it:
+
+```bash
+nextflow run main.nf --workflow precalc --template precalc.yaml
+nextflow run main.nf -params-file precalc.yaml --workflow precalc
+```
+
+A parameter you leave out takes its default. `nextflow run main.nf --help [PARAMETER] [--workflow W]` describes
+them; all are in [`parameters.yaml`](./parameters.yaml), where a new parameter is added (with its default,
+description and workflows). `python3 tests/check_parameters.py` checks it against the parameters the workflows read
+(also in CI).
+
 ## Repository layout
 
 ```
-main.nf                  entry point: runs the workflow chosen with --workflow
-nextflow.config          container engine (Docker, Singularity, Apptainer) and the microbetag-nf image version
-workflows/               the four workflows and their example parameter files
-  precalc.nf/.yaml         pre-calculations for a genome catalogue
-  annotate.nf/.yaml        annotate a network with a pre-calculation folder
-  prep.nf/.yaml            prepare an amplicon dataset for the on-the-fly version of microbetag
-  network.nf/.yaml         FlashWeave, FAPROTAX and manta only; run by the microbetag server (profile `local`)
+main.nf                  entry point: runs the workflow chosen with --workflow; --template, --help
+parameters.yaml          every parameter of the workflows: default, description, workflows (the one place)
+lib/MtgParameters.groovy reads parameters.yaml: templates, help, checks of a run
+nextflow.config          container engine (Docker, Singularity, Apptainer); the defaults, from parameters.yaml
+workflows/               the four workflows
+  precalc.nf               pre-calculations for a genome catalogue
+  annotate.nf              annotate a network with a pre-calculation folder
+  prep.nf                  prepare an amplicon dataset for the on-the-fly version of microbetag
+  network.nf               FlashWeave, FAPROTAX and manta only; run by the microbetag server (profile `local`)
   subworkflows/            pathway and seed complementarity, used by precalc.nf; also runnable on their own
 modules/                 one folder per step (a process and an example parameter file), runnable on their own
 scripts/                 helper scripts, by the image they run in:
@@ -72,7 +88,7 @@ containers/              Dockerfiles of the images built for the pipeline
 envs/                    conda environments of the phenotrex, ModelSEEDpy and DNNGIOR images
 assets/                  FAPROTAX 1.2.10
 get_sif.sh               download all images as Singularity/Apptainer images, e.g. on an HPC
-tests/                   example data, reference outputs and test runs (below)
+tests/                   example data, the params files of the tests (params/), reference outputs (below)
 databases/               databases you download, e.g. KOfam or the GTDB 16S training set (not tracked)
 ```
 
@@ -102,10 +118,10 @@ tests/
 
 | Command | Uses | Writes to | Compare with |
 |---|---|---|---|
-| `nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
-| `nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
-| `nextflow run main.nf -params-file workflows/prep.yaml --workflow prep` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
-| `nextflow run main.nf -params-file workflows/network.yaml --workflow network` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
+| `nextflow run main.nf -params-file tests/params/annotate.yaml --workflow annotate` | `tests/data/abd_data/abund.tsv` and the pre-calculations in `tests/expected/precalc` | `tests/results/annotate` | `tests/expected/annotate` |
+| `nextflow run main.nf -params-file tests/params/precalc.yaml --workflow precalc` | `tests/data/genomes`; needs the KOfam database and, for CarveMe, a Gurobi license | `tests/results/precalc` | `tests/expected/precalc` |
+| `nextflow run main.nf -params-file tests/params/prep.yaml --workflow prep` | `tests/data/prep`; needs the GTDB 16S training set in `databases/` | `tests/results/prep` | `tests/data/prep/expected_GTDB_tax_assigned_abundance_table.tsv` |
+| `nextflow run main.nf -params-file tests/params/network.yaml --workflow network` | `tests/data/manta/abundance_table.tsv` | `tests/results/network` | (none: FlashWeave's network, FAPROTAX's sub-tables, manta's `.cyjs`) |
 | `nextflow run workflows/subworkflows/<name>/main.nf -params-file workflows/subworkflows/<name>/<pc or sc>.yaml` | the inputs named in its `.yaml` | `tests/results/subworkflows` | the matching folder of `tests/expected/precalc` |
 | `nextflow run modules/<step>/main.nf -params-file modules/<step>/<step>.yaml` | the inputs named in its `.yaml` | `tests/results/modules` | the matching folder of `tests/expected/precalc` |
 
@@ -113,7 +129,7 @@ The `annotate` example is the quickest check that the pipeline works (a few minu
 FlashWeave, runs FAPROTAX, and annotates the network with the example pre-calculations.
 
 ```bash
-nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
+nextflow run main.nf -params-file tests/params/annotate.yaml --workflow annotate
 
 # the inferred network should have the same edges as the reference one
 # (the weights may differ in their last decimals)

@@ -10,7 +10,7 @@ Upload the outputs to MGG.
 
 Usage:
 
-nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
+nextflow run main.nf -params-file tests/params/prep.yaml --workflow prep
 */
 
 include { TAXONOMY } from '../modules/taxonomy/'

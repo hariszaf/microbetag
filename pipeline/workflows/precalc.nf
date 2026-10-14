@@ -4,7 +4,7 @@
 
 Usage: 
 
-nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
+nextflow run main.nf -params-file tests/params/precalc.yaml --workflow precalc
 
 */
 

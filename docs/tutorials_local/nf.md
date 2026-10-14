@@ -189,11 +189,10 @@ nextflow run modules/export_db/main.nf -params-file modules/export_db/export_db.
 There are **two** configuration levels, with their own files:
 
 - the Nextflow configuration: `nextflow.config`
-- the `microbetag` configuration: `workflows/precalc.yaml`, `workflows/annotate.yaml`, `workflows/prep.yaml`
-  and `workflows/network.yaml`
+- the parameters of a run: a params file (YAML), from the template of its workflow
 
-The microbetag steps run in the `hariszaf/microbetag-nf` image, set in `params.microbetag_image` of
-`nextflow.config`; its version is the version of the `microbetag` package it holds.
+The microbetag steps run in the `hariszaf/microbetag-nf` image, set by the `microbetag_image` parameter; its version
+is the version of the `microbetag` package it holds.
 The external tools have their own images (see `containers/` and `get_sif.sh`).
 
 ### Nextflow configuration
@@ -217,11 +216,34 @@ In the [HPC case](#the-hpc-case), `cacheDir` needs to be the folder the images w
 (`--sif-dir` of `get_sif.sh`; by default `${HOME}/.singularity/mtg-images/`).
 ```
 
-### `microbetag` configuration
+### Parameters
 
-At this level, you choose the steps to run and your input data.
+At this level, you choose the steps to run and your input data. Write the template of a workflow, with every
+parameter it takes, its default and its description:
 
-In `workflows/precalc.yaml`, set the output directory for the pre-calculations, the folder with the genomes
+```bash
+nextflow run main.nf --workflow precalc --template precalc.yaml
+```
+
+and fill it in. A parameter you leave out takes its default, so a params file may set only what you change; a
+group of settings (e.g. `flashweave_args`, `modelseed`) may be given in part too. Before a run, the pipeline
+reports parameters it does not know (e.g. a typo) and stops if a required one is missing. To describe a parameter,
+or all those of a workflow:
+
+```bash
+nextflow run main.nf --help gurobi_sessions
+nextflow run main.nf --help --workflow annotate
+```
+
+All of them are listed [below](#all-the-parameters). The params files of the tests, in `tests/params/`, are
+examples for the test data.
+
+```{attention}
+A switch given on the command line is a string for Nextflow: `--phenotrex false` is `"false"`, which counts as
+true. Set switches in the params file.
+```
+
+In the `precalc` params file, set the output directory for the pre-calculations, the folder with the genomes
 or their protein files (`.faa`), and the number of threads. Then set to `true` or `false` the pre-calculation types:
 
 - genome-based phenotypic predictions (`phenotrex`)
@@ -250,12 +272,14 @@ tries again (`gurobi_retries`, `gurobi_wait`).
 
 ### .. workflows
 
-`workflows/precalc.yaml` is filled in for the example genomes in `tests/data/genomes`; set the paths to your genomes,
-the KOfam database and your Gurobi WLS license. Run the workflow with:
+With the `precalc` params file filled in (the paths to your genomes, the KOfam database and your Gurobi WLS
+license), run the workflow with:
 
 ```bash
-nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
+nextflow run main.nf -params-file precalc.yaml --workflow precalc
 ```
+
+`tests/params/precalc.yaml` runs it on the example genomes in `tests/data/genomes`.
 
 ```{attention}
 On an HPC, make sure you have access to Nextflow and Singularity/Apptainer in the job too;
@@ -265,10 +289,11 @@ e.g. in an SBATCH script, you may need to load their modules before the `nextflo
 Then annotate the network with:
 
 ```bash
-nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
+nextflow run main.nf --workflow annotate --template annotate.yaml
+nextflow run main.nf -params-file annotate.yaml --workflow annotate
 ```
 
-`workflows/annotate.yaml` is filled in for the example pre-calculations (`tests/expected/precalc`) and the example
+`tests/params/annotate.yaml` is filled in for the example pre-calculations (`tests/expected/precalc`) and the example
 abundance table in `tests/data/abd_data/`.
 Set `faprotax`, `phen_traits`, `path_compl` and `seed_compl` to `true` or `false`, for the annotation types you want.
 For the ones set to `true`, give their parameters too; for example, for `faprotax`, `taxonomy_colname` and
@@ -277,20 +302,21 @@ For the ones set to `true`, give their parameters too; for example, for `faprota
 To prepare an amplicon dataset for the on-the-fly version, see [the preparation steps](../tutorials_otf/prep.md):
 
 ```bash
-nextflow run main.nf -params-file workflows/prep.yaml --workflow prep
+nextflow run main.nf --workflow prep --template prep.yaml
+nextflow run main.nf -params-file prep.yaml --workflow prep
 ```
 
 ### .. sub-workflows
 
-Edit the parameter files of the sub-workflows, `workflows/subworkflows/pathway_complementarity/pc.yaml` and
-`workflows/subworkflows/seed_complementarity/sc.yaml`, then run:
+The sub-workflows take the parameters of `precalc` (and its defaults). The params files of their tests,
+`tests/params/pathway_compl.yaml` and `tests/params/seed_compl.yaml`, are examples:
 
 ```bash
-nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file workflows/subworkflows/pathway_complementarity/pc.yaml
+nextflow run workflows/subworkflows/pathway_complementarity/main.nf -params-file tests/params/pathway_compl.yaml
 ```
 
 ```bash
-nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file workflows/subworkflows/seed_complementarity/sc.yaml
+nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file tests/params/seed_compl.yaml
 ```
 
 ### .. modules
@@ -299,4 +325,19 @@ Single modules, in the `modules` folder, run the same way. For example:
 
 ```bash
 nextflow run modules/faprotax/main.nf -params-file modules/faprotax/faprotax.yaml
+```
+
+
+## All the parameters
+
+The templates, `--help` and this list all come from one file of the pipeline,
+[`parameters.yaml`](https://github.com/msysbio/microbetag/blob/develop/pipeline/parameters.yaml). A group of
+settings is given as a map, e.g. `flashweave_args.n_obs_min` is:
+
+```yaml
+flashweave_args:
+  n_obs_min: 16
+```
+
+```{include} nf_parameters.md
 ```

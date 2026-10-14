@@ -4,7 +4,10 @@
 
 Usage:
 
-nextflow run main.nf -params-file workflows/annotate.yaml --workflow annotate
+nextflow run main.nf -params-file annotate.yaml --workflow annotate
+
+(nextflow run main.nf --workflow annotate --template annotate.yaml writes its template; tests/params/annotate.yaml is
+the example of the tests)
 
 */
 
@@ -16,21 +19,16 @@ include { PREP_NETWORK; RUN_MANTA } from '../modules/manta/'
 //MICROBETAG_ANNOTATE
 workflow MICROBETAG_ANNOTATE {
 
-    def cmdTokens   = workflow.session.commandLine.tokenize()
-    def paramsIndex = cmdTokens.indexOf('-params-file')
-
-    def yaml
     def network
     def net_cluster
     def abundance_ch
     def faprotax_sub_tables
 
-
-    if (paramsIndex != -1) {
-        yaml = channel.fromPath(cmdTokens[paramsIndex + 1])
-    } else {
-        error "Provide a valid input parameter file."
-    }
+    // microbetag-annotate reads the annotation settings from a YAML file: the parameters of the run, with the
+    // defaults of parameters.yaml (main.nf), rather than the params file, which may leave some out
+    def params_yaml = file("${workflow.workDir}/annotate_params.yaml")
+    params_yaml.text = MtgParameters.toYaml(params) + '\n'
+    def yaml = channel.fromPath(params_yaml)
 
     def abd_data_av = params.abundance_file && file(params.abundance_file).exists()
     def network_av  = params.network && file(params.network).exists()
