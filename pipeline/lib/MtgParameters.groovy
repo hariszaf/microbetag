@@ -194,7 +194,7 @@ class MtgParameters {
             ps.each { n, p -> out << describeOne(n as String, p as Map, '  ') }
             out << ''
         }
-        out << 'Templates: nextflow run main.nf --workflow <workflow> --template <file>.yaml'
+        out << 'Params files: nextflow run main.nf --workflow <workflow> --write-params <file>.yaml'
         return out.join('\n')
     }
 

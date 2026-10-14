@@ -222,7 +222,7 @@ At this level, you choose the steps to run and your input data. Write the templa
 parameter it takes, its default and its description:
 
 ```bash
-nextflow run main.nf --workflow precalc --template precalc.yaml
+nextflow run main.nf --workflow precalc --write-params precalc.yaml
 ```
 
 and fill it in. The template sets its workflow (`workflow: precalc`), so the file runs on its own:
@@ -295,7 +295,7 @@ e.g. in an SBATCH script, you may need to load their modules before the `nextflo
 Then annotate the network with:
 
 ```bash
-nextflow run main.nf --workflow annotate --template annotate.yaml
+nextflow run main.nf --workflow annotate --write-params annotate.yaml
 nextflow run main.nf -params-file annotate.yaml
 ```
 
@@ -308,7 +308,7 @@ For the ones set to `true`, give their parameters too; for example, for `faprota
 To prepare an amplicon dataset for the on-the-fly version, see [the preparation steps](../tutorials_otf/prep.md):
 
 ```bash
-nextflow run main.nf --workflow prep --template prep.yaml
+nextflow run main.nf --workflow prep --write-params prep.yaml
 nextflow run main.nf -params-file prep.yaml
 ```
 

@@ -68,7 +68,7 @@ its default and a description of it, as comments.
 1. Write the template of a workflow (here `precalc`) to a file of your choice:
 
    ```bash
-   nextflow run main.nf --workflow precalc --template my_precalc.yaml
+   nextflow run main.nf --workflow precalc --write-params my_precalc.yaml
    ```
 
 2. Open `my_precalc.yaml` and fill it in: the paths to your data (e.g. `genomes`), and the steps you want (e.g.
@@ -92,7 +92,7 @@ description and workflows). `python3 tests/check_parameters.py` checks it agains
 ## Repository layout
 
 ```
-main.nf                  entry point: runs the workflow chosen with --workflow; --template, --help
+main.nf                  entry point: runs the workflow of a params file; --write-params, --help
 parameters.yaml          every parameter of the workflows: default, description, workflows (the one place)
 lib/MtgParameters.groovy reads parameters.yaml: templates, help, checks of a run
 nextflow.config          container engine (Docker, Singularity, Apptainer); the defaults, from parameters.yaml

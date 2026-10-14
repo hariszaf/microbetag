@@ -11,7 +11,7 @@
 #   parameters   for a group of settings (e.g. flashweave_args): its own parameters, in the same format; its
 #                value is theirs, and a params file may set only some of them
 # From this file (lib/MtgParameters.groovy):
-#   - nextflow run main.nf --workflow precalc --template precalc.yaml    writes the template of a workflow
+#   - nextflow run main.nf --workflow precalc --write-params precalc.yaml    writes the params file (template) of a workflow
 #   - nextflow run main.nf --help [PARAMETER] [--workflow W]             describes the parameters
 #   - the defaults, and the checks before a run: unknown parameters (e.g. a typo), required ones missing
 #   - the docs page of the parameters (docs/conf.py writes it at build time)
@@ -519,6 +519,6 @@ sections:
 internal:
   workflow: {value: null, description: "The workflow to run (--workflow): precalc, annotate, prep or network."}
   help: {value: false, description: "Describe the parameters (--help [PARAMETER])."}
-  template: {value: null, description: "Write the template of a workflow (--template FILE)."}
+  writeParams: {value: null, description: "Write the params file (template) of a workflow (--write-params FILE)."}
   recon_files: {value: null, description: "The files GEMs are reconstructed from: faa_dir, else genomes (set by the pipeline)."}
   onthefly: {value: false, description: Run for the microbetag server.}

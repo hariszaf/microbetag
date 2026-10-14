@@ -12,7 +12,7 @@ Choose the workflow with --workflow:
 
 Usage:
 
-    nextflow run main.nf --workflow precalc --template precalc.yaml     write the template of a workflow
+    nextflow run main.nf --workflow precalc --write-params precalc.yaml write the params file (template) of a workflow
     nextflow run main.nf -params-file precalc.yaml                      run it (the file sets its workflow)
     nextflow run main.nf --help [PARAMETER] [--workflow precalc]        describe the parameters
 
@@ -44,17 +44,17 @@ workflow {
         return
     }
 
-    if (params.template) {
+    if (params.writeParams) {
         if (!params.workflow) {
-            error "Choose the workflow of the template with --workflow: ${workflows.join(', ')}"
+            error "Choose the workflow of the params file with --workflow: ${workflows.join(', ')}"
         }
-        def target = new File(params.template as String)
+        def target = new File(params.writeParams as String)
         if (target.exists()) {
             error "${target} already exists; choose another file name."
         }
-        target.text = parameters.template(params.workflow as String, params.template as String) + '\n'
-        println "Template of the ${params.workflow} workflow written to ${target}; fill it in, then run it with:"
-        println "    nextflow run main.nf -params-file ${params.template}"
+        target.text = parameters.template(params.workflow as String, params.writeParams as String) + '\n'
+        println "Params file of the ${params.workflow} workflow written to ${target}; fill it in, then run it with:"
+        println "    nextflow run main.nf -params-file ${params.writeParams}"
         return
     }
 
