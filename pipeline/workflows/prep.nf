@@ -23,6 +23,15 @@ workflow MICROBETAG_PREP {
         error "Set assign_taxonomy and/or build_network to true."
     }
 
+    // Before anything runs: the training set is not part of the pipeline, and is easy to miss
+    if (params.assign_taxonomy && !(params.gtdb_16s_training_set && file(params.gtdb_16s_training_set).exists())) {
+        error """\
+            assign_taxonomy needs the IDTAXA training set (gtdb_16s_training_set), not found: ${params.gtdb_16s_training_set}
+            Build it with DECIPHER's LearnTaxa from the 16S rRNA gene sequences of the GTDB r207 genomes
+            (GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz, https://zenodo.org/records/6655692), and set its path;
+            or set assign_taxonomy: false to only infer the network.""".stripIndent()
+    }
+
     abundance_ch = channel.fromPath(params.abundance_file, checkIfExists: true)
 
     if (params.assign_taxonomy) {
