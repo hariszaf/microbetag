@@ -77,7 +77,7 @@ def render_template(spec: dict = None) -> str:
     """The configuration template: every parameter, with its template value, and its description as a comment."""
     spec = spec or load_parameters()
     rule = "# " + "-" * (WIDTH - 2)
-    out  = [f"# {spec['title']} (microbetag --template config.yml)", "#", _comment(spec["intro"]), ""]
+    out  = [f"# {spec['title']} (microbetag --write-template config.yml)", "#", _comment(spec["intro"]), ""]
     for section in spec["sections"]:
         out += [rule, f"# {section['title']}", rule, ""]
         for name, p in section["parameters"].items():

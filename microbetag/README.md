@@ -16,7 +16,7 @@ Install, from this folder:
 
 ```bash
 pip install .            # or ".[otf]" for the on-the-fly version (microbetagDB), ".[test]" for the tests
-microbetag --template config.yml
+microbetag --write-template config.yml
 microbetag --config config.yml
 ```
 

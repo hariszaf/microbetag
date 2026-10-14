@@ -6,7 +6,7 @@
 #   example    an example value, shown in the template for a parameter that is not set there
 #   required   the configuration must set it
 # From this file:
-#   - microbetag --template config.yml          writes the configuration template, the descriptions as comments
+#   - microbetag --write-template config.yml    writes the configuration template, the descriptions as comments
 #   - microbetag --describe [PARAMETER]          prints the descriptions
 #   - Config takes the defaults, and checks the configuration for unknown parameters (e.g. a typo)
 #   - the docs page of the parameters (docs/conf.py writes it at build time)
