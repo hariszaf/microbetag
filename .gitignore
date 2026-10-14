@@ -181,3 +181,6 @@ server/services/nginx/certs/
 server/db/db-password
 docs/tutorials_local/config_parameters.md
 docs/tutorials_local/nf_parameters.md
+
+# Ignore lib being produced by Jupyter notebook
+notebooks/lib/

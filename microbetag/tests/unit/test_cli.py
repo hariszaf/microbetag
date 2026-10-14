@@ -63,7 +63,7 @@ def test_seed_compls(tmp_path):
         str(compls),
     ])
 
-    assert scores.read_text().splitlines() == ["bin_101\tGPB:bin_000083\t0.5\t0.22"]
+    assert scores.read_text().splitlines() == ["bin_101\tGPB:bin_000083\t0.31\t0.27"]
     with open(compls) as f:
         assert list(json.load(f)) == ["GPB:bin_000083"]
 

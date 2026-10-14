@@ -184,6 +184,131 @@ The steps are also available as separate commands (`microbetag-pcompl`, `microbe
 `microbetag` can also be used as a Python library, e.g. to get the seed complementarities of a set of GEMs
 without a network (see [`microbetag/tests/unit/test_seed_compl.py`](./microbetag/tests/unit/test_seed_compl.py)).
 
+## How microbetag gets seed sets
+
+The seed complementarities of `microbetag` start from the **seed set** of each genome-scale metabolic model (GEM):
+the compounds the organism has to take from its environment, because nothing in its metabolic network produces
+them (Borenstein et al., [PNAS 2008](https://doi.org/10.1073/pnas.0712149105)). The rest of the compounds of the
+network are its **non-seeds**: what it makes. microbetag follows the approach of
+[PhyloMint](https://github.com/mgtools/PhyloMint) (Levy & Borenstein, [PNAS 2013](https://doi.org/10.1073/pnas.1300926110);
+Lam et al., [PLoS Comput Biol 2020](https://doi.org/10.1371/journal.pcbi.1007951)), in
+[`PhyloMint/lib/BuildGraphNetX.py`](./microbetag/src/microbetag/PhyloMint/lib/BuildGraphNetX.py).
+
+Seeds are topological, so they do not depend on the medium the model was saved with: a seed is what the network
+cannot make from anything, needed or not.
+
+### 1. The compound graph of a GEM (`buildDG`)
+
+The GEM (SBML, read with COBRApy) becomes a directed graph of compounds: an edge from each substrate to each product
+of a reaction, in the directions the reaction's bounds allow (both, for a reversible one). Then:
+
+- **one node per compound**: the forms of a compound in the compartments of the model (`ac_c`, `ac_e`, `ac_p`) are
+  merged into one node (`ac`), so that seeds and non-seeds are per compound;
+- **transports are left out**: a reaction with the same compounds on both sides, in other compartments (uniport,
+  symport, antiport, ATP-driven), converts nothing, and would otherwise link co-transported compounds to each
+  other (Ca²⁺ "made" from Na⁺);
+- **every compound of the model is a node**, also one that is only transported or only used by the biomass (e.g.
+  metal ions): one that nothing produces is then a source, as it should be;
+- **the biomass reaction is a use**: its substrates get an edge to a sink node (`__biomass__`), which is neither a seed
+  nor a non-seed;
+- **currency metabolites** are left out, since they would link everything to everything: water, H⁺, ATP/ADP/AMP,
+  phosphate and pyrophosphate, CO₂, O₂, NAD(P)(H), CoA, NH₄⁺, SO₄²⁻, Fe²⁺/Fe³⁺, ubiquinone and FAD
+  (`CURRENCY` in `BuildGraphNetX.py`). The nutrients among them (NH₄⁺, SO₄²⁻, iron) get their status in a later
+  round (section 2);
+- **compounds made from currency metabolites alone** (ADP-ribose and NMN from NAD, cAMP and Ap4A from ATP,
+  bicarbonate from CO₂) get an edge from a node standing for the currency pool (`__currency__`): every cell has
+  these cofactors, so such compounds are non-seeds, not sources;
+- exchange, demand and sink reactions, and reactions with zero bounds, are left out. Optionally (`check_blocked`),
+  so are reactions that cannot carry flux on any medium (FVA with every exchange open); it is off by default, as it
+  does not improve the seed sets of the models below.
+
+### 2. Seeds and non-seeds (`getSeedSet`)
+
+The graph is split into strongly connected components (SCCs: compounds that can be made from each other). An SCC
+is a **source** if no edge enters it from outside. Then:
+
+- a **seed** is a compound of a source SCC that also feeds the rest of the network (`require_downstream_use`, on by
+  default: at least one edge out of the SCC, the biomass included). Its **confidence** is 1 / the size of its SCC;
+- a source SCC that feeds nothing (a compound the model could import but never uses) is a **dead end**: neither a
+  seed nor a non-seed, since nothing produces it;
+- SCCs larger than `maxComponentSize` (2 in microbetag) are hubs, not sources;
+- the **non-seeds** are the other compounds: what the network makes;
+- **nutrient round**: NH₄⁺, SO₄²⁻ and iron (`NUTRIENT_CURRENCY`) are non-seeds if the network makes them from its
+  seeds alone, e.g. NH₄⁺ from the deamination of an amino acid or amine, SO₄²⁻ from a sulfonate. This is network
+  expansion over the model's reactions: a reaction fires once its substrates other than currency metabolites are
+  available, starting from the seeds only, so that nitrogen, sulfur or iron cannot come from the cofactors (NH₄⁺
+  from AMP). Otherwise they are seeds, with confidence 1. Iron released from an imported siderophore complex
+  (ferric enterobactin, ferric dicitrate) does not count as made: the complex comes from outside, so iron stays a
+  seed.
+
+The seed and non-seed sets of each model are then translated to ModelSEED compound ids (BiGG models, through
+MetaNetX).
+
+### 3. Scores and complements of a pair (`CalculateIndexes.py`)
+
+For a beneficiary A and a donor B:
+
+- **competition** = the confidence-weighted share of A's seeds that are also B's seeds: both need them;
+- **cooperation** = |A's seeds ∩ B's non-seeds| / |A's seeds ∩ (B's seeds ∪ B's non-seeds)|: of A's seeds that are in
+  B's network, the share B makes;
+- **seed complements** of A from B = A's seeds ∩ B's non-seeds: what B could provide A; by default, kept to the
+  compounds of KEGG modules (the scores use the whole sets).
+
+### Checking the seed sets
+
+[`microbetag/scripts/check_seed_sets.py`](./microbetag/scripts/check_seed_sets.py) checks the seed sets of any GEM
+against the model itself, with flux balance analysis:
+
+- **disjoint**: no compound is both a seed and a non-seed;
+- **completeness**: the *required* nutrients (the model does not grow without them even on the complete medium, so
+  nothing in the network replaces them) are seeds;
+- **precision**: seeds the model can make (with their own uptake closed, a demand reaction for them carries flux),
+  which should not be seeds;
+- biomass precursors reached by network expansion from the seeds.
+
+```
+cd microbetag
+python scripts/check_seed_sets.py tests/data/seed_compl/iML1515.xml.gz tests/data/seed_compl/input_files/*.xml
+```
+
+| Model | Seeds | Required nutrients not seeds | Seeds the model can make |
+|---|---|---|---|
+| iML1515 (*E. coli* K-12, curated) | 126 | 0 of 9 | 2 (Fe²⁺, Fe³⁺) |
+| `bin_101` (CarveMe, tests) | 55 | 3 of 11 | 0 |
+| `GPB:bin_000083` (CarveMe, tests) | 41 | 10 of 28 | 1 (Fe³⁺) |
+
+The seeds the models can make are iron, released from imported siderophore complexes: seeds by the definition above,
+which flux balance analysis counts as made. In iML1515, NH₄⁺ is a non-seed (from dopamine, by an amine oxidase) and so
+is SO₄²⁻ (from H₂S); iron is a seed.
+
+With the former seed sets (cytosol only, one node per compartment form), iML1515 had 8 of its 9 required nutrients
+(its metal ions and chloride) missing from its seeds, and 42 of its 127 seeds could be made by the model.
+
+**What the checks can and cannot tell.** Seeds are not required nutrients by definition: a seed is what the network
+cannot make from anything. The FBA checks are indicative, and their limits are those of the checks, not of the
+inference. A nutrient a model requires but whose graph has a reaction producing it (whose other substrates, or
+stoichiometry, the model cannot satisfy) is a non-seed, and shows as a "required nutrient not a seed": e.g. benzoate,
+nicotinamide mononucleotide or tryptophan in the CarveMe models of the tests. A compound that is not required can
+still be a seed (an alternative carbon source), and one required on a given medium need not be (glucose on M9 for
+*E. coli*, which its network makes from other sugars).
+
+**Known limits.** Two BiGG compounds can share a ModelSEED id (L-arabinitol and L-lactaldehyde, `cpd00334`), which can
+then be both a seed and a non-seed after the translation. The currency metabolites other than NH₄⁺, SO₄²⁻ and iron are
+never seeds.
+
+**Tests**: [`test_seed_inference.py`](./microbetag/tests/unit/test_seed_inference.py) checks that seeds and non-seeds
+are disjoint and that iML1515's required nutrients are seeds;
+[`test_get_seeds.py`](./microbetag/tests/unit/test_get_seeds.py) checks the seed rules on small graphs. To draw the
+graphs of the latter as well (needs `matplotlib`), from the `microbetag/` folder:
+
+```
+pytest tests/unit/test_get_seeds.py --draw --graph-dir tests/data/test_graphs
+```
+
+<!-- Issue where different findings from carveme using cplex and gurobi is mentioned:
+https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
+
+
 
 ## RTD
 
