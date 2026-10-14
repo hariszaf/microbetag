@@ -15,7 +15,7 @@ Every `microbetag` release comes with its YAML configuration template. Get the o
 installed with:
 
 ```bash
-microbetag --template config.yml
+microbetag --write-template config.yml
 ```
 
 and fill it in.
@@ -46,9 +46,26 @@ genome_scale_models:
 Paths are relative to the folder of the configuration file, so a configuration file and the files it points to
 can be moved together, or mounted together in a container.
 
-The template describes every parameter, including those that let you reuse previous results
-(`pc_file`, `prev_conf`, `prev_nonseeds`). The tutorial [.. using custom genomes](./local.md) goes through a
-complete example.
+A parameter the configuration leaves out, or sets to `null`, takes its default. The template switches every
+annotation on and names an input file for each; optional inputs are there too, set to `null`. Unknown parameters
+(e.g. a typo) are reported and ignored.
+
+To read the description of a parameter, or of all of them, from the command line:
+
+```bash
+microbetag --describe metadata_file
+microbetag --describe
+```
+
+The tutorial [.. using custom genomes](./local.md) goes through a complete example.
+
+## Parameters
+
+The template, `microbetag --describe` and this list all come from one file of the package,
+[`templates/parameters.yaml`](https://github.com/msysbio/microbetag/blob/develop/microbetag/src/microbetag/templates/parameters.yaml).
+
+```{include} config_parameters.md
+```
 
 ## Upgrading from 1.x
 

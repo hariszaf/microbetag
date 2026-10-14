@@ -19,6 +19,7 @@ from .helpers import (
     missing_input_error,
 )
 from .networks import get_edgelist
+from .parameters import get_value, unknown_parameters
 from .utils import (
     mtg_logger,
     detect_separator,
@@ -40,7 +41,7 @@ class Config:
 
     Attention:
         Use the configuration template of the microbetag version you are running
-        (`microbetag --template config.yml`); otherwise the Config class may fail to create an instance.
+        (`microbetag --write-template config.yml`); otherwise the Config class may fail to create an instance.
 
     Example:
         >>> with open(args.config, "r") as yaml_file:
@@ -71,8 +72,13 @@ class Config:
         if self.base_dir is None:
             raise SystemError("You need to provide a base directory, where your config is found.")
 
+        # Parameters microbetag does not know (e.g. a typo): see templates/parameters.yaml
+        unknown = unknown_parameters(conf)
+        if unknown:
+            _logger_.warning(f"Unknown parameters in the configuration, ignored: {', '.join(unknown)}")
+
         # Output dir
-        outdir = conf.get("output_directory", {}).get("dir_path")
+        outdir = (conf.get("output_directory") or {}).get("dir_path")
         if outdir:
             self.outdir = os.path.join(self.base_dir, outdir)
         else:
@@ -86,25 +92,25 @@ class Config:
         self.__dict__.update(vars(mappings))
 
         # Checks whether microbetag is running on the on-the-fly version, by default False
-        self.onthefly = get_value(conf, "onthefly", False)
-        self.api      = get_value(conf, "api", False)
+        self.onthefly = get_value(conf, "onthefly")
+        self.api      = get_value(conf, "api")
 
         # Threads to be used
-        self.threads = get_value(conf, "threads", 2)
+        self.threads = get_value(conf, "threads")
 
         # Steps
-        self.faprotax    = get_value(conf, "faprotax_annotation", False)
-        self.phen_traits = get_value(conf, "phenotrex_traits", False)
-        self.path_compl  = get_value(conf, "pathway_complementarity", False)
-        self.seed_compl  = get_value(conf, "seed_complementarity", False)
-        self.net_cluster = get_value(conf, "network_clustering", False)
+        self.faprotax    = get_value(conf, "faprotax_annotation")
+        self.phen_traits = get_value(conf, "phenotrex_traits")
+        self.path_compl  = get_value(conf, "pathway_complementarity")
+        self.seed_compl  = get_value(conf, "seed_complementarity")
+        self.net_cluster = get_value(conf, "network_clustering")
 
         # The abundance table is optional; without it, a sequence id to taxonomy map is needed
-        abd_tbl_filename     = conf.get("abundance_table_file", {}).get("file_path")
+        abd_tbl_filename     = (conf.get("abundance_table_file") or {}).get("file_path")
         self.abundance_table = resolve_file_path(self.base_dir, abd_tbl_filename)
 
         # Edgelist of provided network
-        edge_list    = conf.get("edge_list", {}).get("file_path")
+        edge_list    = (conf.get("edge_list") or {}).get("file_path")
         self.network = resolve_file_path(
             self.base_dir, edge_list
         )
@@ -120,7 +126,7 @@ class Config:
         # for partial/specific tasks of microbetag.
         # -------
 
-        precalc_only      = get_value(conf, "precalculations_only", False)
+        precalc_only      = get_value(conf, "precalculations_only")
         self.precalc_only = precalc_only if precalc_only in [0, 1] else False
 
         if self.network is None and not self.precalc_only:
@@ -131,7 +137,7 @@ class Config:
             )
 
         # IMPORTANT: Sequence to taxonomy map -- required if no abundance table is needed
-        sequence_taxonomy_map      = conf.get("sequence_id_taxonomy_map", {}).get("file_path")
+        sequence_taxonomy_map      = (conf.get("sequence_id_taxonomy_map") or {}).get("file_path")
         self.sequence_taxonomy_map = resolve_file_path(
             self.base_dir, sequence_taxonomy_map
         )
@@ -218,7 +224,7 @@ class Config:
                 self.phen_traits_dir = os.path.join(self.outdir, "phen_predictions")
                 os.makedirs(self.phen_traits_dir, exist_ok=True)
             else:
-                predictions = conf.get("phenotrex_predictions", {}).get("dir_path")
+                predictions = (conf.get("phenotrex_predictions") or {}).get("dir_path")
                 if predictions is None:
                     raise missing_input_error(
                         "Phenotypic trait annotation", "phenotrex_predictions", "folder of predictions",
@@ -233,7 +239,7 @@ class Config:
 
         # manta: the clustered network is an input
         if self.net_cluster:
-            manta_net = conf.get("prev_clustered_network", {}).get("file_path")
+            manta_net = (conf.get("prev_clustered_network") or {}).get("file_path")
             if manta_net is None:
                 raise missing_input_error(
                     "Network clustering", "prev_clustered_network", "clustered network (.cyjs)",
@@ -250,7 +256,7 @@ class Config:
         self.microbetag_annotated_network_file = os.path.join(
             self.outdir, "pseudo_cx_annotated_net.cx"
         )
-        self.tinyurl = get_value(conf, "tinyurl", False)
+        self.tinyurl = get_value(conf, "tinyurl")
 
         _logger_.info("Configuration file loaded successfully.")
 
@@ -259,17 +265,6 @@ class Config:
         args = convert_to_json_serializable(self.__dict__)
         with open(log_file, "w") as f:
             json.dump(args, f)
-
-
-def get_value(conf, key, default=None):
-    """
-    Retrieves the 'value' field for a given key from a nested configuration dictionary.
-
-    Returns:
-    any: The value associated with conf[key]['value'], or the provided default if not found or None.
-    """
-    value = conf.get(key, {}).get("value", default)
-    return default if value is None else value
 
 
 def load_config(yaml_file):

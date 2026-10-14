@@ -155,7 +155,7 @@ For thorough descriptions on the format of each of these files,
 which this command writes out:
 
 ```bash
-microbetag --template config.yml
+microbetag --write-template config.yml
 ```
 
 It points to:
