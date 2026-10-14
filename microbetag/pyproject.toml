@@ -25,6 +25,7 @@ dependencies = [
     "ndex2>=3.10",
     "pyshorteners>=1.0.1",
     "python-libsbml>=5.20",
+    "cobra>=0.29",            # seed sets: the compound graph of a GEM (PhyloMint/lib/BuildGraphNetX.py)
 ]
 
 [project.optional-dependencies]
