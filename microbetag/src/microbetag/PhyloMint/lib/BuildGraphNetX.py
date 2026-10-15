@@ -79,6 +79,7 @@ CURRENCY_MODELSEED = {
     "cpd17041",  # Protein biosynthesis
     "cpd17042",  # DNA replication
     "cpd17043",  # RNA transcription
+    "cpd11416",  # Biomass
 }
 
 # Fallback name-based matching, in case cpd IDs drift across ModelSEED
@@ -287,6 +288,10 @@ def buildDG(
             for m in rxn.reactants:
                 if not (filter_currency and is_currency(m.id, currency_set)):
                     DG.add_edge(m.id, BIOMASS_SINK)
+            # Its products (e.g. cobinamide and dimethylbenzimidazole in ModelSEED's biomass) are made by the cell
+            for m in rxn.products:
+                if not (filter_currency and is_currency(m.id, currency_set)):
+                    DG.add_edge(CURRENCY_SOURCE, m.id)
             logger.info("Biomass reaction %s: its substrates are used (-> %s)", rxn.id, BIOMASS_SINK)
             continue
         if rxn.lower_bound == 0 and rxn.upper_bound == 0:
