@@ -43,3 +43,21 @@ def test_iml1515_nutrient_round_and_currency_products(data_dir):
     assert {"nh4", "so4"} <= nonseeds
     assert {"fe2", "fe3"} <= seeds
     assert {"adprib", "camp", "nmn"} <= nonseeds
+
+
+def test_modelseed_models_get_the_modelseed_currency():
+    import cobra
+
+    from microbetag.PhyloMint.lib.BuildGraphNetX import CURRENCY, CURRENCY_MODELSEED
+
+    model = cobra.Model("m")
+    mg_e, mg_c, atp, h2o, adp, pi, h = (cobra.Metabolite(i) for i in (
+        "cpd00254_e0", "cpd00254_c0", "cpd00002_c0", "cpd00001_c0", "cpd00008_c0", "cpd00009_c0", "cpd00067_c0"))
+    transport = cobra.Reaction("rxn08924_c0")  # Mg2+-importing ATPase
+    transport.add_metabolites({mg_e: -1, atp: -1, h2o: -1, mg_c: 1, adp: 1, pi: 1, h: 1})
+    model.add_reactions([transport])
+
+    dg = buildDG(model)
+    assert dg.graph["always_available"] == CURRENCY_MODELSEED - {"cpd00013", "cpd00048", "cpd10515", "cpd10516"}
+    assert "cpd00002" not in dg and "cpd00254" in dg and not list(dg.predecessors("cpd00254"))
+    assert CURRENCY != CURRENCY_MODELSEED

@@ -69,10 +69,16 @@ CURRENCY_MODELSEED = {
     "cpd00010",  # CoA
     "cpd00013",  # NH3/NH4
     "cpd00048",  # Sulfate
-    "cpd00971",  # Na+        (verify)
-    "cpd10515",  # Fe2+       (verify)
-    "cpd10516",  # Fe3+       (verify)
-    "cpd00015",  # FAD        (verify)
+    "cpd10515",  # Fe2+
+    "cpd10516",  # Fe3+
+    "cpd15560",  # Ubiquinone-8
+    "cpd15561",  # Ubiquinol-8
+    "cpd00015",  # FAD
+    "cpd00982",  # FADH2
+    # Not compounds: placeholders of ModelSEED's biomass, made from nothing (rxn13782-4) and taken by the biomass
+    "cpd17041",  # Protein biosynthesis
+    "cpd17042",  # DNA replication
+    "cpd17043",  # RNA transcription
 }
 
 # Fallback name-based matching, in case cpd IDs drift across ModelSEED
@@ -103,6 +109,16 @@ CURRENCY_NAMES = {
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+
+MODELSEED_ID = re.compile(r"^(M_)?cpd\d{5}(_[a-z]\d?)?$")
+
+
+def currency_set_of(model) -> set:
+    """CURRENCY_MODELSEED for a model in ModelSEED ids (cpdXXXXX, most of its metabolites), else CURRENCY (BiGG)."""
+    ids = [m.id for m in model.metabolites]
+    modelseed = sum(bool(MODELSEED_ID.match(i)) for i in ids)
+    return CURRENCY_MODELSEED if ids and modelseed > len(ids) / 2 else CURRENCY
 
 
 def is_currency(met_id: str, currency_set: set, strip_compartment: bool = True) -> bool:
@@ -214,8 +230,8 @@ def buildDG(
         merge_compartments: whether to merge the forms of each compound in the compartments into one node
             (merge_compartment_forms), so that seeds and non-seeds are per compound; True by default. Transports
             (the same compounds on both sides, in other compartments) are then left out.
-            Defaults to CURRENCY (BiGG-style). Pass CURRENCY_MODELSEED
-            for ModelSEED-derived models (cpdXXXXX namespace).
+            By default, CURRENCY_MODELSEED for a model in ModelSEED ids (cpdXXXXX), else CURRENCY (BiGG ids)
+            (currency_set_of).
 
     Returns:
         networkx.DiGraph of metabolite -> metabolite edges. Only
@@ -229,12 +245,9 @@ def buildDG(
     >>> # CarveMe
     >>> c_dg = buildDG(modelfile)
 
-    >>> # ModelSEEDpy
-    >>> m_dg = buildDG(modelfile, currency_set=CURRENCY_MODELSEED)
+    >>> # ModelSEEDpy (the ModelSEED currency metabolites are chosen from the ids)
+    >>> m_dg = buildDG(modelfile)
     """
-    if currency_set is None:
-        currency_set = CURRENCY
-
     DG = nx.DiGraph()
     DG.graph["blocked_filtered"] = check_blocked
     DG.graph["currency_filtered"] = filter_currency
@@ -243,6 +256,9 @@ def buildDG(
         model = sbml
     else:
         model = cobra.io.read_sbml_model(sbml)
+
+    if currency_set is None:
+        currency_set = currency_set_of(model)
 
     blocked_ids = set()
     if check_blocked:
