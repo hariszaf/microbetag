@@ -30,9 +30,10 @@ process FAPROTAX {
         // extension, so the table is linked with the one of its delimiter; its sub-tables are then written as
         // FAPROTAX 1.2.10 writes them (a comment line, and the abundance table's id column), for microbetag.
         """
-        ext=\$( [ '${params.delimiter}' = ',' ] && echo csv || echo tsv )
+        delim=\$(printf '%b' '${params.delimiter}')   # e.g. '\\t' as a tab
+        ext=\$( [ "\$delim" = ',' ] && echo csv || echo tsv )
         ln -s ${abundance_table} input_table.\$ext
-        id_col=\$(head -n 1 ${abundance_table} | cut -d '${params.delimiter}' -f 1)
+        id_col=\$(head -n 1 ${abundance_table} | cut -d "\$delim" -f 1)
 
         Rscript /opt/faprotax2/faprotax.R \
             -i input_table.\$ext \
