@@ -11,7 +11,7 @@
 # then this one, also from the root of the repository:
 #   docker build -f server/services/web/Dockerfile.v2 -t microbetag-server:2.0.0 .
 #
-# For a database of your own genomes, set CATALOGUE=custom; everything else is in the database.
+# For a database of your own genomes, set TAXON_MATCHING=lineage; everything else is in the database.
 
 ARG MICROBETAG_NF_IMAGE=hariszaf/microbetag-nf:2.0.0
 ARG FLASHWEAVE_IMAGE=hariszaf/flashweave:0.19.2

@@ -8,7 +8,7 @@ seed complementarities; nothing is stored per pair of genomes.
 
 | Table | One row per | Content |
 |---|---|---|
-| `genomeTaxonomy` | genome | its lineage; taxa are matched to the genomes sharing their deepest rank (`CATALOGUE=custom`) |
+| `genomeTaxonomy` | genome | its lineage; with `TAXON_MATCHING=lineage`, taxa are matched to the genomes sharing their deepest rank |
 | `genome2taxNcbiId` | genome | its NCBI Taxonomy id, for taxa given as NCBI ids (the GTDB database); empty otherwise |
 | `patricId2genomeId` | genome | the id of its GEM (PATRIC ids for the GTDB database; the genome itself otherwise) |
 | `phenDB` | genome | phenotrex predictions: presence and score of each trait |

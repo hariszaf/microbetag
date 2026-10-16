@@ -119,14 +119,14 @@ and run it. It reaches the database on their shared Docker network
 
 ```bash
 docker run -d --name microbetag-server --network microbetag -p 5000:5000 --env-file .env \
-    -e CATALOGUE=custom \
+    -e TAXON_MATCHING=lineage \
     microbetag-server:<version>
 ```
 
 | Variable | Value |
 |---|---|
-| `CATALOGUE` | `custom`: each taxon is matched to the genomes of the database that share its deepest rank, from its taxonomy; a taxon named after a genome of the database is matched to that genome |
-| `CATALOGUE_MIN_RANK` | the shallowest rank a match may share; `genus` by default, so that a taxon that shares only its family with your genomes is not annotated |
+| `TAXON_MATCHING` | how taxa are matched to genomes: `species` (default), for a public server whose users come with any taxonomy (GTDB, SILVA, `prep`): each taxon's species name is matched, exactly or nearly, to a GTDB species; `lineage`, for a server of your own genomes: each taxon gets the genomes sharing its deepest rank, from its taxonomy (a taxon named after a genome gets that genome) |
+| `LINEAGE_MIN_RANK` | with `lineage`, the shallowest rank a match may share; `genus` by default, so that a taxon sharing only its family with your genomes is not annotated |
 
 To keep the server running after you log out, and start it again at boot, run it with systemd;
 `server/README.md` describes how, and how to run it with Docker Compose together with its database.

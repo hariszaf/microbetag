@@ -22,7 +22,7 @@ services:
     command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
 
     # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
-    # also CATALOGUE=custom (see .env.example)
+    # also TAXON_MATCHING=lineage (see .env.example)
     env_file:
       - ./.env.dev
 
