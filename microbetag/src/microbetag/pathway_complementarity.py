@@ -249,20 +249,22 @@ def process_bin(bin_id, kos_per_module, mo_map, structurals):
     for key in complete_modules:
         alternatives_to_gap.pop(key, None)
 
-    # Get shortest alternatives
+    # Get shortest alternatives: the paths with at most one gap more than the fewest, whose gaps are not a strict
+    # superset of another path's gaps; of paths with the same gaps, the first one. Only paths with at most
+    # min + 1 gaps are kept, so only those need comparing (a strict subset of them has fewer gaps), which keeps
+    # modules with thousands of paths (M00001: 13,440) fast.
     for module, path_gaps in alternatives_to_gap.items():
-        tmp = tmp2 = path_gaps.copy()
-        min_val = min([len(gaps) for gaps in path_gaps.values()])
-        values = list(tmp2.values())
-        shortest_alternatives = [
-            list(tmp2.keys())[values.index(s)]
-            for s in values
-            if not any(s.issuperset(i) and len(s) > len(i) for i in values)
-        ]
-        for path, gaps in path_gaps.items():
-            if len(gaps) > min_val + 1 or path not in shortest_alternatives:
-                tmp.pop(path)
-        alternatives_to_gap[module] = tmp
+        min_val    = min(len(gaps) for gaps in path_gaps.values())
+        candidates = {path: gaps for path, gaps in path_gaps.items() if len(gaps) <= min_val + 1}
+        first_of   = {}
+        for path, gaps in candidates.items():
+            first_of.setdefault(frozenset(gaps), path)
+        fewest = [gaps for gaps in first_of if len(gaps) == min_val]
+        alternatives_to_gap[module] = {
+            path: candidates[path]
+            for gaps, path in first_of.items()
+            if not any(len(gaps) > len(i) and gaps.issuperset(i) for i in fewest)
+        }
 
     return bin_id, alternatives_to_gap
 
