@@ -4,7 +4,7 @@ A [Nextflow](https://www.nextflow.io/) pipeline that takes you from your genomes
 [microbetag](https://github.com/hariszaf/microbetag)-annotated co-occurrence network.
 
 It runs the external tools, each in its own container (Prodigal, kofam/hmmsearch, phenotrex,
-CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta), and then the `microbetag` commands, which compute
+CarveMe/gapseq/ModelSEEDpy, FAPROTAX 1.2.10 or v2.0, FlashWeave, manta), and then the `microbetag` commands, which compute
 the pathway and seed complementarities and build the annotated network. The microbetag steps run in the
 `hariszaf/microbetag-nf` image (`containers/Dockerfile.microbetag-nf`), whose version is set in `nextflow.config`.
 
@@ -58,6 +58,23 @@ use ("Too many sessions, ... for a baseline of 2"). Set it as `gurobi_sessions` 
 solve with Gurobi (CarveMe, DNNGIOR) run at most that many at once, one genome per task, and a task that finds
 all the sessions in use (e.g. by your other jobs on the same licence) waits and tries again (`gurobi_retries`,
 `gurobi_wait`).
+
+## FAPROTAX
+
+The `annotate` and `network` workflows annotate the taxa of the abundance table with
+[FAPROTAX](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/) functions. Two versions are supported,
+chosen with `faprotax_version`:
+
+- `1` (default): FAPROTAX 1.2.10 (`assets/`, in the microbetag-nf image), which matches each taxon's lineage to the
+  names in its database;
+- `2`: the [FAPROTAX v2.0 mapper](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX2/) (`faprotax.R`), which
+  places each taxon on a reference tree by its taxonomy and predicts its functions from its relatives, so that taxa
+  missing from the database are annotated too (all 23 nodes of the `annotate` test network, against 13 with 1.2.10).
+  It runs in its own image, `hariszaf/faprotax2:2.0` (`faprotax2_image`, built from `containers/Dockerfile.faprotax2`),
+  with `threads` threads, and also writes its report (`faprotax/faprotax_report.txt`).
+
+Both write the same outputs (`faprotax/functional_otu_table.tsv` and the per-function `faprotax/sub_tables/`), so the
+rest of the pipeline, and MGG, work the same with either; the functions themselves partly differ (v2 has more).
 
 ## Parameters
 
@@ -128,7 +145,7 @@ scripts/                 helper scripts, by the image they run in:
   dnngior/                 copied into the DNNGIOR image (gap-filling of the drafts, with gapfill_with: dnngior)
 containers/              Dockerfiles of the images built for the pipeline
 envs/                    conda environments of the phenotrex, ModelSEEDpy and DNNGIOR images
-assets/                  FAPROTAX 1.2.10
+assets/                  FAPROTAX 1.2.10 (v2.0: containers/Dockerfile.faprotax2 fetches it)
 tests/                   example data, the params files of the tests (params/), reference outputs (below)
 databases/               databases you download, e.g. KOfam or the GTDB 16S reference (not tracked)
 ```
