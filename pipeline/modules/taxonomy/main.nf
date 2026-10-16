@@ -32,14 +32,14 @@ process TO_FASTA {
 
 process IDTAXA {
 
-    tag "Classify the sequences with IDTAXA against the GTDB 16S training set"
+    tag "Classify the sequences with IDTAXA against the GTDB 16S reference"
 
     container "quay.io/biocontainers/bioconductor-decipher:3.2.0--r44h3df3fcb_1"
     cpus params.threads ?: 2
 
     input:
         path fasta
-        path training_set
+        path reference
         path classify_script
 
     output:
@@ -47,7 +47,7 @@ process IDTAXA {
 
     script:
         """
-        Rscript ${classify_script} ${fasta} ${training_set} ${params.idtaxa_threshold ?: 60} assignments.tsv
+        Rscript ${classify_script} ${fasta} ${reference} ${params.idtaxa_threshold ?: 60} assignments.tsv ${params.idtaxa_seed ?: 1}
         """
 }
 
@@ -77,13 +77,13 @@ workflow TAXONOMY {
 
     take:
         abundance_table
-        training_set
+        reference
 
     main:
         classify_script = channel.fromPath("${moduleDir}/../../scripts/taxonomy/classify.R", checkIfExists: true)
 
         fasta       = TO_FASTA(abundance_table)
-        assignments = IDTAXA(fasta.fasta, training_set, classify_script)
+        assignments = IDTAXA(fasta.fasta, reference, classify_script)
         merged      = MERGE_TAXONOMY(abundance_table, assignments.assignments)
 
     emit:
@@ -95,6 +95,6 @@ workflow {
 
     TAXONOMY(
         channel.fromPath(params.abundance_file, checkIfExists: true),
-        channel.fromPath(params.gtdb_16s_training_set, checkIfExists: true)
+        channel.fromPath(params.gtdb_16s_reference, checkIfExists: true)
     )
 }

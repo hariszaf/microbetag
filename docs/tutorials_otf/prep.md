@@ -28,7 +28,7 @@ Two tasks before the annotation can be computationally expensive, especially for
 
 - the **taxonomy assignment** of your ASVs/OTUs with GTDB taxonomies, so that `microbetag` can match them to the
   GTDB genomes of our server as well as possible. It uses the IDTAXA algorithm of the
-  <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a training set
+  <a href="https://bioconductor.org/packages/DECIPHER/" target="_blank">DECIPHER</a> package and a reference
   built from the 16S rRNA gene sequences of the GTDB genomes
   (based on <a href="https://zenodo.org/records/6655692" target="_blank">these reference sequences</a>);
 - the **network inference** with FlashWeave, needed when you have more than 1,000 ASVs/OTUs and no network.
@@ -53,9 +53,12 @@ That image is still available on Docker Hub, but it is no longer developed; the 
   cd microbetag/pipeline
   ```
 
-- for the taxonomy assignment, the **GTDB 16S training set** (`gtdb_r207_ssu_idtaxa.RData`): IDTAXA's training set,
-  built with DECIPHER's `LearnTaxa` from the
-  <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>.
+- for the taxonomy assignment, the **GTDB 16S reference** (`gtdb_r207_ssu_idtaxa.RData`, 125 MB), from the
+  <a href="https://doi.org/10.5281/zenodo.23368237" target="_blank">microbetag data on Zenodo</a>; in the
+  `pipeline` folder, `./microbetag-nf get-gtdb-16s` downloads it into `databases/` and checks it. IDTAXA classifies
+  your sequences against it, so that they get GTDB taxonomies. Nothing is trained on your side; the file is ready to
+  use (DECIPHER calls it a "training set", made once from the
+  <a href="https://zenodo.org/records/6655692" target="_blank">16S rRNA gene sequences of the GTDB r207 genomes</a>).
   r207 is the GTDB release of our server's database: the taxonomies need to be of the same release, since the
   server matches taxa to genomes by their names
 - your **abundance table**, as a `.tsv` or `.csv` file:
@@ -79,12 +82,29 @@ The parameters are set in a YAML file; [`prep.yaml`][2] is a template.
 |`abundance_file`          | The abundance table |
 |`outdir`                  | The output folder |
 |`assign_taxonomy`         | Assign GTDB taxonomies to the sequences with IDTAXA (`true`/`false`) |
-|`gtdb_16s_training_set`   | The GTDB 16S training set (`gtdb_r207_ssu_idtaxa.RData`) |
+|`gtdb_16s_reference`      | The GTDB 16S reference (`gtdb_r207_ssu_idtaxa.RData`) |
 |`idtaxa_threshold`        | IDTAXA confidence threshold: 60 (cautious) or 50 (sensible) |
+|`idtaxa_seed`             | The seed of IDTAXA's random sampling (1 by default); see below |
 |`build_network`           | Infer the co-occurrence network with FlashWeave (`true`/`false`) |
 |`metadata_file`           | Metadata file for FlashWeave; leave empty if not available |
 |`flashweave_args`         | FlashWeave arguments, e.g. `sensitive`, `heterogeneous`, `n_obs_min`; see the [FAQ](../faq.md#when-to-enable-the-sensitive-and-heterogeneous-arguments) |
 |`threads`                 | Number of threads |
+
+### Same data, different taxonomies?
+
+IDTAXA is randomized. To tell how confident an assignment is, it repeatedly takes a random subset of the
+sequence's k-mers (bootstrap replicates) and checks which taxon each subset points to; the confidence of a rank is
+the share of replicates that agree on it, and the ranks below `idtaxa_threshold` are left out (they read
+`unclassified_<the last rank kept>`). A sequence whose confidence is close to the threshold can land on either side
+of it from one random sample to another, so the same sequence may be assigned one rank deeper in one run and one
+rank shallower in another, e.g. `...;Bacteroidaceae;Prevotella;Prevotella_stercoripullorum` or
+`...;Bacteroidaceae;unclassified_Bacteroidaceae`. On our test data, about 10% of the sequences (99 of 996) changed
+this way between two runs.
+
+The `prep` workflow therefore fixes the seed of this sampling (`idtaxa_seed`, 1 by default): the same abundance table,
+reference, threshold and seed give the same taxonomies. Another seed, or taxonomies assigned without one (e.g. by
+the former `microbetag_prep` image), differ in the same way: in the depth of the assignments near the threshold,
+not in their lineages.
 
 
 ## An example case
@@ -105,7 +125,7 @@ and the <a href="https://github.com/meringlab/flashweave.jl" target="_blank">Fla
 In its last column there is the ASV sequence instead of a taxonomy, since we want GTDB taxonomies, from the 16S rRNA gene,
 to map our ASVs to their closest GTDB genomes.
 
-In the `pipeline` folder, create a folder for the data, and move the table, the training set and the [`prep.yaml`][2]
+In the `pipeline` folder, create a folder for the data, and move the table, the GTDB 16S reference and the [`prep.yaml`][2]
 template there:
 
 ```bash
@@ -123,7 +143,7 @@ In `prep.yaml`:
 Then run, from the `pipeline` folder:
 
 ```bash
-nextflow run main.nf -params-file my_microbetag_prep/prep.yaml --workflow prep
+nextflow run main.nf -params-file my_microbetag_prep/prep.yaml
 ```
 
 Based on your input, this can take from minutes to hours. You will find in `my_microbetag_prep/prep_output`

@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+# microbetag-nf: run the microbetag pipeline without its Nextflow options.
+#
+#   microbetag-nf workflows                              the workflows, and what each does
+#   microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
+#   microbetag-nf run <params file> [nextflow options]   run it (the file names its workflow; e.g. -profile local)
+#   microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
+#   microbetag-nf pull-images [--sif-dir DIR] [params file]   pull the images ahead, for nodes without internet
+#   microbetag-nf get-gtdb-16s [--dir DIR]               download the GTDB 16S reference of prep (IDTAXA)
+#   microbetag-nf help
+#
+# It runs main.nf of the folder it is in, so it works from any folder; the paths of a params file are relative to
+# the folder you run it from, and Nextflow's work/ folder is made there.
+
+set -euo pipefail
+
+PIPELINE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+MAIN="${PIPELINE}/main.nf"
+# main.nf then gives its hints as microbetag-nf commands
+export MICROBETAG_NF=1
+WORKFLOWS="precalc annotate prep network"
+
+# The GTDB r207 16S reference of IDTAXA (prep's gtdb_16s_reference), in the microbetag data on Zenodo: this version
+# of the record, so that a later one cannot change what is downloaded
+GTDB_16S_URL="https://zenodo.org/records/23368237/files/gtdb_r207_ssu_idtaxa.RData?download=1"
+GTDB_16S_FILE="gtdb_r207_ssu_idtaxa.RData"
+GTDB_16S_MD5="0580083eeebdff235683eeae26f17def"
+
+usage() {
+    cat <<EOF
+microbetag-nf: from your genomes to a microbetag-annotated co-occurrence network
+
+Usage:
+  microbetag-nf workflows                              the workflows, and what each does
+  microbetag-nf write-params <workflow> <file>         write the params file of a workflow, to fill in
+  microbetag-nf run <params file> [nextflow options]   run it: the file names its workflow (workflow: precalc);
+                                                       Nextflow options after it (e.g. -profile local, -resume)
+  microbetag-nf describe [parameter] [workflow]        describe a parameter, or all those of a workflow
+                                                       (e.g. describe gurobi_sessions, describe annotate)
+  microbetag-nf pull-images [--sif-dir DIR] [params file]
+                                                       pull the Singularity/Apptainer images of the pipeline
+                                                       ahead of a run: only needed where the compute nodes have
+                                                       no internet (Nextflow pulls them itself otherwise)
+  microbetag-nf get-gtdb-16s [--dir DIR]               download the GTDB 16S reference of prep (IDTAXA), 125 MB,
+                                                       into DIR (default: databases/ of the pipeline)
+  microbetag-nf help                                   this message
+
+A run, step by step:
+  1. microbetag-nf write-params precalc my_precalc.yaml
+  2. fill in my_precalc.yaml (your data, the steps you want); a parameter left out takes its default
+  3. microbetag-nf run my_precalc.yaml
+
+Workflows: ${WORKFLOWS// /, }. The parameters are described in ${PIPELINE}/parameters.yaml.
+EOF
+}
+
+nextflow_quiet() {
+    # Only the output of main.nf (no Nextflow banner or run summary), with Nextflow's exit status
+    set +o pipefail
+    NXF_ANSI_LOG=false nextflow -q run "${MAIN}" "$@" 2>&1 \
+        | grep -v -E '^\[(PIPELINE|WORKDIR|SUCCESS|FAILED)\]|^Nextflow .* is available|Check script|\.nextflow\.log' \
+        | cat -s | awk 'NF { started = 1 } started'
+    local status=${PIPESTATUS[0]}
+    set -o pipefail
+    return "${status}"
+}
+
+is_workflow() {
+    [[ " ${WORKFLOWS} " == *" $1 "* ]]
+}
+
+command -v nextflow >/dev/null 2>&1 || {
+    echo "microbetag-nf needs Nextflow: https://www.nextflow.io/docs/latest/install.html" >&2
+    exit 1
+}
+
+cmd="${1:-help}"
+shift || true
+
+case "${cmd}" in
+    workflows)
+        cat <<EOF
+precalc    pre-calculations for a genome catalogue (annotations, complementarities)
+annotate   annotate a network with a pre-calculation folder
+prep       prepare an amplicon dataset for the on-the-fly version of microbetag
+network    FlashWeave, FAPROTAX and manta only; used by the microbetag server
+EOF
+        ;;
+
+    write-params)
+        if [[ $# -ne 2 ]] || ! is_workflow "$1"; then
+            echo "Usage: microbetag-nf write-params <workflow> <file>   (workflow: ${WORKFLOWS// /, })" >&2
+            exit 1
+        fi
+        nextflow_quiet --workflow "$1" --write-params "$2"
+        [[ -f "$2" ]] || exit 1
+        ;;
+
+    run)
+        if [[ $# -lt 1 || ! -f "$1" ]]; then
+            echo "Usage: microbetag-nf run <params file> [nextflow options]   (the file names its workflow)" >&2
+            echo "No params file yet? microbetag-nf write-params <workflow> <file>" >&2
+            exit 1
+        fi
+        params_file="$1"
+        shift
+        exec nextflow run "${MAIN}" -params-file "${params_file}" "$@"
+        ;;
+
+    describe)
+        # [parameter] [workflow]; a single argument that names a workflow is the workflow
+        # (network is both: microbetag-nf describe network network describes the parameter)
+        name=""
+        workflow=""
+        if [[ $# -eq 1 ]] && is_workflow "$1"; then
+            workflow="$1"
+        elif [[ $# -ge 1 ]]; then
+            name="$1"
+            workflow="${2:-}"
+        fi
+        args=(--help)
+        [[ -n "${name}" ]] && args=(--help "${name}")
+        [[ -n "${workflow}" ]] && args+=(--workflow "${workflow}")
+        nextflow_quiet "${args[@]}"
+        ;;
+
+    pull-images)
+        # The images of the modules (their container lines) and the microbetag one (microbetag_image: of the params
+        # file if given, else its default in parameters.yaml), under the names Nextflow gives them in its
+        # Singularity cache, so that a run finds them there (singularity.cacheDir of nextflow.config)
+        sif_dir="${HOME}/.singularity/mtg-images"
+        params_file=""
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                -s | --sif-dir) sif_dir="$2"; shift 2 ;;
+                *) params_file="$1"; shift ;;
+            esac
+        done
+        engine="$(command -v apptainer || command -v singularity || true)"
+        if [[ -z "${engine}" ]]; then
+            echo "pull-images needs Singularity or Apptainer; with Docker, Nextflow pulls the images itself." >&2
+            exit 1
+        fi
+        yaml_value() {  # the value of a top-level key of a YAML file, or of its value: line (parameters.yaml)
+            awk -v key="$2" '
+                $0 ~ "^" key ":" { v = $0; sub("^" key ":[[:space:]]*", "", v); if (v != "") { print v; exit } ; found = 1; next }
+                found && /^[[:space:]]+value:/ { v = $0; sub(/^[[:space:]]+value:[[:space:]]*/, "", v); print v; exit }
+                found && /^[^[:space:]]/ { exit }
+            ' "$1" | tr -d "\"'"
+        }
+        microbetag_image=""
+        [[ -n "${params_file}" ]] && microbetag_image="$(yaml_value "${params_file}" microbetag_image)"
+        if [[ -z "${microbetag_image}" ]]; then
+            microbetag_image="$(sed -n '/^      microbetag_image:/,/value:/p' "${PIPELINE}/parameters.yaml" | sed -n 's/^ *value: *//p' | tr -d "\"'")"
+        fi
+        mapfile -t images < <(
+            { grep -rhoE '^\s*container\s+"[^"]+"' "${PIPELINE}/modules" "${PIPELINE}/workflows" | sed -E 's/.*"([^"]+)"/\1/'
+              echo "${microbetag_image}"; } | sort -u)
+        mkdir -p "${sif_dir}"
+        echo "Pulling ${#images[@]} images into ${sif_dir}, with $(basename "${engine}")"
+        for image in "${images[@]}"; do
+            sif="${sif_dir}/${image//[\/:]/-}.img"   # Nextflow's name: / and : as -
+            if [[ -s "${sif}" ]]; then
+                echo "  have    ${image}"
+            else
+                echo "  pulling ${image}"
+                "${engine}" pull --name "${sif}" "docker://${image}"
+            fi
+        done
+        if [[ "${sif_dir}" != "${HOME}/.singularity/mtg-images" ]]; then
+            echo "Set singularity.cacheDir (or apptainer.cacheDir) of nextflow.config to ${sif_dir}"
+        fi
+        ;;
+
+    get-gtdb-16s)
+        dir="${PIPELINE}/databases"
+        while [[ $# -gt 0 ]]; do
+            case "$1" in
+                -d | --dir) dir="$2"; shift 2 ;;
+                *) echo "Usage: microbetag-nf get-gtdb-16s [--dir DIR]" >&2; exit 1 ;;
+            esac
+        done
+        target="${dir}/${GTDB_16S_FILE}"
+        md5_of() { md5sum "$1" 2>/dev/null | cut -d' ' -f1 || md5 -q "$1"; }
+        if [[ -s "${target}" && "$(md5_of "${target}")" == "${GTDB_16S_MD5}" ]]; then
+            echo "${target} is already there."
+        else
+            mkdir -p "${dir}"
+            echo "Downloading the GTDB r207 16S reference (125 MB) from Zenodo (doi:10.5281/zenodo.23368237)"
+            if command -v curl >/dev/null 2>&1; then
+                curl -fL --retry 3 --progress-bar -o "${target}.part" "${GTDB_16S_URL}"
+            else
+                wget -q --show-progress -O "${target}.part" "${GTDB_16S_URL}"
+            fi
+            if [[ "$(md5_of "${target}.part")" != "${GTDB_16S_MD5}" ]]; then
+                rm -f "${target}.part"
+                echo "The download is not the expected file (MD5 differs); try again." >&2
+                exit 1
+            fi
+            mv "${target}.part" "${target}"
+            echo "Saved to ${target}"
+        fi
+        echo "In the params file of prep:  gtdb_16s_reference: ${target}"
+        ;;
+
+    help | -h | --help)
+        usage
+        ;;
+
+    *)
+        echo "Unknown command: ${cmd}" >&2
+        echo >&2
+        usage >&2
+        exit 1
+        ;;
+esac

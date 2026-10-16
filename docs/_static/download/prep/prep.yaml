@@ -1,5 +1,8 @@
 # Prepare an amplicon dataset for the on-the-fly version of microbetag (MGG).
-# Run, from the pipeline/ folder: nextflow run main.nf -params-file my_microbetag_prep/prep.yaml --workflow prep
+# Run, from the pipeline/ folder: nextflow run main.nf -params-file my_microbetag_prep/prep.yaml
+
+# The workflow this file runs
+workflow: prep
 
 # Abundance table: sequence ids (ASVs/OTUs) in the first column, then the samples,
 # and the sequences in the last column.
@@ -11,10 +14,10 @@ threads: 2
 
 # Assign GTDB taxonomies to the sequences with IDTAXA
 assign_taxonomy: true
-# IDTAXA training set: DECIPHER's LearnTaxa on the 16S rRNA gene sequences of the GTDB r207 genomes
-# (GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz, https://zenodo.org/records/6655692). Its GTDB release needs
-# to match the one of the server's database, since microbetag matches taxa to genomes by their GTDB names.
-gtdb_16s_training_set: my_microbetag_prep/gtdb_r207_ssu_idtaxa.RData
+# The GTDB r207 16S reference IDTAXA classifies the sequences against (ready to use, nothing is trained):
+# gtdb_r207_ssu_idtaxa.RData: ./microbetag-nf get-gtdb-16s, or https://doi.org/10.5281/zenodo.23368237. Its GTDB
+# release needs to match the one of the server's database, since microbetag matches taxa to genomes by their names.
+gtdb_16s_reference: my_microbetag_prep/gtdb_r207_ssu_idtaxa.RData
 # IDTAXA confidence threshold: 60 (cautious) or 50 (sensible)
 idtaxa_threshold: 60
 
