@@ -46,7 +46,7 @@ Run the `precalc` workflow of the pipeline on your genomes, as described in [the
 
 ```bash
 cd pipeline
-nextflow run main.nf -params-file workflows/precalc.yaml --workflow precalc
+nextflow run main.nf -params-file tests/params/precalc.yaml
 ```
 
 This is the step that takes time: gene prediction, KEGG annotation, trait prediction and GEM reconstruction of each

@@ -33,6 +33,50 @@ def _write_parameters_page():
 
 _write_parameters_page()
 
+
+# The parameters of the pipeline, from pipeline/parameters.yaml, as Markdown tables (tutorials_local/nf.md includes
+# them): one per section, a group of settings as one row per setting (group.setting)
+def _write_pipeline_parameters_page():
+    import yaml
+
+    root = os.path.join(os.path.dirname(__file__), "..")
+    with open(os.path.join(root, "pipeline", "parameters.yaml")) as f:
+        spec = yaml.safe_load(f)
+
+    def cell(text):
+        return " ".join(str(text).split()).replace("|", "\\|")
+
+    def show(value):
+        if value is None:
+            return ""
+        return "`" + (str(value).lower() if isinstance(value, bool) else repr(value)[1:-1] if isinstance(value, str) else str(value)) + "`"
+
+    def rows(name, p, workflows):
+        desc = cell(p["description"])
+        req  = p.get("required")
+        if req:
+            desc += " **Required**" + ("" if req is True else f" ({', '.join(req)})") + "."
+        if p.get("example") is not None:
+            desc += f" E.g. `{p['example']}`."
+        if "parameters" in p:
+            out = [f"| `{name}` | | {workflows} | {desc} |"]
+            for k, v in p["parameters"].items():
+                out += rows(f"{name}.{k}", v, "")
+            return out
+        return [f"| `{name}` | {show(p.get('value'))} | {workflows} | {desc} |"]
+
+    out = ["<!-- Written by docs/conf.py from pipeline/parameters.yaml; do not edit. -->", ""]
+    for section in spec["sections"]:
+        out += [f"### {section['title']}", "", "| Parameter | Default | Workflows | Description |", "|---|---|---|---|"]
+        for name, p in section["parameters"].items():
+            out += rows(name, p, ", ".join(p.get("workflows", [])))
+        out.append("")
+    with open(os.path.join(os.path.dirname(__file__), "tutorials_local", "nf_parameters.md"), "w") as f:
+        f.write("\n".join(out))
+
+
+_write_pipeline_parameters_page()
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
@@ -96,7 +140,7 @@ autoapi_ignore = [
 ]  # "*mtg_maps_models*",
 
 templates_path   = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tutorials_local/config_parameters.md"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tutorials_local/config_parameters.md", "tutorials_local/nf_parameters.md"]
 
 
 # ------------------

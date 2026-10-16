@@ -29,6 +29,22 @@ jobs:
       - name: Run tests
         run: pytest -v
 
+  # The pipeline's parameters.yaml against the parameters its workflows read, and its test params files
+  pipeline-parameters:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pipeline
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Check parameters.yaml
+        run: pip install pyyaml && python tests/check_parameters.py
+
   image:
     runs-on: ubuntu-latest
     steps:

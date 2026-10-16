@@ -136,8 +136,9 @@ nf/test-*
 
 # pyvis writes its JavaScript/CSS next to rendered networks
 lib/
-# ... but PhyloMint/lib is the package's own code
+# ... but PhyloMint/lib (the package) and pipeline/lib (Groovy classes of the pipeline) are code
 !microbetag/src/microbetag/PhyloMint/lib/
+!pipeline/lib/
 
 
 # From pipeline
@@ -179,6 +180,7 @@ server/services/web/mappings/kegg_seeds/all_nonseeds_module_related.pckl
 server/services/nginx/certs/
 server/db/db-password
 docs/tutorials_local/config_parameters.md
+docs/tutorials_local/nf_parameters.md
 
 # Ignore lib being produced by Jupyter notebook
 notebooks/lib/

@@ -32,7 +32,7 @@ There are two things to install, depending on [how you use `microbetag`](./modes
   - `microbetag`: <a href="https://github.com/hariszaf/microbetag" target="_blank">source code</a>, with
     - the **package**, in `microbetag/`; its image <a href="https://hub.docker.com/r/hariszaf/microbetag" target="_blank">`hariszaf/microbetag`</a> on Docker Hub
     - the **pipeline** (*microbetag-nf*), in `pipeline/`; the images of its tools are on Docker Hub too, and
-      `pipeline/get_sif.sh` downloads them for Singularity/Apptainer
+      Nextflow pulls them (`pipeline/microbetag-nf pull-images` pulls them ahead, for HPC nodes without internet)
     - the **server**, in `server/`, with the schema of its database
 
   - the data of our server's database, the annotations of the GTDB representative genomes:
@@ -115,7 +115,7 @@ There are two things to install, depending on [how you use `microbetag`](./modes
   - the [KOfam database](https://www.genome.jp/ftp/db/kofam/), for the KEGG ORTHOLOGY annotation;
   - a [Gurobi license](#install-gurobi-license), for GEM reconstruction with CarveMe or gap-filling with DNNGIOR
     (or [CPLEX](#install-cplex), for gapseq);
-  - the GTDB 16S training set, for the taxonomy assignment of the [prep workflow](./tutorials_otf/prep.md).
+  - the GTDB 16S reference, for the taxonomy assignment of the [prep workflow](./tutorials_otf/prep.md).
 
 
 ### The package

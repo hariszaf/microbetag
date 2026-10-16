@@ -135,7 +135,7 @@ workflow SEED_COMPLEMENTARITY {
 
 
 // Run on its own, with the parameters of its .yaml file:
-// nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file workflows/subworkflows/seed_complementarity/sc.yaml
+// nextflow run workflows/subworkflows/seed_complementarity/main.nf -params-file tests/params/seed_compl.yaml
 workflow {
     SEED_COMPLEMENTARITY(params.recon_files ? channel.fromPath("${params.recon_files}/*") : channel.empty())
 }
