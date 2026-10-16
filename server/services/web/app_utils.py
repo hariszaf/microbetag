@@ -324,7 +324,9 @@ def args_and_abd_data(input_data):
     out_dir = _onthefly_outdir()
 
     try:
-        abd_data = pd.DataFrame(input_data[user_vars.ABUNDANCE_DATA])
+        # Empty lines (e.g. a blank last line of the user's table) are not taxa
+        rows     = [row for row in input_data[user_vars.ABUNDANCE_DATA] if row and any(str(v).strip() for v in row)]
+        abd_data = pd.DataFrame(rows)
 
     except Exception:
         error_msg = (

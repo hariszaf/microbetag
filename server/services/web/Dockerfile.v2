@@ -47,7 +47,8 @@ RUN pip install --no-cache-dir Flask==2.3.2 Flask-Caching==2.1.0 gunicorn==20.1.
     biopython fuzzywuzzy
 
 # The pipeline, for its network workflow
-COPY pipeline/main.nf pipeline/nextflow.config /opt/pipeline/
+COPY pipeline/main.nf pipeline/nextflow.config pipeline/parameters.yaml /opt/pipeline/
+COPY pipeline/lib/ /opt/pipeline/lib/
 COPY pipeline/workflows/ /opt/pipeline/workflows/
 COPY pipeline/modules/ /opt/pipeline/modules/
 ENV MICROBETAG_PIPELINE=/opt/pipeline FLASHWEAVE=false

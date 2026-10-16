@@ -17,6 +17,7 @@ import copy
 import shutil
 import logging
 import colorlog
+import numpy as np
 import pandas as pd
 from pathlib import Path
 from multiprocessing import Pool, cpu_count, get_context
@@ -246,6 +247,19 @@ def flatten(list_of_lists: List) -> List:
     if isinstance(list_of_lists[0], list):
         return flatten(list_of_lists[0]) + flatten(list_of_lists[1:])
     return list_of_lists[:1] + flatten(list_of_lists[1:])
+
+
+def is_any_nan(x) -> bool:
+    """Whether a value is NaN: numerically if it can be, otherwise as the string 'nan'."""
+    try:
+        return bool(np.isnan(x))
+    except Exception:
+        return str(x).lower() == "nan"
+
+
+def remove_nan_from_list(lst: List) -> List:
+    """The list without its NaN values (is_any_nan); the server uses it for the genomes of a network."""
+    return [x for x in lst if not is_any_nan(x)]
 
 
 def flatten_list(lst: List, flat_list: List = None) -> set:
