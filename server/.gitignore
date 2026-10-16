@@ -17,6 +17,7 @@ services/db/kegg_module_related_seeds.pkl
 
 # A server's own settings (e.g. ports, certificates, mounts): see docker-compose.override.example.yml
 docker-compose.override.yml
+services/nginx/sites.conf
 
 # Secrets: environment files and TLS certificates/keys stay out of the repository
 .env*
