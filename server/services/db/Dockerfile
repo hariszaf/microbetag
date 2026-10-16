@@ -1,22 +1,12 @@
-
-FROM mysql:latest
-
-RUN microdnf install -y vim
-RUN microdnf install --assumeyes python3-pip
-RUN pip3.9 install mysql-connector-python
-
-RUN chown -R mysql:root /var/lib/mysql/ 
-
+# The microbetag database: MySQL, with the schema of every microbetag database. At its first start (an empty data
+# folder), MySQL runs schema/microbetagDB.sql, which creates the tables and loads the files of microbetag-export-db
+# from /var/lib/mysql-files (mounted, see docker-compose.yml).
+#
 # The credentials (MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD) are given when the container
-# starts (env_file of docker-compose.yml), not built into the image
+# starts (env_file of docker-compose.yml), not built into the image.
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+FROM mysql:8.4
 
-# The schema of the database; the files it loads are in /var/lib/mysql-files (mounted)
 COPY schema/microbetagDB.sql /docker-entrypoint-initdb.d/
-COPY scripts/ /docker-entrypoint-initdb.d/scripts/
-
-# NOTE: We do not COPY the data themselves, as we have a symbolic link to them pointing to /var/lib/mysql-files
 
 EXPOSE 3306
