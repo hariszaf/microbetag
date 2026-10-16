@@ -125,8 +125,8 @@ EOF
         ;;
 
     pull-images)
-        # The images of the modules (their container lines) and the microbetag one (microbetag_image: of the params
-        # file if given, else its default in parameters.yaml), under the names Nextflow gives them in its
+        # The images of the modules (their container lines), the microbetag one (microbetag_image: of the params
+        # file if given, else its default in parameters.yaml) and FAPROTAX v2's (faprotax_version: 2), under the names Nextflow gives them in its
         # Singularity cache, so that a run finds them there (singularity.cacheDir of nextflow.config)
         sif_dir="${HOME}/.singularity/mtg-images"
         params_file=""
@@ -148,14 +148,22 @@ EOF
                 found && /^[^[:space:]]/ { exit }
             ' "$1" | tr -d "\"'"
         }
-        microbetag_image=""
-        [[ -n "${params_file}" ]] && microbetag_image="$(yaml_value "${params_file}" microbetag_image)"
-        if [[ -z "${microbetag_image}" ]]; then
-            microbetag_image="$(sed -n '/^      microbetag_image:/,/value:/p' "${PIPELINE}/parameters.yaml" | sed -n 's/^ *value: *//p' | tr -d "\"'")"
-        fi
+        param_image() {  # an image parameter: of the params file if given, else its default in parameters.yaml
+            local image=""
+            [[ -n "${params_file}" ]] && image="$(yaml_value "${params_file}" "$1")"
+            if [[ -z "${image}" ]]; then
+                image="$(sed -n "/^      $1:/,/value:/p" "${PIPELINE}/parameters.yaml" | sed -n 's/^ *value: *//p' | tr -d "\"'")"
+            fi
+            echo "${image}"
+        }
+        microbetag_image="$(param_image microbetag_image)"
+        # FAPROTAX v2's, if the params file asks for it (faprotax_version: 2)
+        faprotax2_image=""
+        [[ -n "${params_file}" && "$(yaml_value "${params_file}" faprotax_version)" == "2" ]] \
+            && faprotax2_image="$(param_image faprotax2_image)"
         mapfile -t images < <(
             { grep -rhoE '^\s*container\s+"[^"]+"' "${PIPELINE}/modules" "${PIPELINE}/workflows" | sed -E 's/.*"([^"]+)"/\1/'
-              echo "${microbetag_image}"; } | sort -u)
+              echo "${microbetag_image}"; [[ -n "${faprotax2_image}" ]] && echo "${faprotax2_image}"; } | sort -u)
         mkdir -p "${sif_dir}"
         echo "Pulling ${#images[@]} images into ${sif_dir}, with $(basename "${engine}")"
         for image in "${images[@]}"; do

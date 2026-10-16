@@ -78,6 +78,15 @@ It currently comprises more than 7600 annotation rules, covering ~4700 prokaryot
 Each annotation rule comes with literature citations and can, thus, be independently verified.
 Similar 16S rRNA oriented approaches (e.g., PICRUSt, Tax4Fun etc.) estimate community gene content based on available sequenced genomes. On the contrary, FAPROTAX estimates metabolic phenotypes based on experimental evidence.
 
+With the pipeline (`annotate` and `network` workflows), you may also use the
+<a href="https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX2/" target="_blank">**FAPROTAX v2.0 mapper**</a>
+instead of FAPROTAX 1.2.10, by setting `faprotax_version: 2`.
+Rather than matching each taxon's name to the database, it places the taxon on a reference tree by its taxonomy and
+predicts its functions from its relatives, so it also annotates taxa that are not in the database
+(on the test network of the pipeline, 23 of 23 nodes, against 13 with FAPROTAX 1.2.10).
+Its list of functions partly differs from the one [here](faprotax-functions.md).
+The microbetag server and the on-the-fly version use FAPROTAX 1.2.10.
+
 The taxonomy assigned to each OTU/ASV (amplicon data) or bin (shotgun data) on the abundance table provided by the user, is mapped to a list of functions one can check [here](faprotax-functions.md).
 
 As an example, here is how the FAPROTAX output looks like for the **denitrification** function for three samples (columns): 
