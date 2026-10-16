@@ -166,7 +166,6 @@ server/updated_non_seedsets_of_interest.pckl
 
 server/services/db/kegg_module_related_nonseeds.pkl
 server/services/db/kegg_module_related_seeds.pkl
-server/services/web/mappings/kegg_seeds/all_nonseeds_module_related.pckl
 
 # -------------
 # Secrets: environment files and TLS certificates/keys stay out of the repository

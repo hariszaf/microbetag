@@ -292,6 +292,23 @@ nicotinamide mononucleotide or tryptophan in the CarveMe models of the tests. A 
 still be a seed (an alternative carbon source), and one required on a given medium need not be (glucose on M9 for
 *E. coli*, which its network makes from other sugars).
 
+**Seeds and the quality of the reconstruction.** Reaction directions come from the bounds of the model, not from
+its `reversible` flag (the former BuildGraphNetX used both directions for any reaction whose lower bound is below 0,
+including those that can only run backwards). Seeds therefore follow the model: in an automatic reconstruction, an
+intracellular intermediate whose making reaction is missing (decenoyl-ACP without FabA, 2-amino-3-carboxymuconate
+semialdehyde without 3-hydroxyanthranilate dioxygenase), or set in the wrong direction (adenylated ThiS in ModelSEED,
+which only allows its breakdown), is a source and a seed. These are gaps of the reconstruction, to be fixed by
+gap-filling or curation, not by the seed inference. In ModelSEED models, the cofactors (`CURRENCY_MODELSEED`, chosen
+from the ids), the biomass placeholders (`cpd17041-3`, `cpd11416`) and the products of the biomass reaction
+(cobinamide, dimethylbenzimidazole: made by the cell) are handled as in BiGG models.
+
+**Other seed definitions.** microbetag's seeds are necessary seeds (Borenstein): what the network cannot make, so
+needs from outside; one set per model. Tools such as [Seed2LP](https://github.com/bioasp/seed2lp) infer sufficient
+seeds, or minimal precursor sets (network expansion: the smallest sets from which every compound, or chosen targets,
+can be reached; many per model). Every necessary seed is in each such set: on a CarveMe and a ModelSEED model of the
+tests, the 55 and 130 seeds of microbetag were in all 20 Seed2LP solutions (`full` mode), which had ~290 and ~600
+compounds, extracellular forms counted separately.
+
 **Known limits.** Two BiGG compounds can share a ModelSEED id (L-arabinitol and L-lactaldehyde, `cpd00334`), which can
 then be both a seed and a non-seed after the translation. The currency metabolites other than NH₄⁺, SO₄²⁻ and iron are
 never seeds.

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 /* Export the output of the precalc workflow as the files of a microbetag database, to load with
-server/services/db/schema/custom_init.sql (see server/services/db/README.md).
+server/services/db/schema/microbetagDB.sql (see server/services/db/README.md).
 
 Run it after precalc, on its output folder:
 

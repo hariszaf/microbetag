@@ -71,17 +71,17 @@ docker run --rm -v $PWD:/data -w /data hariszaf/microbetag:<version> \
     microbetag-export-db --precalc <precalc output folder> --genome-taxonomy genome_taxonomy.tsv --outdir db_files
 ```
 
-`db_files` has one file per table of the database, and the seed sets of the genomes
-(`all_conf.json.gz`, `all_nonseeds.json.gz`, `all_nonseeds_module_related.pckl`), which the server reads from files.
+`db_files` has one file per table of the database, seed sets included: the server reads the rows of a network's
+genomes, and computes their pathway and seed complementarities.
 
 Then start the database: MySQL creates the tables and loads the files at its first start, with
-`server/services/db/schema/custom_init.sql`:
+`server/services/db/schema/microbetagDB.sql`:
 
 ```bash
 docker network create microbetag
 docker run -d --name microbetag-db --network microbetag \
     -e MYSQL_ROOT_PASSWORD=<password> \
-    -v $PWD/server/services/db/schema/custom_init.sql:/docker-entrypoint-initdb.d/custom_init.sql:ro \
+    -v $PWD/server/services/db/schema/microbetagDB.sql:/docker-entrypoint-initdb.d/microbetagDB.sql:ro \
     -v $PWD/db_files:/var/lib/mysql-files \
     -p 3306:3306 mysql:8.4
 ```
@@ -111,23 +111,22 @@ Set its database credentials in a `.env` file, from the template `server/.env.ex
 |---|---|
 | `USER_NAME`, `PASSWORD` | the database user and password |
 | `HOST`, `PORT` | where the database runs |
-| `DB_NAME` | the database, `microbetagDB` with `custom_init.sql` |
+| `DB_NAME` | the database, `microbetagDB` with `microbetagDB.sql` |
 | `FLASK_SECRET_KEY` | a random string |
 
-and run it, with the folder of the exported files. It reaches the database on their shared Docker network
+and run it. It reaches the database on their shared Docker network
 (`microbetag`), so `HOST` is `microbetag-db` and `PORT` is `3306`.
 
 ```bash
 docker run -d --name microbetag-server --network microbetag -p 5000:5000 --env-file .env \
-    -e CATALOGUE=custom -e SEEDS_DIR=/seeds -v $PWD/db_files:/seeds:ro \
+    -e TAXON_MATCHING=lineage \
     microbetag-server:<version>
 ```
 
 | Variable | Value |
 |---|---|
-| `CATALOGUE` | `custom`: each taxon is matched to the genomes of the database that share its deepest rank, from its taxonomy; a taxon named after a genome of the database is matched to that genome |
-| `CATALOGUE_MIN_RANK` | the shallowest rank a match may share; `genus` by default, so that a taxon that shares only its family with your genomes is not annotated |
-| `SEEDS_DIR` | the folder with the seed sets of the genomes, from `microbetag-export-db` |
+| `TAXON_MATCHING` | how taxa are matched to genomes: `species` (default), for a public server whose users come with any taxonomy (GTDB, SILVA, `prep`): each taxon's species name is matched, exactly or nearly, to a GTDB species; `lineage`, for a server of your own genomes: each taxon gets the genomes sharing its deepest rank, from its taxonomy (a taxon named after a genome gets that genome) |
+| `LINEAGE_MIN_RANK` | with `lineage`, the shallowest rank a match may share; `genus` by default, so that a taxon sharing only its family with your genomes is not annotated |
 
 To keep the server running after you log out, and start it again at boot, run it with systemd;
 `server/README.md` describes how, and how to run it with Docker Compose together with its database.

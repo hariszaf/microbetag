@@ -210,11 +210,7 @@ class Mappings:
     GENERA_NCBI_IDS   = os.path.join(TAXONOMY, "genera2ncbiId.tsv")
     FAMILIES_NCBI_IDS = os.path.join(TAXONOMY, "families2ncbiId.tsv")
 
-    # The seed sets of the database's genomes; SEEDS_DIR for those of a custom database (microbetag-export-db)
-    SEEDS_DIR           = os.environ.get("SEEDS_DIR") or os.path.join(app_dir, "mappings/kegg_seeds")
-    ALL_CONFIDENCE      = os.path.join(SEEDS_DIR, "all_conf.json.gz")
-    ALL_NONSEEDS        = os.path.join(SEEDS_DIR, "all_nonseeds.json.gz")
-    ALL_NONSEEDS_MODULE = os.path.join(SEEDS_DIR, "all_nonseeds_module_related.pckl")
+    # The seed sets of the genomes are in the database (seedSets, nonSeedSets): read per network
     SEED_KO_MO          = os.path.join(app_dir, "mappings/kegg_seeds/seedId_keggId_module.tsv")
 
 
@@ -328,7 +324,9 @@ def args_and_abd_data(input_data):
     out_dir = _onthefly_outdir()
 
     try:
-        abd_data = pd.DataFrame(input_data[user_vars.ABUNDANCE_DATA])
+        # Empty lines (e.g. a blank last line of the user's table) are not taxa
+        rows     = [row for row in input_data[user_vars.ABUNDANCE_DATA] if row and any(str(v).strip() for v in row)]
+        abd_data = pd.DataFrame(rows)
 
     except Exception:
         error_msg = (
@@ -498,13 +496,6 @@ def sync_yaml(out_dir: str, args: dict, pipeline_outputs: dict = None) -> str:
                 _logger_.warning(f"{step} is not available on this server; skipped.")
             continue
         base_yaml.setdefault(step, {})["value"] = args[arg]
-
-    # User-indipendent, could be fixed in the base yaml template used as well
-    base_yaml.setdefault("prev_conf", {})["file_path"]     = mappings.ALL_CONFIDENCE
-    base_yaml.setdefault("prev_nonseeds", {})["file_path"] = mappings.ALL_NONSEEDS
-
-    base_yaml.setdefault("prev_nonseeds_module", {})
-    base_yaml["prev_nonseeds_module"]["file_path"] = mappings.ALL_NONSEEDS_MODULE
 
     # Outputs of the network workflow of the pipeline (app_pipeline.run_network_workflow)
     pipeline_outputs = pipeline_outputs or {}

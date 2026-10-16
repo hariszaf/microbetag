@@ -2,6 +2,8 @@
 *
 !pipeline/main.nf
 !pipeline/nextflow.config
+!pipeline/parameters.yaml
+!pipeline/lib/
 !pipeline/workflows/
 !pipeline/modules/
 !server/services/web/

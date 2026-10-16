@@ -14,7 +14,7 @@ from app_utils import (
 )
 
 from app_taxonomy import map_seq_to_ncbi_tax_level_and_id
-from app_catalogue import custom_catalogue, map_seq_to_catalogue
+from app_catalogue import lineage_matching, map_seq_to_catalogue, taxon_matching
 from app_pipeline import pipeline_available, run_network_workflow
 
 from api import (
@@ -25,6 +25,9 @@ from api import (
 from microbetag import Config, mtg_logger, GetPhenotrexTraits, db, run_microbetag
 
 __version__ = "1.0.2"
+
+# How taxa are matched to genomes (TAXON_MATCHING): checked at start, so that a wrong value stops the server
+TAXON_MATCHING = taxon_matching()
 
 # --------
 # Fire app
@@ -369,8 +372,8 @@ def upload_dev():
         # Abundance data df
         data = prep_abundance_table(config)  # noqa: F405
         try:
-            if custom_catalogue():
-                # A database of the user's own genomes: the closest genomes of each taxon
+            if lineage_matching():
+                # A database of the user's own genomes: the closest genomes of each taxon, from its lineage
                 config.otf_seq_tax_df, config.repr_genomes_present = map_seq_to_catalogue(
                     abd_tab   = data,
                     tax_col   = mtg_app_vars.TAX_COL,

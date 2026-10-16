@@ -43,12 +43,14 @@ try:
         patric_from_gc_list,
         get_path_compls_for_ncbi_ids
     )
-except Exception:
+except ModuleNotFoundError as e:
+    # Only a missing MySQL client is expected (the stand-alone version does not need it); anything else is a bug
+    if not (e.name or "").startswith("mysql"):
+        raise
     print(
         "mysql-connector-python is not installed in the running environment."
         "Dependency and microbetag features required only for on-the-fly version."
     )
-    pass
 
 
 from .networks import (
