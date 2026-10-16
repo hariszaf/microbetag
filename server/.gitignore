@@ -11,7 +11,6 @@ updated_non_seedsets_of_interest.pckl
 
 services/db/kegg_module_related_nonseeds.pkl
 services/db/kegg_module_related_seeds.pkl
-services/web/mappings/kegg_seeds/all_nonseeds_module_related.pckl
 
 
 

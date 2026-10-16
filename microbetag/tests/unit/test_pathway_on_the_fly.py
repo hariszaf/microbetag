@@ -56,3 +56,25 @@ def test_path_compls_for_ncbi_ids(monkeypatch):
 
 def test_no_genomes():
     assert db.get_path_compls_for_ncbi_ids({}, {("1", "2")}) == {}
+
+
+def test_seed_files_of_a_network(monkeypatch, tmp_path):
+    """Only the seed sets of the network's GEMs are read from the database, as the seed step's input files."""
+    import gzip, json, pickle
+
+    def select(query, values, chunk=2000):
+        if "FROM seedSets" in query:
+            rows = [("100.1", "cpd00027:1,cpd00254:0.5"), ("200.1", "cpd00009:1")]
+        else:
+            rows = [("100.1", "cpd00009,cpd00023"), ("200.1", "cpd00027")]
+        return [r for r in rows if r[0] in values]
+
+    monkeypatch.setattr(db, "_select", select)
+    conf, nonseeds, module, found = db.write_seed_files(["100.1", "999.9"], str(tmp_path))
+    assert found == {"100.1"}
+    with gzip.open(conf, "rt") as f:
+        assert json.load(f) == {"100.1": {"cpd00027": 1.0, "cpd00254": 0.5}}
+    with gzip.open(nonseeds, "rt") as f:
+        assert json.load(f) == {"100.1": ["cpd00009", "cpd00023"]}
+    with open(module, "rb") as f:
+        assert list(pickle.load(f).index) == ["100.1"]

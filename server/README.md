@@ -67,12 +67,11 @@ To serve your own genomes:
 |---|---|
 | `CATALOGUE` | `custom`: taxa are matched to the closest genomes of the database (same species, otherwise genus) instead of NCBI Taxonomy / GTDB |
 | `CATALOGUE_MIN_RANK` | the shallowest rank a match may share; `genus` by default |
-| `SEEDS_DIR` | the folder of the exported files, for `all_conf.json.gz`, `all_nonseeds.json.gz` and `all_nonseeds_module_related.pckl` |
 | `USER_NAME`, `PASSWORD`, `HOST`, `PORT`, `DB_NAME`, `FLASK_SECRET_KEY` | as in [.env.example](.env.example) |
 
 ```bash
 docker run -d --name microbetag-server -p 5000:5000 --env-file .env \
-  -e CATALOGUE=custom -e SEEDS_DIR=/seeds -v <db files>:/seeds:ro microbetag-server:2.0.0
+  -e CATALOGUE=custom microbetag-server:2.0.0
 ```
 
 ## How to edit the app

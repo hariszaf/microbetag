@@ -149,5 +149,22 @@ LOAD DATA INFILE '/var/lib/mysql-files/genome_ncbi_tax_ids.tsv' INTO TABLE genom
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 CREATE INDEX ncbi_tax_id ON genome2taxNcbiId(ncbiTaxId);
 
--- Seed complementarities are computed by the server, from the seed sets of the genomes (all_conf.json.gz,
--- all_nonseeds.json.gz and all_nonseeds_module_related.pckl, in SEEDS_DIR), not stored in tables
+-- Seed sets of each GEM, from which the server computes the seed complementarities of the pairs of a network:
+-- its seeds with their confidence (cpd00027:1.0,cpd00254:0.5), and its non-seeds
+DROP TABLE IF EXISTS seedSets;
+CREATE TABLE seedSets(
+    gem VARCHAR(255),
+    seeds MEDIUMTEXT,
+    PRIMARY KEY (gem)
+);
+LOAD DATA INFILE '/var/lib/mysql-files/seed_sets.tsv' INTO TABLE seedSets
+FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+
+DROP TABLE IF EXISTS nonSeedSets;
+CREATE TABLE nonSeedSets(
+    gem VARCHAR(255),
+    nonSeeds MEDIUMTEXT,
+    PRIMARY KEY (gem)
+);
+LOAD DATA INFILE '/var/lib/mysql-files/non_seed_sets.tsv' INTO TABLE nonSeedSets
+FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';

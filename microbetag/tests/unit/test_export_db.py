@@ -57,7 +57,7 @@ def test_export(tmp_path, precalc):
 
     assert counts == {
         "genomeTaxonomy": 2, "phenDB": 2, "uniqueComplements": 2, "genomeAlternatives": 2, "genomeModuleKos": 7,
-        "seed sets": 1, "patricId2genomeId": 2, "genome2taxNcbiId": 0,
+        "seedSets": 1, "nonSeedSets": 2, "patricId2genomeId": 2, "genome2taxNcbiId": 0,
     }
 
     # phenDB: genome ids without the FASTA extension; 33 traits, missing ones as N/A without a score (NULL)
@@ -79,9 +79,8 @@ def test_export(tmp_path, precalc):
     assert not (out / "pathway_complementarity.tsv").exists()
 
     assert rows(out / "genome_ids.tsv") == [["bin_1", "bin_1"], ["bin_2", "bin_2"]]
-    with gzip.open(out / "all_conf.json.gz", "rt") as f:
-        assert json.load(f) == {"bin_1": {"cpd1": 1.0}}
-    assert (out / "all_nonseeds_module_related.pckl").read_bytes() == b"pickle"
+    assert rows(out / "seed_sets.tsv") == [["bin_1", "cpd1:1"]]
+    assert rows(out / "non_seed_sets.tsv") == [["bin_1", "cpd3"], ["bin_2", "cpd4,cpd5"]]
 
 
 def test_cli(tmp_path, precalc, capsys):

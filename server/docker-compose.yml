@@ -22,14 +22,9 @@ services:
     command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
 
     # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
-    # also CATALOGUE=custom and SEEDS_DIR=/seeds (see .env.example)
+    # also CATALOGUE=custom (see .env.example)
     env_file:
       - ./.env.dev
-
-    volumes:
-      # The seed sets of the database's genomes (microbetag-export-db's all_conf.json.gz, all_nonseeds.json.gz
-      # and all_nonseeds_module_related.pckl), read by the app when SEEDS_DIR=/seeds
-      - ./services/db/data:/seeds:ro
 
     expose:
       - 5000

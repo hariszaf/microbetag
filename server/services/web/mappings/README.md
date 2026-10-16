@@ -16,9 +16,6 @@ Here comes their short description:
 
 |                File                 | Description  |
 |:-----------------------------------:|:------------:|
-|`all_conf.json.gz`                   | Seed set (value) in ModelSEED namespace of a PATRIC ID (key) | 
-|`all_nonseeds.json.gz`               |Non-seed set (value) in ModelSEED namespace of a PATRIC ID (key) | 
-|`all_nonseeds_module_related.pckl`   | A `pandas.DataFrame` with PATRIC ID as index and a subset of its seeds, those participating in KEGG MODULES, as its only column. | 
 |`kegg_maps_descriptions.tsv`         |A 2-column tab separated file with KEGG PATHWAYS (maps) and their description | 
 |`module_descriptions`                |A 3-column tab separated file with the metabolism category of a KEGG MODULE, the module ID and its description per line. | 
 |`related_kegg_maps_descriptions.tsv` | A 3-column tab separated file with the KEGG PATHWAY (map) ID, its name and the KEGG metabolism category it is part of| 

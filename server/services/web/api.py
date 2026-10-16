@@ -1,3 +1,5 @@
+import tempfile
+
 from flask import jsonify
 
 from app_utils import ArgumentMissing, NotFoundError, MicrobetagVars, Mappings
@@ -252,8 +254,9 @@ class seedConfig:
         self.seeds         = mtg_vars.UPLOAD_FOLDER  # outdir
         self.threads       = 2
         self.skip_sets     = True
-        self.prev_conf     = mappings.ALL_CONFIDENCE
-        self.prev_nonseeds = mappings.ALL_NONSEEDS
+        # The seed sets of these GEMs only, from the database
+        outdir = tempfile.mkdtemp(dir=mtg_vars.UPLOAD_FOLDER, prefix="seeds_")
+        self.prev_conf, self.prev_nonseeds, _, _ = db.write_seed_files(patric_ids, outdir)
         self.seed_ko_mo    = mappings.SEED_KO_MO
 
         if func == "scores":

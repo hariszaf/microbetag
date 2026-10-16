@@ -71,8 +71,8 @@ docker run --rm -v $PWD:/data -w /data hariszaf/microbetag:<version> \
     microbetag-export-db --precalc <precalc output folder> --genome-taxonomy genome_taxonomy.tsv --outdir db_files
 ```
 
-`db_files` has one file per table of the database, and the seed sets of the genomes
-(`all_conf.json.gz`, `all_nonseeds.json.gz`, `all_nonseeds_module_related.pckl`), which the server reads from files.
+`db_files` has one file per table of the database, seed sets included: the server reads the rows of a network's
+genomes, and computes their pathway and seed complementarities.
 
 Then start the database: MySQL creates the tables and loads the files at its first start, with
 `server/services/db/schema/microbetagDB.sql`:
@@ -114,12 +114,12 @@ Set its database credentials in a `.env` file, from the template `server/.env.ex
 | `DB_NAME` | the database, `microbetagDB` with `microbetagDB.sql` |
 | `FLASK_SECRET_KEY` | a random string |
 
-and run it, with the folder of the exported files. It reaches the database on their shared Docker network
+and run it. It reaches the database on their shared Docker network
 (`microbetag`), so `HOST` is `microbetag-db` and `PORT` is `3306`.
 
 ```bash
 docker run -d --name microbetag-server --network microbetag -p 5000:5000 --env-file .env \
-    -e CATALOGUE=custom -e SEEDS_DIR=/seeds -v $PWD/db_files:/seeds:ro \
+    -e CATALOGUE=custom \
     microbetag-server:<version>
 ```
 
@@ -127,7 +127,6 @@ docker run -d --name microbetag-server --network microbetag -p 5000:5000 --env-f
 |---|---|
 | `CATALOGUE` | `custom`: each taxon is matched to the genomes of the database that share its deepest rank, from its taxonomy; a taxon named after a genome of the database is matched to that genome |
 | `CATALOGUE_MIN_RANK` | the shallowest rank a match may share; `genus` by default, so that a taxon that shares only its family with your genomes is not annotated |
-| `SEEDS_DIR` | the folder with the seed sets of the genomes, from `microbetag-export-db` |
 
 To keep the server running after you log out, and start it again at boot, run it with systemd;
 `server/README.md` describes how, and how to run it with Docker Compose together with its database.

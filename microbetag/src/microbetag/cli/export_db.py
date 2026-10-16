@@ -11,14 +11,14 @@ server/services/db/schema/microbetagDB.sql, and the seed sets the server compute
                                                             alternative way to complete a module, once
     genome_alternatives.tsv       genomeAlternatives:       genome, ids of the alternatives of its incomplete modules
     genome_module_kos.tsv         genomeModuleKos:          genome, KEGG module, KOs of the module it has
+    seed_sets.tsv                 seedSets:                 GEM, its seeds with their confidence (cpd:1.0,cpd:0.5)
+    non_seed_sets.tsv             nonSeedSets:              GEM, its non-seeds (comma-separated)
     genome_ids.tsv                patricId2genomeId:        genome, id of its GEM (by default the genome itself)
     genome_ncbi_tax_ids.tsv       genome2taxNcbiId:         NCBI Taxonomy id, genome (empty without --ncbi-tax-ids)
-    all_conf.json.gz, all_nonseeds.json.gz                   seed set confidences and non-seed sets per GEM
-    all_nonseeds_module_related.pckl                         KEGG module related non-seed sets (keggm_nonseeds.pkl)
 
 The server computes the pathway and seed complementarities of the pairs of a network from these, so nothing is
 stored per pair. From precalc: phenotrex/predictions, pathway_compl/alternatives.json (or .json.gz),
-hmmsearch/ko_merged.txt (or .txt.gz) and seed_compl (confidence.json, nonseeds.json, keggm_nonseeds.pkl).
+hmmsearch/ko_merged.txt (or .txt.gz) and seed_compl (confidence.json, nonseeds.json, or .json.gz).
 """
 
 import argparse
@@ -26,7 +26,6 @@ import gzip
 import json
 import os
 import re
-import shutil
 from collections.abc import Iterable
 
 import pandas as pd
@@ -164,11 +163,6 @@ def two_columns(path: str) -> list[list[str]]:
         return [line.rstrip("\n").split("\t")[:2] for line in f if line.strip()]
 
 
-def gzip_copy(src: str, dest: str) -> None:
-    with open(src, "rb") as f_in, gzip.open(dest, "wb") as f_out:
-        shutil.copyfileobj(f_in, f_out)
-
-
 def export(precalc: str, genome_taxonomy: str, outdir: str, gem_ids: str = None,
            ncbi_tax_ids: str = None) -> dict[str, int]:
     """
@@ -202,15 +196,19 @@ def export(precalc: str, genome_taxonomy: str, outdir: str, gem_ids: str = None,
         counts["genomeAlternatives"] = write_tsv(genome_alts, out("genome_alternatives.tsv"))
         counts["genomeModuleKos"]    = write_tsv(genome_module_kos, out("genome_module_kos.tsv"))
 
-    seed_dir = os.path.join(precalc, "seed_compl")
-    if os.path.isdir(seed_dir):
-        gzip_copy(os.path.join(seed_dir, "confidence.json"), out("all_conf.json.gz"))
-        gzip_copy(os.path.join(seed_dir, "nonseeds.json"), out("all_nonseeds.json.gz"))
-        module_nonseeds = os.path.join(seed_dir, "keggm_nonseeds.pkl")
-        if os.path.exists(module_nonseeds):
-            shutil.copyfile(module_nonseeds, out("all_nonseeds_module_related.pckl"))
-        with open(os.path.join(seed_dir, "confidence.json")) as f:
-            counts["seed sets"] = len(json.load(f))
+    sc = os.path.join(precalc, "seed_compl")
+    confidence = _first_existing(os.path.join(sc, "confidence.json"), os.path.join(sc, "confidence.json.gz"))
+    nonseeds = _first_existing(os.path.join(sc, "nonseeds.json"), os.path.join(sc, "nonseeds.json.gz"))
+    if confidence and nonseeds:
+        with _open(confidence) as f:
+            conf = json.load(f)
+        with _open(nonseeds) as f:
+            nons = json.load(f)
+        counts["seedSets"] = write_tsv(
+            ([gem, ",".join(f"{c}:{v:g}" for c, v in seeds.items())] for gem, seeds in sorted(conf.items())),
+            out("seed_sets.tsv"))
+        counts["nonSeedSets"] = write_tsv(
+            ([gem, ",".join(cpds)] for gem, cpds in sorted(nons.items())), out("non_seed_sets.tsv"))
 
     # The GEM of each genome: the genome's own id, unless given
     gems = two_columns(gem_ids) if gem_ids else sorted((g, g) for g in taxonomy)
@@ -218,7 +216,7 @@ def export(precalc: str, genome_taxonomy: str, outdir: str, gem_ids: str = None,
     counts["genome2taxNcbiId"]  = write_tsv(two_columns(ncbi_tax_ids) if ncbi_tax_ids else [],
                                             out("genome_ncbi_tax_ids.tsv"))
 
-    missing = {k for k in ("phenDB", "genomeAlternatives", "seed sets") if k not in counts}
+    missing = {k for k in ("phenDB", "genomeAlternatives", "seedSets") if k not in counts}
     if missing:
         print(f"Not in {precalc}, so not exported: {', '.join(sorted(missing))}")
     return counts

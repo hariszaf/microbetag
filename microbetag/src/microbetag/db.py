@@ -12,7 +12,7 @@ import json
 import os
 import pickle
 import random
-from collections import defaultdict
+from typing import TYPE_CHECKING, Dict, Set, Tuple
 
 import mysql.connector
 import pandas as pd
@@ -168,146 +168,54 @@ def patric_from_gc_list(gc_accession_list: list):
     return gc_to_patric_dict
 
 
-def update_for_patric(module_nonseeds_pkl, gc_to_patric):
+def seed_sets_of(gems) -> Tuple[dict, dict]:
     """
-    Arguments:
-        module_nonseeds_pkl: path to nonseeds KEGG MODULE related pickle file
-        gc_to_patric       : a dictionary with GTDB representative genomes as key
-                        and their corresponding PATRIC id as value.
+    The seed sets of GEMs from seedSets and nonSeedSets: {gem: {seed: confidence}} and {gem: [non-seeds]}.
     """
-
-    with open(module_nonseeds_pkl, "rb") as f:
-        nonseeds = pickle.load(f)
-
-    # Group patric IDs by prefix (before dot)
-    pre_to_compl = defaultdict(list)
-    for patric_id in nonseeds.index:
-        prefix = patric_id.split(".")[0]
-        pre_to_compl[prefix].append(patric_id)
-
-    updated_gc_to_patric = {}
-
-    for gtdb, patric in gc_to_patric.items():
-        patric = str(patric)
-        if patric in nonseeds.index:
-            updated_gc_to_patric[gtdb] = patric
-        else:
-            trunc_patric = patric.split(".")[0]
-            candidates = pre_to_compl.get(trunc_patric, [])
-            if len(candidates) >= 5:
-                continue  # Optional: skip if too many candidates?
-            if candidates:
-                updated_gc_to_patric[gtdb] = random.choice(candidates)
-            else:
-                # Optional: log or handle the case where no candidates are found
-                continue
-
-    return updated_gc_to_patric
-
-# --------
-# Phen related
-# --------
-
-class GetPhenotrexTraits:
-
-    def __init__(self, config=None):
-
-        if config is not None:
-            self.config = config
-
-    def get_phen_traits(self):
-        """
-        Returns predictions for a list of genomes
-
-        repr_genomes_present, config.phen_traits_dir
-        """
-        # Get predictions for each trait, for all genomes matched to the taxonomies given from the user.
-        traits_per_genome = {
-            genome: self.get_phendb_traits(genome)
-            for genome in self.config.repr_genomes_present
-        }
-
-        # Build a df from the predictions dictionary
-        df = pd.DataFrame(traits_per_genome)
-
-        # Drop 'gtdbId' only if it exists in the index to avoid errors
-        df = df.drop("gtdbId", errors="ignore")  # drop to make it safe if "gtdbId" isn't present.
-
-        # Export predictions per trait to a 3-col file.
-        GetPhenotrexTraits.to_csv(df, self.config.phen_traits_dir)
-
-    def get_phendb_traits(self, gtdb_genome_id: str):
-        """
-        Get phenotypical traits based on phenDB classes based on its GTDB representative genome
-        "GCA_018819265.1"
-        """
-        gtdb_id = gtdb_genome_id.strip()
-
-        rows = execute(GetPhenotrexTraits.phen_query(gtdb_id))
-
-        if len(rows) == 0:
-            alt_gtdb_id = alt_genome_prefix(gtdb_genome_id)
-            rows        = execute(GetPhenotrexTraits.phen_query(alt_gtdb_id))
-
-        if len(rows) == 0:
-            # _logger_.info(f"Genome {gtdb_genome_id} is not available in microbetagDB.")
-            return 0
-
-        query          = "SHOW COLUMNS FROM phenDB;"
-        colnames       = [next(iter(x)) for x in execute(query)]
-        genomes_traits = {i: j for i, j in zip(colnames, rows[0])}
-
-        return genomes_traits  # gtdb_genome_id
-
-    @staticmethod
-    def phen_query(gtdb_id):
-        """ Builds query for microbetagDB """
-
-        query = f"""
-            SELECT * FROM phenDB
-            WHERE SUBSTRING_INDEX(gtdbId, '.', 1) = SUBSTRING_INDEX('{gtdb_id}', '.', 1);
-        """.strip()
-
-        return query
-
-    @staticmethod
-    def to_csv(df, outdir=None):
-        """
-        Saves phenotypic trait predictions of a trait for a set of genomes in a file, in a 3-column format.
-        Identifier, Trait present, Confidence
-        The values the 'Trait present' column may get, is 'YES, 'NO', and 'N/A'.
-        """
-        if outdir is None:
-            outdir = os.getcwd()
-
-        # Loop through traits (every 2 rows)
-        for i in range(0, df.shape[0], 2):
-
-            trait = df.index[i]
-
-            presence, score = df.iloc[i], df.iloc[i + 1]
-
-            output = pd.DataFrame({
-                'Identifier'   : presence.index,
-                'Trait present': presence.values,
-                'Confidence'   : score.values
-            })
-
-            # Write to .tsv
-            trait    = f"{trait}.prediction.tsv"
-
-            with open(os.path.join(outdir, trait), "w") as f:
-
-                f.write(f"# Trait: {trait}\n")
-
-                f.write("Identifier\tTrait present\tConfidence\n")
-
-                output.to_csv(f, sep="\t", index=False, header=False)
+    gems = sorted({str(g) for g in gems if g})
+    if not gems:
+        return {}, {}
+    confidence = {
+        gem: {s.rsplit(":", 1)[0]: float(s.rsplit(":", 1)[1]) for s in seeds.split(",") if s}
+        for gem, seeds in _select("SELECT gem, seeds FROM seedSets WHERE gem IN (%s);", gems)
+    }
+    nonseeds = {
+        gem: [c for c in cpds.split(",") if c]
+        for gem, cpds in _select("SELECT gem, nonSeeds FROM nonSeedSets WHERE gem IN (%s);", gems)
+    }
+    return confidence, nonseeds
 
 
-# --------
-# Pathway complementarity
-# --------
+def write_seed_files(gems, outdir: str) -> Tuple[str, str, str, Set[str]]:
+    """
+    Writes the seed sets of the GEMs of a network (seed_sets_of) as the files the seed complementarity step reads:
+    confidences and non-seeds (.json.gz), and the KEGG module related non-seeds (.pckl, a pd.DataFrame with a
+    list per GEM). Only these GEMs are loaded, whatever the size of the database.
+
+    Returns:
+        the three paths, and the GEMs found
+    """
+    import gzip
+    from .helpers import MappingPaths
+    from .seed_complementarity import get_kegg_module_related
+
+    confidence, nonseeds = seed_sets_of(gems)
+    found = set(confidence) & set(nonseeds)
+    os.makedirs(outdir, exist_ok=True)
+    conf_path     = os.path.join(outdir, "network_conf.json.gz")
+    nonseeds_path = os.path.join(outdir, "network_nonseeds.json.gz")
+    module_path   = os.path.join(outdir, "network_nonseeds_module_related.pckl")
+    with gzip.open(conf_path, "wt") as f:
+        json.dump({g: confidence[g] for g in found}, f)
+    with gzip.open(nonseeds_path, "wt") as f:
+        json.dump({g: nonseeds[g] for g in found}, f)
+    module_cpds = get_kegg_module_related(MappingPaths().seed_ko_mo)
+    module_nonseeds = pd.DataFrame.from_dict({g: [[c for c in nonseeds[g] if c in module_cpds]] for g in found})
+    with open(module_path, "wb") as f:
+        pickle.dump(module_nonseeds.T, f)
+    _logger_.info(f"Seed sets of {len(found)} of {len(set(gems))} GEMs from the database")
+    return conf_path, nonseeds_path, module_path, found
+
 
 def get_path_compls_otf(config):
     """
