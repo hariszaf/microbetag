@@ -2,8 +2,8 @@
 
    Load it in the MySQL container: place this file in /docker-entrypoint-initdb.d/ and the exported files in
    /var/lib/mysql-files/ (see server/services/db/README.md); MySQL runs it when it starts with an empty
-   database. Same tables as init.sql (the GTDB database), with genome identifiers of any length, plus
-   genomeTaxonomy, which the server uses to match taxa to the closest genomes.
+   database. The GTDB database of the public server is built the same way (microbetag-export-db, then this
+   schema); genomes are matched to taxa through genomeTaxonomy, or NCBI Taxonomy ids (genome2taxNcbiId).
 */
 
 CREATE DATABASE IF NOT EXISTS microbetagDB;
@@ -94,7 +94,9 @@ CREATE TABLE phenDB(
 LOAD DATA INFILE '/var/lib/mysql-files/phen_predictions.tsv' INTO TABLE phenDB
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 
--- Pathway complementarities: each complement once, and the complements of each genome pair
+-- Pathway complementarities, computed by the server for the pairs of a network: each alternative way to complete
+-- a KEGG module once (its module, the KOs it misses, the KOs of its path), the alternatives of each genome's
+-- incomplete modules, and the KOs each genome has per module (when it is the donor)
 DROP TABLE IF EXISTS uniqueComplements;
 CREATE TABLE uniqueComplements(
     complementId INT,
@@ -106,17 +108,26 @@ CREATE TABLE uniqueComplements(
 LOAD DATA INFILE '/var/lib/mysql-files/unique_complements.tsv' INTO TABLE uniqueComplements
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 
-DROP TABLE IF EXISTS pathwayComplementarity;
-CREATE TABLE pathwayComplementarity(
-    beneficiaryGenome VARCHAR(255),
-    donorGenome VARCHAR(255),
-    complmentId TEXT
+DROP TABLE IF EXISTS genomeAlternatives;
+CREATE TABLE genomeAlternatives(
+    genome VARCHAR(255),
+    complementIds MEDIUMTEXT,
+    PRIMARY KEY (genome)
 );
-LOAD DATA INFILE '/var/lib/mysql-files/pathway_complementarity.tsv' INTO TABLE pathwayComplementarity
+LOAD DATA INFILE '/var/lib/mysql-files/genome_alternatives.tsv' INTO TABLE genomeAlternatives
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
-CREATE INDEX genome_pair ON pathwayComplementarity(beneficiaryGenome, donorGenome);
 
--- The GTDB database maps genomes to the PATRIC ids of their GEMs; here each genome is its own id
+DROP TABLE IF EXISTS genomeModuleKos;
+CREATE TABLE genomeModuleKos(
+    genome VARCHAR(255),
+    KoModuleId VARCHAR(10),
+    kos TEXT,
+    PRIMARY KEY (genome, KoModuleId)
+);
+LOAD DATA INFILE '/var/lib/mysql-files/genome_module_kos.tsv' INTO TABLE genomeModuleKos
+FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+
+-- The genome of each GEM: the GTDB database's GEMs have PATRIC ids; a catalogue's GEMs have its genome ids
 DROP TABLE IF EXISTS patricId2genomeId;
 CREATE TABLE patricId2genomeId(
     gtdbGenomeAccession VARCHAR(255),
@@ -126,41 +137,17 @@ CREATE TABLE patricId2genomeId(
 LOAD DATA INFILE '/var/lib/mysql-files/genome_ids.tsv' INTO TABLE patricId2genomeId
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 
--- Not used for custom catalogues (taxa are matched with genomeTaxonomy); kept empty for the server's queries
+-- NCBI Taxonomy id of each genome, for taxa given as NCBI Taxonomy ids (the GTDB database); empty for a catalogue
+-- without them (its taxa are matched with genomeTaxonomy)
 DROP TABLE IF EXISTS genome2taxNcbiId;
 CREATE TABLE genome2taxNcbiId(
     ncbiTaxId VARCHAR(13),
     genomeId VARCHAR(255),
     PRIMARY KEY (genomeId)
 );
-
--- Seed complementarities
-DROP TABLE IF EXISTS seedScores;
-CREATE TABLE seedScores(
-    patricGenomeA VARCHAR(255),
-    patricGenomeB VARCHAR(255),
-    competitionScore DECIMAL(4,3),
-    complementaritScore DECIMAL(4,3)
-);
-LOAD DATA INFILE '/var/lib/mysql-files/seed_scores.tsv' INTO TABLE seedScores
+LOAD DATA INFILE '/var/lib/mysql-files/genome_ncbi_tax_ids.tsv' INTO TABLE genome2taxNcbiId
 FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
-CREATE INDEX genome_pair ON seedScores(patricGenomeA, patricGenomeB);
+CREATE INDEX ncbi_tax_id ON genome2taxNcbiId(ncbiTaxId);
 
-DROP TABLE IF EXISTS SeedComplements;
-CREATE TABLE SeedComplements(
-    patricBeneficaryId VARCHAR(255),
-    patricDonorId VARCHAR(255),
-    seedComplements TEXT,
-    PRIMARY KEY (patricBeneficaryId, patricDonorId)
-);
-LOAD DATA INFILE '/var/lib/mysql-files/seed_complements.tsv' INTO TABLE SeedComplements
-FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
-
-DROP TABLE IF EXISTS nonSeedSets;
-CREATE TABLE nonSeedSets(
-    patricId VARCHAR(255),
-    nonSeeds TEXT,
-    PRIMARY KEY (patricId)
-);
-LOAD DATA INFILE '/var/lib/mysql-files/non_seed_sets.tsv' INTO TABLE nonSeedSets
-FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+-- Seed complementarities are computed by the server, from the seed sets of the genomes (all_conf.json.gz,
+-- all_nonseeds.json.gz and all_nonseeds_module_related.pckl, in SEEDS_DIR), not stored in tables

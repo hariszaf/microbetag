@@ -2,13 +2,13 @@
 This script aims at calculating and exporting patwhay complementarities in case of
 running microbetag locally, with user-provided genomes.
 """
-import os
-import json
 import ast  # process trees of the Python abstract syntax grammar.
-
 import itertools
-import pyshorteners
+import json
+import os
+
 import pandas as pd
+import pyshorteners
 from tqdm import tqdm
 
 from .utils import SetEncoder, flatten, mtg_logger
@@ -32,15 +32,13 @@ def build_kegg_url(kegg_map, clean_path, missing_kos, shortener=None):
     complements_kos  = ""
     for ko_term in clean_path:
         if ko_term not in missing_kos:
-            beneficiarys_kos = "".join([beneficiarys_kos, ko_term, present_kos_color])
+            beneficiarys_kos = f"{beneficiarys_kos}{ko_term}{present_kos_color}"
         else:
-            complements_kos = "".join([complements_kos, ko_term, complemet_kos_color])
+            complements_kos = f"{complements_kos}{ko_term}{complemet_kos_color}"
     try:
         # [NOTE] In rare cases, the module might not have a related map, thus kegg_map would be of NoneType
         # and the join() would return an error.
-        url_ko_map_colored = "".join(
-            [color_mapp_base_url, kegg_map, "/", beneficiarys_kos, complements_kos]
-        )
+        url_ko_map_colored = f"{color_mapp_base_url}{kegg_map}/{beneficiarys_kos}{complements_kos}"
         if shortener is not None:
             logger.info("Shortening the URL.")
             url_ko_map_colored = shortener.tinyurl.short(url_ko_map_colored)
@@ -103,7 +101,6 @@ def all_complements(
                                 )
                             except Exception:
                                 url = ""
-                                pass
                             unique_url_input[pc_comb] = url
 
                         # Build list with the complete complement
@@ -307,3 +304,28 @@ def all_alternatives(
         json.dump(bins_alternatives, file, cls=SetEncoder)
 
     return bins_alternatives
+
+
+# ---------------------------------------------------------------------------
+# On the fly, for a server's database (db.get_path_compls_for_ncbi_ids)
+# ---------------------------------------------------------------------------
+
+def pair_complements(beneficiary_alternatives, donor_module_kos, complements):
+    """
+    The pathway complements a donor offers a beneficiary, as all_complements finds them for a pair: the
+    alternatives of the beneficiary's incomplete modules whose missing KOs the donor has.
+
+    Arguments:
+        beneficiary_alternatives: ids of the beneficiary's alternatives
+        donor_module_kos: {module: set of the module's KOs the donor has}
+        complements: {id: {"module": module, "missing": set of KOs}} of the alternatives
+
+    Returns:
+        the ids of the alternatives the donor completes
+    """
+    found = []
+    for i in beneficiary_alternatives:
+        alternative = complements.get(i)
+        if alternative and alternative["missing"] <= donor_module_kos.get(alternative["module"], set()):
+            found.append(i)
+    return found

@@ -8,19 +8,17 @@ Notes:
     Needs a hidden file called .env_dev.json with the database credentials.
 """
 
-import os
 import json
+import os
 import pickle
 import random
-import pandas as pd
-import mysql.connector
-from mysql.connector import pooling
-from typing import Dict, Set, Tuple, TYPE_CHECKING
 from collections import defaultdict
 
-from .utils import mtg_logger, convert_to_json_serializable
-if TYPE_CHECKING:
-    from microbetag.config import Config
+import mysql.connector
+import pandas as pd
+from mysql.connector import pooling
+
+from .utils import convert_to_json_serializable, mtg_logger
 
 _logger_ = mtg_logger(__file__)
 _KEGG_MAPPINGS_ = os.path.join(
@@ -62,7 +60,7 @@ def execute_in_a_pool(cursor: mysql.connector, query: str):
         result = [row for row in cursor]
         return result
     except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
+        print(f"Something went wrong: {err}")
         print(query)
 
 
@@ -72,7 +70,7 @@ def init_connection_pool() -> mysql.connector.pooling.MySQLConnectionPool:
     A pool opens a number of connections and handles thread safety when providing connections to requesters.
     For more see: https://dev.mysql.com/doc/connector-python/en/connector-python-connection-pooling.html
     """
-    connection_pool = pooling.MySQLConnectionPool(  # noqa: E203
+    connection_pool = pooling.MySQLConnectionPool(
         pool_name = "microbetagDB_pool",
         pool_size = 5,
         user      = DB_CREDENTIALS["user"],
@@ -91,7 +89,7 @@ def gc_unify(gc_list):
     """
     Removes duplicates of a genome that has entries both as GCA and GCF in the db.
     """
-    return list(set([x.replace("GCA", "GCF") for x in gc_list]))
+    return list({x.replace("GCA", "GCF") for x in gc_list})
 
 
 def alt_genome_prefix(gc):
@@ -256,7 +254,7 @@ class GetPhenotrexTraits:
             return 0
 
         query          = "SHOW COLUMNS FROM phenDB;"
-        colnames       = [list(x)[0] for x in execute(query)]
+        colnames       = [next(iter(x)) for x in execute(query)]
         genomes_traits = {i: j for i, j in zip(colnames, rows[0])}
 
         return genomes_traits  # gtdb_genome_id
@@ -353,7 +351,7 @@ def get_path_compls_otf(config):
     # Fix complements in the format set for the MGG
     # We will use the genome id here, even if the same file in the stand-alone has the sequence ids.
     compls_format = {}
-    for _, j in compls.items():
+    for j in compls.values():
         for k, v in j.items():
             ben_genome, don_genome = k
             if ben_genome not in compls_format:
@@ -378,168 +376,102 @@ def get_path_compls_otf(config):
 
 
 def get_path_compls_for_ncbi_ids(
-    relative_genomes: Dict[str, Set[str]], pairs_of_interest: Set[Tuple[str, str]]
+    relative_genomes: dict[str, set[str]], pairs_of_interest: set[tuple[str, str]]
 ) -> dict:
     """
+    The pathway complementarities of pairs of taxa, computed from the per-genome tables: for each pair of their
+    genomes, the alternatives of the beneficiary's incomplete modules (genomeAlternatives, uniqueComplements) whose
+    missing KOs the donor has (genomeModuleKos).
 
     Arguments:
-
         relative_genomes: A dictionary {"1260918": {"GCF_002102185.1"}, "1819566": {"GCF_009711525.1"}}
-
-        pairs_of_interest={("1260918", "1819566")}
-    """
-
-    _logger_.info("===> Building queries for genome pairs...")
-
-    complements_ids_queries = build_complement_queries(
-        relative_genomes,
-        pairs_of_interest
-    )
-
-    _logger_.info("===> Executing unique queries...")
-
-    unique_queries = {
-        q for genome_pairs in complements_ids_queries.values()
-        for q in genome_pairs.values()
-    }
-    unique_queries2comples = get_complement_ids(unique_queries)
-
-    _logger_.info("===> Mapping complement IDs to genome pairs...")
-
-    pairs_to_compl_ids = map_queries_to_pairs(
-        complements_ids_queries,
-        unique_queries2comples
-    )
-
-    _logger_.info("===> Fetching full complement metadata...")
-
-    all_compl_ids2coloured_compls = get_coloured_complements(pairs_to_compl_ids)
-
-    _logger_.info("===> Assembling final result...")
-
-    return build_pairs_complements(pairs_to_compl_ids, all_compl_ids2coloured_compls)
-
-
-def query_for_getting_compl_ids(beneficiary="GCA_003184265.1", donor="GCA_000015645.1"):
-    """
-    Gets 2 gc accession ids and returns a query for their pathway complementarities
-    """
-    beneficiary_alt = alt_genome_prefix(beneficiary)
-    donor_alt       = alt_genome_prefix(donor)
-
-    return "".join(
-        [
-            'SELECT complmentId FROM pathwayComplementarity WHERE (beneficiaryGenome = "',
-            str(beneficiary),
-            '" or beneficiaryGenome = "',
-            str(beneficiary_alt),
-            '") AND (donorGenome = "',
-            str(donor),
-            '" OR donorGenome = "',
-            str(donor_alt),
-            '");',
-        ]
-    )
-
-
-def build_complement_queries(relative_genomes, pairs_of_interest):
-
-    complements_ids_queries = {}
-
-    for ncbi_a, ncbi_b in pairs_of_interest:
-        for genome_a in relative_genomes[ncbi_a]:
-            for genome_b in relative_genomes[ncbi_b]:
-                query = query_for_getting_compl_ids(genome_a, genome_b)
-                complements_ids_queries.setdefault((ncbi_a, ncbi_b), {})[(genome_a, genome_b)] = query
-
-    return complements_ids_queries
-
-
-def get_complement_ids(unique_queries):
-
-    cnx_pool      = init_connection_pool()
-    my_connection = cnx_pool.get_connection()
-    cursor        = my_connection.cursor()
-
-    query_results = {}
-    for query in unique_queries:
-        result = execute_in_a_pool(cursor, query)
-        if result:
-            query_results[query] = result[0][0].split(",")
-    return query_results
-
-
-def map_queries_to_pairs(complements_ids_queries, unique_queries2comples):
-    pairs_to_compl_ids = {}
-    for ncbi_pair, genome_query_map in complements_ids_queries.items():
-        for genome_pair, query in genome_query_map.items():
-            if query in unique_queries2comples:
-                pairs_to_compl_ids.setdefault(ncbi_pair, {})[genome_pair] = unique_queries2comples[query]
-    return pairs_to_compl_ids
-
-
-def get_coloured_complements(
-    pairs_to_compl_ids: Dict[Tuple[str, str], dict[Tuple[str, str], list[str]]]
-):
-    """
-    Gets thes actual complement using its unique complementId and builds its KEGG url.
-
-    Arguments:
-        pairs_to_compl_ids: {('1260918', '1819566'): {('GCA_002102185.1', 'GCA_009711525.1'): ['180131', ..']}}
+        pairs_of_interest: {("1260918", "1819566")}
 
     Returns:
-        pairs_complements: []
+        {(taxon_a, taxon_b): {(genome_a, genome_b): [[[module, complement KOs, KOs of the path, KEGG map url]], ..]}}
     """
-    unique_compl_ids = list({
-        compl_id
-        for genome_map in pairs_to_compl_ids.values()
-        for compl_list in genome_map.values()
-        for compl_id in compl_list
-    })
-    if not unique_compl_ids:
+    from .pathway_complementarity import pair_complements
+
+    genomes = {g for a, b in pairs_of_interest for t in (a, b) for g in relative_genomes.get(t, [])}
+    if not genomes:
         return {}
 
-    uqids = "','".join(unique_compl_ids)
-    field_args = ",".join(f"'{id}'" for id in unique_compl_ids)
+    _logger_.info(f"===> Pathway complementarities of {len(pairs_of_interest)} pairs of taxa, {len(genomes)} genomes")
+    alternatives, module_kos = genome_pathway_rows(genomes)
+    complements = unique_complements({i for ids in alternatives.values() for i in ids})
 
-    _logger_.info("-----------------")
-    _logger_.info(uqids)
-    _logger_.info(field_args)
-    _logger_.info("-----------------")
-
-    query = f"""
-        SELECT KoModuleId, complement, pathway
-        FROM uniqueComplements
-        WHERE complementId IN ('{uqids}')
-        ORDER BY FIELD(complementId, {field_args});
-    """.strip()
-
-    _logger_.info(f"WQUER: {query}")
-
-    cnx_pool                 = init_connection_pool()
-    my_connection            = cnx_pool.get_connection()
-    cursor                   = my_connection.cursor()
-
-    query_result             = execute_in_a_pool(cursor, query)
-
-    _logger_.info(f"QWUERY result: {query_result}")
-
-    query_result_list        = [[r] for r in query_result]
-
-    colored_complements_list = build_kegg_urls(query_result_list)
-
-    return dict(zip(unique_compl_ids, colored_complements_list))
+    result = {}
+    for taxon_a, taxon_b in pairs_of_interest:
+        for genome_a in relative_genomes.get(taxon_a, []):
+            beneficiary = alternatives.get(genome_a)
+            if not beneficiary:
+                continue
+            for genome_b in relative_genomes.get(taxon_b, []):
+                donor = module_kos.get(genome_b)
+                if not donor or genome_a == genome_b:
+                    continue
+                ids = pair_complements(beneficiary, donor, complements)
+                if ids:
+                    result.setdefault((taxon_a, taxon_b), {})[(genome_a, genome_b)] = [
+                        [complements[i]["row"]] for i in ids
+                    ]
+    return result
 
 
-def build_pairs_complements(pairs_to_compl_ids, all_compl_ids2coloured_compls):
-    pairs_complements = {}
-    for ncbi_pair, genome_map in pairs_to_compl_ids.items():
-        for genome_pair, compl_ids in genome_map.items():
-            for compl_id in compl_ids:
-                colored = all_compl_ids2coloured_compls.get(compl_id)
-                if colored:
-                    pairs_complements.setdefault(ncbi_pair, {}).setdefault(genome_pair, []).append(colored)
-    return pairs_complements
+def _genome_forms(genome: str) -> list:
+    """A genome accession and its other prefix (GCA_ / GCF_), as either can be stored."""
+    alt = alt_genome_prefix(genome)
+    return [genome, alt] if alt else [genome]
+
+
+def _select(query: str, values: list, chunk: int = 2000) -> list:
+    """Run a SELECT ... IN (%s) query on chunks of values."""
+    cnx_pool = init_connection_pool()
+    connection = cnx_pool.get_connection()
+    cursor = connection.cursor()
+    rows = []
+    try:
+        for i in range(0, len(values), chunk):
+            part = values[i: i + chunk]
+            cursor.execute(query % ",".join(["%s"] * len(part)), part)
+            rows.extend(cursor.fetchall())
+    finally:
+        cursor.close()
+        connection.close()
+    return rows
+
+
+def genome_pathway_rows(genomes: set[str]) -> tuple[dict, dict]:
+    """
+    The rows of the genomes in genomeAlternatives (ids of the alternatives of their incomplete modules) and
+    genomeModuleKos (KOs per module), keyed by the genome ids asked for.
+    """
+    stored = {form: genome for genome in genomes for form in _genome_forms(genome)}
+    alternatives = {}
+    for genome, ids in _select("SELECT genome, complementIds FROM genomeAlternatives WHERE genome IN (%s);",
+                               list(stored)):
+        alternatives[stored[genome]] = [int(i) for i in ids.split(",") if i]
+    module_kos = {}
+    for genome, module, kos in _select("SELECT genome, KoModuleId, kos FROM genomeModuleKos WHERE genome IN (%s);",
+                                       list(stored)):
+        module_kos.setdefault(stored[genome], {})[module] = set(kos.split(";"))
+    return alternatives, module_kos
+
+
+def unique_complements(ids: set[int]) -> dict:
+    """
+    The alternatives of uniqueComplements: {id: {"module", "missing" (set of KOs), "row": [module, missing KOs,
+    KOs of the path, coloured KEGG map url]}}.
+    """
+    if not ids:
+        return {}
+    rows = _select("SELECT complementId, KoModuleId, complement, pathway FROM uniqueComplements "
+                   "WHERE complementId IN (%s);", sorted(ids))
+    coloured = build_kegg_urls([[[module, missing, path]] for _, module, missing, path in rows])
+    return {
+        int(cid): {"module": module, "missing": set(missing.split(";")), "row": c[0]}
+        for (cid, module, missing, _), c in zip(rows, coloured)
+    }
 
 
 def build_kegg_urls(genome_pair_compls):
@@ -566,7 +498,6 @@ def build_kegg_urls(genome_pair_compls):
     df["module"]    = df["module"].str.replace("md:", "", regex=False).str.strip()
     df["map"]       = df["map"].str.strip()
 
-    #
     module_map = dict(zip(df["module"], df["map"]))
     updated_complements = []
     for [module_id, complement_str, ko_terms_str] in [list(c[0]) for c in genome_pair_compls]:
@@ -575,7 +506,6 @@ def build_kegg_urls(genome_pair_compls):
         complement_kos_set = set(complement_str.split(";"))
         ko_terms           = ko_terms_str.split(";")
 
-        #
         for ko in ko_terms:
             if ko in complement_kos_set:
                 complement_kos.append(ko + complement_kos_color)
