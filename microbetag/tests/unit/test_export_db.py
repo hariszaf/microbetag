@@ -97,3 +97,18 @@ def test_gem_and_ncbi_ids(tmp_path, precalc):
     export_db.export(str(root), str(taxonomy), str(out), str(tmp_path / "gems.tsv"), str(tmp_path / "ncbi.tsv"))
     assert rows(out / "genome_ids.tsv") == [["bin_1", "100.11"], ["bin_2", "100.12"]]
     assert rows(out / "genome_ncbi_tax_ids.tsv") == [["1358", "bin_1"]]
+
+
+def test_alternatives_as_json_lines(tmp_path, precalc):
+    """A large catalogue's alternatives, one genome per line, give the same tables."""
+    root, taxonomy = precalc
+    export_db.export(str(root), str(taxonomy), str(tmp_path / "a"))
+    pc = root / "pathway_compl"
+    alternatives = json.loads((pc / "alternatives.json").read_text())
+    with gzip.open(pc / "alternatives.jsonl.gz", "wt") as f:
+        for genome, alts in alternatives.items():
+            f.write(json.dumps({genome: alts}) + "\n")
+    (pc / "alternatives.json").unlink()
+    export_db.export(str(root), str(taxonomy), str(tmp_path / "b"))
+    for name in ("unique_complements.tsv", "genome_alternatives.tsv", "genome_module_kos.tsv"):
+        assert (tmp_path / "a" / name).read_text() == (tmp_path / "b" / name).read_text()

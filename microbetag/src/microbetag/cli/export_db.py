@@ -17,7 +17,8 @@ server/services/db/schema/microbetagDB.sql, and the seed sets the server compute
     genome_ncbi_tax_ids.tsv       genome2taxNcbiId:         NCBI Taxonomy id, genome (empty without --ncbi-tax-ids)
 
 The server computes the pathway and seed complementarities of the pairs of a network from these, so nothing is
-stored per pair. From precalc: phenotrex/predictions, pathway_compl/alternatives.json (or .json.gz),
+stored per pair. From precalc: phenotrex/predictions, pathway_compl/alternatives.json (or .json.gz; or, for large
+catalogues, alternatives.jsonl[.gz], one genome per line, read one at a time),
 hmmsearch/ko_merged.txt (or .txt.gz) and seed_compl (confidence.json, nonseeds.json, or .json.gz).
 """
 
@@ -129,12 +130,9 @@ def pathway_tables(alternatives_json: str, ko_merged: str, module_kos_file: str)
     From precalc's alternatives (genome -> incomplete module -> alternative path -> its missing KOs) and KOs: each
     alternative once, with an id, the alternatives of each genome, and the KOs each genome has per module.
     """
-    with _open(alternatives_json) as f:
-        alternatives = json.load(f)
-
     unique: dict[tuple[str, str, str], int] = {}
     genome_rows = []
-    for genome, modules in alternatives.items():
+    for genome, modules in _genome_alternatives(alternatives_json):
         ids = []
         for module, alts in modules.items():
             for path, missing in alts.items():
@@ -155,6 +153,20 @@ def pathway_tables(alternatives_json: str, ko_merged: str, module_kos_file: str)
 
     unique_rows = [[cid, *key] for key, cid in unique.items()]
     return unique_rows, genome_rows, ko_rows
+
+
+def _genome_alternatives(path: str):
+    """
+    The (genome, alternatives) of precalc's alternatives.json, or, for large catalogues, of a JSON lines file
+    (alternatives.jsonl[.gz], one {genome: alternatives} object per line), read one genome at a time.
+    """
+    with _open(path) as f:
+        if ".jsonl" in os.path.basename(path):
+            for line in f:
+                if line.strip():
+                    yield from json.loads(line).items()
+        else:
+            yield from json.load(f).items()
 
 
 def two_columns(path: str) -> list[list[str]]:
@@ -186,7 +198,8 @@ def export(precalc: str, genome_taxonomy: str, outdir: str, gem_ids: str = None,
         counts["phenDB"] = write_tsv(phen_table(predictions), out("phen_predictions.tsv"))
 
     pc = os.path.join(precalc, "pathway_compl")
-    alternatives = _first_existing(os.path.join(pc, "alternatives.json"), os.path.join(pc, "alternatives.json.gz"))
+    alternatives = _first_existing(*(os.path.join(pc, f"alternatives.{ext}")
+                                     for ext in ("json", "json.gz", "jsonl", "jsonl.gz")))
     hmm = os.path.join(precalc, "hmmsearch")
     ko_merged = _first_existing(os.path.join(hmm, "ko_merged.txt"), os.path.join(hmm, "ko_merged.txt.gz"))
     if alternatives and ko_merged:
