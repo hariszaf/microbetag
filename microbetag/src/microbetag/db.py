@@ -168,6 +168,107 @@ def patric_from_gc_list(gc_accession_list: list):
     return gc_to_patric_dict
 
 
+class GetPhenotrexTraits:
+
+    def __init__(self, config=None):
+
+        if config is not None:
+            self.config = config
+
+    def get_phen_traits(self):
+        """
+        Returns predictions for a list of genomes
+
+        repr_genomes_present, config.phen_traits_dir
+        """
+        # Get predictions for each trait, for all genomes matched to the taxonomies given from the user.
+        traits_per_genome = {
+            genome: self.get_phendb_traits(genome)
+            for genome in self.config.repr_genomes_present
+        }
+
+        # Build a df from the predictions dictionary
+        df = pd.DataFrame(traits_per_genome)
+
+        # Drop 'gtdbId' only if it exists in the index to avoid errors
+        df = df.drop("gtdbId", errors="ignore")  # drop to make it safe if "gtdbId" isn't present.
+
+        # Export predictions per trait to a 3-col file.
+        GetPhenotrexTraits.to_csv(df, self.config.phen_traits_dir)
+
+    def get_phendb_traits(self, gtdb_genome_id: str):
+        """
+        Get phenotypical traits based on phenDB classes based on its GTDB representative genome
+        "GCA_018819265.1"
+        """
+        gtdb_id = gtdb_genome_id.strip()
+
+        rows = execute(GetPhenotrexTraits.phen_query(gtdb_id))
+
+        if len(rows) == 0:
+            alt_gtdb_id = alt_genome_prefix(gtdb_genome_id)
+            rows        = execute(GetPhenotrexTraits.phen_query(alt_gtdb_id))
+
+        if len(rows) == 0:
+            # _logger_.info(f"Genome {gtdb_genome_id} is not available in microbetagDB.")
+            return 0
+
+        query          = "SHOW COLUMNS FROM phenDB;"
+        colnames       = [next(iter(x)) for x in execute(query)]
+        genomes_traits = {i: j for i, j in zip(colnames, rows[0])}
+
+        return genomes_traits  # gtdb_genome_id
+
+    @staticmethod
+    def phen_query(gtdb_id):
+        """ Builds query for microbetagDB """
+
+        query = f"""
+            SELECT * FROM phenDB
+            WHERE SUBSTRING_INDEX(gtdbId, '.', 1) = SUBSTRING_INDEX('{gtdb_id}', '.', 1);
+        """.strip()
+
+        return query
+
+    @staticmethod
+    def to_csv(df, outdir=None):
+        """
+        Saves phenotypic trait predictions of a trait for a set of genomes in a file, in a 3-column format.
+        Identifier, Trait present, Confidence
+        The values the 'Trait present' column may get, is 'YES, 'NO', and 'N/A'.
+        """
+        if outdir is None:
+            outdir = os.getcwd()
+
+        # Loop through traits (every 2 rows)
+        for i in range(0, df.shape[0], 2):
+
+            trait = df.index[i]
+
+            presence, score = df.iloc[i], df.iloc[i + 1]
+
+            output = pd.DataFrame({
+                'Identifier'   : presence.index,
+                'Trait present': presence.values,
+                'Confidence'   : score.values
+            })
+
+            # Write to .tsv
+            trait    = f"{trait}.prediction.tsv"
+
+            with open(os.path.join(outdir, trait), "w") as f:
+
+                f.write(f"# Trait: {trait}\n")
+
+                f.write("Identifier\tTrait present\tConfidence\n")
+
+                output.to_csv(f, sep="\t", index=False, header=False)
+
+
+# --------
+# Pathway complementarity
+# --------
+
 def seed_sets_of(gems) -> Tuple[dict, dict]:
     """
     The seed sets of GEMs from seedSets and nonSeedSets: {gem: {seed: confidence}} and {gem: [non-seeds]}.
