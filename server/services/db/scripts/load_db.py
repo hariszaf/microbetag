@@ -8,7 +8,7 @@ The connection comes from the environment:
     MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE   as in the database container (services/db/.env)
 or, with an argument, from that environment of a .env_dev.json file: ./load_db.py <env>
 
-A database of your own genomes does not need it: see custom_init.sql and README.md.
+A database of your own genomes does not need it: see microbetagDB.sql and README.md.
 """
 import argparse
 import gzip

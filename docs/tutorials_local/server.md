@@ -75,13 +75,13 @@ docker run --rm -v $PWD:/data -w /data hariszaf/microbetag:<version> \
 (`all_conf.json.gz`, `all_nonseeds.json.gz`, `all_nonseeds_module_related.pckl`), which the server reads from files.
 
 Then start the database: MySQL creates the tables and loads the files at its first start, with
-`server/services/db/schema/custom_init.sql`:
+`server/services/db/schema/microbetagDB.sql`:
 
 ```bash
 docker network create microbetag
 docker run -d --name microbetag-db --network microbetag \
     -e MYSQL_ROOT_PASSWORD=<password> \
-    -v $PWD/server/services/db/schema/custom_init.sql:/docker-entrypoint-initdb.d/custom_init.sql:ro \
+    -v $PWD/server/services/db/schema/microbetagDB.sql:/docker-entrypoint-initdb.d/microbetagDB.sql:ro \
     -v $PWD/db_files:/var/lib/mysql-files \
     -p 3306:3306 mysql:8.4
 ```
@@ -111,7 +111,7 @@ Set its database credentials in a `.env` file, from the template `server/.env.ex
 |---|---|
 | `USER_NAME`, `PASSWORD` | the database user and password |
 | `HOST`, `PORT` | where the database runs |
-| `DB_NAME` | the database, `microbetagDB` with `custom_init.sql` |
+| `DB_NAME` | the database, `microbetagDB` with `microbetagDB.sql` |
 | `FLASK_SECRET_KEY` | a random string |
 
 and run it, with the folder of the exported files. It reaches the database on their shared Docker network

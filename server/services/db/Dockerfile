@@ -13,8 +13,8 @@ RUN chown -R mysql:root /var/lib/mysql/
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# COPY init.sql /docker-entrypoint-initdb.d/
-COPY schema/local_init.sql /docker-entrypoint-initdb.d/
+# The schema of the database; the files it loads are in /var/lib/mysql-files (mounted)
+COPY schema/microbetagDB.sql /docker-entrypoint-initdb.d/
 COPY scripts/ /docker-entrypoint-initdb.d/scripts/
 
 # NOTE: We do not COPY the data themselves, as we have a symbolic link to them pointing to /var/lib/mysql-files

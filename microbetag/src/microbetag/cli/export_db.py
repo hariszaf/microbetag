@@ -3,7 +3,7 @@ Export the pre-calculations of a genome catalogue (the output folder of the micr
 as the tables of a microbetag database (microbetag-export-db).
 
 The output folder has one tab-separated file per table, without header, in the column order of
-server/services/db/schema/custom_init.sql, and the seed sets the server computes seed complementarities from:
+server/services/db/schema/microbetagDB.sql, and the seed sets the server computes seed complementarities from:
 
     genome_taxonomy.tsv           genomeTaxonomy:           genome, taxonomy
     phen_predictions.tsv          phenDB:                   genome, then a presence (YES/NO/N/A) and a score per trait

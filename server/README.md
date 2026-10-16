@@ -60,7 +60,7 @@ To serve your own genomes:
 
 1. run the `precalc` workflow of the pipeline on them;
 2. export its output as database files: `microbetag-export-db --precalc <precalc outdir> --genome-taxonomy <genome, lineage .tsv> --outdir <db files>`;
-3. load them in MySQL with `services/db/schema/custom_init.sql` (see [services/db/README.md](services/db/README.md));
+3. load them in MySQL with `services/db/schema/microbetagDB.sql` (see [services/db/README.md](services/db/README.md));
 4. run the server with:
 
 | Variable | Value |

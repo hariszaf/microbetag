@@ -8,13 +8,13 @@ genome and lineage):
 microbetag-export-db --precalc <precalc output folder> --genome-taxonomy genome_taxonomy.tsv --outdir db_files
 ```
 
-[`schema/custom_init.sql`](./schema/custom_init.sql) creates the tables and loads these files. MySQL runs it at its
+[`schema/microbetagDB.sql`](./schema/microbetagDB.sql) creates the tables and loads these files. MySQL runs it at its
 first start, from `/docker-entrypoint-initdb.d/`, with the files in `/var/lib/mysql-files/`:
 
 ```bash
 docker run -d --name microbetag-db \
     -e MYSQL_ROOT_PASSWORD=<password> \
-    -v $PWD/schema/custom_init.sql:/docker-entrypoint-initdb.d/custom_init.sql:ro \
+    -v $PWD/schema/microbetagDB.sql:/docker-entrypoint-initdb.d/microbetagDB.sql:ro \
     -v $PWD/db_files:/var/lib/mysql-files \
     -p 3306:3306 mysql:8.4
 ```
@@ -116,7 +116,7 @@ cd /docker-entrypoint-initdb.d/scripts/
 `load_db.py` connects with the credentials of the container (`MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE` of
 `services/db/.env`), or with `USER_NAME`, `PASSWORD`, `HOST`, `PORT` and `DB_NAME` when it runs elsewhere.
 `./load_db.py <env>` takes them from that environment of a `.env_dev.json` file instead.
-It loads the GTDB database of our server; a database of your own genomes is loaded by `custom_init.sql`.
+It loads the GTDB database of our server; a database of your own genomes is loaded by `microbetagDB.sql`.
 
 
 
