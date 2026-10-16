@@ -43,8 +43,8 @@ sections:
 
       threads:
         value: 2
-        workflows: [precalc, prep]
-        description: Threads per task, for the tools that use several (kofam, phenotrex, IDTAXA).
+        workflows: [precalc, prep, annotate, network]
+        description: Threads per task, for the tools that use several (kofam, phenotrex, IDTAXA, FAPROTAX v2).
 
       microbetag_image:
         value: hariszaf/microbetag-nf:2.0.0
@@ -421,6 +421,18 @@ sections:
         value: true
         workflows: [annotate, network]
         description: Annotate the taxa with FAPROTAX functions.
+
+      faprotax_version:
+        value: 1
+        workflows: [annotate, network]
+        description: >
+          FAPROTAX version: 1 (1.2.10, taxa matched to the database by name) or 2 (the v2.0 mapper, taxa placed on a
+          reference tree by their taxonomy and their functions predicted from their relatives; annotates more taxa).
+
+      faprotax2_image:
+        value: hariszaf/faprotax2:2.0
+        workflows: [annotate, network]
+        description: The image of the FAPROTAX v2.0 mapper (containers/Dockerfile.faprotax2), for faprotax_version 2.
 
       net_cluster:
         value: false
