@@ -311,6 +311,13 @@ Set `faprotax`, `phen_traits`, `path_compl` and `seed_compl` to `true` or `false
 For the ones set to `true`, give their parameters too; for example, for `faprotax`, `taxonomy_colname` and
 `delimiter`. Otherwise, leave them blank.
 
+FAPROTAX comes in two versions, chosen with `faprotax_version`: `1` (default) for FAPROTAX 1.2.10, which matches
+each taxon's name to its database, and `2` for the
+[FAPROTAX v2.0 mapper](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX2/), which places each taxon on a
+reference tree by its taxonomy and also annotates taxa that are not in the database (see
+[the FAPROTAX annotations](../modules/modules.md)). v2 runs in its own image, `hariszaf/faprotax2:2.0`
+(`faprotax2_image`), with `threads` threads; both write the same outputs, so the rest of the run is the same.
+
 To prepare an amplicon dataset for the on-the-fly version, see [the preparation steps](../tutorials_otf/prep.md):
 
 ```bash

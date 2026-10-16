@@ -1,0 +1,26 @@
+# syntax=docker/dockerfile:1.6
+# FAPROTAX v2.0 mapper (faprotax.R and its reference data) for the FAPROTAX step of the microbetag-nf pipeline
+# (faprotax_version: 2), from the Louca lab:
+# https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX2/
+#
+# Build, from the root of the repository:
+#   docker build -f containers/Dockerfile.faprotax2 -t hariszaf/faprotax2:2.0 .
+
+ARG R_VERSION=4.4.2
+FROM rocker/r-ver:${R_VERSION}
+
+# The R packages faprotax.R uses, from current CRAN: it needs castor >= 1.8.5 (newer than rocker's CRAN snapshot), or
+# it tries to install it at run time
+RUN Rscript -e 'install.packages(c("castor", "optparse", "stringr"), repos = "https://cloud.r-project.org", Ncpus = 4); \
+stopifnot(packageVersion("castor") >= "1.8.5"); library(optparse); library(stringr)'
+
+ARG FAPROTAX2_URL="https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX2/SECTION_Download/MODULE_Downloads/CLASS_Latest%20release/UNIT_A_FAPROTAX_v2.0_mapper/FAPROTAX-mapper_v2.0.tar.gz"
+ARG FAPROTAX2_SHA256=859b99133b55f1e4f637e6ac14a804f3321ed27f76ee03d95e3f215382206bac
+ADD --checksum=sha256:${FAPROTAX2_SHA256} ${FAPROTAX2_URL} /tmp/faprotax2.tar.gz
+RUN mkdir -p /opt/faprotax2 \
+ && tar -xzf /tmp/faprotax2.tar.gz -C /opt/faprotax2 --strip-components 1 --exclude '._*' --exclude .DS_Store \
+    --warning=no-unknown-keyword \
+ && rm /tmp/faprotax2.tar.gz
+
+WORKDIR /data
+CMD ["bash"]
