@@ -125,9 +125,13 @@ def _get_seed_compl(config, db=None):
         config.get_scores      = True
         config.get_complements = True
 
-        # Get dictionary with GTDB accession ids to their correspoding PATRIC
-        gc_to_patric_ids        = db.patric_from_gc_list(config.repr_genomes_present)
-        config.gc_to_patric_ids = db.update_for_patric(config.module_nonseeds, gc_to_patric_ids)
+        # The GEM of each genome of the network (patricId2genomeId), and the seed sets of these GEMs only
+        gc_to_gem = db.patric_from_gc_list(config.repr_genomes_present)
+        (
+            config.prev_conf, config.prev_nonseeds, config.module_nonseeds, found
+        ) = db.write_seed_files(gc_to_gem.values(), config.seeds_outdir)
+        config.skip_sets        = True
+        config.gc_to_patric_ids = {gc: gem for gc, gem in gc_to_gem.items() if gem in found}
 
     run_seed_complementarity(config)
 

@@ -122,7 +122,8 @@ def normalize_species_column(splt_tax: pd.DataFrame) -> pd.DataFrame:
         if splt_tax["species"].str.contains(r"__[\s_]").all():
             return splt_tax.assign(extendedSpecies=species)
 
-        if any(g in s for g, s in zip(genus, species)):
+        # Ranks without a name (an empty s__ or g__) are missing values
+        if any(isinstance(g, str) and isinstance(s, str) and g in s for g, s in zip(genus, species)):
             return splt_tax.assign(extendedSpecies=species)
 
         return splt_tax.assign(extendedSpecies=genus + " " + species)

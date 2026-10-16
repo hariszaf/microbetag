@@ -34,13 +34,5 @@ seed_complementarity:
 network_clustering:
   value: false
 
-# Filled in by sync_yaml() from app_utils.Mappings
-prev_conf:
-  file_path:
-prev_nonseeds:
-  file_path:
-prev_nonseeds_module:
-  file_path:
-
 tinyurl:
   value: false

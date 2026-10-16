@@ -39,7 +39,7 @@ def compound(met_id):
 
 
 # The currency metabolites, but for the nutrients among them, which have a seed / non-seed status
-CURRENCY = {compound(c) for c in BuildGraphNetX.CURRENCY} - BuildGraphNetX.NUTRIENT_CURRENCY
+CURRENCY = {compound(c) for c in BuildGraphNetX.CURRENCY | BuildGraphNetX.CURRENCY_MODELSEED} - BuildGraphNetX.NUTRIENT_CURRENCY
 
 
 def complete_medium(model):

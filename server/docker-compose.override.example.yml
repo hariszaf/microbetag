@@ -1,0 +1,18 @@
+# A server's own settings, on top of docker-compose.yml: copy this file to docker-compose.override.yml (not tracked
+# by git), next to docker-compose.yml, and keep only what this server needs. `docker compose` reads both files and
+# merges them: single values are replaced, lists such as ports are added to those of docker-compose.yml, volumes
+# are merged by their path in the container. Check the result with `docker compose config`.
+#
+# This one is that of our server (KU Leuven), which also serves mGrowthDB.
+
+services:
+
+  db:
+    ports:
+      - "3306:3306"     # MySQL reachable from the server itself (e.g. backups); the web app does not need it
+
+  nginx:
+    volumes:
+      - /data/mgrowthdb/:/data/mgrowthdb
+    ports:
+      - 443:443         # added to docker-compose.yml's 1337:80

@@ -22,14 +22,9 @@ services:
     command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
 
     # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
-    # also CATALOGUE=custom and SEEDS_DIR=/seeds (see .env.example)
+    # also TAXON_MATCHING=lineage (see .env.example)
     env_file:
       - ./.env.dev
-
-    volumes:
-      # The seed sets of the database's genomes (microbetag-export-db's all_conf.json.gz, all_nonseeds.json.gz
-      # and all_nonseeds_module_related.pckl), read by the app when SEEDS_DIR=/seeds
-      - ./services/db/data:/seeds:ro
 
     expose:
       - 5000
@@ -39,8 +34,11 @@ services:
 
     restart: unless-stopped
 
-  # The database: microbetagDB, in MySQL. Its files are in services/db/data (a link to /data/mysql/data/microbetagDB
-  # on our server), loaded at its first start.
+  # The database: microbetagDB, in MySQL. At its first start (an empty mysql-data volume), it creates the tables
+  # (services/db/schema/microbetagDB.sql) and loads the files of microbetag-export-db, from services/db/data (on our
+  # server, a link to the folder with these files); later starts keep the loaded database. The web app reaches it
+  # on the network of the containers (HOST=db, PORT=3306), so its port is not published; publish it, if needed,
+  # in docker-compose.override.yml (see docker-compose.override.example.yml).
   db:
 
     build:
@@ -51,11 +49,9 @@ services:
       - ./services/db/.env
 
     volumes:
+      - mysql-data:/var/lib/mysql
       - ./services/db/data:/var/lib/mysql-files/:rw
       - ./services/db/tmp:/var/tmp:rw
-
-    ports:
-      - "3307:3306"
 
     restart: unless-stopped
 
@@ -76,3 +72,8 @@ services:
       - web
 
     restart: unless-stopped
+
+volumes:
+  # MySQL's data: the loaded database, kept across restarts and rebuilds; `docker compose down -v` removes it, and
+  # the next start loads the files again
+  mysql-data:

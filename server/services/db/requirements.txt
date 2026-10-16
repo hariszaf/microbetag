@@ -1,5 +1,0 @@
-cryptography
-pymysql
-SQLAlchemy
-pandas
-

@@ -3,25 +3,30 @@ Export the pre-calculations of a genome catalogue (the output folder of the micr
 as the tables of a microbetag database (microbetag-export-db).
 
 The output folder has one tab-separated file per table, without header, in the column order of
-server/services/db/schema/custom_init.sql, and the seed sets the server computes seed complementarities from:
+server/services/db/schema/microbetagDB.sql, and the seed sets the server computes seed complementarities from:
 
     genome_taxonomy.tsv           genomeTaxonomy:           genome, taxonomy
     phen_predictions.tsv          phenDB:                   genome, then a presence (YES/NO/N/A) and a score per trait
-    unique_complements.tsv        uniqueComplements:        complement id, KEGG module, complement KOs, KOs of the path
-    pathway_complementarity.tsv   pathwayComplementarity:   beneficiary, donor, complement ids (comma-separated)
-    genome_ids.tsv                patricId2genomeId:        genome, genome (the catalogue's own identifiers)
-    seed_scores.tsv               seedScores:               genome A, genome B, competition, cooperation
-    seed_complements.tsv          SeedComplements:          beneficiary, donor, compounds (comma-separated)
-    non_seed_sets.tsv             nonSeedSets:              genome, compounds (comma-separated)
-    all_conf.json.gz, all_nonseeds.json.gz                   seed set confidences and non-seed sets per genome
-    all_nonseeds_module_related.pckl                         KEGG module related non-seed sets (keggm_nonseeds.pkl)
+    unique_complements.tsv        uniqueComplements:        id, KEGG module, missing KOs, KOs of the path: each
+                                                            alternative way to complete a module, once
+    genome_alternatives.tsv       genomeAlternatives:       genome, ids of the alternatives of its incomplete modules
+    genome_module_kos.tsv         genomeModuleKos:          genome, KEGG module, KOs of the module it has
+    seed_sets.tsv                 seedSets:                 GEM, its seeds with their confidence (cpd:1.0,cpd:0.5)
+    non_seed_sets.tsv             nonSeedSets:              GEM, its non-seeds (comma-separated)
+    genome_ids.tsv                patricId2genomeId:        genome, id of its GEM (by default the genome itself)
+    genome_ncbi_tax_ids.tsv       genome2taxNcbiId:         NCBI Taxonomy id, genome (empty without --ncbi-tax-ids)
+
+The server computes the pathway and seed complementarities of the pairs of a network from these, so nothing is
+stored per pair. From precalc: phenotrex/predictions, pathway_compl/alternatives.json (or .json.gz; or, for large
+catalogues, alternatives.jsonl[.gz], one genome per line, read one at a time),
+hmmsearch/ko_merged.txt (or .txt.gz) and seed_compl (confidence.json, nonseeds.json, or .json.gz).
 """
 
 import argparse
 import gzip
 import json
 import os
-import shutil
+import re
 from collections.abc import Iterable
 
 import pandas as pd
@@ -97,67 +102,88 @@ def phen_table(predictions_dir: str) -> list[list]:
     return rows
 
 
-def pathway_tables(pcompls_json: str) -> tuple[list[list], list[list]]:
-    """
-    From microbetag's pathway complementarities ({beneficiary: {donor: [[module, complement KOs, path KOs, url],
-    ...]}}): the unique complements, each with an id, and the complement ids of each genome pair.
-    """
-    with open(pcompls_json) as f:
-        pcompls = json.load(f)
+KO = re.compile(r"^K\d{5}$")
 
+
+def _open(path: str):
+    return gzip.open(path, "rt") if path.endswith(".gz") else open(path)
+
+
+def _first_existing(*paths: str):
+    return next((p for p in paths if os.path.exists(p)), None)
+
+
+def genome_kos(ko_merged: str) -> dict[str, set[str]]:
+    """The KOs of each genome, from precalc's ko_merged.txt (genome, then the KO and the gene, in any order)."""
+    kos: dict[str, set[str]] = {}
+    with _open(ko_merged) as f:
+        for line in f:
+            fields = line.rstrip("\n").split("\t")
+            ko = next((x for x in fields[1:] if KO.match(x)), None)
+            if ko:
+                kos.setdefault(genome_id(fields[0]), set()).add(ko)
+    return kos
+
+
+def pathway_tables(alternatives_json: str, ko_merged: str, module_kos_file: str) -> tuple[list, list, list]:
+    """
+    From precalc's alternatives (genome -> incomplete module -> alternative path -> its missing KOs) and KOs: each
+    alternative once, with an id, the alternatives of each genome, and the KOs each genome has per module.
+    """
     unique: dict[tuple[str, str, str], int] = {}
-    pairs = []
-    for beneficiary, donors in pcompls.items():
-        for donor, complements in donors.items():
-            if beneficiary == donor or not complements:
-                continue
-            ids = []
-            for complement in complements:
-                module, complement_kos, path_kos = complement[0], complement[1], complement[2]
-                key = (
-                    str(module).replace("md:", ""),
-                    ";".join(complement_kos) if isinstance(complement_kos, list) else str(complement_kos),
-                    ";".join(path_kos) if isinstance(path_kos, list) else str(path_kos),
-                )
-                if key not in unique:
-                    unique[key] = len(unique) + 1
-                ids.append(unique[key])
-            pairs.append([beneficiary, donor, ",".join(map(str, dict.fromkeys(ids)))])
+    genome_rows = []
+    for genome, modules in _genome_alternatives(alternatives_json):
+        ids = []
+        for module, alts in modules.items():
+            for path, missing in alts.items():
+                path_kos = path if isinstance(path, list) else re.findall(r"K\d{5}", path)
+                key = (module.replace("md:", ""), ";".join(sorted(missing)), ";".join(path_kos))
+                ids.append(unique.setdefault(key, len(unique) + 1))
+        genome_rows.append([genome_id(genome), ",".join(map(str, sorted(set(ids))))])
+
+    module_kos = pd.read_csv(module_kos_file, sep="\t", header=None, names=["module", "ko"])
+    module_kos["ko"] = module_kos["ko"].str.replace("ko:", "", regex=False)
+    by_module = module_kos.groupby("module")["ko"].apply(set).to_dict()
+    ko_rows = []
+    for genome, kos in sorted(genome_kos(ko_merged).items()):
+        for module, mkos in sorted(by_module.items()):
+            present = sorted(kos & mkos)
+            if present:
+                ko_rows.append([genome, module.replace("md:", ""), ";".join(present)])
 
     unique_rows = [[cid, *key] for key, cid in unique.items()]
-    return unique_rows, pairs
+    return unique_rows, genome_rows, ko_rows
 
 
-def seed_tables(seed_dir: str) -> tuple[list[list], list[list], list[list]]:
-    """Seed scores, seed complements and non-seed sets from the seed_compl folder of precalc."""
-    scores = pd.read_csv(os.path.join(seed_dir, "seed_scores.tsv"), sep="\t", dtype=str)
-    if not scores.columns[0].startswith("node"):
-        scores = pd.read_csv(os.path.join(seed_dir, "seed_scores.tsv"), sep="\t", dtype=str, header=None)
-    score_rows = scores.iloc[:, :4].values.tolist()
-
-    with open(os.path.join(seed_dir, "all_compls.json")) as f:
-        compls = json.load(f)
-    compl_rows = [
-        [beneficiary, donor, ",".join(cpds)]
-        for beneficiary, donors in compls.items()
-        for donor, cpds in donors.items()
-        if beneficiary != donor
-    ]
-
-    with open(os.path.join(seed_dir, "nonseeds.json")) as f:
-        nonseeds = json.load(f)
-    nonseed_rows = [[genome, ",".join(cpds)] for genome, cpds in nonseeds.items()]
-
-    return score_rows, compl_rows, nonseed_rows
+def _genome_alternatives(path: str):
+    """
+    The (genome, alternatives) of precalc's alternatives.json, or, for large catalogues, of a JSON lines file
+    (alternatives.jsonl[.gz], one {genome: alternatives} object per line), read one genome at a time.
+    """
+    with _open(path) as f:
+        if ".jsonl" in os.path.basename(path):
+            for line in f:
+                if line.strip():
+                    yield from json.loads(line).items()
+        else:
+            yield from json.load(f).items()
 
 
-def gzip_copy(src: str, dest: str) -> None:
-    with open(src, "rb") as f_in, gzip.open(dest, "wb") as f_out:
-        shutil.copyfileobj(f_in, f_out)
+def two_columns(path: str) -> list[list[str]]:
+    """Rows of a two-column tab-separated file."""
+    with _open(path) as f:
+        return [line.rstrip("\n").split("\t")[:2] for line in f if line.strip()]
 
 
-def export(precalc: str, genome_taxonomy: str, outdir: str) -> dict[str, int]:
-    """Write the database files; returns the number of rows of each table."""
+def export(precalc: str, genome_taxonomy: str, outdir: str, gem_ids: str = None,
+           ncbi_tax_ids: str = None) -> dict[str, int]:
+    """
+    Write the database files; returns the number of rows of each table.
+
+    gem_ids: tab-separated genome and the id of its GEM, when they differ (the GTDB database: PATRIC ids)
+    ncbi_tax_ids: tab-separated NCBI Taxonomy id and genome, for taxa given as NCBI Taxonomy ids
+    """
+    from microbetag.helpers import MappingPaths
     from microbetag.taxonomy import load_genome_taxonomy
 
     os.makedirs(outdir, exist_ok=True)
@@ -171,29 +197,39 @@ def export(precalc: str, genome_taxonomy: str, outdir: str) -> dict[str, int]:
     if os.path.isdir(predictions):
         counts["phenDB"] = write_tsv(phen_table(predictions), out("phen_predictions.tsv"))
 
-    pcompls = os.path.join(precalc, "pathway_compl", "pcompls.json")
-    if os.path.exists(pcompls):
-        unique, pairs = pathway_tables(pcompls)
-        counts["uniqueComplements"]      = write_tsv(unique, out("unique_complements.tsv"))
-        counts["pathwayComplementarity"] = write_tsv(pairs, out("pathway_complementarity.tsv"))
+    pc = os.path.join(precalc, "pathway_compl")
+    alternatives = _first_existing(*(os.path.join(pc, f"alternatives.{ext}")
+                                     for ext in ("json", "json.gz", "jsonl", "jsonl.gz")))
+    hmm = os.path.join(precalc, "hmmsearch")
+    ko_merged = _first_existing(os.path.join(hmm, "ko_merged.txt"), os.path.join(hmm, "ko_merged.txt.gz"))
+    if alternatives and ko_merged:
+        module_kos = os.path.join(MappingPaths().kegg_mappings, "kegg_terms_per_module.tsv")
+        unique, genome_alts, genome_module_kos = pathway_tables(alternatives, ko_merged, module_kos)
+        counts["uniqueComplements"]  = write_tsv(unique, out("unique_complements.tsv"))
+        counts["genomeAlternatives"] = write_tsv(genome_alts, out("genome_alternatives.tsv"))
+        counts["genomeModuleKos"]    = write_tsv(genome_module_kos, out("genome_module_kos.tsv"))
 
-    seed_dir = os.path.join(precalc, "seed_compl")
-    if os.path.isdir(seed_dir):
-        scores, compls, nonseeds = seed_tables(seed_dir)
-        counts["seedScores"]      = write_tsv(scores, out("seed_scores.tsv"))
-        counts["SeedComplements"] = write_tsv(compls, out("seed_complements.tsv"))
-        counts["nonSeedSets"]     = write_tsv(nonseeds, out("non_seed_sets.tsv"))
-        gzip_copy(os.path.join(seed_dir, "confidence.json"), out("all_conf.json.gz"))
-        gzip_copy(os.path.join(seed_dir, "nonseeds.json"), out("all_nonseeds.json.gz"))
-        module_nonseeds = os.path.join(seed_dir, "keggm_nonseeds.pkl")
-        if os.path.exists(module_nonseeds):
-            shutil.copyfile(module_nonseeds, out("all_nonseeds_module_related.pckl"))
+    sc = os.path.join(precalc, "seed_compl")
+    confidence = _first_existing(os.path.join(sc, "confidence.json"), os.path.join(sc, "confidence.json.gz"))
+    nonseeds = _first_existing(os.path.join(sc, "nonseeds.json"), os.path.join(sc, "nonseeds.json.gz"))
+    if confidence and nonseeds:
+        with _open(confidence) as f:
+            conf = json.load(f)
+        with _open(nonseeds) as f:
+            nons = json.load(f)
+        counts["seedSets"] = write_tsv(
+            ([gem, ",".join(f"{c}:{v:g}" for c, v in seeds.items())] for gem, seeds in sorted(conf.items())),
+            out("seed_sets.tsv"))
+        counts["nonSeedSets"] = write_tsv(
+            ([gem, ",".join(cpds)] for gem, cpds in sorted(nons.items())), out("non_seed_sets.tsv"))
 
-    # The catalogue's genomes are their own "PATRIC" ids (the GTDB database maps GTDB genomes to PATRIC GEMs)
-    genomes = set(taxonomy)
-    counts["patricId2genomeId"] = write_tsv(sorted((g, g) for g in genomes), out("genome_ids.tsv"))
+    # The GEM of each genome: the genome's own id, unless given
+    gems = two_columns(gem_ids) if gem_ids else sorted((g, g) for g in taxonomy)
+    counts["patricId2genomeId"] = write_tsv(gems, out("genome_ids.tsv"))
+    counts["genome2taxNcbiId"]  = write_tsv(two_columns(ncbi_tax_ids) if ncbi_tax_ids else [],
+                                            out("genome_ncbi_tax_ids.tsv"))
 
-    missing = {k for k in ("phenDB", "pathwayComplementarity", "seedScores") if k not in counts}
+    missing = {k for k in ("phenDB", "genomeAlternatives", "seedSets") if k not in counts}
     if missing:
         print(f"Not in {precalc}, so not exported: {', '.join(sorted(missing))}")
     return counts
@@ -206,9 +242,12 @@ def main(argv=None):
     parser.add_argument("--genome-taxonomy", required=True,
                         help="Tab-separated genome and lineage of each genome of the catalogue, e.g. GTDB-Tk's summary")
     parser.add_argument("--outdir", required=True, help="Folder for the database files")
+    parser.add_argument("--gem-ids", help="Tab-separated genome and the id of its GEM, when they differ")
+    parser.add_argument("--ncbi-tax-ids", help="Tab-separated NCBI Taxonomy id and genome, if known")
     args = parser.parse_args(argv)
 
-    for table, n in export(args.precalc, args.genome_taxonomy, args.outdir).items():
+    counts = export(args.precalc, args.genome_taxonomy, args.outdir, args.gem_ids, args.ncbi_tax_ids)
+    for table, n in counts.items():
         print(f"{table:24s} {n} rows")
 
 

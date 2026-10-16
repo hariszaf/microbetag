@@ -1,9 +1,14 @@
 """
-Taxonomy mapping for a server with its own genome catalogue (CATALOGUE=custom).
+How the server matches the taxa of an abundance table to the genomes of its database (TAXON_MATCHING):
 
-A custom microbetagDB is built from the precalc workflow of microbetag-nf and microbetag-export-db; its genomes
-have no NCBI Taxonomy ids. Each taxon of the abundance table is matched to the closest genomes of the catalogue
-(microbetag.taxonomy), from the genomeTaxonomy table, instead of going through NCBI Taxonomy and GTDB.
+    species (default)  a public server, whose users come with any taxonomy (GTDB, SILVA, microbetag's prep): the
+                       species name of each taxon is matched, exactly or nearly, to a GTDB species, through NCBI
+                       Taxonomy (app_taxonomy.py); taxa without a species get no genomes
+    lineage            a server of a user's own genomes, whose abundance table names taxa as its catalogue does:
+                       each taxon is matched to the closest genomes of the database, those sharing its deepest
+                       rank down to LINEAGE_MIN_RANK (genus by default), from the genomeTaxonomy table (this module)
+
+The former variable, CATALOGUE (gtdb or custom) and CATALOGUE_MIN_RANK, still work.
 
 The returned table has the columns of map_seq_to_ncbi_tax_level_and_id (app_taxonomy.py), so that the rest of
 the on-the-fly run is the same:
@@ -26,8 +31,27 @@ logger = mtg_logger(__file__)
 _INDEX = None
 
 
-def custom_catalogue() -> bool:
-    return os.environ.get("CATALOGUE", "gtdb").lower() == "custom"
+MATCHINGS = {"species", "lineage"}
+FORMER    = {"gtdb": "species", "custom": "lineage"}
+
+
+def taxon_matching() -> str:
+    """species or lineage (TAXON_MATCHING, or the former CATALOGUE); an unknown value is an error."""
+    value = os.environ.get("TAXON_MATCHING", "").strip().lower()
+    if not value and os.environ.get("CATALOGUE", "").strip():
+        former = os.environ["CATALOGUE"].strip().lower()
+        if former not in FORMER:
+            raise ValueError(f"CATALOGUE={former}: use TAXON_MATCHING=species or TAXON_MATCHING=lineage")
+        logger.warning(f"CATALOGUE={former} is TAXON_MATCHING={FORMER[former]} now")
+        return FORMER[former]
+    value = value or "species"
+    if value not in MATCHINGS:
+        raise ValueError(f"TAXON_MATCHING={value}: it is species (the default) or lineage")
+    return value
+
+
+def lineage_matching() -> bool:
+    return taxon_matching() == "lineage"
 
 
 def catalogue_index() -> GenomeTaxonomyIndex:
@@ -35,7 +59,8 @@ def catalogue_index() -> GenomeTaxonomyIndex:
     global _INDEX
     if _INDEX is None:
         rows = db.execute("SELECT genomeId, taxonomy FROM genomeTaxonomy;")
-        _INDEX = GenomeTaxonomyIndex(dict(rows), min_rank=os.environ.get("CATALOGUE_MIN_RANK", "genus"))
+        min_rank = os.environ.get("LINEAGE_MIN_RANK") or os.environ.get("CATALOGUE_MIN_RANK") or "genus"
+        _INDEX = GenomeTaxonomyIndex(dict(rows), min_rank=min_rank)
         logger.info(f"Genome catalogue: {len(_INDEX)} genomes")
     return _INDEX
 
