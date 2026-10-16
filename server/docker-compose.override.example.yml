@@ -3,16 +3,20 @@
 # merges them: single values are replaced, lists such as ports are added to those of docker-compose.yml, volumes
 # are merged by their path in the container. Check the result with `docker compose config`.
 #
-# This one is that of our server (KU Leuven), which also serves mGrowthDB.
+# This one is that of our server (KU Leuven), whose nginx also serves mGrowthDB, and both over HTTPS.
 
 services:
 
   db:
     ports:
-      - "3306:3306"     # MySQL reachable from the server itself (e.g. backups); the web app does not need it
+      - "127.0.0.1:3306:3306"   # MySQL reachable from the server itself (e.g. backups); the web app does not need it
 
   nginx:
     volumes:
+      # Our sites (services/nginx/luna.conf), in place of the generic nginx.conf: microbetag and mGrowthDB, HTTP
+      # and HTTPS (with the certificates docker-compose.yml mounts)
+      - ./services/nginx/luna.conf:/etc/nginx/conf.d/nginx.conf:ro
+      # mGrowthDB's static files, which nginx serves itself
       - /data/mgrowthdb/:/data/mgrowthdb
     ports:
-      - 443:443         # added to docker-compose.yml's 1337:80
+      - "443:443"               # added to docker-compose.yml's 1337:80

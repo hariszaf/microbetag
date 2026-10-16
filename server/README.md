@@ -46,7 +46,9 @@ You may check this by just typing to a browser: [msysbio.gbiomed.kuleuven.be/](m
 `docker-compose.yml` is the same for every server. What one server needs on top of it (published ports, extra
 mounts) goes in `docker-compose.override.yml`, next to it and not tracked by git: `docker compose` merges the
 two files. [`docker-compose.override.example.yml`](./docker-compose.override.example.yml) is ours; check the
-merged configuration with `docker compose config`. Use `docker compose` (the plugin), not the older standalone
+merged configuration with `docker compose config`. Its nginx sites, if they differ from the generic `services/nginx/nginx.conf` (microbetag on
+port 80), are a file of their own mounted in its place: ours, `services/nginx/luna.conf`, also serves mGrowthDB, and
+both over HTTPS. Use `docker compose` (the plugin), not the older standalone
 `docker-compose`.
 
 
