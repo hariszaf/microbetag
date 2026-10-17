@@ -1,4 +1,5 @@
-# `microbetag` stand-alone version
+# microbetag
+_annotating networks with phenotypic traits and potential metabolic interactions_
 
 ## About
 
@@ -14,12 +15,38 @@ You can [download `MGG`](https://apps.cytoscape.org/apps/mgg) directly from the 
 However, using the on-the-fly version, means `microbetag` will try to match your taxa to their closest GTDB representative genomes.
 Then, it will annotate your network based on pre-calculations of those GTDB genomes available on `microbetagDB`.
 
-In case, you prefer to annotate your network using information from a local/custom set of genomes, then you can go ahead
-and install `microbetag` locally, since pre-calculations are computationally expensive tasks making it impossible to run on a web-server.
+To annotate your network using your own genomes, run microbetag locally.
+The steps that run external tools on the genomes (gene prediction, KEGG annotation, trait prediction,
+genome-scale model reconstruction, FAPROTAX, network inference and clustering) are computationally
+expensive; they run in the [**microbetag-nf**](pipeline) Nextflow pipeline,
+on your computer or an HPC. The `microbetag` package then computes the pathway and seed complementarities
+from their outputs and builds the annotated network, e.g. `mtag_net_2025-05-08_17-47.cx2`.
+Load this file in Cytoscape to go through its annotations as in the on-the-fly version.
 
-Once you install and run `microbetag` locally, you end up with an annotated network in CX2 format on your output directory, 
-e.g. `mtag_net_2025-05-08_17-47.cx2`.
-All you need to do then, is to load this file on Cytoscape and you are ready to go through its annotations as in the on-the-fly version. 
+## Repository layout
+
+The repository has three parts, one folder each:
+
+```
+microbetag/
+├── microbetag/   the Python package: src/microbetag/, its tests, pyproject.toml and Dockerfile
+├── pipeline/     the Nextflow pipeline (microbetag-nf)
+├── server/       the on-the-fly server and its database (microbetagDB)
+└── docs/         documentation (readthedocs)
+```
+
+| Part | What it does | Used by | Install / run |
+|---|---|---|---|
+| [**`microbetag/`**](microbetag) — the package | Computes pathway and seed complementarities from KEGG annotations and GEMs, and builds the annotated network (`.cx2`). It does not run external tools. Also exports pre-calculations as a database (`microbetag-export-db`) and matches taxonomies to genomes (`microbetag.taxonomy`). | you, the pipeline, the server | `pip install ./microbetag`, or the `hariszaf/microbetag` image; see [microbetag/README.md](microbetag/README.md) |
+| [**`pipeline/`**](pipeline) — microbetag-nf | Runs the external tools in containers: Prodigal, kofam, phenotrex, CarveMe/gapseq/ModelSEEDpy, FAPROTAX, FlashWeave, manta, then the package. Workflows: `precalc` (your genomes → pre-calculations), `annotate` (→ an annotated network), `prep` (inputs for the on-the-fly version). | you, on a computer or an HPC | Nextflow and Docker/Singularity; see [pipeline/README.md](pipeline/README.md) |
+| [**`server/`**](server) — on-the-fly server | The Flask app behind Cytoscape's `MGG`, and the MySQL microbetagDB it queries: GTDB genomes on the public server, or your own genomes after `precalc` and `microbetag-export-db`. | `MGG` | Docker Compose and systemd; see [server/README.md](server/README.md) |
+
+How they fit together: the **pipeline** runs the tools and calls the **package**. The **package** builds the
+annotated networks. The **server** serves the package's on-the-fly version from a database built from the
+pipeline's `precalc` output.
+
+If you already have the outputs of those tools, for example GEMs or a KEGG annotation of your genomes,
+you can run `microbetag` on them directly.
 
 
 For more on how to use `microbetag`, `MGG` and their features, feel free to have a look 
@@ -37,149 +64,69 @@ To use `microbetag` on-the-fly, all you have to do is to make sure you have Cyto
 * **After firing Cytoscape you can [add `MGG` by downloading it from the Cytoscape AppStore](https://apps.cytoscape.org/apps/mgg).**
 
 
-### Option 2: On your host machine
+### Option 2: The microbetag-nf pipeline
 
-To run `microbetag` locally, you need to install a great range of software and dependencies. 
-To make this easier, we provide the [`setup_environment.sh`](./setup_environment.sh) script. 
+To go from your genomes to an annotated network, use the [microbetag-nf](pipeline)
+pipeline. It runs the external tools in containers and then `microbetag`.
 
-**The `setup_environment.sh` expects `conda` is available on your computing system!**
 
-If `conda` (or `Miniconda`) is not installed, then you may get it by following the instructions you may find 
-[here](https://www.anaconda.com/docs/getting-started/miniconda/install).
+### Option 3: The microbetag package
 
-After cloning the `microbetag` GitHub repository locally in a directory of your choice
+`microbetag` needs Python 3.10 or later. From a clone of this repository:
 
 ```bash
 git clone https://github.com/hariszaf/microbetag.git
-```
-
-you can build its required environments by running:
-
-```bash
-cd microbetag
-bash setup_environment.sh
-```
-
-Once `conda` environments and required tools and databases are installed, you can install the `microbetag` package by running:
-
-```bash
-python setup.py sdist bdist_wheel
+cd microbetag/microbetag
 pip install .
 ```
-In case you get the strip_trailing_zero error
+
+Add `".[otf]"` for the on-the-fly version, which queries the microbetag database, and `".[test]"` to run the tests.
+
+To check your installation, run the tests from the same folder:
+
 ```bash
-pip install --upgrade setuptools packaging
+pip install ".[test]"
+pytest
 ```
 
-You are ready to go! 🚀
+[`microbetag/tests/README.md`](./microbetag/tests/README.md) describes how to run single tests, or single microbetag steps on the test data.
 
-Feel free to go through the [`tests`](./tests/) folder to check on how you can run specific modules or a complete pipeline of `microbetag`.
-A detailed description of those tests can be found [here](./test_data/README.md).
+#### In a container
 
-For more, you can also check [on `microbetag`'s documentation page](https://microbetag.readthedocs.io/en/v1.0.3/advanced_use/local.html).
-
-
-
-### Option 3: In a container
-
-To run `microbetag` as a [Docker](https://docs.docker.com/get-docker/) container, you can directly get it from DockerHub:
+The `hariszaf/microbetag` image holds the package and its commands:
 
 ```bash
 docker pull hariszaf/microbetag:<version>
 ```
 
-Contrary, if you are interested in running it as a [Singularity](https://docs.sylabs.io/guides/3.1/user-guide/installation.html) 
-or an [Apptainer](https://apptainer.org/admin-docs/master/installation.html#installation-on-linux) container,
-you need to first build its corresponding image based on a [Docker version of microbetag](https://hub.docker.com/repository/docker/hariszaf/microbetag/tags?page=1&ordering=last_updated).
-To do so, you can run:
+or build it from the `microbetag/` folder of this repository:
 
 ```bash
-sudo singularity build microbetag_v101.simg docker://hariszaf/microbetag:<version>
+docker build -t hariszaf/microbetag:<version> .
 ```
 
-🔴 To execute the `singularity build` command, you will (probably) need to have `sudo` rights.
-Thus, in case you are working on an HPC, you will have to:
-- either ask your admin to do so, or 
-- run the build command in a similar environment and move it to the HPC. 
-
-Both in the Docker and Singularity cases, you will need to first get the kofam database 
-in case you are interested in pathway complementarities and kofam is not already available on your computing system.  
-You can get kofam database by running the following chunk of code:
+Mount the folder with your configuration YAML and the files it points to at `/data`.
+Paths in the YAML are relative to the YAML's folder, so a configuration that works locally also works in the container:
 
 ```bash
-cd ext_data/kofam_database &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz &&\
-wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz &&\
-gzip -d ko_list.gz &&\
-tar zxvf profiles.tar.gz 
+docker run --rm -v $PWD/my_study:/data hariszaf/microbetag:<version> microbetag --config /data/config.yml
 ```
 
-Also, if you are about to reconstruct Genome Scale Models, necessary for inferring seed complementarities, using CarveMe
-you would also need to get a Web License Service (WLS) [Gurobi license](https://www.gurobi.com/downloads/).
-To do so, you may find the following [link](https://support.gurobi.com/hc/en-us/community/posts/4406485885841-Installing-Gurobi-on-a-Docker-container-Ubuntu) useful on how to do that.
-Like the kofam case, this applies for both Docker and Singularity.
-
-To run `microbetag` in a container, you will need to ***pass*** kofam and/or the Gurobi license 
-(in case you do need them for the steps you wish `microbetag` to go for) to the running container, as well as your **input data** themselves. 
-
-Here is how you can do this in these two technologies.
-
-#### Docker
-
-We **mount** the [`test_microbetag`](./test_data/test_microbetag/) and all its contents from our host system, 
-to the `/data` directory of the container. 
-**The `test_microbetag` folder should contain all our genomes/bins, abundance table, metadata or network (edge list) files.**
-**Anything `microbetag` will consider as input files. For example, in case you already have GEMs for your genomes, they should also be mounted.**
-
-Remember to **mount** the kofam database to the `/microbetag/microbetagDB/ref-dbs/kofam_database/` path of the container and the Gurobi license,
-if necessary.
-
-> Your configuration YAML in case of running on a container, needs to provide **the paths of your data in the container**,
-> not those on your host system.
+For Singularity / Apptainer, convert the image once (no `sudo` needed) and run it with the same mount:
 
 ```bash
-docker run --rm -it  \
-    --volume=./test_data/test_microbetag/:/data \
-    --volume=./ext_data/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/ \
-    --volume=$PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro \
-    microbetag:<version>
+singularity pull microbetag.sif docker://hariszaf/microbetag:<version>
+singularity exec -B $PWD/my_study:/data microbetag.sif microbetag --config /data/config.yml
 ```
-
-You can also start an **interactive shell** inside the container by using the `--entrypoint` flag and setting it to `/bin/bash`. 
-This allows you to explore and work inside the container environment manually.
-
-
-
-#### Singularity
-
-Like in the Docker case, you need to mount data and related files.
-
-```bash
-singularity exec 
-    -B tests/dev_io_microbetag/:/data  
-    -B microbetagDB/ref-dbs/kofam_database/:/microbetag/microbetagDB/ref-dbs/kofam_database/
-    -B $PWD/gurobi.lic:/opt/gurobi/gurobi.lic:ro  
-    microbetag_v101.simg 
-    python3 /microbetag/microbetag.py /data/config.yml
-```
-
-
-### Tricky parts for running locally
-
-`microbetag` makes use of a range of external software, some of which have conflicting dependencies.
-This is why `microbetag` builds for example **two environments** through the [`setup_environment.sh`](./setup_environment.sh),
-one called `microbetag` and a second one called `phendb`. 
-Similarly, it switches from a `scikit-learn` version to another while running. 
-This is not optional, and we hope in the future to find a better way.
-
 
 
 ## Further `microbetag` links
 
 Overall, `microbetag` is a software ecosystem composed of a collection of modular code components:
 
-- `microbetagDB` : `db` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/db)
-- `microbetag_prep`: `preprocess` branch on current [GitHub repo](https://github.com/hariszaf/microbetag/tree/preprocess)
+- `microbetag-nf`: the Nextflow pipeline running the external tools, and preparing amplicon data for the on-the-fly version; in [`pipeline/`](pipeline)
+- `microbetagDB` : the database of the server, in [`server/services/db`](server/services/db)
+- `microbetag_prep`: replaced by the prep workflow of `microbetag-nf`; the former tool is on the `preprocess` branch of the [msysbio/microbetag GitHub repo](https://github.com/msysbio/microbetag/tree/preprocess)
 - `microbetagApp`: individual [GitHub repo](https://github.com/msysbio/microbetagApp-public)
 - `MGG` source code: individual [GitHub repo](https://github.com/hariszaf/MGG)
 - pre-calculations: Seed and non-seed sets for GTDB representative genomes available in `microbetag`, their corresponding GEMs, models for `phenotrex`-based predictions and KEGG annotations of each of those genomes are available on [Zenodo](https://zenodo.org/records/15102937).
@@ -204,56 +151,180 @@ For thorough descriptions on the format of each of these files,
 
 ### Locally
 
-If you are about to use `microbetag` locally, then besides the input files mentioned in the on-the-fly case,
-you have, apparently, several other input data files. 
-For example, you may have a set of genomes, or already annotated genomes. You may also have your own GEMs or not etc. 
-All these files are *optional*. 
+`microbetag` needs a **configuration YAML file**. Each `microbetag` version comes with its own template,
+which this command writes out:
 
-🔴 Yet, **a `config.yml` file is mandatory!** Each `microbetag` **version** comes with **its own template** configuration file,
-that you can find in the [`config_files`](./config_files/) folder.
-
-❗ Properly filling in the configuration file is crucial for the successful operation of `microbetag`.
-
-To do so, take your time and read each argument's description; also check on their allowed values if provided and/or 
-when an argument is required. For example:
-
-```yaml
-kofam_database:
-  path: /home/user/kofam_database
-  description: >
-    Provide the path to the kofam directory_database directory.
-    This variable is not required unless `pathway_complementarity` is set to true
-    and `ko_merged_file` is not provided.
-  required: 
-    value: false
-    when: >
-      pc_percentage is true and ko_merged_file is null
-  type: Path
+```bash
+microbetag --write-template config.yml
 ```
 
-The `kofam_database` variable is **not always required** as the `required` field is `false`.  
-It also needs to be a string pointing to a directory (`path`) as mentioned in the `type` field. 
-The value of the variable needs to be set in the `path` field. 
+It points to:
+- the **co-occurrence network**, as an edge list, and an **abundance table** or a sequence id to taxonomy map;
+- for each annotation you want, the **output of the tool** it comes from:
 
+| Annotation | Input | Produced by |
+|---|---|---|
+| Pathway complementarity | `ko_merged_file`: KEGG ORTHOLOGY terms per genome | kofam (hmmsearch) on the predicted genes |
+| Seed complementarity | `genome_scale_models`: one GEM (.xml) per genome | CarveMe, gapseq or ModelSEEDpy |
+| Phenotypic traits | `phenotrex_predictions` | phenotrex |
+| FAPROTAX traits | `faprotax_sub_tables` | FAPROTAX |
+| Network clusters | `prev_clustered_network` | manta |
 
-For more specific examples, you may have a look on [`tests`](./tests/) and their corresponding [`test_data`](./test_data/), 
-and of course on the [**running `microbetag` locally**](https://microbetag.readthedocs.io/en/latest/advanced_use/local.html) tutorial.
+microbetag-nf produces all of them. Switch off (`value: false`) the steps you have no input for.
+Then run:
 
+```bash
+microbetag --config config.yml
+```
 
-❗ The configuration files are considered **templates** since you can use them partially, including only the variables required for the tasks 
-you wish to go for. This is shown in several [`tests`](./tests/).
+[`microbetag/tests/data/microbetag`](./microbetag/tests/data/microbetag/) is a complete example, with its [`config.yml`](./microbetag/tests/data/microbetag/config.yml).
+
+The steps are also available as separate commands (`microbetag-pcompl`, `microbetag-seed-sets`,
+`microbetag-annotate`, ...), which the microbetag-nf pipeline uses; each has `--help`.
+`microbetag` can also be used as a Python library, e.g. to get the seed complementarities of a set of GEMs
+without a network (see [`microbetag/tests/unit/test_seed_compl.py`](./microbetag/tests/unit/test_seed_compl.py)).
+
+## How microbetag gets seed sets
+
+The seed complementarities of `microbetag` start from the **seed set** of each genome-scale metabolic model (GEM):
+the compounds the organism has to take from its environment, because nothing in its metabolic network produces
+them (Borenstein et al., [PNAS 2008](https://doi.org/10.1073/pnas.0712149105)). The rest of the compounds of the
+network are its **non-seeds**: what it makes. microbetag follows the approach of
+[PhyloMint](https://github.com/mgtools/PhyloMint) (Levy & Borenstein, [PNAS 2013](https://doi.org/10.1073/pnas.1300926110);
+Lam et al., [PLoS Comput Biol 2020](https://doi.org/10.1371/journal.pcbi.1007951)), in
+[`PhyloMint/lib/BuildGraphNetX.py`](./microbetag/src/microbetag/PhyloMint/lib/BuildGraphNetX.py).
+
+Seeds are topological, so they do not depend on the medium the model was saved with: a seed is what the network
+cannot make from anything, needed or not.
+
+### 1. The compound graph of a GEM (`buildDG`)
+
+The GEM (SBML, read with COBRApy) becomes a directed graph of compounds: an edge from each substrate to each product
+of a reaction, in the directions the reaction's bounds allow (both, for a reversible one). Then:
+
+- **one node per compound**: the forms of a compound in the compartments of the model (`ac_c`, `ac_e`, `ac_p`) are
+  merged into one node (`ac`), so that seeds and non-seeds are per compound;
+- **transports are left out**: a reaction with the same compounds on both sides, in other compartments (uniport,
+  symport, antiport, ATP-driven), converts nothing, and would otherwise link co-transported compounds to each
+  other (Ca²⁺ "made" from Na⁺);
+- **every compound of the model is a node**, also one that is only transported or only used by the biomass (e.g.
+  metal ions): one that nothing produces is then a source, as it should be;
+- **the biomass reaction is a use**: its substrates get an edge to a sink node (`__biomass__`), which is neither a seed
+  nor a non-seed;
+- **currency metabolites** are left out, since they would link everything to everything: water, H⁺, ATP/ADP/AMP,
+  phosphate and pyrophosphate, CO₂, O₂, NAD(P)(H), CoA, NH₄⁺, SO₄²⁻, Fe²⁺/Fe³⁺, ubiquinone and FAD
+  (`CURRENCY` in `BuildGraphNetX.py`). The nutrients among them (NH₄⁺, SO₄²⁻, iron) get their status in a later
+  round (section 2);
+- **compounds made from currency metabolites alone** (ADP-ribose and NMN from NAD, cAMP and Ap4A from ATP,
+  bicarbonate from CO₂) get an edge from a node standing for the currency pool (`__currency__`): every cell has
+  these cofactors, so such compounds are non-seeds, not sources;
+- exchange, demand and sink reactions, and reactions with zero bounds, are left out. Optionally (`check_blocked`),
+  so are reactions that cannot carry flux on any medium (FVA with every exchange open); it is off by default, as it
+  does not improve the seed sets of the models below.
+
+### 2. Seeds and non-seeds (`getSeedSet`)
+
+The graph is split into strongly connected components (SCCs: compounds that can be made from each other). An SCC
+is a **source** if no edge enters it from outside. Then:
+
+- a **seed** is a compound of a source SCC that also feeds the rest of the network (`require_downstream_use`, on by
+  default: at least one edge out of the SCC, the biomass included). Its **confidence** is 1 / the size of its SCC;
+- a source SCC that feeds nothing (a compound the model could import but never uses) is a **dead end**: neither a
+  seed nor a non-seed, since nothing produces it;
+- SCCs larger than `maxComponentSize` (2 in microbetag) are hubs, not sources;
+- the **non-seeds** are the other compounds: what the network makes;
+- **nutrient round**: NH₄⁺, SO₄²⁻ and iron (`NUTRIENT_CURRENCY`) are non-seeds if the network makes them from its
+  seeds alone, e.g. NH₄⁺ from the deamination of an amino acid or amine, SO₄²⁻ from a sulfonate. This is network
+  expansion over the model's reactions: a reaction fires once its substrates other than currency metabolites are
+  available, starting from the seeds only, so that nitrogen, sulfur or iron cannot come from the cofactors (NH₄⁺
+  from AMP). Otherwise they are seeds, with confidence 1. Iron released from an imported siderophore complex
+  (ferric enterobactin, ferric dicitrate) does not count as made: the complex comes from outside, so iron stays a
+  seed.
+
+The seed and non-seed sets of each model are then translated to ModelSEED compound ids (BiGG models, through
+MetaNetX).
+
+### 3. Scores and complements of a pair (`CalculateIndexes.py`)
+
+For a beneficiary A and a donor B:
+
+- **competition** = the confidence-weighted share of A's seeds that are also B's seeds: both need them;
+- **cooperation** = |A's seeds ∩ B's non-seeds| / |A's seeds ∩ (B's seeds ∪ B's non-seeds)|: of A's seeds that are in
+  B's network, the share B makes;
+- **seed complements** of A from B = A's seeds ∩ B's non-seeds: what B could provide A; by default, kept to the
+  compounds of KEGG modules (the scores use the whole sets).
+
+### Checking the seed sets
+
+[`microbetag/scripts/check_seed_sets.py`](./microbetag/scripts/check_seed_sets.py) checks the seed sets of any GEM
+against the model itself, with flux balance analysis:
+
+- **disjoint**: no compound is both a seed and a non-seed;
+- **completeness**: the *required* nutrients (the model does not grow without them even on the complete medium, so
+  nothing in the network replaces them) are seeds;
+- **precision**: seeds the model can make (with their own uptake closed, a demand reaction for them carries flux),
+  which should not be seeds;
+- biomass precursors reached by network expansion from the seeds.
+
+```
+cd microbetag
+python scripts/check_seed_sets.py tests/data/seed_compl/iML1515.xml.gz tests/data/seed_compl/input_files/*.xml
+```
+
+| Model | Seeds | Required nutrients not seeds | Seeds the model can make |
+|---|---|---|---|
+| iML1515 (*E. coli* K-12, curated) | 126 | 0 of 9 | 2 (Fe²⁺, Fe³⁺) |
+| `bin_101` (CarveMe, tests) | 55 | 3 of 11 | 0 |
+| `GPB:bin_000083` (CarveMe, tests) | 41 | 10 of 28 | 1 (Fe³⁺) |
+
+The seeds the models can make are iron, released from imported siderophore complexes: seeds by the definition above,
+which flux balance analysis counts as made. In iML1515, NH₄⁺ is a non-seed (from dopamine, by an amine oxidase) and so
+is SO₄²⁻ (from H₂S); iron is a seed.
+
+With the former seed sets (cytosol only, one node per compartment form), iML1515 had 8 of its 9 required nutrients
+(its metal ions and chloride) missing from its seeds, and 42 of its 127 seeds could be made by the model.
+
+**What the checks can and cannot tell.** Seeds are not required nutrients by definition: a seed is what the network
+cannot make from anything. The FBA checks are indicative, and their limits are those of the checks, not of the
+inference. A nutrient a model requires but whose graph has a reaction producing it (whose other substrates, or
+stoichiometry, the model cannot satisfy) is a non-seed, and shows as a "required nutrient not a seed": e.g. benzoate,
+nicotinamide mononucleotide or tryptophan in the CarveMe models of the tests. A compound that is not required can
+still be a seed (an alternative carbon source), and one required on a given medium need not be (glucose on M9 for
+*E. coli*, which its network makes from other sugars).
+
+**Seeds and the quality of the reconstruction.** Reaction directions come from the bounds of the model, not from
+its `reversible` flag (the former BuildGraphNetX used both directions for any reaction whose lower bound is below 0,
+including those that can only run backwards). Seeds therefore follow the model: in an automatic reconstruction, an
+intracellular intermediate whose making reaction is missing (decenoyl-ACP without FabA, 2-amino-3-carboxymuconate
+semialdehyde without 3-hydroxyanthranilate dioxygenase), or set in the wrong direction (adenylated ThiS in ModelSEED,
+which only allows its breakdown), is a source and a seed. These are gaps of the reconstruction, to be fixed by
+gap-filling or curation, not by the seed inference. In ModelSEED models, the cofactors (`CURRENCY_MODELSEED`, chosen
+from the ids), the biomass placeholders (`cpd17041-3`, `cpd11416`) and the products of the biomass reaction
+(cobinamide, dimethylbenzimidazole: made by the cell) are handled as in BiGG models.
+
+**Other seed definitions.** microbetag's seeds are necessary seeds (Borenstein): what the network cannot make, so
+needs from outside; one set per model. Tools such as [Seed2LP](https://github.com/bioasp/seed2lp) infer sufficient
+seeds, or minimal precursor sets (network expansion: the smallest sets from which every compound, or chosen targets,
+can be reached; many per model). Every necessary seed is in each such set: on a CarveMe and a ModelSEED model of the
+tests, the 55 and 130 seeds of microbetag were in all 20 Seed2LP solutions (`full` mode), which had ~290 and ~600
+compounds, extracellular forms counted separately.
+
+**Known limits.** Two BiGG compounds can share a ModelSEED id (L-arabinitol and L-lactaldehyde, `cpd00334`), which can
+then be both a seed and a non-seed after the translation. The currency metabolites other than NH₄⁺, SO₄²⁻ and iron are
+never seeds.
+
+**Tests**: [`test_seed_inference.py`](./microbetag/tests/unit/test_seed_inference.py) checks that seeds and non-seeds
+are disjoint and that iML1515's required nutrients are seeds;
+[`test_get_seeds.py`](./microbetag/tests/unit/test_get_seeds.py) checks the seed rules on small graphs. To draw the
+graphs of the latter as well (needs `matplotlib`), from the `microbetag/` folder:
+
+```
+pytest tests/unit/test_get_seeds.py --draw --graph-dir tests/data/test_graphs
+```
 
 <!-- Issue where different findings from carveme using cplex and gurobi is mentioned:
 https://github.com/cdanielmachado/carveme/issues/141#issuecomment-912309490 -->
 
-
----
-
-🚀 Once setting `microbetag` locally, you can use it as a Python library to a great extent, meaning you can perform a great range 
-of specific tasks out of the main pipeline concept. 
-For example, given you have a set of GEMs, you may 
-[get their seed complementarities](./tests/test_seed_compl.py), 
-without an abundance table or network. 
 
 
 ## RTD
@@ -263,6 +334,15 @@ without an abundance table or network.
 > **For contributors**
 >
 > To test changes locally first, run:
+>
+> Make sure you install `requirements.txt` on a conda environment: 
+> 
+>```
+> cd docs/
+> pip install -r requirements.txt
+>```
+>
+> and then, you may run:
 > ```
 > sphinx-build -b html -d _build/doctrees -D language=en . _build/html -v
 > ```
@@ -277,9 +357,9 @@ A new RTD is being produced every time a new _microbetag_ `tag` is released auto
 
 If you use `microbetag`, please consider citing us:
 
-Zafeiropoulos H, Michail Delopoulos EI, Erega A, Schneider A, Geirnaert A, Morris J, Faust K. 
-microbetag: simplifying microbial network interpretation through annotation, enrichment tests and metabolic complementarity analysis. 
-*bioRxiv*. 2024:2024-10. DOI: [10.1101/2024.10.01.616208 ](https://doi.org/10.1101/2024.10.01.616208 )
+Zafeiropoulos H, Michail Delopoulos EI, Erega A, Schneider A, Geirnaert A, Morris J, Faust K.
+microbetag: simplifying microbial network interpretation through annotation, enrichment tests and metabolic complementarity analysis.
+*Genome Biology* 26, 292 (2025). DOI: [10.1186/s13059-025-03769-2](https://doi.org/10.1186/s13059-025-03769-2)
 
 
 ## Funding

@@ -1,3 +1,6 @@
+# -------------
+# From main package
+# -------------
 # Branch specific
 examined_cases
 
@@ -92,7 +95,6 @@ dada2familiesNcbiIds
 *.contigs.fa
 bins/
 
-
 # Ignore the output of the installation.sh script 
 microbetag_env
 
@@ -109,14 +111,75 @@ gurobi.lic
 # Ignore the output folder of the stand alone tool
 #microbetag_run/
 hmmout/
-MetaNetX/
 
 microbetagDB/mappings/gtdb_ncbi/
 .vscode/
 
-# Ignore i/o file for test_data
-test_data/test_modelseed/input_files
-#test_data/test_microbetag/mtg_complete_output/KEGG_annotations/hmmout/
-test_data/test_microbetag/mtg_complete_output
-test_data/test_microbetag/input_files
+# Test data extracted from the tracked .tar.gz files
+tests/data/modelseed/input_files
+tests/data/microbetag/mtg_complete_output
+tests/data/microbetag/input_files
 
+# Nextflow
+.nextflow.*
+.nextflow/
+work/
+nf/data/
+nf/results/
+nf/phenotrex/classes/
+nf/test-*
+
+# Ignore Singularity .sif files
+*.sif
+.pytest_cache/
+*.log
+
+# pyvis writes its JavaScript/CSS next to rendered networks
+lib/
+# ... but PhyloMint/lib (the package) and pipeline/lib (Groovy classes of the pipeline) are code
+!microbetag/src/microbetag/PhyloMint/lib/
+!pipeline/lib/
+
+
+# From pipeline
+__pycache__/
+*.pyc
+work/
+.nextflow*
+pipeline/tests/results/
+pipeline/databases/
+pipeline/tests/data/kofam_database/profiles_test/
+
+# -------------
+# From server 
+# -------------
+.flake8
+__pycache__
+
+server/services/db/data
+server/services/db/tmp
+
+server/build_annotated_graph/
+
+server/updated_non_seedsets_of_interest.pckl
+*_ncbiIds.csv
+
+server/services/db/kegg_module_related_nonseeds.pkl
+server/services/db/kegg_module_related_seeds.pkl
+
+# -------------
+# Secrets: environment files and TLS certificates/keys stay out of the repository
+# -------------
+.env*
+**/.env*
+!.env.example
+!**/.env.example
+*.env_dev.json
+.localdb_credentials.json
+server/services/nginx/certs/
+server/db/db-password
+docs/tutorials_local/config_parameters.md
+docs/tutorials_local/nf_parameters.md
+
+# Ignore lib being produced by Jupyter notebook
+notebooks/lib/

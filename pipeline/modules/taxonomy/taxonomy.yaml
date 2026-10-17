@@ -1,0 +1,10 @@
+# Abundance table: sequence ids in the first column, samples, and the sequences in the last column
+abundance_file: tests/data/prep/seq_ab_tab.tsv
+# The GTDB r207 16S reference IDTAXA classifies the sequences against (ready to use, nothing is trained):
+# gtdb_r207_ssu_idtaxa.RData: ./microbetag-nf get-gtdb-16s, or https://doi.org/10.5281/zenodo.23368237. Its GTDB
+# release needs to match the one of the server's database, since microbetag matches taxa to genomes by their names.
+gtdb_16s_reference: databases/gtdb_r207_ssu_idtaxa.RData
+# IDTAXA confidence threshold: 60 (cautious) or 50 (sensible)
+idtaxa_threshold: 60
+threads: 2
+outdir: tests/results/prep

@@ -1,0 +1,79 @@
+# The microbetag server: the web app, its database and nginx in front of them.
+#
+# Before the first start:
+#   cp .env.example .env.dev                         # the web app's settings
+#   cp services/db/.env.example services/db/.env     # the database's settings
+# and fill them in. Then:
+#   docker compose up -d --build
+# or run it as a service with deploy/microbetag.service (see README.md).
+
+services:
+
+  # The web app (Flask, served by gunicorn), on the microbetag package of this repository.
+  # Its image (services/web/Dockerfile.v2) also has the pipeline's tools and Nextflow, to run FlashWeave,
+  # FAPROTAX and manta (the network workflow of pipeline/), so it is built from the root of the repository.
+  web:
+
+    build:
+      context: ..
+      dockerfile: server/services/web/Dockerfile.v2
+
+    # gunicorn's timeout needs to be at least nginx's proxy_read_timeout, so that nginx does not end long runs
+    command: gunicorn --bind 0.0.0.0:5000 app:app --workers 5 --timeout 3500 --graceful-timeout 3000
+
+    # FLASK_SECRET_KEY and the database connection (HOST=db, PORT=3306); for a database of your own genomes,
+    # also TAXON_MATCHING=lineage (see .env.example)
+    env_file:
+      - ./.env.dev
+
+    expose:
+      - 5000
+
+    depends_on:
+      - db
+
+    restart: unless-stopped
+
+  # The database: microbetagDB, in MySQL. At its first start (an empty mysql-data volume), it creates the tables
+  # (services/db/schema/microbetagDB.sql) and loads the files of microbetag-export-db, from services/db/data (on our
+  # server, a link to the folder with these files); later starts keep the loaded database. The web app reaches it
+  # on the network of the containers (HOST=db, PORT=3306), so its port is not published; publish it, if needed,
+  # in docker-compose.override.yml (see docker-compose.override.example.yml).
+  db:
+
+    build:
+      context: ./services/db
+      dockerfile: Dockerfile
+
+    env_file:
+      - ./services/db/.env
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./services/db/data:/var/lib/mysql-files/:rw
+      - ./services/db/tmp:/var/tmp:rw
+
+    restart: unless-stopped
+
+  # nginx: passes the requests on port 1337 to the web app (services/nginx/nginx.conf)
+  nginx:
+
+    build: ./services/nginx
+
+    volumes:
+      - ./services/nginx/certs/domain.crt:/etc/nginx/certs/certificate.crt
+      - ./services/nginx/certs/new_domain.key:/etc/nginx/certs/certificate.key
+      - ./services/nginx/certs/domain.csr:/etc/nginx/certs/certificate.csr
+
+    ports:
+      - 1337:80
+
+    depends_on:
+      - web
+
+    restart: unless-stopped
+
+volumes:
+  # MySQL's data: the loaded database, kept across restarts and rebuilds; `docker compose down -v` removes it, and
+  # the next start loads the files again
+  mysql-data:

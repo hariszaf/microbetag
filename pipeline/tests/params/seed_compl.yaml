@@ -1,0 +1,56 @@
+outdir: tests/results/subworkflows
+# ---
+# Genome-scale metabolic model reconstructions
+# ---
+
+# Leave empty if not available
+gems:
+  # results/reconstructions
+  #
+
+# If gems already available, you may leave this blank
+# Otherwise, you may point either to .fa, .fna, .fasta or .faa files (compdessed or not)
+recon_files: tests/expected/precalc/prodigal
+
+gurobi_lic: /opt/gurobi/gurobi_wlm.lic
+recon_with:
+  carveme
+  # gapseq
+
+# Gurobi (CarveMe, DNNGIOR): the sessions your WLS licence allows at the same time -- 2 by default
+# (see the licence's "Too many sessions ... for a baseline of N" message). The tasks that solve with Gurobi run at
+# most that many at once; one that finds all the sessions in use waits (gurobi_wait seconds, then twice that, ...)
+# and tries again, up to gurobi_retries times.
+gurobi_sessions: 2
+gurobi_retries: 10
+gurobi_wait: 60
+
+# Gap-filling of the reconstructed GEMs: native (by the reconstruction tool itself; CarveMe does not gap-fill
+# by default) or dnngior (DNNGIOR gap-fills the drafts of CarveMe, gapseq or ModelSEEDpy; it solves with Gurobi,
+# like CarveMe: see gurobi_lic and gurobi_sessions)
+gapfill_with: native
+dnngior:
+  medium:
+    # Medium file to gap-fill on, with the compound ids of the models' namespace (BiGG for CarveMe, ModelSEED for
+    # gapseq and ModelSEEDpy): a gapseq medium (.csv: compounds, name, maxFlux), a DNNGIOR medium (.tsv: id, name,
+    # concentration, minflux, maxflux) or a 2-column tab-separated file (compound id, maximum uptake).
+    # tests/data/media has a glucose minimal medium with each: MM_glu.csv (ModelSEED) and MM_glu_bigg.csv (BiGG).
+    # Leave empty to gap-fill with every compound available.
+    file:
+
+namespace:
+  BiGG
+  # ModelSEED
+
+# Seed set inference: Skip steps before SCORES_COMPLS_PRECALC
+nonseeds_json:
+  # results/seed_compl/nonseeds.json
+
+confidence_json:
+  # results/seed_compl/confidence.json
+
+# Seed complementarity
+kegg_modules_only: true
+
+# In case you'd like to save the decompressed input files
+debug_decompress:

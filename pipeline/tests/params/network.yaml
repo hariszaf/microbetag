@@ -1,0 +1,28 @@
+# The workflow this file runs: nextflow run main.nf -params-file tests/params/network.yaml
+workflow: network
+
+# FlashWeave, FAPROTAX and manta on an abundance table (--workflow network); used by the microbetag server.
+
+# Abundance table, with the taxonomy in its last column (taxonomy_colname)
+abundance_file: tests/data/manta/abundance_table.tsv
+taxonomy_colname: taxonomy
+delimiter: '\t'
+
+# Metadata for FlashWeave; leave empty if not available
+metadata_file:
+
+# A 3-column edge list; leave empty to infer the network with FlashWeave
+# (FlashWeave finds no associations in this synthetic table, so the example gives its network)
+network: tests/data/manta/edgelist.csv
+
+faprotax: true
+net_cluster: true
+manta_prefix:
+
+outdir: tests/results/network
+
+flashweave_args:
+  heterogeneous: false
+  sensitive: true
+  max_k:
+  n_obs_min: 16

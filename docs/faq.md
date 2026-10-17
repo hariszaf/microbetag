@@ -173,36 +173,37 @@ description: "Frequently Asked Questions on how to use and interprete microbetag
 
 ## I am trying to run `microbetag` locally, but.. 
 
-   When running `microbetag` locally (see [relative tutorial](./tutorials_local/local.md)) 
-   one may have a wide range of different input files as starting points.
+   When running `microbetag` locally (see [relative tutorial](./tutorials_local/local.md)),
+   you may start from your genomes, or from annotations you already have.
 
-   You could start with nothing but your bins; i.e., sequencing files, one for each bin mentioned in your abundance table. 
-   Otherwise, you may have already annotated them with KEGG ORTHOLOGY terms. 
-   Or you may already have reconstructed GEMs on your own. 
+   The [microbetag-nf](./tutorials_local/nf.md) pipeline starts from your genomes: it runs the external tools
+   (KEGG annotation, GEM reconstruction, phenotrex, ...) and then `microbetag`.
+   If you have already annotated your genomes with KEGG ORTHOLOGY terms, or reconstructed GEMs on your own,
+   point the configuration file of `microbetag` to them and run it directly.
 
-   You can adapt your `microbetag` run by pointing to these files through the 
-   <a href="https://github.com/msysbio/microbetag/tree/develop/config_files" target="_blank">`config.yml`</a>
-   file you have to provide as input.
-   However, we cannot say for sure that no matter the software you used to annotate 
-   for example your bins will suit what `microbetag` expects.
+   ```{important}
+   You do not need to go for all the different annotation types!
 
-   If you have a high number of bins, and you would prefer to avoid annotating them again using `microbetag` this time, 
-   you may check the format of the annotations provided in the example case and see if you can edit your format to that. 
-   In any case, we strongly suggest you reach out the 
-   <a href="https://matrix.to/#/#microbetagcommunity:matrix.org" target="_blank">`microbetag`'s community on Matrix</a> 
+   If, for example, you are not interested in pathway complementarities, set this step to `false`
+   in the configuration file, and the time-consuming KEGG ORTHOLOGY annotation is not needed.
+   ```
+
+   The [tutorial](./tutorials_local/local.md#input-files) describes the format `microbetag` expects for each file.
+   If your annotations come from other software, check that they follow it, or convert them.
+   In any case, we strongly suggest you reach out the
+   <a href="https://matrix.to/#/#microbetagcommunity:matrix.org" target="_blank">`microbetag`'s community on Matrix</a>
    with any specific questions of yours.
 
 
 ## I have a really large 16S-oriented network. What can I do? 
 
    There are three things you could do in this case.
-   First, you can try to build a database with the closest genomes you can find for the strains present in your data. 
-   If you do so, then you could run `microbetag` locally using those genomes as they were your bins. 
+   First, you can gather the closest genomes you can find for the taxa in your data, and run the
+   [pipeline](./tutorials_local/nf.md) on them: `precalc` once for the genomes, then `annotate` for your network.
 
-   Second, you could build a local instance of `microbetagDB` locally. 
-   This would require a storage of ~700GB.
-   <!-- REMEMBER! Edit next phrase once coplete -->
-   We are now working on an efficient way to go for that. 
+   Second, with the same pre-calculations, you can run [your own server](./tutorials_local/server.md) with a database
+   of these genomes, and annotate your networks through `MGG`, without the limits of our public server.
+   A local instance of our server's GTDB database would need a storage of ~700GB.
 
    Third, you can get the annotations per species pairs using the `microbetag` API. 
    However, in this case, you will not have a `.cx2` file as an end product, 

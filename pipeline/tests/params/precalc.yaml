@@ -1,0 +1,152 @@
+# The workflow this file runs: nextflow run main.nf -params-file tests/params/precalc.yaml
+workflow: precalc
+
+# -----------
+# Global
+# -----------
+
+outdir: tests/results/precalc
+
+threads: 4
+
+# Path to the genome catalogue. Required for phenotrex -- will be used for pathway and seed complementarities if not .faa and gems are available respectively.
+genomes: tests/data/genomes
+
+# You may provide a path with .faa files if already available -- they can also used for the GEM reconstruction step if GEMs not available, e.g. tests/expected/precalc/prodigal/. Leave empty if not available.
+faa_dir:
+
+# -----------
+# PHENOTREX
+# -----------
+
+phenotrex: true
+
+# Genotypes output file. Output file of the phenotrex training step with the EGGNOG annotation per genome, e.g. tests/expected/precalc/eggnog.genotype. Leave empty if not available.
+genotype_file:
+
+# Class probability threshold for displaying predictions. Predictions below the threshold will be given as "N/A".
+min_proba: 0.75
+
+# -----------
+# PATHWAY COMPL
+# -----------
+
+pathway_compl: true
+
+# A three column file with the genome id, the contig id and its corresponding KEGG ORTHOLOGY term, e.g. tests/expected/precalc/hmmsearch/ko_merged.txt. Leave empty if not available.
+# Example file:
+# bin_id  contig_id       ko_term
+# bin_101 c_000000006615_9        K00005
+# bin_101 c_000000142277_2        K00012
+ko_merged:
+
+# Path to KOFAM database list file, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz` command
+# Supposed to look like:
+# knum    threshold       score_type      profile_type    F-measure       nseq    nseq_used       alen    mlen    eff_nseq        re/pos  definition
+# K00001  363.33  domain  all     0.312178        2773    2310    2080    519     14.06   0.590   alcohol dehydrogenase [EC:1.1.1.1]
+# K00002  438.50  domain  all     0.418181        2762    2642    6996    484     7.63    0.590   alcohol dehydrogenase (NADP+) [EC:1.1.1.2]
+# Important: Make sure you replace this with the path to the file you downloaded for the KOFAM database if you downloaded it in a different location!
+kegg_list:
+  tests/data/kofam_database/ko_list_test
+  # <PATH_TO>/ko_list
+  # ../ext_data/kofam_database/
+
+# Path to KOFAM database folder with HMM models, as downloaded by the `wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz` command
+# It would look like:
+# ls tests/data/kofam_database/profiles_test
+# K00011.hmm  K00023.hmm  K00034.hmm
+# Important: Make sure you replace this with the path to the file you downloaded for the KOFAM database if you downloaded it in a different location!
+hmm_profiles:
+  tests/data/kofam_database/profiles_test
+  # <PATH_TO>/profiles
+
+# A .json file with the alternatives for each KEGG MODULE of each genome of the catalogue, e.g. alternatives.json. Leave empty if not available.
+alts_file:
+
+# A .json file with pathway complementarities, e.g. pcompls.json. Leave empty if not available.
+pc_file:
+
+# Use tinyurl (https://tinyurl.com/) to shorten the links to KEGG MAPS with colored KOs or compounds for the complementarities
+tinyurl: false
+
+# Ratio of the number of KOs to get to the total number of the KOs of the KEGG MODULE alternative.
+# So, for example if you need to get 2 and the alternative has 3, that would give a ~0.66.
+# microbetag will return all complementarities with a lower ratio than the pc_percent
+pc_percent: 0.75
+
+# -----------
+# SEED COMPL
+# -----------
+
+seed_compl: true
+
+# Path to previously reconstructed genome-scale models. Leave empty if not available.
+gems:
+
+# Tool to reconstruct GEMs with, from the proteins: carveme (needs gurobi_lic) or modelseed (ModelSEEDpy: RAST
+# annotation on the RAST server, so it needs an internet connection). For gapseq, which needs the genomes, run
+# modules/gem_recon with recon_with: gapseq and give its reconstructions folder as gems.
+recon_with:
+  carveme
+  # modelseed
+
+# ModelSEEDpy (recon_with: modelseed)
+modelseed:
+  # ModelSEED template the models are built from: gram_neg, gram_pos or core
+  template: gram_neg
+  medium:
+    # Medium file to gap-fill the models on (gapfill_with: native): a gapseq medium (.csv: compounds, name,
+    # maxFlux), e.g. MM_glu.csv of gapseq (dat/media), or a 2-column tab-separated file. Leave empty for the
+    # complete medium.
+    file:
+  # A folder with files of a previous run (<genome>-rast.tsv, <genome>-draft.xml), so that their steps are skipped
+  prev_files:
+  rast:
+    # Genomes annotated at the same time on the RAST server, and proteins per request
+    max_forks: 4
+    batch_size: 2000
+    # true: a genome RAST fails on (after the retries) is left out, and the others go on; false: the run stops
+    ignore_failed: false
+
+# Path to the Gurobi WLS license, e.g. /opt/gurobi/gurobi_wlm.lic -- Attention! Please provide absolute path to the license file.
+gurobi_lic:
+
+# Path to the CPLEX installation, e.g. /opt/ibm/ILOG/CPLEX_Studio2211/
+cplex:
+
+# Gurobi (CarveMe, DNNGIOR): the sessions your WLS licence allows at the same time -- 2 by default
+# (see the licence's "Too many sessions ... for a baseline of N" message). The tasks that solve with Gurobi run at
+# most that many at once; one that finds all the sessions in use waits (gurobi_wait seconds, then twice that, ...)
+# and tries again, up to gurobi_retries times.
+gurobi_sessions: 2
+gurobi_retries: 10
+gurobi_wait: 60
+
+# Gap-filling of the reconstructed GEMs: native (by the reconstruction tool itself; CarveMe does not gap-fill
+# by default) or dnngior (DNNGIOR gap-fills the drafts of CarveMe, gapseq or ModelSEEDpy; it solves with Gurobi,
+# like CarveMe: see gurobi_lic and gurobi_sessions)
+gapfill_with: native
+dnngior:
+  medium:
+    # Medium file to gap-fill on, with the compound ids of the models' namespace (BiGG for CarveMe, ModelSEED for
+    # gapseq and ModelSEEDpy): a gapseq medium (.csv: compounds, name, maxFlux), a DNNGIOR medium (.tsv: id, name,
+    # concentration, minflux, maxflux) or a 2-column tab-separated file (compound id, maximum uptake).
+    # tests/data/media has a glucose minimal medium with each: MM_glu.csv (ModelSEED) and MM_glu_bigg.csv (BiGG).
+    # Leave empty to gap-fill with every compound available.
+    file:
+
+# Namespace of the GEMs: BiGG or ModelSEED. For models reconstructed with recon_with: modelseed it is ModelSEED,
+# whatever is set here; it is for your own GEMs (gems) and CarveMe's (BiGG).
+namespace: BiGG
+
+# Nonseed set per genome, e.g. nonseeds.json. Skip steps before SCORES_COMPLS_PRECALC. Leave empty if not available.
+nonseeds_json:
+
+# Confidence of each seed per genome, e.g. confidence.json. Leave empty if not available.
+confidence_json:
+
+# Return only seed complementarities that are related to some KEGG MODULE
+kegg_modules_only: true
+
+# In case you'd like to save the decompressed input files
+debug_decompress:

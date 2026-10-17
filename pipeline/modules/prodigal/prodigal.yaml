@@ -1,0 +1,9 @@
+# Prodigal testing parameters files
+outdir: tests/results/modules
+
+genomes: tests/data/genomes
+
+cpus: 4
+
+# Up to n jobs in parallel
+maxForks: 2

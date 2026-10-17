@@ -1,0 +1,30 @@
+.flake8
+__pycache__
+
+services/db/data
+services/db/tmp
+
+build_annotated_graph/
+
+updated_non_seedsets_of_interest.pckl
+*_ncbiIds.csv
+
+services/db/kegg_module_related_nonseeds.pkl
+services/db/kegg_module_related_seeds.pkl
+
+
+
+
+# A server's own settings (e.g. ports, certificates, mounts): see docker-compose.override.example.yml
+docker-compose.override.yml
+services/nginx/sites.conf
+
+# Secrets: environment files and TLS certificates/keys stay out of the repository
+.env*
+**/.env*
+!.env.example
+!**/.env.example
+*.env_dev.json
+.localdb_credentials.json
+services/nginx/certs/
+db/db-password

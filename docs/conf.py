@@ -7,10 +7,75 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import re
+
 project = "microbetag"
 copyright = "2025, Lab of Microbial Systems Biology"
 author = "Lab of Microbial Systems Biology"
-release = "1.0.3"
+
+# The version of the microbetag package, read without importing it
+with open(os.path.join(os.path.dirname(__file__), "..", "microbetag/src/microbetag/", "__init__.py")) as f:
+    release = re.search(r'__version__\s*=\s*"([^"]+)"', f.read()).group(1)
+
+# The parameters of the configuration, from microbetag/src/microbetag/templates/parameters.yaml, as Markdown
+# tables (tutorials_local/config.md includes them). parameters.py is loaded on its own: the docs do not install
+# microbetag.
+def _write_parameters_page():
+    import importlib.util
+
+    src  = os.path.join(os.path.dirname(__file__), "..", "microbetag", "src", "microbetag")
+    spec = importlib.util.spec_from_file_location("mtg_parameters", os.path.join(src, "parameters.py"))
+    mod  = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    table = mod.render_markdown(mod.load_parameters(os.path.join(src, "templates", "parameters.yaml")))
+    with open(os.path.join(os.path.dirname(__file__), "tutorials_local", "config_parameters.md"), "w") as f:
+        f.write("<!-- Written by docs/conf.py from templates/parameters.yaml; do not edit. -->\n\n" + table)
+
+
+_write_parameters_page()
+
+
+# The parameters of the pipeline, from pipeline/parameters.yaml, as Markdown tables (tutorials_local/nf.md includes
+# them): one per section, a group of settings as one row per setting (group.setting)
+def _write_pipeline_parameters_page():
+    import yaml
+
+    root = os.path.join(os.path.dirname(__file__), "..")
+    with open(os.path.join(root, "pipeline", "parameters.yaml")) as f:
+        spec = yaml.safe_load(f)
+
+    def cell(text):
+        return " ".join(str(text).split()).replace("|", "\\|")
+
+    def show(value):
+        if value is None:
+            return ""
+        return "`" + (str(value).lower() if isinstance(value, bool) else repr(value)[1:-1] if isinstance(value, str) else str(value)) + "`"
+
+    def rows(name, p, workflows):
+        desc = cell(p["description"])
+        req  = p.get("required")
+        if req:
+            desc += " **Required**" + ("" if req is True else f" ({', '.join(req)})") + "."
+        if p.get("example") is not None:
+            desc += f" E.g. `{p['example']}`."
+        if "parameters" in p:
+            out = [f"| `{name}` | | {workflows} | {desc} |"]
+            for k, v in p["parameters"].items():
+                out += rows(f"{name}.{k}", v, "")
+            return out
+        return [f"| `{name}` | {show(p.get('value'))} | {workflows} | {desc} |"]
+
+    out = ["<!-- Written by docs/conf.py from pipeline/parameters.yaml; do not edit. -->", ""]
+    for section in spec["sections"]:
+        out += [f"### {section['title']}", "", "| Parameter | Default | Workflows | Description |", "|---|---|---|---|"]
+        for name, p in section["parameters"].items():
+            out += rows(name, p, ", ".join(p.get("workflows", [])))
+        out.append("")
+    with open(os.path.join(os.path.dirname(__file__), "tutorials_local", "nf_parameters.md"), "w") as f:
+        f.write("\n".join(out))
+
+
+_write_pipeline_parameters_page()
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -66,7 +131,7 @@ def setup(app):
     app.connect("autoapi-skip-member", autoapi_skip_member)
 
 
-autoapi_dirs   = ["../microbetag"]
+autoapi_dirs   = ["../microbetag/src/microbetag"]
 autoapi_ignore = [
     "*PhyloMint*",
     "*FAPROTAX*",
@@ -75,7 +140,7 @@ autoapi_ignore = [
 ]  # "*mtg_maps_models*",
 
 templates_path   = ["_templates"]
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "tutorials_local/config_parameters.md", "tutorials_local/nf_parameters.md"]
 
 
 # ------------------
@@ -112,6 +177,9 @@ myst_enable_extensions = [
     "dollarmath",
     "colon_fence",
 ]  # for latex and to enable download files    "frontmatter"
+
+# Anchors for headings up to level 4, so that links like page.md#some-heading work
+myst_heading_anchors = 4
 
 
 # -- Options for sphinxcontrib.lightbox2 -------------------------------------

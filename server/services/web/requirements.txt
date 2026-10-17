@@ -1,0 +1,12 @@
+Flask==2.3.2
+Flask-Caching==2.1.0
+Flask-SQLAlchemy==3.0.3
+
+gunicorn==20.1.0
+mysql-connector-python==8.0.27
+
+dotenv
+
+julia==0.6.2
+biopython>=1.79
+fuzzywuzzy==0.18.0  # An updatte is now available -- different API

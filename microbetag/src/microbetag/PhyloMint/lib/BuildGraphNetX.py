@@ -1,0 +1,567 @@
+"""
+Based on the PhyloMInt implementation, edited by the microbetag team.
+
+DOI: https://doi.org/10.1371/journal.pcbi.1007951
+
+GitHub: https://github.com/mgtools/PhyloMint
+"""
+
+# NOTE (2025-03-08):
+# We remove any exchange reaction: 'thm_e <=> '
+# NOTE (2025-03-07):
+# 1. get reaction and product and construct directed graph ignoring the exchange reactions
+# 2. for the reversible reactions, keep both directions as source and target
+import logging
+import re
+
+import cobra
+import networkx as nx
+from cobra.flux_analysis import find_blocked_reactions
+
+logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Currency / cofactor metabolite sets
+# ---------------------------------------------------------------------------
+
+# BiGG-style (CarveMe and most other BiGG-namespace reconstructions)
+CURRENCY = {
+    "h2o",
+    "h",
+    "atp",
+    "adp",
+    "amp",
+    "pi",
+    "ppi",
+    "co2",
+    "o2",
+    "nad",
+    "nadh",
+    "nadp",
+    "nadph",
+    "coa",
+    "nh4",
+    "so4",
+    "fe2",
+    "fe3",
+    "q8",
+    "q8h2",
+    "fadh2",
+    "fad",
+}
+
+# ModelSEED-style (ModelSEEDpy and other cpdXXXXX-namespace reconstructions)
+CURRENCY_MODELSEED = {
+    "cpd00001",  # H2O
+    "cpd00067",  # H+
+    "cpd00002",  # ATP
+    "cpd00008",  # ADP
+    "cpd00018",  # AMP        (verify)
+    "cpd00009",  # Phosphate
+    "cpd00012",  # PPi
+    "cpd00011",  # CO2
+    "cpd00007",  # O2
+    "cpd00003",  # NAD
+    "cpd00004",  # NADH
+    "cpd00006",  # NADP
+    "cpd00005",  # NADPH
+    "cpd00010",  # CoA
+    "cpd00013",  # NH3/NH4
+    "cpd00048",  # Sulfate
+    "cpd10515",  # Fe2+
+    "cpd10516",  # Fe3+
+    "cpd15560",  # Ubiquinone-8
+    "cpd15561",  # Ubiquinol-8
+    "cpd00015",  # FAD
+    "cpd00982",  # FADH2
+    # Not compounds: placeholders of ModelSEED's biomass, made from nothing (rxn13782-4) and taken by the biomass
+    "cpd17041",  # Protein biosynthesis
+    "cpd17042",  # DNA replication
+    "cpd17043",  # RNA transcription
+    "cpd11416",  # Biomass
+}
+
+# Fallback name-based matching, in case cpd IDs drift across ModelSEED
+# database versions and the hardcoded set above stops matching your model.
+CURRENCY_NAMES = {
+    "water",
+    "h+",
+    "proton",
+    "atp",
+    "adp",
+    "amp",
+    "phosphate",
+    "pyrophosphate",
+    "co2",
+    "o2",
+    "nad",
+    "nadh",
+    "nadp",
+    "coenzyme a",
+    "ammonia",
+    "sulfate",
+    "fe2",
+    "fe3",
+    "fad",
+}
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+
+MODELSEED_ID = re.compile(r"^(M_)?cpd\d{5}(_[a-z]\d?)?$")
+
+
+def currency_set_of(model) -> set:
+    """CURRENCY_MODELSEED for a model in ModelSEED ids (cpdXXXXX, most of its metabolites), else CURRENCY (BiGG)."""
+    ids = [m.id for m in model.metabolites]
+    modelseed = sum(bool(MODELSEED_ID.match(i)) for i in ids)
+    return CURRENCY_MODELSEED if ids and modelseed > len(ids) / 2 else CURRENCY
+
+
+def is_currency(met_id: str, currency_set: set, strip_compartment: bool = True) -> bool:
+    """Check whether a (possibly prefixed/compartmented) metabolite ID
+    is a currency/cofactor metabolite, per the given currency_set."""
+    if strip_compartment:
+        base = met_id.rsplit("_", 1)[0]
+    return base in currency_set
+
+
+def get_directed_reactants_products(rxn):
+    """
+    Returns (true_reactants, true_products) based on flux bounds,
+    not just stoichiometric sign.
+
+    cobrapy's rxn.reactants / rxn.products reflect the sign of the
+    stoichiometric coefficients only -- they say nothing about which
+    direction flux is actually allowed to flow. A reaction written as
+    "A -> B" but constrained to lower_bound < 0, upper_bound <= 0 can
+    only carry flux B -> A in practice, so the written/stoichiometric
+    reactant and product must be swapped to reflect true directionality.
+    """
+    reactants = list(rxn.reactants)
+    products = list(rxn.products)
+
+    if rxn.lower_bound < 0 and rxn.upper_bound <= 0:
+        reactants, products = products, reactants
+
+    return reactants, products
+
+
+def get_transport_reactions(model, exclude_boundary=True):
+    """
+    Returns all reactions whose metabolites span more than one
+    compartment (transporters, symporters, antiporters, shuttles).
+
+    Boundary/exchange reactions are structurally single-compartment
+    (they involve exactly one metabolite), so exclude_boundary is
+    technically redundant here -- kept as an explicit, documented
+    no-op for clarity / defensiveness against future heuristic changes.
+    """
+    transport_rxns = []
+    for rxn in model.reactions:
+        if exclude_boundary and rxn.boundary:
+            continue
+        compartments = {met.compartment for met in rxn.metabolites}
+        if len(compartments) > 1:
+            transport_rxns.append(rxn)
+    return transport_rxns
+
+
+# The use of the biomass reaction's substrates: a sink node, neither a seed nor a non-seed
+BIOMASS_SINK = "__biomass__"
+
+# The currency metabolites, always present in a cell: a source node for what reactions make from them alone (e.g.
+# bicarbonate from CO2 and water, ADP-ribose from NAD), neither a seed nor a non-seed
+CURRENCY_SOURCE = "__currency__"
+
+# Currency metabolites that are also nutrients, and that species can provide to each other (ammonium from nitrogen
+# fixation or deamination, sulfate from desulfation of mucin, iron): after the seed sets, getSeedSet decides whether
+# each is a seed or a non-seed, by network expansion (BiGG and ModelSEED ids)
+NUTRIENT_CURRENCY = {"nh4", "so4", "fe2", "fe3", "cpd00013", "cpd00048", "cpd10515", "cpd10516"}
+
+# Compartment suffix of a metabolite id: BiGG _c, _e, _p; ModelSEED _c0, _e0
+COMPARTMENT_SUFFIX = re.compile(r"_([a-z]\d?)$")
+
+
+def merge_compartment_forms(DG: nx.DiGraph) -> nx.DiGraph:
+    """
+    One node per compound: the forms of a compound in the compartments of the model (ac_c, ac_e, ac_p) are merged
+    into a single node (ac). Edges between the forms of a compound (transport) become self-loops and are dropped.
+
+    Seeds are then per compound: a compound the model makes in the cytosol is not a seed because its extracellular
+    form is a source node; and a compound is never both a seed and a non-seed once its compartment is stripped.
+    """
+    merged = nx.DiGraph(**DG.graph)
+    for node in DG.nodes():
+        merged.add_node(COMPARTMENT_SUFFIX.sub("", node))
+    for a, b in DG.edges():
+        a, b = COMPARTMENT_SUFFIX.sub("", a), COMPARTMENT_SUFFIX.sub("", b)
+        if a != b:
+            merged.add_edge(a, b)
+    return merged
+
+
+def buildDG(
+    sbml: str,
+    filter_currency: bool = True,
+    check_blocked: bool = False,
+    currency_set: set = None,
+    merge_compartments: bool = True,
+) -> nx.DiGraph:
+    """
+    Reads an SBML model (via cobrapy) and builds a directed compound
+    graph suitable for seed-set (network expansion) analysis.
+
+    Args:
+        sbml: path to SBML model file
+        filter_currency: whether to exclude ubiquitous cofactors/currency
+            metabolites (water, ATP/ADP, protons, etc.) from the graph
+        check_blocked: whether to run FVA (cobra.flux_analysis.
+            find_blocked_reactions) and exclude reactions that cannot
+            carry nonzero flux under the model's current constraints
+            and medium. NOTE: blocked-ness is medium-dependent -- if
+            comparing seed sets across models, make sure they are
+            evaluated under the same defined medium, or set
+            check_blocked=False for a medium-agnostic graph.
+        currency_set: set of currency compound base-IDs to filter.
+        merge_compartments: whether to merge the forms of each compound in the compartments into one node
+            (merge_compartment_forms), so that seeds and non-seeds are per compound; True by default. Transports
+            (the same compounds on both sides, in other compartments) are then left out.
+            By default, CURRENCY_MODELSEED for a model in ModelSEED ids (cpdXXXXX), else CURRENCY (BiGG ids)
+            (currency_set_of).
+
+    Returns:
+        networkx.DiGraph of metabolite -> metabolite edges. Only
+        contains edges from reactions that: have nonzero bounds, are
+        not boundary/exchange reactions, are not network-blocked (if
+        check_blocked=True), and have at least one non-currency
+        reactant and product (if filter_currency=True).
+
+    Examples
+    --------
+    >>> # CarveMe
+    >>> c_dg = buildDG(modelfile)
+
+    >>> # ModelSEEDpy (the ModelSEED currency metabolites are chosen from the ids)
+    >>> m_dg = buildDG(modelfile)
+    """
+    DG = nx.DiGraph()
+    DG.graph["blocked_filtered"] = check_blocked
+    DG.graph["currency_filtered"] = filter_currency
+
+    if isinstance(sbml, cobra.Model):
+        model = sbml
+    else:
+        model = cobra.io.read_sbml_model(sbml)
+
+    if currency_set is None:
+        currency_set = currency_set_of(model)
+
+    blocked_ids = set()
+    if check_blocked:
+        # With every exchange open: blocked on any medium, so that the seeds do not depend on the model's medium
+        blocked_ids = set(find_blocked_reactions(model, open_exchanges=True))
+        logger.info("Identified %d blocked reactions via FVA", len(blocked_ids))
+
+    # Per compound (merge_compartments): every compound of the model is a node, also those only transported or only
+    # taken by the biomass (e.g. metal ions), so that one nothing produces is a source; and the biomass reaction
+    # is a use of its substrates (an edge to BIOMASS_SINK), for require_downstream_use
+    biomass_ids = set()
+    expansion_steps = []
+    nutrients = set(NUTRIENT_CURRENCY) & set(currency_set)
+    DG.graph["expansion_steps"] = expansion_steps
+    DG.graph["always_available"] = set(currency_set) - nutrients
+    DG.graph["nutrients"] = nutrients
+    if merge_compartments:
+        biomass_ids = {r.id for r in model.reactions if r.objective_coefficient != 0}
+        for m in model.metabolites:
+            if not (filter_currency and is_currency(m.id, currency_set)):
+                DG.add_node(m.id)
+
+    for rxn in model.reactions:
+        logger.info("\n ~~ Processing reaction: %s ~~", rxn.id)
+        if rxn.id in biomass_ids:
+            for m in rxn.reactants:
+                if not (filter_currency and is_currency(m.id, currency_set)):
+                    DG.add_edge(m.id, BIOMASS_SINK)
+            # Its products (e.g. cobinamide and dimethylbenzimidazole in ModelSEED's biomass) are made by the cell
+            for m in rxn.products:
+                if not (filter_currency and is_currency(m.id, currency_set)):
+                    DG.add_edge(CURRENCY_SOURCE, m.id)
+            logger.info("Biomass reaction %s: its substrates are used (-> %s)", rxn.id, BIOMASS_SINK)
+            continue
+        if rxn.lower_bound == 0 and rxn.upper_bound == 0:
+            logger.info(
+                "Skipping reaction %s - zero bounds [%.2f, %.2f], "
+                "structurally cannot carry flux",
+                rxn.id,
+                rxn.lower_bound,
+                rxn.upper_bound,
+            )
+            continue
+
+        if rxn.boundary:
+            logger.info(
+                "Skipping reaction %s - boundary/exchange reaction, "
+                "touches only one compound",
+                rxn.id,
+            )
+            continue
+
+        if check_blocked and rxn.id in blocked_ids:
+            logger.info(
+                "Skipping reaction %s - network-blocked per FVA "
+                "(cannot carry nonzero flux given current model "
+                "constraints/medium)",
+                rxn.id,
+            )
+            continue
+
+        react_f, prod_f = get_directed_reactants_products(rxn)
+        react_f = [m.id for m in react_f]
+        prod_f = [m.id for m in prod_f]
+
+        # For the nutrient round of getSeedSet: the reaction in its allowed directions, per compound, with the
+        # nutrients among the currency metabolites kept
+        if merge_compartments:
+            keep = lambda m: not (filter_currency and is_currency(m, currency_set)) or is_currency(m, nutrients)
+            subs = {COMPARTMENT_SUFFIX.sub("", m) for m in react_f if keep(m)}
+            prods = {COMPARTMENT_SUFFIX.sub("", m) for m in prod_f if keep(m)}
+            if subs:
+                expansion_steps.append((subs, prods))
+            if prods and rxn.lower_bound < 0 and rxn.upper_bound > 0:
+                expansion_steps.append((prods, subs))
+
+        if filter_currency:
+            react_kept, react_dropped = [], []
+            for m in react_f:
+                (react_dropped if is_currency(m, currency_set) else react_kept).append(
+                    m
+                )
+            prod_kept, prod_dropped = [], []
+            for m in prod_f:
+                (prod_dropped if is_currency(m, currency_set) else prod_kept).append(m)
+
+            for m in react_dropped + prod_dropped:
+                logger.info(
+                    "Excluding compound %s from graph (reaction %s) - "
+                    "flagged as a currency/cofactor metabolite",
+                    m,
+                    rxn.id,
+                )
+
+            react_f, prod_f = react_kept, prod_kept
+
+        # Made from currency metabolites alone (which every cell has): an edge from the currency pool
+        if merge_compartments and filter_currency:
+            made = prod_f if not react_f else []
+            if not prod_f and rxn.lower_bound < 0 and rxn.upper_bound > 0:
+                made = react_f
+            if made:
+                for m in made:
+                    DG.add_edge(CURRENCY_SOURCE, m)
+                logger.info("Reaction %s makes %s from currency metabolites alone", rxn.id, made)
+                continue
+
+        if not react_f or not prod_f:
+            logger.info(
+                "Reaction %s contributes no edges after filtering - "
+                "reactant or product side is empty",
+                rxn.id,
+            )
+            continue
+
+        # With the compartments merged, a transport (the same compounds on both sides, only in other compartments:
+        # uniport, symport, antiport, ATP-driven) adds no conversion: it would only link the co-transported compounds
+        # to each other (Ca2+ "produced" from Na+), so it is left out
+        if merge_compartments:
+            merged_react = {COMPARTMENT_SUFFIX.sub("", m) for m in react_f}
+            merged_prod = {COMPARTMENT_SUFFIX.sub("", m) for m in prod_f}
+            if merged_react == merged_prod:
+                logger.info("Skipping reaction %s - a transport of %s", rxn.id, sorted(merged_react))
+                continue
+
+        for r in react_f:
+            for p in prod_f:
+                DG.add_edge(r, p)
+
+        # Fully reversible: add edges in the reverse direction too
+        if rxn.lower_bound < 0 and rxn.upper_bound > 0:
+            for r in prod_f:
+                for p in react_f:
+                    DG.add_edge(r, p)
+
+    if merge_compartments:
+        DG = merge_compartment_forms(DG)
+
+    return DG
+
+
+def getSeedSet(DG, maxComponentSize=5, require_downstream_use=True):
+    """
+    Usage: takes input networkX directed graph
+
+    Args:
+        DG: networkx.DiGraph of metabolite -> metabolite edges (as
+            produced by buildDG)
+        maxComponentSize: SCCs larger than this are treated as
+            non-informative "hub" components (e.g. driven by leftover
+            currency metabolites) and skipped. This is a practical
+            guard, not part of Borenstein's original description.
+        require_downstream_use: if True, apply the functional
+            definition of a seed -- a source SCC (no incoming edges
+            from outside itself) is only kept if it also has at least
+            one outgoing edge to something outside itself. This drops
+            "dead-end" imports the network never actually uses (e.g.
+            a compound transported into the cytosol but never
+            consumed by any reaction). If False, uses the strict
+            topological definition (any unproduced SCC counts,
+            dead ends included).
+
+    Returns
+    -------
+        SeedSetConfidence: dict {node: confidence score}
+        SeedSet: set of seed node names
+        nonSeedSet: list of non-seed node names
+        dead_end_seeds: dict {node: confidence score} of nodes that
+            passed the structural source check but were excluded by
+            the functional (downstream-use) check. Empty if
+            require_downstream_use=False.
+
+        Implementation follows the literature description, checking
+        each SCC's edges directly against the original graph (rather
+        than via nx.condensation), which correctly handles nested
+        SCCs and avoids the erroneous discarding of smaller potential
+        SCCs within larger ones seen in the NetCooperate module
+        implementation.
+
+    Examples
+    --------
+    >>> # CarveMe
+    >>> c_ssc, c_ss, c_nss, c_dead = getSeedSet(c_dg)
+    >>> # ModelSEEDpy
+    >>> m_ssc, m_ss, m_nss, m_dead = getSeedSet(m_dg)
+    """
+    if not DG.graph.get("blocked_filtered", False):
+        logger.warning(
+            "DG was not built with blocked-reaction filtering "
+            "(check_blocked=False or built outside buildDG); seed set "
+            "may include artifacts from network-blocked reactions."
+        )
+
+    SeedSetConfidence = {}
+    dead_end_seeds = {}
+
+    for cc in nx.strongly_connected_components(DG):
+        cc_nodes = set(cc)
+        if CURRENCY_SOURCE in cc_nodes:
+            continue
+
+        # Guard against giant non-informative hub SCCs
+        if len(cc_nodes) > maxComponentSize:
+            reason = (
+                f"member of an SCC of size {len(cc_nodes)} "
+                f"(> maxComponentSize={maxComponentSize}); "
+                f"treated as a non-informative hub component"
+            )
+            for node in cc_nodes:
+                logger.info("Non-seed: %s - %s", node, reason)
+            continue
+
+        # Structural check: is this SCC a source?
+        # (no incoming edges from any node outside the SCC)
+        is_source = True
+        blocking_edge = None
+        for node in cc_nodes:
+            for pred in DG.predecessors(node):
+                if pred not in cc_nodes:
+                    is_source = False
+                    blocking_edge = (pred, node)
+                    break
+            if not is_source:
+                break
+
+        if not is_source:
+            reason = (
+                f"has an incoming edge from '{blocking_edge[0]}' "
+                f"(outside its SCC), so it is produced within the "
+                f"network rather than being a source"
+            )
+            for node in cc_nodes:
+                logger.info("Non-seed: %s - %s", node, reason)
+            continue
+
+        # Functional check: does this SCC actually feed the rest
+        # of the network? (at least one edge leaving the SCC)
+        if require_downstream_use:
+            has_downstream = False
+            for node in cc_nodes:
+                for succ in DG.successors(node):
+                    if succ not in cc_nodes:
+                        has_downstream = True
+                        break
+                if has_downstream:
+                    break
+
+            if not has_downstream:
+                confidence = 1.0 / len(cc_nodes)
+                reason = (
+                    "is a source SCC (nothing produces it) but has no "
+                    "outgoing edges to the rest of the network; "
+                    "treated as a dead-end import, not a functional seed"
+                )
+                for node in cc_nodes:
+                    dead_end_seeds[node] = confidence
+                    logger.info("Non-seed: %s - %s", node, reason)
+                continue
+
+        confidence = 1.0 / len(cc_nodes)
+        for node in cc_nodes:
+            SeedSetConfidence[node] = confidence
+            logger.info(
+                "Seed: %s - source SCC of size %d, confidence=%.3f",
+                node,
+                len(cc_nodes),
+                confidence,
+            )
+
+    SeedSet = set(SeedSetConfidence.keys())
+    # Non-seeds: what the network produces. Dead-end sources (require_downstream_use) are neither seeds nor
+    # non-seeds: nothing produces them, so they are not something the model could offer to another one.
+    nonSeedSet = set(DG.nodes()) - SeedSet - set(dead_end_seeds) - {BIOMASS_SINK, CURRENCY_SOURCE}
+
+    # Nutrient round: the nutrients among the currency metabolites (NUTRIENT_CURRENCY) are left out of the graph, so
+    # they have no status yet. A nutrient is a non-seed if the network makes it from its seeds alone: network expansion
+    # over the model's reactions, which fires a reaction once all its substrates other than currency metabolites are
+    # available. The currency pool is not a starting point: a reaction from currency metabolites alone (e.g. NH4+
+    # from AMP via adenosine) does not fire, so nitrogen, sulfur or iron cannot come from cofactors. Otherwise a seed.
+    steps = DG.graph.get("expansion_steps")
+    if steps:
+        nutrients = DG.graph["nutrients"]
+        present = {n for subs, prods in steps for n in (subs | prods) & nutrients}
+        available = set(SeedSet)
+        changed = True
+        while changed:
+            changed = False
+            for subs, prods in steps:
+                if subs <= available and not prods <= available:
+                    available |= prods
+                    changed = True
+        for n in sorted(present):
+            if n in available:
+                nonSeedSet.add(n)
+                logger.info("Non-seed: %s - nutrient the network makes from its seeds", n)
+            else:
+                SeedSetConfidence[n] = 1.0
+                logger.info("Seed: %s - nutrient the network cannot make from its seeds", n)
+        SeedSet = set(SeedSetConfidence.keys())
+
+    nonSeedSet = list(nonSeedSet)
+
+    logger.info("Dead-end seeds: %s", dead_end_seeds)
+
+    return SeedSetConfidence, SeedSet, nonSeedSet

@@ -1,0 +1,549 @@
+# The parameters of the microbetag pipeline (main.nf): the one place where they are described.
+#
+# Each parameter has:
+#   value        its default: what the pipeline uses when the params file leaves it out
+#   description
+#   workflows    the workflows (--workflow) that use it
+# and optionally:
+#   template     what the template writes, if not the default (e.g. the name of an input file)
+#   example      an example value, shown in the template for a parameter that is not set there
+#   required     true, or the workflows that need it
+#   parameters   for a group of settings (e.g. flashweave_args): its own parameters, in the same format; its
+#                value is theirs, and a params file may set only some of them
+# From this file (lib/MtgParameters.groovy):
+#   - nextflow run main.nf --workflow precalc --write-params precalc.yaml    writes the params file (template) of a workflow
+#   - nextflow run main.nf --help [PARAMETER] [--workflow W]             describes the parameters
+#   - the defaults, and the checks before a run: unknown parameters (e.g. a typo), required ones missing
+#   - the docs page of the parameters (docs/conf.py writes it at build time)
+
+title: microbetag pipeline parameters
+intro: |
+  Paths are relative to the folder you run Nextflow from, or absolute. A parameter left out takes its
+  default; one set to null (left empty) is not used.
+
+  Run:  {run}
+
+  Help: {help}
+
+workflows:
+  precalc: pre-calculations for a genome catalogue (annotations, complementarities)
+  annotate: annotate a network with a pre-calculation folder
+  prep: prepare an amplicon dataset for the on-the-fly version of microbetag
+  network: FlashWeave, FAPROTAX and manta only; used by the microbetag server
+
+sections:
+
+  - title: General
+    parameters:
+
+      outdir:
+        value: results
+        workflows: [precalc, annotate, prep, network]
+        description: The output folder.
+
+      threads:
+        value: 2
+        workflows: [precalc, prep, annotate, network]
+        description: Threads per task, for the tools that use several (kofam, phenotrex, IDTAXA, FAPROTAX v2).
+
+      microbetag_image:
+        value: hariszaf/microbetag-nf:2.0.0
+        workflows: [precalc, annotate, prep, network]
+        description: >
+          The image with the microbetag package and commands, used by all microbetag steps (built from
+          containers/Dockerfile.microbetag-nf; its version follows the microbetag package).
+
+      debug_decompress:
+        value: false
+        workflows: [precalc]
+        description: Also save the decompressed input files (in outdir/data and outdir/decompr).
+
+  - title: "Genome catalogue (precalc)"
+    parameters:
+
+      genomes:
+        value: null
+        template: genomes
+        workflows: [precalc]
+        required: [precalc]
+        description: >
+          The folder of the genome catalogue (.fa, .fna, .fasta, compressed or not). Needed for phenotrex; used for
+          the pathway and seed complementarities when no proteins (faa_dir) or GEMs (gems) are given.
+
+      faa_dir:
+        value: null
+        example: results/prodigal
+        workflows: [precalc]
+        description: >
+          A folder of the genomes' proteins (.faa), if already available; then also used to reconstruct the GEMs.
+
+  - title: "phenotrex (precalc)"
+    parameters:
+
+      phenotrex:
+        value: true
+        workflows: [precalc]
+        description: Predict phenotypic traits of the genomes with phenotrex.
+
+      genotype_file:
+        value: null
+        example: results/eggnog.genotype
+        workflows: [precalc]
+        description: >
+          The genotypes of a previous phenotrex run (its EGGNOG annotation per genome), to skip that step.
+
+      min_proba:
+        value: 0.75
+        workflows: [precalc]
+        description: Class probability threshold for the predictions; below it a prediction is N/A.
+
+  - title: "Pathway complementarity (precalc)"
+    parameters:
+
+      pathway_compl:
+        value: true
+        workflows: [precalc]
+        description: Compute the pathway complementarities of the pairs of genomes.
+
+      ko_merged:
+        value: null
+        example: results/hmmsearch/ko_merged.txt
+        workflows: [precalc]
+        description: >
+          The KEGG ORTHOLOGY annotation, if already available: a 3-column file (bin_id, contig_id, ko_term) with
+          a header line. Otherwise the proteins are annotated with kofam.
+
+      kegg_list:
+        value: null
+        template: databases/kofam/ko_list
+        workflows: [precalc]
+        description: >
+          The KOfam list file (wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz, then gunzip). Needed unless
+          ko_merged is given.
+
+      hmm_profiles:
+        value: null
+        template: databases/kofam/profiles
+        workflows: [precalc]
+        description: >
+          The folder of the KOfam HMM profiles (wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz, then
+          untar). Needed unless ko_merged is given.
+
+      alts_file:
+        value: null
+        example: results/pathway_compl/alternatives.json
+        workflows: [precalc]
+        description: The alternatives of each KEGG module per genome (.json), from a previous run.
+
+      pc_file:
+        value: null
+        example: results/pathway_compl/pcompls.json
+        workflows: [precalc, annotate]
+        description: >
+          The pathway complementarities (.json). precalc: from a previous run, to skip computing them. annotate:
+          those of the pre-calculations.
+
+      pc_percent:
+        value: 1
+        workflows: [precalc, annotate]
+        description: >
+          Keep the complements that complete at least this fraction of a KEGG module alternative (0 to 1): e.g.
+          a donor giving 2 of the 3 KOs a beneficiary misses is ~0.66.
+
+      tinyurl:
+        value: false
+        workflows: [precalc, annotate]
+        description: Shorten the links to KEGG maps of the complementarities with tinyurl (a web service).
+
+  - title: "Seed complementarity (precalc)"
+    parameters:
+
+      seed_compl:
+        value: true
+        workflows: [precalc, annotate]
+        description: >
+          precalc: compute the seed complementarities of the pairs of genomes. annotate: add them to the network.
+
+      gems:
+        value: null
+        example: results/reconstructions
+        workflows: [precalc]
+        description: A folder of genome-scale metabolic models (SBML), if already available; then none are built.
+
+      recon_with:
+        value: carveme
+        workflows: [precalc]
+        description: >
+          The tool to reconstruct GEMs with, from the proteins: carveme (needs gurobi_lic), modelseed (ModelSEEDpy;
+          RAST annotation on the RAST server, so an internet connection) or gapseq (from the genomes).
+
+      namespace:
+        value: BiGG
+        workflows: [precalc]
+        description: >
+          The namespace of the GEMs: BiGG or ModelSEED. Models of recon_with modelseed or gapseq are ModelSEED
+          whatever is set here; it is for your own GEMs (gems) and CarveMe's (BiGG).
+
+      modelseed:
+        workflows: [precalc]
+        description: ModelSEEDpy (recon_with modelseed).
+        parameters:
+          template:
+            value: gram_neg
+            description: "The ModelSEED template the models are built from: gram_neg, gram_pos or core."
+          medium:
+            description: The medium to gap-fill on (gapfill_with native).
+            parameters:
+              file:
+                value: null
+                description: >
+                  A gapseq medium (.csv: compounds, name, maxFlux), e.g. MM_glu.csv of gapseq (dat/media), or a
+                  2-column tab-separated file. Empty: the complete medium.
+          prev_files:
+            value: null
+            description: >
+              A folder with the files of a previous run (<genome>-rast.tsv, <genome>-draft.xml), whose steps are
+              then skipped.
+          rast:
+            description: The RAST annotation.
+            parameters:
+              max_forks:
+                value: 4
+                description: Genomes annotated at the same time on the RAST server.
+              batch_size:
+                value: 2000
+                description: Proteins per request.
+              ignore_failed:
+                value: false
+                description: >
+                  true: a genome RAST fails on (after the retries) is left out and the others go on; false: the run
+                  stops.
+
+      gapseq:
+        workflows: [precalc]
+        description: gapseq (recon_with gapseq); see https://gapseq.readthedocs.io/en/latest/usage/parameters.html
+        parameters:
+          find:
+            description: gapseq find.
+            parameters:
+              p: {value: polyamine, description: "Keywords such as pathways or subsystems (e.g. amino,nucl,cofactor,carbo,polyamine)."}
+              b: {value: 200, description: Bit score cutoff for local alignment.}
+              i: {value: 0, description: Identity cutoff for local alignment.}
+              c: {value: 75, description: Coverage cutoff for local alignment.}
+              t: {value: Bacteria, description: "Taxonomic range of the reference sequences: Bacteria, Archaea or auto."}
+          find_transport:
+            description: gapseq find-transport.
+            parameters:
+              b: {value: 50, description: Bit score cutoff for local alignment.}
+              i: {value: 0, description: Identity cutoff for local alignment.}
+              c: {value: 75, description: Coverage cutoff for local alignment.}
+          draft:
+            description: gapseq draft.
+            parameters:
+              b: {value: auto, description: "The biomass reaction: pos, neg, archaea, auto, or a file of your own."}
+              u: {value: 200, description: Reactions with a blast hit of a bit score above this are core reactions.}
+              l: {value: 50, description: Reactions with a blast hit of a bit score below this count as without a hit.}
+          medium:
+            description: The medium to gap-fill on.
+            parameters:
+              file: {value: null, description: "A medium file, e.g. ecoli-medium.csv of gapseq (dat/media). Empty: gapseq's default."}
+              b: {value: 100, description: Bit score above which reactions are core candidates for gap-filling.}
+          prev_tbl:
+            value: null
+            description: A folder with the gapseq files of a previous run, whose steps are then skipped.
+
+      gapfill_with:
+        value: native
+        workflows: [precalc]
+        description: >
+          Gap-filling of the reconstructed GEMs: native (by the reconstruction tool; CarveMe does not gap-fill by
+          default) or dnngior (DNNGIOR gap-fills the drafts of CarveMe, gapseq or ModelSEEDpy; it solves with
+          Gurobi: see gurobi_lic, gurobi_sessions).
+
+      dnngior:
+        workflows: [precalc]
+        description: DNNGIOR (gapfill_with dnngior).
+        parameters:
+          medium:
+            description: The medium to gap-fill on.
+            parameters:
+              file:
+                value: null
+                description: >
+                  With the compound ids of the models' namespace: a gapseq medium (.csv), a DNNGIOR medium (.tsv:
+                  id, name, concentration, minflux, maxflux) or a 2-column tab-separated file (compound id,
+                  maximum uptake). tests/data/media has a glucose minimal medium of each kind. Empty: every
+                  compound available.
+
+      gurobi_lic:
+        value: null
+        example: /opt/gurobi/gurobi_wls.lic
+        workflows: [precalc]
+        description: The Gurobi WLS licence file (CarveMe, DNNGIOR), as an absolute path.
+
+      gurobi_sessions:
+        value: 2
+        workflows: [precalc]
+        description: >
+          The Gurobi sessions your WLS licence allows at the same time (see its "Too many sessions ... for a
+          baseline of N" message); the tasks that solve with Gurobi run at most that many at once.
+
+      gurobi_retries:
+        value: 10
+        workflows: [precalc]
+        description: Retries of a task that finds all the Gurobi sessions in use.
+
+      gurobi_wait:
+        value: 60
+        workflows: [precalc]
+        description: Seconds before the first retry; each next one waits twice as long.
+
+      cplex:
+        value: null
+        example: /opt/ibm/ILOG/CPLEX_Studio2211/
+        workflows: [precalc]
+        description: The CPLEX installation, for gapseq.
+
+      nonseeds_json:
+        value: null
+        example: results/seed_compl/nonseeds.json
+        workflows: [precalc]
+        description: The non-seed sets per genome of a previous run; with confidence_json, the seed sets are not inferred again.
+
+      confidence_json:
+        value: null
+        example: results/seed_compl/confidence.json
+        workflows: [precalc]
+        description: The seed confidences per genome of a previous run; see nonseeds_json.
+
+      kegg_modules_only:
+        value: true
+        workflows: [precalc]
+        description: Keep only the seed complements that are compounds of KEGG modules (the scores use all of them).
+
+  - title: "Network and abundances (annotate, prep, network)"
+    parameters:
+
+      indir:
+        value: null
+        template: data
+        workflows: [annotate]
+        required: [annotate]
+        description: >
+          The folder with the abundance table, and the metadata and network if any; the paths of those need to be
+          within it (it is mounted in the containers).
+
+      abundance_file:
+        value: null
+        template: data/abundance_table.tsv
+        workflows: [annotate, prep, network]
+        required: [prep, network]
+        description: >
+          The abundance table. annotate, network: with the taxonomy in its last column (taxonomy_colname). prep:
+          sequence ids (ASVs/OTUs) in the first column, then the samples, and the sequences in the last column.
+
+      taxonomy_colname:
+        value: taxonomy
+        workflows: [annotate, network]
+        description: The column of the abundance table with the taxonomy (FAPROTAX).
+
+      delimiter:
+        value: '\t'
+        workflows: [annotate, network]
+        description: The delimiter of the abundance table (FAPROTAX), e.g. ',' or '\t' (a tab).
+
+      metadata_file:
+        value: null
+        example: data/metadata.tsv
+        workflows: [annotate, prep, network]
+        description: >
+          The metadata of the samples, for FlashWeave; the network then has nodes for the metadata variables, which
+          microbetag marks as such (metavar).
+
+      network:
+        value: null
+        example: data/edgelist.tsv
+        workflows: [annotate, network]
+        description: A network, as a 3-column, tab-separated edge list. If empty, it is inferred with FlashWeave.
+
+      build_network:
+        value: true
+        workflows: [prep]
+        description: Infer the co-occurrence network with FlashWeave.
+
+      flashweave_args:
+        workflows: [annotate, prep, network]
+        description: FlashWeave's settings (when the network is inferred).
+        parameters:
+          heterogeneous:
+            value: false
+            description: Heterogeneous mode, for multi-habitat or -protocol data with at least thousands of samples (FlashWeaveHE).
+          sensitive:
+            value: true
+            description: Fine-grained associations (FlashWeave-S, FlashWeaveHE-S); false for the fast modes (FlashWeave-F, FlashWeaveHE-F).
+          max_k:
+            value: null
+            description: Maximum size of the conditioning sets (FlashWeave's default 3); 0 for no conditioning (univariate mode).
+          alpha:
+            value: null
+            description: Threshold of statistical significance.
+          conv:
+            value: null
+            description: Convergence threshold, e.g. 0.01 to stop once the edges grew by only 1% after 100% more runtime.
+          feed_forward:
+            value: null
+            description: Feed-forward heuristic.
+          max_tests:
+            value: null
+            description: Maximum conditional tests on a pair of variables before their association is assumed.
+          hps:
+            value: null
+            description: Reliability criterion of the statistical tests when sensitive is false.
+          FDR:
+            value: null
+            description: False discovery rate correction (Benjamini-Hochberg) of the pairwise associations.
+          n_obs_min:
+            value: null
+            description: >
+              No associations between variables with fewer reliable samples than this (FlashWeave's default 20);
+              -1 lets FlashWeave choose.
+          time_limit:
+            value: null
+            description: "With feed-forward: the interval (seconds) of the neighbourhood updates; -1.0 heuristic, 0.0 none."
+          normalize:
+            value: null
+            description: Choose and perform the data normalization (by sensitive and heterogeneous).
+          track_rejections:
+            value: null
+            description: Keep, for each discarded edge, the variables that excluded it (can take much memory).
+
+      faprotax:
+        value: true
+        workflows: [annotate, network]
+        description: Annotate the taxa with FAPROTAX functions.
+
+      faprotax_version:
+        value: 1
+        workflows: [annotate, network]
+        description: >
+          FAPROTAX version: 1 (1.2.10, taxa matched to the database by name) or 2 (the v2.0 mapper, taxa placed on a
+          reference tree by their taxonomy and their functions predicted from their relatives; annotates more taxa).
+
+      faprotax2_image:
+        value: hariszaf/faprotax2:2.0
+        workflows: [annotate, network]
+        description: The image of the FAPROTAX v2.0 mapper (containers/Dockerfile.faprotax2), for faprotax_version 2.
+
+      net_cluster:
+        value: false
+        workflows: [annotate, network]
+        description: Cluster the network with manta.
+
+      manta:
+        value: true
+        workflows: [annotate]
+        description: With net_cluster, run manta; false to give your own clustered network (.cyjs).
+
+      manta_prefix:
+        value: null
+        workflows: [annotate, network]
+        description: The prefix of manta's output files (default manta_net).
+
+  - title: "Annotations from the pre-calculations (annotate)"
+    parameters:
+
+      precalculations:
+        value: null
+        template: results/precalc
+        workflows: [annotate]
+        required: [annotate]
+        description: The output folder of the precalc workflow (it is mounted in the containers).
+
+      mtg_net:
+        value: null
+        example: network.cx2
+        workflows: [annotate]
+        description: The name of the annotated network (.cx2); if empty, mtag_net_<time>.cx2.
+
+      phen_traits:
+        value: true
+        workflows: [annotate]
+        description: Add the phenotrex predictions of the genomes.
+
+      phen_traits_dir:
+        value: null
+        template: results/precalc/phenotrex/predictions
+        workflows: [annotate]
+        description: The folder of phenotrex predictions of the pre-calculations.
+
+      path_compl:
+        value: true
+        workflows: [annotate]
+        description: Add the pathway complementarities.
+
+      pc_dir:
+        value: null
+        template: results/precalc/pathway_compl
+        workflows: [annotate]
+        description: The pathway complementarity folder of the pre-calculations.
+
+      sc_pkl:
+        value: null
+        template: results/precalc/seed_compl/seed_compls.pkl
+        workflows: [annotate]
+        description: The seed complementarities of the pre-calculations (.pkl).
+
+      seed_scores:
+        value: null
+        template: results/precalc/seed_compl/seed_scores.tsv
+        workflows: [annotate]
+        description: The seed scores of the pre-calculations (.tsv).
+
+      module_nonseeds:
+        value: null
+        template: results/precalc/seed_compl/keggm_nonseeds.pkl
+        workflows: [annotate]
+        description: The KEGG-module related non-seeds of the pre-calculations (.pkl).
+
+  - title: "Taxonomy (prep)"
+    parameters:
+
+      assign_taxonomy:
+        value: true
+        workflows: [prep]
+        description: Assign GTDB taxonomies to the sequences with IDTAXA.
+
+      gtdb_16s_reference:
+        value: null
+        template: databases/gtdb_r207_ssu_idtaxa.RData
+        workflows: [prep]
+        description: >
+          The GTDB r207 16S reference that IDTAXA classifies the sequences against (gtdb_r207_ssu_idtaxa.RData;
+          microbetag-nf get-gtdb-16s downloads it, from the microbetag data on Zenodo,
+          https://doi.org/10.5281/zenodo.23368237), so that they get the GTDB
+          taxonomies of the genomes of the server's database. Nothing is trained: the file is ready to use (DECIPHER
+          calls it a training set; it was made once, from GTDB_bac120_arc53_ssu_r207_fullTaxo.fa.gz of
+          https://zenodo.org/records/6655692). Its GTDB release needs to match the one of the server's database,
+          since microbetag matches taxa to genomes by their GTDB names.
+
+      idtaxa_threshold:
+        value: 60
+        workflows: [prep]
+        description: "IDTAXA confidence threshold: 60 (cautious) or 50 (sensible)."
+
+      idtaxa_seed:
+        value: 1
+        workflows: [prep]
+        description: >
+          The seed of IDTAXA's random sampling. IDTAXA samples k-mers of each sequence at random (bootstrap) to
+          estimate its confidence, so sequences close to the threshold can be assigned one rank deeper or shallower
+          from one run to another (~10% of the test data without a seed); with the same seed, the same data give
+          the same assignments.
+
+# Set by the pipeline or the microbetag server, not in the templates
+internal:
+  workflow: {value: null, description: "The workflow to run (--workflow): precalc, annotate, prep or network."}
+  help: {value: false, description: "Describe the parameters (--help [PARAMETER])."}
+  writeParams: {value: null, description: "Write the params file (template) of a workflow (--write-params FILE)."}
+  recon_files: {value: null, description: "The files GEMs are reconstructed from: faa_dir, else genomes (set by the pipeline)."}
+  onthefly: {value: false, description: Run for the microbetag server.}

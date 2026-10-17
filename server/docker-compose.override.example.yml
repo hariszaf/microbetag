@@ -1,0 +1,20 @@
+# A server's own settings, on top of docker-compose.yml: copy this file to docker-compose.override.yml (not tracked
+# by git), next to docker-compose.yml, and keep only what this server needs. `docker compose` reads both files and
+# merges them: single values are replaced, lists such as ports are added to those of docker-compose.yml, volumes
+# are merged by their path in the container. Check the result with `docker compose config`.
+
+services:
+
+  db:
+    ports:
+      - "127.0.0.1:3306:3306"   # MySQL reachable from the server itself (e.g. backups); the web app does not need it
+
+  nginx:
+    volumes:
+      # The server's own sites (services/nginx/sites.conf, from sites.example.conf), in place of the generic
+      # nginx.conf, e.g. for HTTPS with the certificates docker-compose.yml mounts
+      - ./services/nginx/sites.conf:/etc/nginx/conf.d/nginx.conf:ro
+      # A folder one of its sites serves itself, if any
+      # - /path/to/static:/path/to/static:ro
+    ports:
+      - "443:443"               # HTTPS, added to docker-compose.yml's 1337:80

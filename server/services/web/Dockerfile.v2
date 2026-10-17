@@ -1,0 +1,60 @@
+# The microbetag server on microbetag 2.0, the package of this repository.
+#
+# The server runs the network-level steps (FlashWeave, FAPROTAX, manta) with the network workflow of the
+# pipeline (pipeline/workflows/network.nf), with Nextflow and without a container engine: the tools are
+# in this image, taken from the pipeline's images.
+#
+# Build the pipeline's images first, from the root of the repository:
+#   docker build -t hariszaf/microbetag:2.0.0 microbetag
+#   docker build -f pipeline/containers/Dockerfile.microbetag-nf -t hariszaf/microbetag-nf:2.0.0 pipeline
+#   docker build -f pipeline/containers/Dockerfile.flashweave -t hariszaf/flashweave:0.19.2 pipeline
+# then this one, also from the root of the repository:
+#   docker build -f server/services/web/Dockerfile.v2 -t microbetag-server:2.0.0 .
+#
+# For a database of your own genomes, set TAXON_MATCHING=lineage; everything else is in the database.
+
+ARG MICROBETAG_NF_IMAGE=hariszaf/microbetag-nf:2.0.0
+ARG FLASHWEAVE_IMAGE=hariszaf/flashweave:0.19.2
+
+FROM ${FLASHWEAVE_IMAGE} AS flashweave
+
+FROM ${MICROBETAG_NF_IMAGE}
+
+# Java for Nextflow; procps for Nextflow's task metrics
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends openjdk-21-jre-headless procps curl \
+ && rm -rf /var/lib/apt/lists/*
+
+ARG NEXTFLOW_VERSION=26.04.0
+ENV NXF_HOME=/opt/nextflow NXF_VER=${NEXTFLOW_VERSION} NXF_OFFLINE=true NXF_ANSI_LOG=false
+RUN curl -fsSL https://get.nextflow.io -o /usr/local/bin/nextflow \
+ && chmod 755 /usr/local/bin/nextflow \
+ && nextflow -version \
+ && chmod -R a+rX ${NXF_HOME}
+
+# Julia and FlashWeave, precompiled, from the pipeline's FlashWeave image
+COPY --from=flashweave /opt/julia /opt/julia
+COPY --from=flashweave /usr/local/share/julia /usr/local/share/julia
+COPY --from=flashweave /opt/fw /opt/fw
+ENV JULIA_DEPOT_PATH=/usr/local/share/julia PATH=/opt/fw:/opt/julia/bin:${PATH}
+
+# Newer Linux kernels refuse to load libraries that request an executable stack, as some of Julia's do
+RUN apt-get update && apt-get install -y --no-install-recommends patchelf && rm -rf /var/lib/apt/lists/* \
+ && find /opt/julia/lib /usr/local/share/julia -name "*.so*" -type f -exec patchelf --clear-execstack {} \; \
+ && julia -e 'using FlashWeave, ArgParse, JSON'
+
+RUN pip install --no-cache-dir Flask==2.3.2 Flask-Caching==2.1.0 gunicorn==20.1.0 python-dotenv \
+    biopython fuzzywuzzy
+
+# The pipeline, for its network workflow
+COPY pipeline/main.nf pipeline/nextflow.config pipeline/parameters.yaml /opt/pipeline/
+COPY pipeline/lib/ /opt/pipeline/lib/
+COPY pipeline/workflows/ /opt/pipeline/workflows/
+COPY pipeline/modules/ /opt/pipeline/modules/
+ENV MICROBETAG_PIPELINE=/opt/pipeline FLASHWEAVE=false
+
+ENV HOME=/home/app APP_HOME=/home/app/web
+WORKDIR $APP_HOME
+COPY server/services/web/ $APP_HOME
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app", "--workers", "2", "--timeout", "3500"]
